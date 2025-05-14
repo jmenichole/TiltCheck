@@ -1,0 +1,67 @@
+Conversation with Stake.us
+Started on May 7, 2025 at 02:28 AM Europe/Belgrade time CEST (GMT+0200)
+
+---
+
+02:28 AM | Jmenichole: I ran an independent audit on my gameplay history using the seeds and nonces you provide through the fairness tools. I calculated expected burst values using the standard RNG formula used: 
+ HMAC_SHA256(serverSeed, clientSeed:nonce) → extract float → max(1, 1 / (1 - r)) 
+ None of the actual _popPoint values in my game logs match the calculated outcomes. The discrepancies are significant, and consistent. Can you please confirm if Pump uses a proprietary RNG model? If so, is there any documentation you can provide on how the burst point is actually calculated? Just want clarity on how the fairness model applies to this specific game.
+
+02:29 AM | Nikolas from Stake.us: Hello there, Jmenichole! 🙋‍♂️ 
+ 
+ Thank you for reaching out to us.
+
+02:30 AM | Nikolas from Stake.us: Could you please send us Game IDs of the rounds that you are referring to, please?
+
+02:33 AM | Jmenichole: I understand you’re asking for Game IDs, but respectfully, this is a provably fair audit based on the publicly available seed data — not a balance dispute.
+I’ve already extracted the relevant client seeds, server seed hashes, and nonces, and I have and am willing to share a full PDF report showing that none of the logged _popPoint values match the values derived using the expected RNG formula. The issue is not about a specific game ID — it’s that the core RNG model used by Pump does not appear to match your published provably fair system.
+If Pump uses a different algorithm or model than Dice, Crash, or Keno, please confirm that and explain how the pop point is derived from the seed pair. I’m asking for mathematical transparency — the very thing “provably fair” is supposed to guarantee.
+
+02:35 AM | Nikolas from Stake.us: We would need to check the Game IDs of the rounds that you are referring to in order to be able to discuss this further.
+
+02:38 AM | Jmenichole: I understand your process usually starts with Game IDs, but this isn’t about a single round — it’s a pattern across all rounds ever played on the game pump. So every single game ID for pump in my account.
+
+02:39 AM | Jmenichole: This is not a dispute about winnings — it's a mathematical audit of whether the _popPoint value is deterministically derived from the seed pair, as advertised by your provably fair system.
+If this request can’t be addressed at the support tier, I respectfully ask that it be escalated to someone on the engineering or fairness team.
+
+02:40 AM | Nikolas from Stake.us: Please send us Game ID examples, so that we can check of there are any discrepancies.
+
+02:41 AM | Jmenichole: Game ID: 3814929c-324d-4a1b-99f9-1f36f8b23bdc | Nonce: 1 | Client Seed: g-b335_ubf
+Game ID: 00f8c8e7-6bea470f-a77a-c9977d1e97ce | Nonce: 2 | Client Seed: g-b335_ubf
+Game ID: dec382c6-fcfe-4ac0-8a58-06bd251e6270 | Nonce: 3 | Client Seed: g-b335_ubf
+Game ID: 2cc59727-4d61-40cc-b904-268464ca1562 | Nonce: 4 | Client Seed: g-b335_ubf
+Game ID: 36da3305-2e72-4332-b87b-e4bbdc728187 | Nonce: 5 | Client Seed: g-b335_ubf
+Server Seed Hash (for all): d22426143db0187bc6bc23a7e5b960fb4e308e22e888c137bf81f64d81404c0f
+Unhashed Server Seed: deb4101ef3131a78af0af6b951fa9102945d92133027914f83a016e6a44c021a
+​
+
+02:42 AM | Jmenichole: These were all calculated using the expected provably fair formula — and the outcomes logged by Stake do not match the expected _popPoint.
+
+02:43 AM | Nikolas from Stake.us: I am afraid that those are not the game IDs. 
+ 
+ You should be able to find Game IDs on this page here: 
+ Account Menu > My Game Play (https://stake.us/casino/my-bets?type=casino)
+
+02:43 AM | Jmenichole: those came from the bet archives.
+
+02:43 AM | Jmenichole: provably fair verification doesn't require the game id
+
+02:44 AM | Jmenichole: I shouldn't be asked to provide it currently
+
+02:44 AM | Jmenichole: as im not asking about a game outcome
+
+02:45 AM | Jmenichole: I’ve played thousands of rounds of Pump — likely millions over time — and I’ve trusted that each one was governed by your provably fair system. After conducting this audit (that I was previously refused by support here to have done by them) using your own seed tools, I found that none of the pop points recorded in my logs matched the expected values from standard provably fair logic.
+If this game uses a different or undisclosed algorithm, and if there’s no way for me (or anyone) to independently verify outcomes from the seed pair, then the game is not provably fair in practice.
+I’m sharing this to ask not only for transparency, but also for fairness. If Pump’s logic differs and players haven’t been told, then I believe I’m owed a review and refund consideration for time and trust invested.
+
+02:46 AM | Nikolas from Stake.us: The games can be verified through the Game ID. Kindly, provide us with Game IDs of a few rounds that you would like to be checked. 
+ 
+ I am afraid that we cannot assist you further without those.
+
+02:47 AM | Jmenichole: If your system is truly provably fair, then the outcome of the round — in this case, the _popPoint — should be verifiable usin only the seed pair and nonce. That’s the entire purpose of a provably fair model: player-verifiable outcomes, not internal verification behind a support wall.
+Insisting on Game ID checks without addressing the core RNG discrepancy only confirms that Pump is not auditable by users and does not use the advertised provably fair model.
+I will be publishing the full audit and sharing this publicly to help others understand what “provably fair” currently means in practice on Stake.
+Thank you for your time.
+
+---
+Exported from Stake.us on May 7, 2025 at 02:47 AM Europe/Belgrade time CEST (GMT+0200)
