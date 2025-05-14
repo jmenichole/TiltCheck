@@ -63,5 +63,12 @@ Insisting on Game ID checks without addressing the core RNG discrepancy only con
 I will be publishing the full audit and sharing this publicly to help others understand what “provably fair” currently means in practice on Stake.
 Thank you for your time.
 
+03:01 AM | Jmenichole: I understand this may not be something you can discuss. I'll await your reply until morning before I take the report and suggestion that others run audits on their games of pump also to any and all media channels at my disposal.
+
+09:29 AM | Jmenichole: I’m giving this one last follow-up in good faith before I publish my findings.
+I’ve documented and verified multiple mismatches between the expected provably fair results and the actual results from Pump using your own fairness tools, seeds, and nonces.
+I’ll be making this public soon to raise awareness and help others verify their own results — but if Stake wishes to resolve this quietly and fairly, I’m open to discussion before publication.
+Please escalate this to someone on the engineering or fairness team, or advise on how we might resolve this respectfully.
+
 ---
-Exported from Stake.us on May 7, 2025 at 02:47 AM Europe/Belgrade time CEST (GMT+0200)
+Exported from Stake.us on May 14, 2025 at 09:41 PM Europe/Belgrade time CEST (GMT+0200)
