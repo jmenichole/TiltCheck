@@ -64,4 +64,4 @@ MIT
 
 ## Contact
 
-For support or feature requests, please contact the development team at support@mischiefmanager.org.
+For support or feature requests, please contact the development team at j.chapman7@yahoo.com.
