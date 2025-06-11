@@ -1,12 +1,6 @@
 
 
-TiltCheck Audit System
-
-A comprehensive tool for monitoring and auditing player tilt patterns in casino environments.
-
-Overview
-
-TiltCheck is designed to help casino operators identify, track, and mitigate player tilt behaviors. The system analyzes betting patterns, time spent at tables, and emotional indicators to provide real-time alerts and detailed reports.
+TiltCheck is designed to help identify, track, and mitigate player tilt behaviors. The system analyzes betting patterns, time spent at tables, and emotional indicators to provide real-time alerts.
 
 Features
 
