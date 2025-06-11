@@ -2,14 +2,6 @@
 
 TiltCheck is designed to help identify, track, and mitigate player tilt behaviors. The system analyzes betting patterns, time spent at tables, and emotional indicators to provide real-time alerts.
 
-Features
-
-- Real-time tilt detection algorithms
-- Stake monitoring and threshold alerts
-- Player behavior pattern analysis
-- Integration with casino management systems
-- Customizable reporting dashboard
-- Mobile notifications for floor managers
 
 Installation
 
