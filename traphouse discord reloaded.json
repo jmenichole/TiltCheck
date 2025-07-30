@@ -1,0 +1,43 @@
+{
+  "server_name": "_TRAP HOUSE 🌳🌟🌍🍀💎",
+  "roles": [
+    { "name": "Code Master", "permissions": "ADMINISTRATOR", "color": "#FF0000" },
+    { "name": "THE DON 🏆", "permissions": "ADMINISTRATOR", "color": "#008000" },
+    { "name": "TRAPHOUSE SECURITY", "permissions": "MANAGE_MESSAGES", "color": "#666666" },
+    { "name": "Poker Master ♥♦♣♠🏰", "permissions": "VIEW_CHANNEL", "color": "#0000FF" },
+    { "name": "Admin", "permissions": "MANAGE_GUILD", "color": "#00FFFF" },
+    { "name": "Server Booster", "permissions": "VIEW_CHANNEL", "color": "#800080" }
+  ],
+  "channels": [
+    { "category": "The living room", "channels": [
+      { "name": "traphouse-general-chat", "type": "text" },
+      { "name": "Events", "type": "text" }
+    ]},
+    { "category": "Watch me Degen something live", "channels": [
+      { "name": "General", "type": "voice" },
+      { "name": "Lara music chill area", "type": "voice" }
+    ]},
+    { "category": "STAKE.US CODES", "channels": [
+      { "name": "saturday-codes", "type": "text" },
+      { "name": "bonus-drops", "type": "text" }
+    ]},
+    { "category": "The money room", "channels": [
+      { "name": "rain-on-me-daddy", "type": "text" },
+      { "name": "selfswap-exchange-dust", "type": "text" },
+      { "name": "tip.cc", "type": "text" }
+    ]},
+    { "category": "The stove", "channels": [
+      { "name": "showoff-your-hits", "type": "text" }
+    ]},
+    { "category": "The basement", "channels": [
+      { "name": "show-your-current-activity", "type": "text" }
+    ]},
+    { "category": "The backyard", "channels": [
+      { "name": "who-the-fook-is-this-guy", "type": "text" }
+    ]},
+    { "category": "Casino referrals", "channels": [
+      { "name": "casinos", "type": "text" },
+      { "name": "crypto-earning", "type": "text" }
+    ]}
+  ]
+}
