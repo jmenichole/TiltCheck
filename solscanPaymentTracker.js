@@ -8,7 +8,7 @@ require('dotenv').config();
 
 class SolscanPaymentTracker {
     constructor() {
-        this.apiUrl = process.env.SOLSCAN_API_URL || 'https://pro-api.solscan.io/v2.0';
+        this.apiUrl = process.env.SOLSCAN_API_URL || 'https://api.solscan.io';
         this.paymentSigner = process.env.JUSTTHETIP_PAYMENT_SIGNER;
         this.apiKey = process.env.SOLSCAN_API_KEY;
         this.webhookUrl = process.env.JUSTTHETIP_WEBHOOK_URL;
@@ -17,7 +17,7 @@ class SolscanPaymentTracker {
         if (!this.paymentSigner) {
             console.error('❌ JUSTTHETIP_PAYMENT_SIGNER not configured');
         } else {
-            console.log('💡 SolscanPaymentTracker initialized');
+            console.log('💡 SolscanPaymentTracker initialized (Free API)');
             console.log(`🔑 Payment Signer: ${this.paymentSigner.substring(0, 10)}...`);
         }
     }
@@ -34,9 +34,8 @@ class SolscanPaymentTracker {
                 'Content-Type': 'application/json'
             };
             
-            if (this.apiKey && this.apiKey !== 'your_solscan_api_key_here') {
-                headers['Authorization'] = `Bearer ${this.apiKey}`;
-            }
+            // Using free API - no authentication required
+            // Note: Free API has rate limits but works without API key
 
             const params = {
                 signature,
@@ -75,9 +74,8 @@ class SolscanPaymentTracker {
                 'Content-Type': 'application/json'
             };
             
-            if (this.apiKey && this.apiKey !== 'your_solscan_api_key_here') {
-                headers['Authorization'] = `Bearer ${this.apiKey}`;
-            }
+            // Using free API - no authentication required
+            // Note: Free API has rate limits but works without API key
 
             const params = {
                 address: this.paymentSigner,
