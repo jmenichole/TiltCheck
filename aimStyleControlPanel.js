@@ -52,6 +52,16 @@ class AIMStyleControlPanel {
             eligibilityScores: new Map(),
             reputationScores: new Map()
         };
+
+        // Compliance & Regulatory system
+        this.complianceSystem = {
+            kycVerification: new Map(),
+            amlScreening: new Map(),
+            regulatoryReports: new Map(),
+            provablyFairChains: new Map(),
+            complianceFlags: new Map(),
+            auditTrails: new Map()
+        };
         
         this.initializeSystem();
     }
@@ -70,6 +80,9 @@ class AIMStyleControlPanel {
         
         // Initialize rewards system
         await this.setupRewardsSystem();
+        
+        // Initialize compliance system
+        await this.setupComplianceSystem();
         
         console.log('✅ AIM-Style Control Panel initialized successfully!');
     }
