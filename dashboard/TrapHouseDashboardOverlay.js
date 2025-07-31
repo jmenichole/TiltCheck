@@ -87,11 +87,17 @@ class TrapHouseDashboardOverlay {
                 balance: 156.73,
                 todayTips: 3,
                 todayTipAmount: 15.50,
-                mindfulSpending: {
+                smartSpending: {
                     enabled: true,
-                    pauseBeforeSpend: 5, // seconds
-                    reflectionPrompts: true
-                }
+                    pauseBeforeYolo: 10, // seconds to think about your life
+                    interventionThreshold: 50, // Dollar amount that triggers "are you sure?"
+                    lastMinuteClarity: true // That moment of "wait, what am I doing?"
+                },
+                historicalFuckUps: [
+                    { amount: 500, reason: "Thought I was Neo", date: "2024-01-15" },
+                    { amount: 200, reason: "Revenge trading like an idiot", date: "2024-02-03" },
+                    { amount: 75, reason: "Drunk at 3AM", date: "2024-02-28" }
+                ]
             },
             verification: {
                 score: 92,
