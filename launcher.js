@@ -1,72 +1,138 @@
 require('dotenv').config();
 
-// Theme Selection Script
-// Choose which version of your bot to run
+// Multi-Bot Configuration and Launcher
+// Updated to handle TrapHouse, JustTheTip, and Degens bots
 
-const themes = {
+const BOTS = {
     traphouse: {
-        name: 'TrapHouse Discord Bot',
-        description: 'Street-themed marketplace with respect system and Degens Against Decency card game',
+        name: 'TrapHouse Bot',
+        description: 'Full-featured bot with loans, respect system, and marketplace',
+        token: process.env.DISCORD_BOT_TOKEN,
         file: './index.js',
-        emoji: '🏠'
-    },
-    tiltcheck: {
-        name: 'Tilt Check Casino Bot',
-        description: 'Poker/gambling-themed with tilt management and emotional control features',
-        file: './tiltCheckBot.js',
-        emoji: '🎰'
+        emoji: '🏠',
+        features: ['loans', 'respect', 'marketplace', 'cards'],
+        channels: {
+            general: process.env.GENERAL_CHANNEL_ID,
+            payment: process.env.PAYMENT_CHANNEL_ID,
+            logs: process.env.LOG_CHANNEL_ID
+        }
     },
     justthetip: {
-        name: 'JustTheTip Smart Crypto Assistant',
-        description: 'Enhanced TrapHouse with smart crypto tipping, vault suggestions, and accountability buddy system',
+        name: 'JustTheTip Bot',
+        description: 'Smart crypto assistant with TiltCheck, CollectClock, and loan functionality',
+        token: process.env.JUSTTHETIP_BOT_TOKEN,
         file: './index.js',
-        emoji: '💡'
+        emoji: '💡',
+        features: ['crypto', 'tiltcheck', 'collectclock', 'loans'],
+        channels: {
+            general: process.env.GENERAL_CHANNEL_ID,
+            loans: process.env.JUSTTHETIP_LOAN_CHANNEL_ID,
+            logs: process.env.LOG_CHANNEL_ID
+        },
+        webhook: process.env.JUSTTHETIP_WEBHOOK_URL
+    },
+    degens: {
+        name: 'Degens Bot',
+        description: 'Card game focused bot with crypto and TiltCheck support',
+        token: process.env.DEGENS_BOT_TOKEN,
+        file: './index.js',
+        emoji: '🎮',
+        features: ['cards', 'crypto', 'tiltcheck'],
+        channels: {
+            general: process.env.GENERAL_CHANNEL_ID,
+            logs: process.env.LOG_CHANNEL_ID
+        }
     }
 };
 
-function showThemeSelection() {
-    console.log('\n🎮 ═══════════════════════════════════════════════════════════════');
-    console.log('   BOT THEME SELECTOR - Choose Your Discord Bot Experience');
+function showBotSelection() {
+    console.log('\n🤖 ═══════════════════════════════════════════════════════════════');
+    console.log('   TRAPHOUSE MULTI-BOT LAUNCHER - Choose Your Bot');
     console.log('═══════════════════════════════════════════════════════════════\n');
     
-    Object.entries(themes).forEach(([key, theme], index) => {
-        console.log(`${index + 1}. ${theme.emoji} ${theme.name}`);
-        console.log(`   ${theme.description}\n`);
+    Object.entries(BOTS).forEach(([key, bot], index) => {
+        const hasToken = bot.token ? '✅' : '❌';
+        console.log(`${index + 1}. ${bot.emoji} ${bot.name} ${hasToken}`);
+        console.log(`   ${bot.description}`);
+        console.log(`   Features: ${bot.features.join(', ')}`);
+        if (bot.webhook) {
+            console.log(`   🔗 Webhook: Configured`);
+        }
+        console.log('');
     });
     
+    console.log('💡 Recommended: JustTheTip Bot for crypto + loan functionality');
+    console.log('');
     console.log('Available Commands:');
-    console.log('• node launcher.js traphouse   - Run TrapHouse theme');
-    console.log('• node launcher.js tiltcheck   - Run Tilt Check theme');
-    console.log('• node launcher.js justthetip  - Run JustTheTip integration (recommended!)');
+    console.log('• node launcher.js traphouse   - Run TrapHouse Bot (loans + respect)');
+    console.log('• node launcher.js justthetip  - Run JustTheTip Bot (crypto + loans + tiltcheck)');
+    console.log('• node launcher.js degens      - Run Degens Bot (cards + crypto)');
     console.log('• node launcher.js             - Show this menu\n');
 }
 
-function launchTheme(themeName) {
-    const theme = themes[themeName];
+function launchBot(botName) {
+    const bot = BOTS[botName];
     
-    if (!theme) {
-        console.log('❌ Invalid theme! Available themes: traphouse, tiltcheck, justthetip');
-        showThemeSelection();
+    if (!bot) {
+        console.log(`❌ Invalid bot! Available bots: ${Object.keys(BOTS).join(', ')}`);
+        showBotSelection();
         return;
     }
+
+    if (!bot.token) {
+        console.error(`❌ No token configured for ${bot.name}`);
+        console.log('Please check your .env file for the required bot token.');
+        return;
+    }
+
+    console.log(`\n🚀 Launching ${bot.emoji} ${bot.name}...`);
+    console.log(`📂 Features: ${bot.features.join(', ')}`);
     
-    console.log(`\n🚀 Launching ${theme.emoji} ${theme.name}...`);
-    console.log(`📝 ${theme.description}\n`);
+    if (bot.webhook) {
+        console.log(`🔗 Webhook: Configured`);
+    }
     
+    console.log(`� Running: ${bot.file}`);
+    console.log('══════════════════════════════════════════════════\n');
+
+    // Set environment variables for the selected bot
+    process.env.CURRENT_BOT = botName.toUpperCase();
+    process.env.BOT_NAME = bot.name;
+    process.env.BOT_FEATURES = bot.features.join(',');
+    
+    // Set the appropriate Discord token and features
+    if (botName === 'justthetip') {
+        process.env.DISCORD_BOT_TOKEN = bot.token;
+        process.env.ENABLE_LOANS_JUSTTHETIP = 'true';
+        process.env.ENABLE_LOANS_TRAPHOUSE = 'false';
+        console.log('💡 JustTheTip Bot: Crypto + Loans + TiltCheck enabled');
+        console.log(`� Loan Channel: ${bot.channels.loans}`);
+    } else if (botName === 'traphouse') {
+        process.env.DISCORD_BOT_TOKEN = bot.token;
+        process.env.ENABLE_LOANS_TRAPHOUSE = 'true';
+        process.env.ENABLE_LOANS_JUSTTHETIP = 'false';
+        console.log('🏠 TrapHouse Bot: Full features + Loans + Respect enabled');
+    } else if (botName === 'degens') {
+        process.env.DISCORD_BOT_TOKEN = bot.token;
+        process.env.ENABLE_LOANS_TRAPHOUSE = 'false';
+        process.env.ENABLE_LOANS_JUSTTHETIP = 'false';
+        console.log('🎮 Degens Bot: Cards + Crypto + TiltCheck enabled');
+    }
+
     try {
-        require(theme.file);
+        require(bot.file);
     } catch (error) {
-        console.error(`❌ Failed to launch ${theme.name}:`, error.message);
+        console.error(`❌ Failed to launch ${bot.name}:`, error.message);
     }
 }
 
 // Main execution
-const selectedTheme = process.argv[2];
+const selectedBot = process.argv[2];
 
-if (selectedTheme) {
-    launchTheme(selectedTheme);
+if (selectedBot && BOTS[selectedBot]) {
+    launchBot(selectedBot);
 } else {
-    showThemeSelection();
+    showBotSelection();
 }
 
-module.exports = { themes, launchTheme };
+module.exports = { BOTS, launchBot };

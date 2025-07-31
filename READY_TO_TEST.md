@@ -48,21 +48,30 @@ $history                 # View tip history
 
 ## 🔧 How to Start Testing
 
-### **Step 1: Start Your Bot**
-```bash
-cd /Users/fullsail/Desktop/traphouse_discordbot
-node index.js
+### **CURRENT STATUS: Simplified Bot Running for Testing**
+
+Your bot **TrapHouseBot#5448** is now connected to Discord! 
+
+### **Step 1: Test These Simple Commands First**
+Go to your **BetCollective** Discord server and try:
+
+```
+!ping    # Should respond with "🏓 Pong!"
+!help    # Shows available commands  
+!test    # Simple test message
 ```
 
-### **Step 2: Go to Discord and Test**
-In your Discord server, try:
-1. `!ping` (should respond with pong)
-2. `$solusdc add 100` (adds test SOLUSDC)
-3. `$solusdc balance` (shows your balance)
+### **Step 2: Verify Bot Permissions**
+Make sure your bot has these permissions in your Discord server:
+- ✅ View Channels
+- ✅ Send Messages  
+- ✅ Read Message History
+- ✅ Use External Emojis
+- ✅ Embed Links
 
-### **Step 3: Test Tipping**
-1. `$solusdc send @someone 10` (send to another user)
-2. `$tip @someone 5 SOLUSDC` (alternative tip method)
+### **Step 3: Check Bot Role Position**
+- The bot role should be **above** regular user roles
+- Check Server Settings → Roles → Move TrapHouseBot role higher
 
 ## 🛠️ Your Generated Solana Wallet
 
