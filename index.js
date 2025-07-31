@@ -265,7 +265,8 @@ const client = new Client({
 const githubIntegration = new GitHubIntegration(client);
 
 client.once('ready', async () => {
-    console.log('🏠 TrapHouse bot is online! Welcome to the streets! 💯');
+    const botName = process.env.CURRENT_BOT === 'JUSTTHETIP' ? 'JustTheTip' : 'TrapHouse';
+    console.log(`🏠 ${botName} bot is online! Welcome to the streets! 💯`);
     console.log('🐙 GitHub Integration initialized!');
     console.log('💧 CollectClock Integration ready!');
     console.log('🎰 TiltCheck Mischief Manager loaded!');
@@ -277,6 +278,23 @@ client.once('ready', async () => {
     // Initialize payment manager with client
     paymentManager = new PaymentManager(client);
     console.log('💳 Payment Manager initialized - Crypto & Fiat support ready!');
+    
+    // Initialize Solscan payment tracking for JustTheTip bot
+    if (solscanTracker && (process.env.CURRENT_BOT === 'JUSTTHETIP' || process.env.ENABLE_SOLSCAN_TRACKING === 'true')) {
+        console.log('💡 Starting Solscan payment monitoring for JustTheTip...');
+        
+        // Start monitoring payments
+        solscanTracker.startPaymentMonitoring((paymentData) => {
+            console.log('💰 New payment detected:', paymentData.transaction.signature);
+            
+            // Handle loan payments specifically
+            if (paymentData.loanData) {
+                handleLoanPayment(paymentData, client);
+            }
+        });
+        
+        console.log('🔍 Solscan payment tracker active');
+    }
     
     // Connect integrations to TrapHouse for cross-platform features
     collectClock.setTrapHouseBot(client);
