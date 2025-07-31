@@ -1,4 +1,3 @@
-// File: /Users/fullsail/Desktop/traphouse_discordbot/webapp/app/justthetip/page.tsx
 import * as entry from '../../../../app/justthetip/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
@@ -45,15 +44,21 @@ if ('generateStaticParams' in entry) {
   checkFields<Diff<{ __tag__: 'generateStaticParams', __return_type__: any[] | Promise<any[]> }, { __tag__: 'generateStaticParams', __return_type__: ReturnType<MaybeField<TEntry, 'generateStaticParams'>> }>>()
 }
 
-type PageParams = any
+interface PageParams {
+  // Define expected properties for your page params here
+  // For example:
+  // id: string;
+  // slug?: string;
+}
+
 export interface PageProps {
-  params?: any
-  searchParams?: any
+  params?: PageParams
+  searchParams?: Record<string, string | string[] | undefined>
 }
 export interface LayoutProps {
   children?: React.ReactNode
 
-  params?: any
+  params?: PageParams
 }
 
 // =============

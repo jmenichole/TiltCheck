@@ -1,4 +1,3 @@
-// File: /Users/fullsail/Desktop/traphouse_discordbot/webapp/app/api/health/route.ts
 import * as entry from '../../../../../app/api/health/route.js'
 import type { NextRequest } from 'next/server.js'
 
@@ -305,15 +304,21 @@ if ('generateStaticParams' in entry) {
   checkFields<Diff<{ __tag__: 'generateStaticParams', __return_type__: any[] | Promise<any[]> }, { __tag__: 'generateStaticParams', __return_type__: ReturnType<MaybeField<TEntry, 'generateStaticParams'>> }>>()
 }
 
-type PageParams = any
+interface PageParams {
+  // Define the expected properties for your page parameters here
+  // Example:
+  // id?: string;
+  // slug?: string;
+}
+
 export interface PageProps {
-  params?: any
-  searchParams?: any
+  params?: PageParams
+  searchParams?: Record<string, string | string[] | undefined>
 }
 export interface LayoutProps {
   children?: React.ReactNode
 
-  params?: any
+  params?: PageParams
 }
 
 // =============
