@@ -19,11 +19,27 @@ class TrapHouseDashboardOverlay {
         this.tray = null;
         this.isOverlayVisible = true;
         this.dashboardData = {
-            user: null,
-            tiltCheck: null,
-            wallet: null,
-            verification: null,
-            notifications: []
+            user: { trustLevel: 'Elite Degen 👑', username: 'User' },
+            tiltCheck: {
+                currentRisk: 'low',
+                sessionTime: 45,
+                todayLosses: 23.50,
+                limits: { daily: 100 }
+            },
+            wallet: {
+                balance: 156.73,
+                todayTips: 3,
+                todayTipAmount: 15.50
+            },
+            verification: {
+                score: 92,
+                verified: true
+            },
+            notifications: [
+                { title: 'Tip Received', message: 'Got $5.00 from @DegenerateGambler', severity: 'success' },
+                { title: 'Risk Warning', message: 'Session time approaching limit', severity: 'warning' }
+            ],
+            lastUpdated: new Date().toISOString()
         };
         
         this.initializeApp();
@@ -45,8 +61,348 @@ class TrapHouseDashboardOverlay {
         // Set up global shortcuts
         this.setupGlobalShortcuts();
         
+        // Set up IPC handlers
+        this.setupIPCHandlers();
+        
         // Start data polling
         this.startDataPolling();
+        
+        // Handle app events
+        app.on('window-all-closed', () => {
+            // Keep running in system tray
+        });
+
+        app.on('activate', () => {
+            if (this.mainWindow === null) {
+                this.createMainWindow();
+            }
+        });
+    }
+
+    createSystemTray() {
+        // Create tray icon
+        const iconPath = path.join(__dirname, 'assets', 'tray-icon.png');
+        
+        // Fallback to text icon if image not found
+        let trayIcon;
+        if (fs.existsSync(iconPath)) {
+            trayIcon = nativeImage.createFromPath(iconPath);
+        } else {
+            // Create a simple text-based icon
+            trayIcon = nativeImage.createFromDataURL('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==');
+        }
+
+        this.tray = new Tray(trayIcon);
+        this.tray.setToolTip('TrapHouse Dashboard Overlay');
+
+        // Create context menu
+        const contextMenu = Menu.buildFromTemplate([
+            {
+                label: 'Show Overlay',
+                type: 'checkbox',
+                checked: this.isOverlayVisible,
+                click: () => this.toggleOverlay()
+            },
+            {
+                label: 'Show Dashboard',
+                click: () => this.showMainWindow()
+            },
+            { type: 'separator' },
+            {
+                label: 'TiltCheck Quick View',
+                click: () => this.showQuickPanel('tiltcheck')
+            },
+            {
+                label: 'Wallet Balance',
+                click: () => this.showQuickPanel('wallet')
+            },
+            { type: 'separator' },
+            {
+                label: 'Settings',
+                click: () => this.showSettings()
+            },
+            {
+                label: 'Exit',
+                click: () => app.quit()
+            }
+        ]);
+
+        this.tray.setContextMenu(contextMenu);
+        this.tray.on('click', () => {
+            this.toggleOverlay();
+        });
+    }
+
+    createMainWindow() {
+        this.mainWindow = new BrowserWindow({
+            width: 1200,
+            height: 800,
+            show: false,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+                webSecurity: false
+            },
+            icon: path.join(__dirname, 'assets', 'icon.png'),
+            title: 'TrapHouse Dashboard'
+        });
+
+        // Load main dashboard (would load actual dashboard HTML)
+        this.mainWindow.loadFile(path.join(__dirname, 'main-dashboard.html')).catch(() => {
+            // Fallback to a simple HTML page
+            this.mainWindow.loadURL('data:text/html,<h1>TrapHouse Dashboard</h1><p>Main dashboard interface coming soon...</p>');
+        });
+
+        this.mainWindow.on('closed', () => {
+            this.mainWindow = null;
+        });
+
+        this.mainWindow.on('minimize', () => {
+            this.mainWindow.hide();
+        });
+    }
+
+    createOverlayWindow() {
+        const primaryDisplay = screen.getPrimaryDisplay();
+        const { width, height } = primaryDisplay.workAreaSize;
+
+        this.overlayWindow = new BrowserWindow({
+            width: 320,
+            height: 480,
+            x: width - 340,
+            y: 20,
+            frame: false,
+            alwaysOnTop: true,
+            skipTaskbar: true,
+            resizable: false,
+            transparent: true,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+                webSecurity: false
+            },
+            type: process.platform === 'darwin' ? 'panel' : 'toolbar'
+        });
+
+        // Load overlay HTML
+        this.overlayWindow.loadFile(path.join(__dirname, 'overlay.html'));
+
+        this.overlayWindow.setIgnoreMouseEvents(false);
+        this.overlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+        // Handle window events
+        this.overlayWindow.on('closed', () => {
+            this.overlayWindow = null;
+            this.isOverlayVisible = false;
+        });
+
+        // Send initial data to overlay
+        this.overlayWindow.webContents.once('did-finish-load', () => {
+            this.sendDataToOverlay();
+        });
+    }
+
+    setupGlobalShortcuts() {
+        // Register global shortcuts
+        globalShortcut.register('CommandOrControl+Shift+T', () => {
+            this.toggleOverlay();
+        });
+
+        globalShortcut.register('CommandOrControl+Shift+D', () => {
+            this.showMainWindow();
+        });
+
+        globalShortcut.register('CommandOrControl+Shift+Q', () => {
+            this.showQuickPanel('tiltcheck');
+        });
+
+        globalShortcut.register('CommandOrControl+Shift+W', () => {
+            this.showQuickPanel('wallet');
+        });
+    }
+
+    setupIPCHandlers() {
+        // Handle overlay visibility toggle
+        ipcMain.handle('toggle-overlay-visibility', () => {
+            this.toggleOverlay();
+        });
+
+        // Handle overlay interaction toggle
+        ipcMain.handle('toggle-overlay-interaction', (event, enabled) => {
+            if (this.overlayWindow) {
+                this.overlayWindow.setIgnoreMouseEvents(!enabled);
+                return enabled;
+            }
+            return false;
+        });
+
+        // Handle tip sending
+        ipcMain.handle('send-tip', async (event, tipData) => {
+            try {
+                // Simulate tip sending (would integrate with actual JustTheTip API)
+                console.log('Sending tip:', tipData);
+                
+                // Update wallet balance
+                this.dashboardData.wallet.balance -= tipData.amount;
+                this.dashboardData.wallet.todayTips += 1;
+                this.dashboardData.wallet.todayTipAmount += tipData.amount;
+                
+                // Add notification
+                this.dashboardData.notifications.unshift({
+                    title: 'Tip Sent',
+                    message: `Sent $${tipData.amount} to ${tipData.toUser}`,
+                    severity: 'success'
+                });
+
+                // Update overlay
+                this.sendDataToOverlay();
+
+                return { success: true };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        });
+
+        // Handle main window show request
+        ipcMain.on('show-main-window', () => {
+            this.showMainWindow();
+        });
+    }
+
+    startDataPolling() {
+        // Simulate real-time data updates
+        setInterval(() => {
+            this.updateDashboardData();
+        }, 30000); // Update every 30 seconds
+
+        // More frequent updates for critical data
+        setInterval(() => {
+            this.updateCriticalData();
+        }, 5000); // Update every 5 seconds
+    }
+
+    updateDashboardData() {
+        // Simulate data changes
+        this.dashboardData.tiltCheck.sessionTime += 1;
+        
+        // Random small balance changes
+        if (Math.random() > 0.7) {
+            const change = (Math.random() - 0.5) * 10;
+            this.dashboardData.wallet.balance += change;
+        }
+
+        // Update timestamp
+        this.dashboardData.lastUpdated = new Date().toISOString();
+
+        // Send updated data to overlay
+        this.sendDataToOverlay();
+    }
+
+    updateCriticalData() {
+        // Update TiltCheck risk assessment
+        const risks = ['low', 'medium', 'high'];
+        const currentTime = this.dashboardData.tiltCheck.sessionTime;
+        
+        if (currentTime > 120) {
+            this.dashboardData.tiltCheck.currentRisk = 'high';
+        } else if (currentTime > 60) {
+            this.dashboardData.tiltCheck.currentRisk = 'medium';
+        } else {
+            this.dashboardData.tiltCheck.currentRisk = 'low';
+        }
+
+        // Check for risk warnings
+        if (this.dashboardData.tiltCheck.currentRisk === 'high') {
+            const hasWarning = this.dashboardData.notifications.some(n => 
+                n.title === 'High Risk Warning');
+            
+            if (!hasWarning) {
+                this.dashboardData.notifications.unshift({
+                    title: 'High Risk Warning',
+                    message: 'Consider taking a break. Session time is high.',
+                    severity: 'danger'
+                });
+            }
+        }
+
+        // Limit notifications to last 5
+        this.dashboardData.notifications = this.dashboardData.notifications.slice(0, 5);
+    }
+
+    sendDataToOverlay() {
+        if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
+            this.overlayWindow.webContents.send('overlay-data-update', this.dashboardData);
+        }
+    }
+
+    toggleOverlay() {
+        if (this.overlayWindow) {
+            if (this.isOverlayVisible) {
+                this.overlayWindow.hide();
+            } else {
+                this.overlayWindow.show();
+            }
+            this.isOverlayVisible = !this.isOverlayVisible;
+        } else {
+            this.createOverlayWindow();
+            this.isOverlayVisible = true;
+        }
+
+        // Update tray menu
+        if (this.tray) {
+            const menu = this.tray.getContextMenu();
+            menu.items[0].checked = this.isOverlayVisible;
+            this.tray.setContextMenu(menu);
+        }
+    }
+
+    showMainWindow() {
+        if (this.mainWindow) {
+            this.mainWindow.show();
+            this.mainWindow.focus();
+        } else {
+            this.createMainWindow();
+        }
+    }
+
+    showQuickPanel(panelType) {
+        if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
+            this.overlayWindow.show();
+            this.overlayWindow.webContents.send('show-quick-panel', panelType);
+            this.isOverlayVisible = true;
+        }
+    }
+
+    showSettings() {
+        // Create settings window
+        const settingsWindow = new BrowserWindow({
+            width: 600,
+            height: 400,
+            parent: this.mainWindow,
+            modal: true,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false
+            }
+        });
+
+        settingsWindow.loadURL('data:text/html,<h1>Settings</h1><p>Settings interface coming soon...</p>');
+    }
+}
+
+// Initialize the application
+let dashboardApp;
+
+app.whenReady().then(() => {
+    dashboardApp = new TrapHouseDashboardOverlay();
+});
+
+// Handle app quit
+app.on('before-quit', () => {
+    globalShortcut.unregisterAll();
+});
+
+module.exports = TrapHouseDashboardOverlay;
         
         console.log('🎮 TrapHouse Dashboard Overlay initialized');
     }
