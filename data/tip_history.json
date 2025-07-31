@@ -1,0 +1,13 @@
+{
+  "tip_1753973379130_test": {
+    "id": "tip_1753973379130_test",
+    "fromUserId": "123456789",
+    "fromUsername": "Alice",
+    "toUserId": "987654321",
+    "toUsername": "Bob",
+    "amount": 25,
+    "chain": "SOLUSDC",
+    "status": "completed",
+    "timestamp": "2025-07-31T14:49:39.130Z"
+  }
+}

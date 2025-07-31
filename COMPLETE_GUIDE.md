@@ -8,6 +8,7 @@ The TrapHouse Discord Bot combines a sophisticated respect/ranking system with T
 ### Earning Respect Points
 - **!work command**: 15 points
 - **#showoff-your-hits posts**: 50 points
+- **#busted-and-disgusted posts**: 75 points
 - **🔥 reactions received**: 10 points  
 - **!respect @user**: 100 points (1 hour cooldown)
 - **Job completion**: 25 points (varies)
@@ -120,8 +121,9 @@ $tip @admin 38
 ### Respect Earning Strategies
 1. **Daily Grinding**: Use `!work` for steady 15 points
 2. **Content Creation**: Post in #showoff-your-hits for 50 points
-3. **Community Engagement**: Get 🔥 reactions for 10 points each
-4. **Social Building**: Give respect to others for networking
+3. **Premium Content**: Post in #busted-and-disgusted for 75 points  
+4. **Community Engagement**: Get 🔥 reactions for 10 points each
+5. **Social Building**: Give respect to others for networking
 
 ### Trust Building
 1. **Start Small**: Request minimum amounts first

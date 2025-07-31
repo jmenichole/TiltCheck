@@ -27,7 +27,8 @@
       { "name": "tip.cc", "type": "text" }
     ]},
     { "category": "The stove", "channels": [
-      { "name": "showoff-your-hits", "type": "text" }
+      { "name": "showoff-your-hits", "type": "text" },
+      { "name": "busted-and-disgusted", "type": "text" }
     ]},
     { "category": "The basement", "channels": [
       { "name": "show-your-current-activity", "type": "text" }

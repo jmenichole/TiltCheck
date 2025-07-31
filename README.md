@@ -98,6 +98,7 @@ This ecosystem exists because the creator has been through gambling addiction, f
 
 ## 💯 Earn Respect
 • Post in #showoff-your-hits (+50)
+• Post in #busted-and-disgusted (+75)
 • Get 🔥 reactions (+10)
 • Complete jobs (varies)
 • Get respected by others (+100)

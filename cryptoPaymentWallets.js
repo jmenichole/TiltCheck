@@ -221,7 +221,7 @@ class SecureCryptoPaymentWallets {
         const key = crypto.scryptSync(process.env.WALLET_ENCRYPTION_KEY || 'default-key', 'salt', 32);
         const iv = crypto.randomBytes(16);
         
-        const cipher = crypto.createCipher(algorithm, key);
+        const cipher = crypto.createCipheriv(algorithm, key, iv);
         cipher.setAAD(Buffer.from('wallet-encryption', 'utf8'));
         
         let encrypted = cipher.update(privateKey, 'utf8', 'hex');
@@ -241,7 +241,7 @@ class SecureCryptoPaymentWallets {
         const algorithm = 'aes-256-gcm';
         const key = crypto.scryptSync(process.env.WALLET_ENCRYPTION_KEY || 'default-key', 'salt', 32);
         
-        const decipher = crypto.createDecipher(algorithm, key);
+        const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(encryptedData.iv, 'hex'));
         decipher.setAAD(Buffer.from('wallet-encryption', 'utf8'));
         decipher.setAuthTag(Buffer.from(encryptedData.authTag, 'hex'));
         

@@ -4,6 +4,7 @@ const fs = require('fs');
 // Respect point values
 const RESPECT_VALUES = {
     SHOWOFF_POST: 50,
+    BUSTED_POST: 75, // Higher points for busted-and-disgusted posts
     FIRE_REACTION: 10,
     JOB_COMPLETE: 25, // varies by job
     RESPECT_GIVEN: 100,
@@ -90,9 +91,20 @@ async function handleRespectCommand(message, args) {
     message.reply(`💯 You gave ${mentionedUser.username} respect! They now have ${userData.respect || 0} respect points (${newRank.rank})`);
 }
 
+async function handleChannelPost(message) {
+    // Called when someone posts in specific channels for respect
+    const channelName = message.channel.name;
+    
+    if (channelName === 'showoff-your-hits') {
+        await addRespectPoints(message, RESPECT_VALUES.SHOWOFF_POST, 'showoff post');
+    } else if (channelName === 'busted-and-disgusted') {
+        await addRespectPoints(message, RESPECT_VALUES.BUSTED_POST, 'busted post');
+    }
+}
+
 async function handleShowoffPost(message) {
-    // Called when someone posts in #showoff-your-hits
-    await addRespectPoints(message, RESPECT_VALUES.SHOWOFF_POST, 'showoff post');
+    // Called when someone posts in #showoff-your-hits (legacy function - redirects to handleChannelPost)
+    await handleChannelPost(message);
 }
 
 async function handleFireReaction(message, user) {
@@ -124,6 +136,7 @@ module.exports = {
     addRespectPoints, 
     handleRespectCommand,
     handleShowoffPost,
+    handleChannelPost,
     handleFireReaction,
     getRankFromRespect,
     getLoanCapFromRespect,

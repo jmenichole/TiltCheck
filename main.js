@@ -8,13 +8,15 @@ const botFeatures = require('./config/botFeatures');
 const tiltCheckHelp = require('./tiltCheckHelp');
 const CryptoWalletManager = require('./cryptoWalletManager');
 const RegulatoryComplianceHelper = require('./regulatoryComplianceHelper');
+const CryptoTipManager = require('./cryptoTipManager');
+const CryptoTipAdmin = require('./cryptoTipAdmin');
 
 // Set process encoding for unicode support
 process.env.NODE_OPTIONS = '--max-old-space-size=4096';
 
 // Import existing modules
 const roleManager = require('./roleManager');
-const { addRespectPoints, handleRespectCommand, handleShowoffPost, handleFireReaction } = require('./respectManager');
+const { addRespectPoints, handleRespectCommand, handleShowoffPost, handleChannelPost, handleFireReaction } = require('./respectManager');
 const loanManager = require('./loanManager');
 const { handleFrontCommand } = require('./front');
 const { handleAdminFrontCommand } = require('./admin_front');
@@ -26,6 +28,8 @@ let enhancedTiltCheckIntegration = null;
 let degensCardGame = null;
 let cryptoWalletManager = null;
 let regulatoryHelper = null;
+let cryptoTipManager = null;
+let cryptoTipAdmin = null;
 
 // Load integrations based on bot configuration
 try {
@@ -51,6 +55,11 @@ try {
         cryptoWalletManager = new CryptoWalletManager();
         console.log('✅ Secure Crypto Wallet System loaded');
     }
+
+    // Initialize crypto tip manager (no API required)
+    cryptoTipManager = new CryptoTipManager();
+    cryptoTipAdmin = new CryptoTipAdmin(cryptoTipManager);
+    console.log('✅ Crypto Tip Manager loaded (no external APIs)');
 
     // Initialize regulatory compliance helper
     if (process.env.COMPLIANCE_REPORTING_ENABLED === 'true') {
@@ -174,9 +183,9 @@ client.on('messageCreate', async (message) => {
             guild: message.guild?.name || 'DM'
         });
 
-        // Handle posts in #showoff-your-hits for respect
-        if (message.channel.name === 'showoff-your-hits') {
-            await handleShowoffPost(message);
+        // Handle posts in specific channels for respect
+        if (message.channel.name === 'showoff-your-hits' || message.channel.name === 'busted-and-disgusted') {
+            await handleChannelPost(message);
             return;
         }
 
@@ -184,7 +193,78 @@ client.on('messageCreate', async (message) => {
         const command = args.shift().toLowerCase();
 
     // Handle all commands
-    if (command === '!street' || command === '!streetname') {
+    if (command === '!help') {
+        const embed = {
+            color: 0x00ff00,
+            title: '🏠 TrapHouse Bot Commands',
+            description: 'Here are all the available commands:',
+            fields: [
+                {
+                    name: '💰 Loan System',
+                    value: '`!front trust` - Check loan eligibility\n`!front [amount]` - Request loan\n`!repay [amount]` - Repay loan\n`!loans` - View active loans',
+                    inline: false
+                },
+                {
+                    name: '🎯 Respect & Ranking',
+                    value: '`!work` - Earn respect points\n`!respect` - Check your respect\n`!street` - Get rank roles\n`!leaderboard` - View rankings\n\n**Channel Bonuses:**\n#showoff-your-hits: +50 points\n#busted-and-disgusted: +75 points',
+                    inline: false
+                },
+                {
+                    name: '🔍 TiltCheck & Verification',
+                    value: '`!tiltcheck help` - TiltCheck guide\n`!tiltcheck verify` - Start verification\n`!tiltcheck status` - Check status',
+                    inline: false
+                },
+                {
+                    name: '💳 Crypto Wallets',
+                    value: '`!crypto-help` - Crypto wallet guide\n`!crypto-status` - Wallet status\n`!crypto-chains` - Supported blockchains',
+                    inline: false
+                },
+                {
+                    name: '💰 Crypto Tipping (No API)',
+                    value: '`$tip @user amount [chain]` - Send crypto tip\n`$balance` - Check crypto balances\n`$history` - View tip history\n`$solusdc` - SOLUSDC testing commands\n*Direct crypto transfers - no external services*',
+                    inline: false
+                },
+                {
+                    name: '🎮 Degens Card Game',
+                    value: '`!degens start` - Start card game\n`!degens help` - Game instructions\n`!dad joke` - Get a dad joke',
+                    inline: false
+                },
+                {
+                    name: '🏛️ Regulatory Compliance',
+                    value: '`!compliance help` - Compliance guide\n`!unban-state [state]` - State unban info\n`!state-analysis` - State analysis',
+                    inline: false
+                }
+            ],
+            footer: {
+                text: '🚀 TrapHouse Bot - Your complete Discord finance companion'
+            }
+        };
+        return message.reply({ embeds: [embed] });
+    } else if (command === '!commands') {
+        return message.reply('📋 Use `!help` to see all available commands with descriptions!');
+    } else if (command === '!about') {
+        const embed = {
+            color: 0x0099ff,
+            title: '🏠 About TrapHouse Bot',
+            description: 'A comprehensive Discord bot for loans, crypto wallets, gaming, and compliance.',
+            fields: [
+                {
+                    name: '🎯 Features',
+                    value: '• Loan System with Trust Scoring\n• Multi-Chain Crypto Wallets\n• TiltCheck Verification\n• Degens Card Gaming\n• Regulatory Compliance\n• Respect Point System',
+                    inline: false
+                },
+                {
+                    name: '🔧 Status',
+                    value: '✅ Online & Operational\n✅ All Systems Active\n✅ Production Ready',
+                    inline: false
+                }
+            ],
+            footer: {
+                text: '🚀 Built with Discord.js • Enhanced with blockchain integration'
+            }
+        };
+        return message.reply({ embeds: [embed] });
+    } else if (command === '!street' || command === '!streetname') {
         await roleManager.assignRole(message);
     } else if (command === '!setup_ranks') {
         // Admin command to create all rank roles
@@ -318,6 +398,43 @@ client.on('messageCreate', async (message) => {
         } catch (error) {
             console.error('Crypto wallet command error:', error);
             await message.reply('❌ An error occurred with the crypto wallet system.');
+        }
+    }
+    
+    // Crypto Tip System commands - No external API required
+    else if (command.startsWith('$tip') || command.startsWith('$balance') || command.startsWith('$history') || command.startsWith('$solusdc')) {
+        if (!cryptoTipManager) {
+            return message.reply('❌ Crypto Tip System not available. Contact admin.');
+        }
+
+        try {
+            if (command.startsWith('$tip')) {
+                await cryptoTipManager.handleTipCommand(message, args);
+            } else if (command.startsWith('$balance')) {
+                await cryptoTipManager.handleBalanceCommand(message, args);
+            } else if (command.startsWith('$history')) {
+                await cryptoTipManager.handleHistoryCommand(message, args);
+            } else if (command.startsWith('$solusdc')) {
+                // Special SOLUSDC testing command
+                await handleSOLUSDCTestCommand(message, args, cryptoTipManager, cryptoTipAdmin);
+            }
+        } catch (error) {
+            console.error('Crypto tip command error:', error);
+            await message.reply('❌ An error occurred with the crypto tip system.');
+        }
+    }
+    
+    // Crypto Tip Admin commands - Admin only
+    else if (command.startsWith('!tip-admin')) {
+        if (!cryptoTipAdmin) {
+            return message.reply('❌ Crypto Tip Admin system not available.');
+        }
+
+        try {
+            await cryptoTipAdmin.handleAdminCommand(message, args);
+        } catch (error) {
+            console.error('Crypto tip admin command error:', error);
+            await message.reply('❌ An error occurred with the tip admin system.');
         }
     }
     
@@ -1270,5 +1387,151 @@ async function handleStateAnalysisCommand(message, args, regulatoryHelper) {
     } catch (error) {
         console.error('Error generating state analysis:', error);
         await message.reply(`❌ Failed to generate state analysis: ${error.message}`);
+    }
+}
+
+// Handle button interactions for crypto tip confirmations
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isButton()) return;
+
+    try {
+        const customId = interaction.customId;
+        
+        // Handle tip confirmations
+        if (customId.startsWith('confirm_tip_')) {
+            const tipId = customId.replace('confirm_tip_', '');
+            if (cryptoTipManager) {
+                await cryptoTipManager.handleTipConfirmation(interaction, tipId);
+            } else {
+                await interaction.reply({ content: '❌ Crypto tip system not available', ephemeral: true });
+            }
+        }
+        // Handle tip cancellations
+        else if (customId.startsWith('cancel_tip_')) {
+            const tipId = customId.replace('cancel_tip_', '');
+            if (cryptoTipManager) {
+                await cryptoTipManager.handleTipCancellation(interaction, tipId);
+            } else {
+                await interaction.reply({ content: '❌ Crypto tip system not available', ephemeral: true });
+            }
+        }
+    } catch (error) {
+        console.error('Error handling interaction:', error);
+        if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ content: '❌ An error occurred processing your request', ephemeral: true });
+        }
+    }
+});
+
+// Handle SOLUSDC test command
+async function handleSOLUSDCTestCommand(message, args, cryptoTipManager, cryptoTipAdmin) {
+    const { EmbedBuilder } = require('discord.js');
+    const subcommand = args[0]?.toLowerCase();
+    const userId = message.author.id;
+    const username = message.author.username;
+
+    try {
+        if (subcommand === 'add') {
+            // Add SOLUSDC for testing - admin only
+            if (!message.member || !message.member.permissions.has('Administrator')) {
+                return message.reply('❌ Only admins can add SOLUSDC test funds!');
+            }
+
+            const amount = parseFloat(args[1]) || 100;
+            await cryptoTipManager.addUserBalance(userId, 'SOLUSDC', amount);
+
+            const embed = new EmbedBuilder()
+                .setTitle('✅ SOLUSDC Test Funds Added')
+                .setDescription(`Added **${amount} SOLUSDC** for testing`)
+                .setColor(0x00FF00)
+                .addFields(
+                    { name: '👤 User', value: username, inline: true },
+                    { name: '💰 Amount', value: `${amount} SOLUSDC`, inline: true },
+                    { name: '🏦 New Balance', value: `${cryptoTipManager.getUserBalance(userId, 'SOLUSDC')} SOLUSDC`, inline: true }
+                )
+                .addFields({
+                    name: '🧪 Test Commands',
+                    value: '`$solusdc send @user amount` - Send SOLUSDC\n`$solusdc balance` - Check SOLUSDC balance\n`$tip @user amount SOLUSDC` - Regular tip with SOLUSDC',
+                    inline: false
+                })
+                .setFooter({ text: 'SOLUSDC testing enabled - Solana USDC simulation' })
+                .setTimestamp();
+
+            await message.reply({ embeds: [embed] });
+
+        } else if (subcommand === 'send') {
+            // Quick send command for SOLUSDC
+            const mentionMatch = args[1]?.match(/<@!?(\d+)>/);
+            if (!mentionMatch) {
+                return message.reply('❌ Usage: `$solusdc send @user amount`');
+            }
+
+            const toUserId = mentionMatch[1];
+            const amount = parseFloat(args[2]) || 10;
+
+            // Use the regular tip system but force SOLUSDC
+            const modifiedArgs = [`<@${toUserId}>`, amount.toString(), 'SOLUSDC'];
+            await cryptoTipManager.handleTipCommand(message, modifiedArgs);
+
+        } else if (subcommand === 'balance') {
+            // Check SOLUSDC balance specifically
+            const balance = cryptoTipManager.getUserBalance(userId, 'SOLUSDC');
+
+            const embed = new EmbedBuilder()
+                .setTitle(`💰 ${username}'s SOLUSDC Balance`)
+                .setDescription(`**${balance.toFixed(6)} SOLUSDC** (~$${(balance * 1.00).toFixed(2)} USD)`)
+                .setColor(0x9945FF)
+                .addFields(
+                    { name: '🪙 Token Type', value: 'Solana USDC (SPL Token)', inline: true },
+                    { name: '⛓️ Network', value: 'Solana Mainnet-Beta', inline: true },
+                    { name: '💵 USD Value', value: `~$${(balance * 1.00).toFixed(2)}`, inline: true }
+                )
+                .addFields({
+                    name: '🚀 Quick Actions',
+                    value: '`$solusdc send @user amount` - Send SOLUSDC\n`$tip @user amount SOLUSDC` - Regular tip\n`$solusdc add amount` - Add test funds (admin)',
+                    inline: false
+                })
+                .setFooter({ text: 'SOLUSDC - Solana USDC for fast, low-cost transfers' })
+                .setTimestamp();
+
+            await message.reply({ embeds: [embed] });
+
+        } else {
+            // Show SOLUSDC help
+            const embed = new EmbedBuilder()
+                .setTitle('🪙 SOLUSDC Testing Commands')
+                .setDescription('Special commands for testing Solana USDC transfers')
+                .setColor(0x9945FF)
+                .addFields(
+                    {
+                        name: '👨‍💼 Admin Commands',
+                        value: '`$solusdc add [amount]` - Add SOLUSDC test funds (default: 100)',
+                        inline: false
+                    },
+                    {
+                        name: '👤 User Commands',
+                        value: '`$solusdc send @user amount` - Quick SOLUSDC send\n`$solusdc balance` - Check SOLUSDC balance\n`$tip @user amount SOLUSDC` - Regular tip with SOLUSDC',
+                        inline: false
+                    },
+                    {
+                        name: '⚡ Why SOLUSDC?',
+                        value: '• **Fast:** 1-2 second confirmations\n• **Cheap:** ~$0.001 transaction fees\n• **Stable:** USDC pegged to $1.00\n• **Reliable:** Built on Solana network',
+                        inline: false
+                    }
+                )
+                .addFields({
+                    name: '🧪 Testing Flow',
+                    value: '1. Admin: `$solusdc add 100`\n2. User: `$solusdc send @friend 10`\n3. Check: `$solusdc balance`',
+                    inline: false
+                })
+                .setFooter({ text: 'SOLUSDC - Perfect for testing fast crypto transfers' })
+                .setTimestamp();
+
+            await message.reply({ embeds: [embed] });
+        }
+
+    } catch (error) {
+        console.error('SOLUSDC command error:', error);
+        await message.reply(`❌ Error with SOLUSDC command: ${error.message}`);
     }
 }

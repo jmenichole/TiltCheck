@@ -113,15 +113,17 @@ async function handleFrontCommand(message, args) {
             console.error('Error processing loan issuance fee:', error);
         }
         
-        // Generate crypto payment instructions for the user
+        // Generate crypto tip instructions for the user
         const tipCommand = `$tip <@${userId}> ${amount}`;
         
         return message.reply(`You been fronted 💸 $${amount}! You got 5 days to bring me back $${repayAmount} (150%).
 
 **💳 PROCESSING FEE:** $3 loan issuance fee will be charged via crypto payment
-**PAYMENT METHOD:** Use crypto wallet to send payment
+**PAYMENT METHOD:** Direct crypto tipping (no external APIs)
 **Admin will send you:** \`${tipCommand}\`
 **You repay with:** \`$tip <@ADMIN_ID> ${repayAmount}\`
+
+*Powered by secure crypto wallets - no tip.cc required!*
 
 Don't make me come lookin' for you... 🔫
 

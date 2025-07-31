@@ -40,6 +40,7 @@ Invite bot to server with these permissions:
 ### 6. Channel Setup
 - [ ] Create `#tony-montanas-fronts` private channel
 - [ ] Create `#showoff-your-hits` channel (50 respect points)
+- [ ] Create `#busted-and-disgusted` channel (75 respect points)
 - [ ] Set proper channel permissions
 - [ ] Test bot access to channels
 
@@ -55,6 +56,7 @@ Invite bot to server with these permissions:
 - [ ] Test `!work` command (15 points)
 - [ ] Test `!respect @user` (100 points, cooldown)
 - [ ] Post in #showoff-your-hits (50 points)
+- [ ] Post in #busted-and-disgusted (75 points)
 - [ ] Test 🔥 reactions (10 points)
 - [ ] Verify rank progression with `!front trust`
 
