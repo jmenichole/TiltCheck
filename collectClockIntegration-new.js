@@ -299,6 +299,9 @@ class CollectClockIntegration {
             case 'wallet':
                 await this.handleWalletCommands(message, args.slice(1));
                 break;
+            case 'compliance':
+                await this.handleComplianceCommands(message, args.slice(1));
+                break;
             default:
                 await this.showCollectionStatus(message);
         }

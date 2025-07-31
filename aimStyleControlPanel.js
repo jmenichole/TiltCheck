@@ -1042,6 +1042,450 @@ class AIMStyleControlPanel {
         // Implementation would log to TiltCheck system
         console.log(`🛡️ TiltCheck Log: ${userId} - ${type} - $${data.amount || 0}`);
     }
+
+    // ===== COMPLIANCE & REGULATORY SYSTEM =====
+
+    /**
+     * Setup compliance and regulatory system
+     */
+    async setupComplianceSystem() {
+        // Initialize regulatory compliance framework
+        this.complianceFramework = {
+            kycProviders: new Map([
+                ['jumio', { apiKey: process.env.JUMIO_API_KEY, enabled: true }],
+                ['onfido', { apiKey: process.env.ONFIDO_API_KEY, enabled: true }],
+                ['sumsub', { apiKey: process.env.SUMSUB_API_KEY, enabled: true }]
+            ]),
+            amlProviders: new Map([
+                ['chainalysis', { apiKey: process.env.CHAINALYSIS_API_KEY, enabled: true }],
+                ['elliptic', { apiKey: process.env.ELLIPTIC_API_KEY, enabled: true }],
+                ['ciphertrace', { apiKey: process.env.CIPHERTRACE_API_KEY, enabled: true }]
+            ]),
+            regulatoryApis: new Map([
+                ['malta', { endpoint: process.env.MALTA_REGULATORY_API, enabled: true }],
+                ['gibraltar', { endpoint: process.env.GIBRALTAR_REGULATORY_API, enabled: true }],
+                ['curacao', { endpoint: process.env.CURACAO_REGULATORY_API, enabled: true }]
+            ])
+        };
+
+        console.log('⚖️ Compliance & Regulatory system initialized');
+    }
+
+    /**
+     * Create provably fair verification entry
+     */
+    async createProvablyFairVerification(userId, verificationType, data) {
+        const verificationId = crypto.randomUUID();
+        const timestamp = Date.now();
+        
+        // Create immutable verification record
+        const verificationRecord = {
+            id: verificationId,
+            userId,
+            type: verificationType,
+            timestamp,
+            data: data,
+            hash: this.createVerificationHash(userId, verificationType, data, timestamp),
+            blockchainTx: null, // Would be actual blockchain transaction in production
+            regulatoryCompliant: true,
+            auditTrail: {
+                created: new Date(),
+                lastVerified: new Date(),
+                verificationCount: 1
+            }
+        };
+
+        this.complianceSystem.provablyFairChains.set(verificationId, verificationRecord);
+
+        // Report to TiltCheck API for regulatory compliance
+        await this.reportToTiltCheckAPI(userId, verificationRecord);
+
+        return verificationId;
+    }
+
+    /**
+     * Generate compliance hash for privacy-preserving verification
+     */
+    generateComplianceHash(data) {
+        const sensitiveData = JSON.stringify(data);
+        return crypto.createHash('sha256').update(sensitiveData).digest('hex');
+    }
+
+    /**
+     * Hash wallet address for privacy
+     */
+    hashWalletAddress(address) {
+        return crypto.createHash('sha256').update(address).digest('hex').substring(0, 16);
+    }
+
+    /**
+     * Create verification hash for provably fair system
+     */
+    createVerificationHash(userId, type, data, timestamp) {
+        const hashInput = `${userId}:${type}:${JSON.stringify(data)}:${timestamp}`;
+        return crypto.createHash('sha256').update(hashInput).digest('hex');
+    }
+
+    /**
+     * Perform KYC/AML verification
+     */
+    async performKYCAMLVerification(userId, walletData) {
+        try {
+            // KYC Verification
+            const kycResult = await this.performKYCVerification(userId, walletData);
+            
+            // AML Screening
+            const amlResult = await this.performAMLScreening(userId, walletData);
+            
+            // Store compliance results
+            this.complianceSystem.kycVerification.set(userId, kycResult);
+            this.complianceSystem.amlScreening.set(userId, amlResult);
+
+            // Update compliance status
+            await this.updateComplianceStatus(userId, 'kyc_aml_verified');
+
+            return { kyc: kycResult, aml: amlResult };
+
+        } catch (error) {
+            await this.logComplianceError(userId, 'kyc_aml_verification', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Perform KYC verification with external providers
+     */
+    async performKYCVerification(userId, walletData) {
+        // Mock KYC verification - would integrate with real providers
+        const kycResult = {
+            status: 'verified',
+            provider: 'jumio',
+            verificationId: crypto.randomUUID(),
+            verifiedAt: new Date(),
+            riskScore: 'low',
+            pepStatus: false,
+            sanctionsCheck: 'clear',
+            documentVerification: 'passed',
+            livenessCheck: 'passed'
+        };
+
+        // Report to regulatory APIs
+        await this.reportKYCToRegulators(userId, kycResult);
+
+        return kycResult;
+    }
+
+    /**
+     * Perform AML screening
+     */
+    async performAMLScreening(userId, walletData) {
+        // Mock AML screening - would integrate with real providers
+        const amlResult = {
+            status: 'clear',
+            provider: 'chainalysis',
+            screeningId: crypto.randomUUID(),
+            screenedAt: new Date(),
+            riskScore: 'low',
+            sanctionsList: 'clear',
+            pepList: 'clear',
+            watchlistHits: 0,
+            addressRisk: 'low',
+            sourceOfFunds: 'verified'
+        };
+
+        // Report to regulatory APIs
+        await this.reportAMLToRegulators(userId, amlResult);
+
+        return amlResult;
+    }
+
+    /**
+     * Update compliance status
+     */
+    async updateComplianceStatus(userId, status) {
+        const currentFlags = this.complianceSystem.complianceFlags.get(userId) || [];
+        currentFlags.push({
+            status,
+            timestamp: new Date(),
+            reportedToRegulators: true
+        });
+        
+        this.complianceSystem.complianceFlags.set(userId, currentFlags);
+
+        // Update TiltCheck with compliance status
+        await this.updateTiltCheckCompliance(userId, status);
+    }
+
+    /**
+     * Perform compliance checks before transaction
+     */
+    async performComplianceChecks(tip) {
+        // Check KYC status
+        const fromKYC = this.complianceSystem.kycVerification.get(tip.from);
+        const toKYC = this.complianceSystem.kycVerification.get(tip.to);
+
+        if (!fromKYC || !toKYC || fromKYC.status !== 'verified' || toKYC.status !== 'verified') {
+            throw new Error('KYC verification required for both parties');
+        }
+
+        // Check AML status
+        const fromAML = this.complianceSystem.amlScreening.get(tip.from);
+        const toAML = this.complianceSystem.amlScreening.get(tip.to);
+
+        if (!fromAML || !toAML || fromAML.status !== 'clear' || toAML.status !== 'clear') {
+            throw new Error('AML screening failed for one or both parties');
+        }
+
+        // Check transaction limits for compliance
+        if (tip.amount > 1000) { // Large transaction threshold
+            await this.reportLargeTransaction(tip);
+        }
+
+        // Check for suspicious patterns
+        await this.checkSuspiciousTransactionPatterns(tip);
+
+        return true;
+    }
+
+    /**
+     * Create compliance audit trail
+     */
+    async createComplianceAuditTrail(tip) {
+        const auditEntry = {
+            transactionId: tip.id,
+            timestamp: new Date(),
+            fromUser: tip.from,
+            toUser: tip.to,
+            amount: tip.amount,
+            currency: tip.currency,
+            complianceChecks: {
+                kycVerified: true,
+                amlCleared: true,
+                tiltCheckPassed: true,
+                regulatoryCompliant: true
+            },
+            regulatoryReports: []
+        };
+
+        this.complianceSystem.auditTrails.set(tip.id, auditEntry);
+
+        // Report to TiltCheck API
+        await this.reportTransactionToTiltCheck(tip, auditEntry);
+
+        return auditEntry;
+    }
+
+    /**
+     * Report to TiltCheck API for regulatory compliance
+     */
+    async reportToTiltCheckAPI(userId, verificationRecord) {
+        try {
+            // Mock API call to TiltCheck regulatory endpoint
+            const reportData = {
+                userId,
+                verificationType: verificationRecord.type,
+                verificationHash: verificationRecord.hash,
+                timestamp: verificationRecord.timestamp,
+                complianceStatus: 'verified',
+                regulatoryCompliant: true,
+                provablyFair: true
+            };
+
+            // In production, this would be an actual API call
+            console.log(`📊 TiltCheck Regulatory Report: ${JSON.stringify(reportData)}`);
+
+            // Store the report
+            const reports = this.complianceSystem.regulatoryReports.get(userId) || [];
+            reports.push({
+                type: 'verification_report',
+                data: reportData,
+                reportedAt: new Date(),
+                reportId: crypto.randomUUID()
+            });
+            this.complianceSystem.regulatoryReports.set(userId, reports);
+
+        } catch (error) {
+            console.error('Failed to report to TiltCheck API:', error);
+        }
+    }
+
+    /**
+     * Report transaction to TiltCheck for gambling behavior analysis
+     */
+    async reportTransactionToTiltCheck(tip, auditEntry) {
+        try {
+            const reportData = {
+                transactionId: tip.id,
+                userId: tip.from,
+                transactionType: 'tip',
+                amount: tip.amount,
+                currency: tip.currency,
+                timestamp: tip.timestamp,
+                complianceStatus: auditEntry.complianceChecks,
+                riskAssessment: {
+                    tiltRisk: 'low',
+                    behaviorFlags: [],
+                    regulatoryFlags: []
+                }
+            };
+
+            // Mock API call to TiltCheck transaction analysis
+            console.log(`🛡️ TiltCheck Transaction Report: ${JSON.stringify(reportData)}`);
+
+        } catch (error) {
+            console.error('Failed to report transaction to TiltCheck:', error);
+        }
+    }
+
+    /**
+     * Update TiltCheck with compliance status
+     */
+    async updateTiltCheckCompliance(userId, status) {
+        try {
+            const complianceUpdate = {
+                userId,
+                complianceStatus: status,
+                timestamp: new Date(),
+                verificationLevel: this.getVerificationLevel(userId),
+                regulatoryCompliant: true
+            };
+
+            // Mock API call to TiltCheck compliance endpoint
+            console.log(`⚖️ TiltCheck Compliance Update: ${JSON.stringify(complianceUpdate)}`);
+
+        } catch (error) {
+            console.error('Failed to update TiltCheck compliance:', error);
+        }
+    }
+
+    /**
+     * Get verification level for compliance reporting
+     */
+    getVerificationLevel(userId) {
+        const verification = this.verificationSystem.verifiedUsers.get(userId);
+        if (!verification) return 'unverified';
+
+        const steps = verification.steps;
+        const completedSteps = Object.values(steps).filter(Boolean).length;
+        
+        if (completedSteps === 5) return 'fully_verified';
+        if (completedSteps >= 3) return 'partially_verified';
+        return 'basic_verified';
+    }
+
+    /**
+     * Log compliance failure
+     */
+    async logComplianceFailure(tip, error) {
+        const failureLog = {
+            transactionId: tip.id,
+            timestamp: new Date(),
+            error: error.message,
+            fromUser: tip.from,
+            toUser: tip.to,
+            amount: tip.amount,
+            failureType: 'compliance_check_failure'
+        };
+
+        console.error(`❌ Compliance Failure: ${JSON.stringify(failureLog)}`);
+
+        // Report compliance failure to regulators
+        await this.reportComplianceFailure(failureLog);
+    }
+
+    /**
+     * Report compliance failure to regulatory authorities
+     */
+    async reportComplianceFailure(failureLog) {
+        // Mock regulatory reporting
+        console.log(`🚨 Regulatory Failure Report: ${JSON.stringify(failureLog)}`);
+    }
+
+    /**
+     * API endpoint for regulators to access compliance data
+     */
+    async getComplianceDataForRegulators(userId, regulatorId, requestType) {
+        // Verify regulator authorization
+        if (!this.isAuthorizedRegulator(regulatorId)) {
+            throw new Error('Unauthorized regulator access');
+        }
+
+        const complianceData = {
+            userId,
+            verificationStatus: this.getVerificationLevel(userId),
+            kycStatus: this.complianceSystem.kycVerification.get(userId),
+            amlStatus: this.complianceSystem.amlScreening.get(userId),
+            tiltCheckProfile: this.verificationSystem.tiltCheckProfiles.get(userId),
+            transactionHistory: this.getTransactionHistory(userId),
+            complianceFlags: this.complianceSystem.complianceFlags.get(userId),
+            provablyFairVerifications: this.getProvablyFairVerifications(userId)
+        };
+
+        // Log regulatory access
+        await this.logRegulatoryAccess(userId, regulatorId, requestType);
+
+        return complianceData;
+    }
+
+    /**
+     * Verify regulator authorization
+     */
+    isAuthorizedRegulator(regulatorId) {
+        const authorizedRegulators = [
+            'malta_gaming_authority',
+            'gibraltar_regulatory_authority',
+            'curacao_egaming',
+            'uk_gambling_commission'
+        ];
+        
+        return authorizedRegulators.includes(regulatorId);
+    }
+
+    /**
+     * Clear compliance discretions automatically
+     */
+    async clearComplianceDiscretions(userId) {
+        try {
+            // Perform comprehensive compliance check
+            const kycStatus = this.complianceSystem.kycVerification.get(userId);
+            const amlStatus = this.complianceSystem.amlScreening.get(userId);
+            const verificationLevel = this.getVerificationLevel(userId);
+
+            // Auto-clear if all conditions met
+            if (kycStatus?.status === 'verified' && 
+                amlStatus?.status === 'clear' && 
+                verificationLevel === 'fully_verified') {
+                
+                await this.updateComplianceStatus(userId, 'discretions_cleared');
+                
+                // Report clearing to regulators
+                await this.reportDiscretionClearing(userId);
+                
+                return true;
+            }
+
+            return false;
+
+        } catch (error) {
+            console.error('Failed to clear compliance discretions:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Report discretion clearing to regulators
+     */
+    async reportDiscretionClearing(userId) {
+        const clearingReport = {
+            userId,
+            clearingTimestamp: new Date(),
+            verificationLevel: this.getVerificationLevel(userId),
+            complianceStatus: 'fully_compliant',
+            regulatoryClearing: 'automatic'
+        };
+
+        console.log(`✅ Discretion Clearing Report: ${JSON.stringify(clearingReport)}`);
+    }
 }
 
 module.exports = AIMStyleControlPanel;
