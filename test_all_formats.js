@@ -79,5 +79,34 @@ async function testTokenFormats() {
     console.log('- Get valid token from: https://pro-api.solscan.io/');
 }
 
-testTokenFormats();
-testYourTransaction()
+async function testYourTransaction() {
+    const signature = '47ZFxqUYYeiWSn6EtFW7swgnJ4Ksa3gXPBJJLBwH8rTF43aHytMs8q7Xs2e3y9XKsXfSQipoMDMVnG6Ag9pdGD9J';
+    console.log('');
+    console.log('🔍 Testing Your Specific Transaction...');
+    console.log('📝 Signature:', signature);
+    
+    try {
+        const response = await axios.request({
+            method: "get",
+            url: "https://pro-api.solscan.io/v2.0/transaction/detail",
+            params: { 
+                signature: signature,
+                commitment: 'finalized',
+                maxSupportedTransactionVersion: '0'
+            },
+            headers: { token: API_TOKEN }
+        });
+        console.log('✅ Transaction found!');
+        console.log('📊 Status:', response.status);
+        console.log('📊 Data:', JSON.stringify(response.data, null, 2));
+    } catch (err) {
+        console.log('❌ Transaction test failed:', err.response?.data || err.message);
+    }
+}
+
+async function runAllTests() {
+    await testTokenFormats();
+    await testYourTransaction();
+}
+
+runAllTests();
