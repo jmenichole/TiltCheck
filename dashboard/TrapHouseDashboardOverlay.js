@@ -389,18 +389,13 @@ Backup Methods: ${traits.preferredDeterMethod.alternatives.join(' + ')}
         // Generate roast based on time and tilt level
         if (tiltScore > 60 && (currentHour < 6 || currentHour > 22)) {
             const roastMessage = this.generateRoastMessage('medium');
-            console.log(`🔥 LIVE ROAST: ${roastMessage.message}`);
+            console.log(`🔥 LIVE ROAST: ${roastMessage}`);
         }
-    }
-
-        // 💜 Show welcome notification
-        setTimeout(() => {
-            this.showCompassionateNotification({
-                title: '💜 Welcome Back!',
-                message: 'Your mindful gambling companion is here to support your journey.',
-                tone: 'welcoming'
-            });
-        }, 2000);
+        
+        // 💜 Show welcome notification occasionally
+        if (Math.random() > 0.95) {
+            console.log('💜 Welcome back! Your mindful gambling companion is here to support your journey.');
+        }
     }
 
     createSystemTray() {
