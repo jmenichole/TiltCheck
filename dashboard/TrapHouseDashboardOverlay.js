@@ -783,6 +783,96 @@ class TrapHouseDashboardOverlay {
         }
     }
 
+    // 💜 Love-driven helper methods
+    saveOverlaySettings() {
+        try {
+            const settingsPath = path.join(__dirname, 'overlay-settings.json');
+            fs.writeFileSync(settingsPath, JSON.stringify(this.overlaySettings, null, 2));
+        } catch (error) {
+            console.error('💜 Error saving overlay settings with love:', error.message);
+        }
+    }
+
+    loadOverlaySettings() {
+        try {
+            const settingsPath = path.join(__dirname, 'overlay-settings.json');
+            if (fs.existsSync(settingsPath)) {
+                const savedSettings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+                Object.assign(this.overlaySettings, savedSettings);
+            }
+        } catch (error) {
+            console.error('💜 Error loading overlay settings, using defaults with love:', error.message);
+        }
+    }
+
+    sendOverlaySettings() {
+        if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
+            this.overlayWindow.webContents.send('overlay-settings-update', this.overlaySettings);
+        }
+    }
+
+    async forceDataResync() {
+        // 💜 Force resync all data with love
+        console.log('💜 Resyncing data with compassionate understanding...');
+        
+        // Update all dashboard data
+        this.updateDashboardData();
+        
+        // Sync with mischief manager
+        if (this.mischiefManager && this.mischiefManager.syncDataAcrossSystems) {
+            await this.mischiefManager.syncDataAcrossSystems();
+        }
+        
+        // Send updated data to overlay
+        this.sendDataToOverlay();
+        this.sendOverlaySettings();
+        
+        // Show compassionate notification
+        this.showCompassionateNotification({
+            title: '💜 Data Refreshed',
+            message: 'Everything is up to date! Your journey continues.',
+            tone: 'supportive'
+        });
+    }
+
+    showCompassionateNotification(notification) {
+        if (!this.overlaySettings.notifications.enabled) return;
+
+        // Add compassionate tone to notification
+        const compassionateNotification = {
+            ...notification,
+            severity: notification.severity || 'love',
+            timestamp: Date.now(),
+            compassionate: true
+        };
+
+        this.dashboardData.notifications.unshift(compassionateNotification);
+        this.dashboardData.notifications = this.dashboardData.notifications.slice(0, 10);
+
+        this.sendDataToOverlay();
+
+        // Show popup if enabled
+        if (this.overlaySettings.notifications.popups && this.overlayWindow) {
+            this.overlayWindow.webContents.send('show-compassionate-popup', compassionateNotification);
+        }
+    }
+
+    async showInstantMessageModal() {
+        if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
+            this.overlayWindow.show();
+            this.overlayWindow.webContents.send('show-instant-message-modal');
+            this.isOverlayVisible = true;
+        }
+    }
+
+    async showOverlayCustomization() {
+        if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
+            this.overlayWindow.show();
+            this.overlayWindow.webContents.send('show-overlay-customization-modal');
+            this.isOverlayVisible = true;
+        }
+    }
+
     sendDataToOverlay() {
         if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
             this.overlayWindow.webContents.send('overlay-data-update', this.dashboardData);
