@@ -1,6 +1,7 @@
 const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 const CasinoApiConnector = require('./casinoApiConnector');
+const AIMStyleControlPanel = require('./aimStyleControlPanel');
 require('dotenv').config();
 
 class CollectClockIntegration {
@@ -18,6 +19,7 @@ class CollectClockIntegration {
         this.isInitialized = false;
         this.trapHouseBot = null; // Reference to main TrapHouse bot
         this.casinoApiConnector = null; // API connector for casino integration
+        this.aimControlPanel = null; // AIM-style control panel for verified degens
         
         // Daily collection platforms from CollectClock website
         this.platforms = [
@@ -51,6 +53,9 @@ class CollectClockIntegration {
                 
                 // Initialize Casino API Connector
                 this.initializeCasinoApiConnector();
+                
+                // Initialize AIM Control Panel
+                this.initializeAIMControlPanel();
                 
                 // Start daily reminder system
                 this.startDailyReminderSystem();
@@ -90,6 +95,16 @@ class CollectClockIntegration {
             console.log('🔌 Casino API Connector integrated with CollectClock');
         } catch (error) {
             console.error('Failed to initialize Casino API Connector:', error);
+        }
+    }
+
+    // Initialize AIM Control Panel
+    initializeAIMControlPanel() {
+        try {
+            this.aimControlPanel = new AIMStyleControlPanel(this, this.trapHouseBot);
+            console.log('🎮 AIM Control Panel integrated with CollectClock');
+        } catch (error) {
+            console.error('Failed to initialize AIM Control Panel:', error);
         }
     }
 
@@ -265,6 +280,18 @@ class CollectClockIntegration {
                 break;
             case 'api':
                 await this.handleApiCommands(message, args.slice(1));
+                break;
+            case 'aim':
+                await this.handleAIMCommands(message, args.slice(1));
+                break;
+            case 'verify':
+                await this.handleVerificationCommands(message, args.slice(1));
+                break;
+            case 'msg':
+                await this.handleInstantMessage(message, args.slice(1));
+                break;
+            case 'tip':
+                await this.handleFastTip(message, args.slice(1));
                 break;
             default:
                 await this.showCollectionStatus(message);
