@@ -10,6 +10,7 @@ const CollectClockIntegration = require('./collectClockIntegration-new');
 const TiltCheckMischiefManager = require('./tiltCheckMischiefManager');
 const EcosystemManager = require('./ecosystemManager');
 const PaymentManager = require('./paymentManager');
+const SolscanPaymentTracker = require('./solscanPaymentTracker');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
@@ -17,6 +18,12 @@ const collectClock = new CollectClockIntegration();
 const tiltCheckManager = new TiltCheckMischiefManager();
 const ecosystem = new EcosystemManager();
 let paymentManager; // Will be initialized after client is ready
+
+// Initialize Solscan Payment Tracker for JustTheTip
+let solscanTracker;
+if (process.env.CURRENT_BOT === 'JUSTTHETIP' || process.env.ENABLE_SOLSCAN_TRACKING === 'true') {
+    solscanTracker = new SolscanPaymentTracker();
+}
 
 // ========== MARKETPLACE COMMANDS ==========
 
