@@ -102,26 +102,27 @@ class TrapHouseDashboardOverlay {
             verification: {
                 score: 92,
                 verified: true,
-                journey: "Step 3: Growing Stronger Together 💜"
+                journey: "Level 3: Not Completely Hopeless 🎯",
+                credStreet: "Known for paying debts and not being a complete tool"
             },
             notifications: [
                 { 
-                    title: '💜 Mindful Moment', 
-                    message: 'You paused before that last bet - that\'s growth!', 
-                    severity: 'love',
-                    tone: 'compassionate'
-                },
-                { 
-                    title: '🤝 Peer Support', 
-                    message: '@DegenFriend shared their recovery story', 
+                    title: '🎯 Reality Check', 
+                    message: 'You stopped yourself before that last YOLO - character development!', 
                     severity: 'success',
-                    tone: 'supportive'
+                    roastLevel: 'light'
                 },
                 { 
-                    title: '⚔️ Friendly Challenge', 
-                    message: '@WisdomSeeker wants to practice mindful battles!', 
+                    title: '🤝 Degen Network', 
+                    message: '@DegenMike shared how he lost his car keys AND his car', 
                     severity: 'info',
-                    tone: 'encouraging'
+                    roastLevel: 'medium'
+                },
+                { 
+                    title: '⚔️ Battle Request', 
+                    message: '@TiltMaster wants to see who can lose money faster!', 
+                    severity: 'warning',
+                    roastLevel: 'light'
                 }
             ],
             // Enhanced features with love and compassion
