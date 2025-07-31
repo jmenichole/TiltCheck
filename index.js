@@ -11,6 +11,8 @@ const TiltCheckMischiefManager = require('./tiltCheckMischiefManager');
 const EcosystemManager = require('./ecosystemManager');
 const PaymentManager = require('./paymentManager');
 const SolscanPaymentTracker = require('./solscanPaymentTracker');
+const CryptoTipManager = require('./cryptoTipManager');
+const CryptoTipAdmin = require('./cryptoTipAdmin');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
@@ -18,6 +20,10 @@ const collectClock = new CollectClockIntegration();
 const tiltCheckManager = new TiltCheckMischiefManager();
 const ecosystem = new EcosystemManager();
 let paymentManager; // Will be initialized after client is ready
+
+// Initialize Crypto Tip System
+let cryptoTipManager;
+let cryptoTipAdmin;
 
 // Initialize Solscan Payment Tracker for JustTheTip
 let solscanTracker;
@@ -279,6 +285,16 @@ client.once('ready', async () => {
     paymentManager = new PaymentManager(client);
     console.log('💳 Payment Manager initialized - Crypto & Fiat support ready!');
     
+    // Initialize Crypto Tip System
+    try {
+        cryptoTipManager = new CryptoTipManager();
+        await cryptoTipManager.initializeTipManager();
+        cryptoTipAdmin = new CryptoTipAdmin(cryptoTipManager);
+        console.log('💎 Crypto Tip System initialized - SOLUSDC ready!');
+    } catch (error) {
+        console.error('❌ Failed to initialize Crypto Tip System:', error);
+    }
+    
     // Initialize Solscan payment tracking for JustTheTip bot
     if (solscanTracker && (process.env.CURRENT_BOT === 'JUSTTHETIP' || process.env.ENABLE_SOLSCAN_TRACKING === 'true')) {
         console.log('💡 Starting Solscan payment monitoring for JustTheTip...');
@@ -400,6 +416,43 @@ client.on('messageCreate', async (message) => {
         await tiltCheckManager.handleTiltCheck(message, args);
     } else if (command === '!ecosystem') {
         await ecosystem.handleEcosystemCommand(message, args);
+    }
+    
+    // ========== CRYPTO TIP SYSTEM COMMANDS ==========
+    else if (command.startsWith('$tip') || command.startsWith('$balance') || command.startsWith('$history') || command.startsWith('$solusdc')) {
+        if (!cryptoTipManager) {
+            return message.reply('❌ Crypto Tip System not available. Contact admin.');
+        }
+
+        try {
+            if (command.startsWith('$tip')) {
+                await cryptoTipManager.handleTipCommand(message, args);
+            } else if (command.startsWith('$balance')) {
+                await cryptoTipManager.handleBalanceCommand(message, args);
+            } else if (command.startsWith('$history')) {
+                await cryptoTipManager.handleHistoryCommand(message, args);
+            } else if (command.startsWith('$solusdc')) {
+                // Special SOLUSDC testing command
+                await handleSOLUSDCTestCommand(message, args, cryptoTipManager, cryptoTipAdmin);
+            }
+        } catch (error) {
+            console.error('Crypto tip command error:', error);
+            await message.reply('❌ An error occurred with the crypto tip system.');
+        }
+    }
+    
+    // Crypto Tip Admin commands - Admin only
+    else if (command.startsWith('!tip-admin')) {
+        if (!cryptoTipAdmin) {
+            return message.reply('❌ Crypto Tip Admin System not available. Contact admin.');
+        }
+
+        try {
+            await cryptoTipAdmin.handleAdminCommand(message, args);
+        } catch (error) {
+            console.error('Crypto tip admin command error:', error);
+            await message.reply('❌ An error occurred with the crypto tip admin system.');
+        }
     }
     
     // ========== PAYMENT COMMANDS ==========
@@ -1074,6 +1127,119 @@ client.on('interactionCreate', async (interaction) => {
         }
     }
 });
+
+// Handle SOLUSDC test command
+async function handleSOLUSDCTestCommand(message, args, cryptoTipManager, cryptoTipAdmin) {
+    const { EmbedBuilder } = require('discord.js');
+    const subcommand = args[0]?.toLowerCase();
+    const userId = message.author.id;
+    const username = message.author.username;
+
+    try {
+        if (subcommand === 'add') {
+            // Add SOLUSDC for testing - admin only
+            if (!message.member || !message.member.permissions.has('Administrator')) {
+                return message.reply('❌ Only admins can add SOLUSDC test funds!');
+            }
+
+            const amount = parseFloat(args[1]) || 100;
+            await cryptoTipManager.addUserBalance(userId, 'SOLUSDC', amount);
+
+            const embed = new EmbedBuilder()
+                .setTitle('✅ SOLUSDC Test Funds Added')
+                .setDescription(`Added **${amount} SOLUSDC** for testing`)
+                .setColor(0x00FF00)
+                .addFields(
+                    { name: '👤 User', value: username, inline: true },
+                    { name: '💰 Amount', value: `${amount} SOLUSDC`, inline: true },
+                    { name: '🏦 New Balance', value: `${cryptoTipManager.getUserBalance(userId, 'SOLUSDC')} SOLUSDC`, inline: true }
+                )
+                .addFields({
+                    name: '🧪 Test Commands',
+                    value: '`$solusdc send @user amount` - Send SOLUSDC\n`$solusdc balance` - Check SOLUSDC balance\n`$tip @user amount SOLUSDC` - Regular tip with SOLUSDC',
+                    inline: false
+                })
+                .setFooter({ text: 'SOLUSDC testing enabled - Solana USDC simulation' })
+                .setTimestamp();
+
+            await message.reply({ embeds: [embed] });
+
+        } else if (subcommand === 'send') {
+            // Quick send command for SOLUSDC
+            const mentionMatch = args[1]?.match(/<@!?(\d+)>/);
+            if (!mentionMatch) {
+                return message.reply('❌ Usage: `$solusdc send @user amount`');
+            }
+
+            const toUserId = mentionMatch[1];
+            const amount = parseFloat(args[2]) || 10;
+
+            // Use the regular tip system but force SOLUSDC
+            const modifiedArgs = [`<@${toUserId}>`, amount.toString(), 'SOLUSDC'];
+            await cryptoTipManager.handleTipCommand(message, modifiedArgs);
+
+        } else if (subcommand === 'balance') {
+            // Check SOLUSDC balance specifically
+            const balance = cryptoTipManager.getUserBalance(userId, 'SOLUSDC');
+
+            const embed = new EmbedBuilder()
+                .setTitle(`💰 ${username}'s SOLUSDC Balance`)
+                .setDescription(`**${balance.toFixed(6)} SOLUSDC** (~$${(balance * 1.00).toFixed(2)} USD)`)
+                .setColor(0x9945FF)
+                .addFields(
+                    { name: '🪙 Token Type', value: 'Solana USDC (SPL Token)', inline: true },
+                    { name: '⛓️ Network', value: 'Solana Mainnet-Beta', inline: true },
+                    { name: '💵 USD Value', value: `~$${(balance * 1.00).toFixed(2)}`, inline: true }
+                )
+                .addFields({
+                    name: '🚀 Quick Actions',
+                    value: '`$solusdc send @user amount` - Send SOLUSDC\n`$tip @user amount SOLUSDC` - Regular tip\n`$solusdc add amount` - Add test funds (admin)',
+                    inline: false
+                })
+                .setFooter({ text: 'SOLUSDC - Perfect for testing fast crypto transfers' })
+                .setTimestamp();
+
+            await message.reply({ embeds: [embed] });
+
+        } else {
+            // Show SOLUSDC help
+            const embed = new EmbedBuilder()
+                .setTitle('🪙 SOLUSDC Testing System')
+                .setDescription('Fast & cheap crypto testing with Solana USDC')
+                .setColor(0x9945FF)
+                .addFields(
+                    {
+                        name: '⚡ SOLUSDC Commands',
+                        value: '`$solusdc` - Show this help\n`$solusdc balance` - Check SOLUSDC balance\n`$solusdc send @user amount` - Quick SOLUSDC send\n`$solusdc add amount` - Add test funds (admin only)',
+                        inline: false
+                    },
+                    {
+                        name: '💡 Standard Commands',
+                        value: '`$tip @user amount SOLUSDC` - Regular tip with SOLUSDC\n`$balance` - Check all crypto balances\n`$history` - View tip history',
+                        inline: false
+                    },
+                    {
+                        name: '⚡ Why SOLUSDC?',
+                        value: '• **Fast:** 1-2 second confirmations\n• **Cheap:** ~$0.001 transaction fees\n• **Stable:** USDC pegged to $1.00\n• **Reliable:** Built on Solana network',
+                        inline: false
+                    }
+                )
+                .addFields({
+                    name: '🧪 Testing Flow',
+                    value: '1. Admin: `$solusdc add 100`\n2. User: `$solusdc send @friend 10`\n3. Check: `$solusdc balance`',
+                    inline: false
+                })
+                .setFooter({ text: 'SOLUSDC - Perfect for testing fast crypto transfers' })
+                .setTimestamp();
+
+            await message.reply({ embeds: [embed] });
+        }
+
+    } catch (error) {
+        console.error('SOLUSDC command error:', error);
+        await message.reply(`❌ Error with SOLUSDC command: ${error.message}`);
+    }
+}
 
 client.login(process.env.DISCORD_BOT_TOKEN)
   .then(() => console.log('Bot logged in successfully!'))
