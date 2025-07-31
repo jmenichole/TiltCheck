@@ -20,7 +20,7 @@ const {
     ASSOCIATED_TOKEN_PROGRAM_ID
 } = require('@solana/spl-token');
 
-const bs58 = require('bs58');
+const bs58 = require('bs58').default;
 
 class RealBlockchainManager {
     constructor() {
@@ -80,9 +80,15 @@ class RealBlockchainManager {
     async initializeHotWallet() {
         // For testing, generate a new keypair
         // In production, load from secure environment variable
-        if (process.env.SOLANA_PRIVATE_KEY) {
-            const privateKeyBytes = bs58.decode(process.env.SOLANA_PRIVATE_KEY);
-            this.hotWallet = Keypair.fromSecretKey(privateKeyBytes);
+        if (process.env.SOLANA_PRIVATE_KEY && process.env.SOLANA_PRIVATE_KEY.trim() !== '') {
+            try {
+                const privateKeyBytes = bs58.decode(process.env.SOLANA_PRIVATE_KEY);
+                this.hotWallet = Keypair.fromSecretKey(privateKeyBytes);
+                console.log('🔑 Loaded wallet from environment:', this.hotWallet.publicKey.toString());
+            } catch (error) {
+                console.warn('⚠️  Invalid SOLANA_PRIVATE_KEY, generating new wallet');
+                this.hotWallet = Keypair.generate();
+            }
         } else {
             // Generate new wallet for testing
             this.hotWallet = Keypair.generate();

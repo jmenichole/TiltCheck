@@ -13,6 +13,8 @@ const PaymentManager = require('./paymentManager');
 const SolscanPaymentTracker = require('./solscanPaymentTracker');
 const CryptoTipManager = require('./cryptoTipManager');
 const CryptoTipAdmin = require('./cryptoTipAdmin');
+const EnhancedCryptoTipManager = require('./enhancedCryptoTipManager');
+const BlockchainDiscordCommands = require('./blockchainDiscordCommands');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
@@ -24,6 +26,8 @@ let paymentManager; // Will be initialized after client is ready
 // Initialize Crypto Tip System
 let cryptoTipManager;
 let cryptoTipAdmin;
+let enhancedCryptoTipManager;
+let blockchainCommands;
 
 // Initialize Solscan Payment Tracker for JustTheTip
 let solscanTracker;
@@ -291,6 +295,13 @@ client.once('ready', async () => {
         await cryptoTipManager.initializeTipManager();
         cryptoTipAdmin = new CryptoTipAdmin(cryptoTipManager);
         console.log('💎 Crypto Tip System initialized - SOLUSDC ready!');
+        
+        // Initialize Enhanced Crypto Tip System with Real Blockchain
+        enhancedCryptoTipManager = new EnhancedCryptoTipManager(cryptoTipManager);
+        await enhancedCryptoTipManager.initialize();
+        blockchainCommands = new BlockchainDiscordCommands(enhancedCryptoTipManager);
+        console.log('🔗 Enhanced Crypto System initialized - Real blockchain integration ready!');
+        
     } catch (error) {
         console.error('❌ Failed to initialize Crypto Tip System:', error);
     }
@@ -419,7 +430,8 @@ client.on('messageCreate', async (message) => {
     }
     
     // ========== CRYPTO TIP SYSTEM COMMANDS (JUSTTHETIP BOT ONLY) ==========
-    else if (command.startsWith('$tip') || command.startsWith('$balance') || command.startsWith('$history') || command.startsWith('$solusdc')) {
+    else if (command.startsWith('$tip') || command.startsWith('$balance') || command.startsWith('$history') || command.startsWith('$solusdc') || 
+             command.startsWith('$wallet') || command.startsWith('$withdraw') || command.startsWith('$airdrop') || command.startsWith('$blockchain')) {
         // Only allow crypto commands on JustTheTip bot
         if (process.env.CURRENT_BOT !== 'JUSTTHETIP') {
             return message.reply('💡 **Crypto commands are only available on JustTheTip bot!**\n\nUse `node launcher.js justthetip` to run the JustTheTip bot with crypto features.\n\nOr switch to JustTheTip bot in your Discord server.');
@@ -430,7 +442,20 @@ client.on('messageCreate', async (message) => {
         }
 
         try {
-            if (command.startsWith('$tip')) {
+            // Enhanced blockchain commands (if available)
+            if (command.startsWith('$balance') && enhancedCryptoTipManager && blockchainCommands) {
+                await blockchainCommands.handleEnhancedBalance(message);
+            } else if (command.startsWith('$wallet') && enhancedCryptoTipManager && blockchainCommands) {
+                await blockchainCommands.handleWallet(message, args);
+            } else if (command.startsWith('$withdraw') && enhancedCryptoTipManager && blockchainCommands) {
+                await blockchainCommands.handleWithdraw(message, args);
+            } else if (command.startsWith('$airdrop') && enhancedCryptoTipManager && blockchainCommands) {
+                await blockchainCommands.handleAirdrop(message, args);
+            } else if (command.startsWith('$blockchain') && enhancedCryptoTipManager && blockchainCommands) {
+                await blockchainCommands.handleBlockchainStatus(message);
+            } 
+            // Original virtual commands
+            else if (command.startsWith('$tip')) {
                 await cryptoTipManager.handleTipCommand(message, args);
             } else if (command.startsWith('$balance')) {
                 await cryptoTipManager.handleBalanceCommand(message, args);
