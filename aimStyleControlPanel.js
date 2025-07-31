@@ -24,7 +24,9 @@ class AIMStyleControlPanel {
             verifiedUsers: new Map(),
             walletLinks: new Map(),
             deviceFingerprints: new Map(),
-            behaviorProfiles: new Map()
+            behaviorProfiles: new Map(),
+            tiltCheckProfiles: new Map(),
+            justTheTipWallets: new Map()
         };
         
         // Instant messaging system
@@ -120,12 +122,12 @@ class AIMStyleControlPanel {
             .addFields(
                 {
                     name: '🔐 Verification Steps',
-                    value: '1️⃣ **Discord ID Verification** - Provably fair Discord linking\n2️⃣ **Wallet Security Check** - Multi-signature verification\n3️⃣ **Casino Integration** - Provably fair gaming verification\n4️⃣ **Device Fingerprinting** - Anti-alt detection\n5️⃣ **Behavioral Analysis** - Anti-farming protection',
+                    value: '1️⃣ **Discord ID Verification** - Provably fair Discord linking\n2️⃣ **TiltCheck Profile Link** - Gambling behavior verification\n3️⃣ **JustTheTip Wallet** - Financial verification & fast transactions\n4️⃣ **Device Fingerprinting** - Anti-alt detection\n5️⃣ **Behavioral Analysis** - Anti-farming protection',
                     inline: false
                 },
                 {
                     name: '🎯 What You Get',
-                    value: '• **Instant Messaging** with verified degens\n• **Fast Tips & Airdrops** - No farmers allowed\n• **Exclusive Chat Rooms** - Verified only\n• **Advanced Casino APIs** - Real-time integration\n• **Anti-Scam Protection** - Verified transactions only',
+                    value: '• **Instant Messaging** with verified degens\n• **Fast Tips & Airdrops** via JustTheTip wallet\n• **TiltCheck Integration** - Responsible gambling tools\n• **Exclusive Chat Rooms** - Verified only\n• **Advanced Casino APIs** - Real-time integration\n• **Anti-Scam Protection** - Verified transactions only',
                     inline: false
                 },
                 {
