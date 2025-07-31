@@ -145,7 +145,7 @@ class AIMStyleControlPanel {
                 },
                 {
                     name: '🛡️ Security Features',
-                    value: '• Unicode normalization protection\n• Context fuzzing detection\n• Alt account prevention\n• Behavioral pattern analysis\n• Provably fair verification chains',
+                    value: '• Unicode normalization protection\n• Context fuzzing detection\n• Alt account prevention\n• Behavioral pattern analysis\n• Provably fair verification chains\n• **Regulatory compliance integration**\n• **KYC/AML screening**\n• **Crypto gambling regulation compliance**',
                     inline: false
                 }
             )
@@ -188,6 +188,15 @@ class AIMStyleControlPanel {
         
         verification.challenges.set('discord', challenge);
         verification.proofs.set('discord', signature);
+
+        // Create provably fair verification chain entry
+        await this.createProvablyFairVerification(userId, 'discord', {
+            challenge,
+            signature,
+            timestamp: Date.now(),
+            verificationMethod: 'discord_oauth',
+            complianceStatus: 'pending'
+        });
 
         // Create verification link with challenge
         const verificationUrl = `https://jmenichole.github.io/CollectClock/verify?` +
