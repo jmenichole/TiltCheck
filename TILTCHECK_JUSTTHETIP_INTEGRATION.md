@@ -205,4 +205,124 @@ The integration of TiltCheck and JustTheTip wallet creates a comprehensive, secu
 3. **Anti-Fraud Protection** through multi-vector verification
 4. **User Experience** through seamless command integration
 
+## Compliance & Regulatory Integration
+
+### Crypto Gambling Regulation Compliance
+The system now includes comprehensive compliance features to meet international crypto gambling regulations:
+
+#### Regulatory API Integration
+```javascript
+// Compliance API Endpoints
+- /api/compliance/verify-user          # User verification status
+- /api/compliance/transaction-report   # Transaction reporting
+- /api/compliance/tilt-data           # TiltCheck data for regulators
+- /api/compliance/provably-fair       # Provably fair verification
+- /api/compliance/audit-trail         # Complete audit logs
+```
+
+#### TiltCheck Regulatory Data Gathering
+The system provides regulatory APIs for TiltCheck to gather required compliance data:
+
+```javascript
+// TiltCheck Compliance Data Collection
+{
+  userVerification: {
+    discordVerified: true,
+    walletVerified: true,
+    deviceFingerprint: "verified",
+    kycStatus: "completed",
+    jurisdictionCompliant: true
+  },
+  gamblingBehavior: {
+    sessionTracking: "active",
+    lossLimits: "enforced",
+    timeoutPeriods: "compliant",
+    selfExclusionAvailable: true,
+    responsibleGamblingTools: "enabled"
+  },
+  transactionMonitoring: {
+    realTimeAnalysis: true,
+    suspiciousActivityDetection: true,
+    amlCompliance: "verified",
+    transactionLimits: "enforced",
+    reportingMechanisms: "active"
+  }
+}
+```
+
+#### Provably Fair System Integration
+```javascript
+// Provably Fair Verification Chain
+{
+  verificationChain: {
+    discordOAuth: {
+      challenge: "cryptographic_challenge",
+      signature: "provably_fair_signature",
+      timestamp: "immutable_timestamp",
+      verification: "blockchain_verified"
+    },
+    tiltCheckLink: {
+      profileHash: "privacy_preserving_hash",
+      complianceScore: "regulatory_score",
+      verificationProof: "zero_knowledge_proof",
+      regulatoryStatus: "compliant"
+    },
+    walletIntegration: {
+      addressVerification: "cryptographic_proof",
+      balanceVerification: "merkle_proof",
+      transactionHistory: "immutable_ledger",
+      complianceFlags: "regulatory_markers"
+    }
+  }
+}
+```
+
+#### Compliance Clearing System
+The system includes automatic compliance clearing for any regulatory discretions:
+
+```javascript
+// Compliance Clearing Mechanisms
+{
+  automaticClearing: {
+    kycVerification: "real_time_verification",
+    amlScreening: "continuous_monitoring", 
+    jurisdictionCheck: "geo_compliance_validation",
+    regulatoryReporting: "automated_submission"
+  },
+  discretionResolution: {
+    flaggedTransactions: "automatic_review_system",
+    suspiciousActivity: "compliance_escalation",
+    regulatoryQueries: "instant_data_provision",
+    auditRequests: "complete_transparency"
+  }
+}
+```
+
+### Regulatory Compliance Features
+
+#### KYC/AML Integration
+- **Real-time KYC Verification**: Integrated with major KYC providers
+- **AML Screening**: Continuous monitoring against global watchlists
+- **Source of Funds**: Wallet and transaction source verification
+- **PEP Screening**: Politically Exposed Person detection and reporting
+
+#### Responsible Gambling Compliance
+- **Mandatory Cool-off Periods**: Enforced by smart contracts
+- **Loss Limit Enforcement**: Automatic transaction blocking
+- **Session Time Limits**: Forced disconnection after limits
+- **Self-Exclusion Tools**: Immediate and permanent exclusion options
+- **Reality Checks**: Periodic spending and time notifications
+
+#### Data Protection & Privacy
+- **GDPR Compliance**: Right to erasure and data portability
+- **Privacy by Design**: Zero-knowledge proofs for sensitive data
+- **Data Minimization**: Only necessary data collection
+- **Consent Management**: Granular consent for data processing
+
+#### Audit & Reporting
+- **Real-time Compliance Dashboard**: Live regulatory compliance status
+- **Automated Reporting**: Suspicious activity reports to regulators
+- **Audit Trail**: Immutable transaction and behavior logging
+- **Regulatory API**: Direct access for authorized regulators
+
 This integration represents a significant advancement in creating a trustworthy, secure, and responsible social platform for the verified degen community.
