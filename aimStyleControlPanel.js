@@ -212,27 +212,37 @@ class AIMStyleControlPanel {
     }
 
     /**
-     * Step 2: Wallet Security Verification
+     * Step 2: TiltCheck Profile Verification
      */
-    async verifyWalletSecurity(userId) {
+    async verifyTiltCheckProfile(userId) {
         const verification = this.verificationSystem.pendingVerifications.get(userId);
         if (!verification || !verification.steps.discord) return;
 
         const user = await this.collectClock.client.users.fetch(userId);
         
+        // Check if user already has TiltCheck profile
+        const existingProfile = await this.getTiltCheckProfile(userId);
+        
         const embed = new EmbedBuilder()
-            .setColor('#ffd700')
-            .setTitle('💰 Wallet Security Verification')
-            .setDescription('Secure your wallet connections with multi-signature verification')
+            .setColor('#ff6b6b')
+            .setTitle('�️ TiltCheck Profile Verification')
+            .setDescription('Link your TiltCheck profile for responsible gambling verification')
             .addFields(
                 {
-                    name: '🔐 Verification Methods',
-                    value: '• **MetaMask Signature** - Sign verification message\n• **Hardware Wallet** - Ledger/Trezor verification\n• **Multi-Sig Wallet** - Team wallet verification\n• **Casino Wallet** - Integrated casino verification',
+                    name: '🎯 TiltCheck Integration',
+                    value: existingProfile ? 
+                        '✅ **Existing Profile Found**\nYour TiltCheck profile will be verified and linked' :
+                        '🆕 **Create New Profile**\nSet up TiltCheck protection during verification',
                     inline: false
                 },
                 {
-                    name: '🛡️ Security Features',
-                    value: '• Zero-knowledge proofs\n• No private key exposure\n• Revokable permissions\n• Multi-signature support',
+                    name: '🔐 What Gets Verified',
+                    value: '• Gambling behavior patterns\n• Tilt detection sensitivity\n• Loss limits and controls\n• Session tracking preferences\n• Accountability buddy links',
+                    inline: false
+                },
+                {
+                    name: '🛡️ Privacy Protection',
+                    value: '• Only verification status shared\n• Gambling data stays private\n• User-controlled sharing settings\n• Revokable at any time',
                     inline: false
                 }
             );
@@ -240,40 +250,75 @@ class AIMStyleControlPanel {
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId(`wallet_metamask_${userId}`)
-                    .setLabel('🦊 MetaMask')
+                    .setCustomId(`tilt_verify_${userId}`)
+                    .setLabel(existingProfile ? '🔗 Link Profile' : '🆕 Create Profile')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId(`wallet_hardware_${userId}`)
-                    .setLabel('🔒 Hardware')
+                    .setCustomId(`tilt_settings_${userId}`)
+                    .setLabel('⚙️ TiltCheck Settings')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
-                    .setCustomId(`wallet_casino_${userId}`)
-                    .setLabel('🎰 Casino')
-                    .setStyle(ButtonStyle.Success)
+                    .setCustomId(`tilt_skip_${userId}`)
+                    .setLabel('⏭️ Skip (Optional)')
+                    .setStyle(ButtonStyle.Secondary)
             );
 
         await user.send({ embeds: [embed], components: [row] });
     }
 
     /**
-     * Step 3: Casino Integration Verification
+     * Step 3: JustTheTip Wallet Verification
      */
-    async verifyCasinoIntegration(userId) {
+    async verifyJustTheTipWallet(userId) {
         const verification = this.verificationSystem.pendingVerifications.get(userId);
-        if (!verification || !verification.steps.wallet) return;
+        if (!verification || !verification.steps.discord) return;
 
-        // Use existing casino API connector
-        const connections = this.collectClock.casinoApiConnector?.getUserConnections(userId) || [];
+        const user = await this.collectClock.client.users.fetch(userId);
         
-        if (connections.length === 0) {
-            return await this.promptCasinoConnection(userId);
-        }
+        // Check if user already has JustTheTip wallet
+        const existingWallet = await this.getJustTheTipWallet(userId);
+        
+        const embed = new EmbedBuilder()
+            .setColor('#ffd700')
+            .setTitle('💰 JustTheTip Wallet Verification')
+            .setDescription('Connect your JustTheTip wallet for fast tips and financial features')
+            .addFields(
+                {
+                    name: '🏦 Wallet Integration',
+                    value: existingWallet ? 
+                        `✅ **Wallet Found**\nBalance: $${existingWallet.balance?.toFixed(2) || '0.00'}\nStatus: ${existingWallet.status || 'Active'}` :
+                        '🆕 **Create New Wallet**\nSet up JustTheTip wallet for instant transactions',
+                    inline: false
+                },
+                {
+                    name: '⚡ Fast Transaction Features',
+                    value: '• **Instant Tips** - Send tips to verified degens\n• **Lightning Airdrops** - Participate in verified airdrops\n• **Vault Integration** - Connect to investment vaults\n• **Cross-Platform** - Works with all TrapHouse systems',
+                    inline: false
+                },
+                {
+                    name: '🔐 Security Features',
+                    value: '• Multi-signature protection\n• Transaction limits and controls\n• Real-time fraud detection\n• Backup and recovery options',
+                    inline: false
+                }
+            );
 
-        // Verify casino connections with provably fair challenges
-        for (const connection of connections) {
-            await this.verifyCasinoConnection(userId, connection);
-        }
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId(`wallet_connect_${userId}`)
+                    .setLabel(existingWallet ? '🔗 Link Wallet' : '🆕 Create Wallet')
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
+                    .setCustomId(`wallet_settings_${userId}`)
+                    .setLabel('⚙️ Wallet Settings')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId(`wallet_security_${userId}`)
+                    .setLabel('🛡️ Security Setup')
+                    .setStyle(ButtonStyle.Primary)
+            );
+
+        await user.send({ embeds: [embed], components: [row] });
     }
 
     /**
@@ -492,7 +537,7 @@ class AIMStyleControlPanel {
     }
 
     /**
-     * Send fast tip to verified user
+     * Send fast tip to verified user via JustTheTip wallet
      */
     async sendFastTip(fromUserId, toUserId, amount, currency, message) {
         // Verify both users
@@ -505,6 +550,19 @@ class AIMStyleControlPanel {
             throw new Error('Tip blocked - farming detection');
         }
 
+        // Verify JustTheTip wallet connections
+        const fromWallet = this.verificationSystem.justTheTipWallets.get(fromUserId);
+        const toWallet = this.verificationSystem.justTheTipWallets.get(toUserId);
+
+        if (!fromWallet || !toWallet) {
+            throw new Error('Both users must have verified JustTheTip wallets');
+        }
+
+        // Check sender balance
+        if (fromWallet.balance < amount) {
+            throw new Error(`Insufficient balance. Available: $${fromWallet.balance.toFixed(2)}`);
+        }
+
         // Generate tip ID and create transaction
         const tipId = crypto.randomUUID();
         const tip = {
@@ -515,13 +573,18 @@ class AIMStyleControlPanel {
             currency,
             message: this.normalizeText(message),
             timestamp: new Date(),
-            status: 'pending'
+            status: 'pending',
+            walletTxId: null,
+            tiltCheckAlert: false
         };
 
         this.rewardsSystem.pendingTips.set(tipId, tip);
 
-        // Process tip through secure channels
-        await this.processTipTransaction(tip);
+        // Check for tilt patterns before processing
+        await this.checkTiltPatternsBeforeTip(fromUserId, amount, currency);
+
+        // Process tip through JustTheTip wallet system
+        await this.processJustTheTipTransaction(tip);
         
         return tipId;
     }
@@ -582,6 +645,8 @@ class AIMStyleControlPanel {
             const onlineCount = this.getOnlineVerifiedCount();
             const messageCount = this.getUserMessageCount(userId);
             const tipsSent = this.getUserTipCount(userId);
+            const tiltProfile = this.verificationSystem.tiltCheckProfiles.get(userId);
+            const wallet = this.verificationSystem.justTheTipWallets.get(userId);
 
             embed.addFields(
                 {
@@ -595,8 +660,22 @@ class AIMStyleControlPanel {
                     inline: true
                 },
                 {
-                    name: '💬 Quick Actions',
-                    value: '• Use `/msg @user message` to instant message\n• Use `/tip @user amount` for fast tips\n• Use `/rooms` to see active chat rooms\n• Use `/online` to see verified degens',
+                    name: '�️ TiltCheck Status',
+                    value: tiltProfile ? 
+                        `**Status:** ${tiltProfile.status}\n**Tilt Risk:** ${tiltProfile.currentRisk || 'Low'}\n**Sessions:** ${tiltProfile.totalSessions || 0}` :
+                        '❌ Not Connected',
+                    inline: true
+                },
+                {
+                    name: '💰 JustTheTip Wallet',
+                    value: wallet ? 
+                        `**Balance:** $${wallet.balance.toFixed(2)}\n**Status:** ${wallet.status}\n**Transactions:** ${wallet.txCount || 0}` :
+                        '❌ Not Connected',
+                    inline: true
+                },
+                {
+                    name: '�💬 Quick Actions',
+                    value: '• Use `/msg @user message` to instant message\n• Use `/tip @user amount` for fast tips via JustTheTip\n• Use `/rooms` to see active chat rooms\n• Use `/tilt` for responsible gambling tools',
                     inline: false
                 }
             );
