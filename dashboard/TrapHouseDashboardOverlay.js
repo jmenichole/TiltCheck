@@ -323,36 +323,65 @@ class TrapHouseDashboardOverlay {
         const primaryDisplay = screen.getPrimaryDisplay();
         const { width, height } = primaryDisplay.workAreaSize;
 
+        // 💜 Calculate position with love (right side, centered vertically)
+        const overlayWidth = this.overlaySettings.size.width;
+        const overlayHeight = this.overlaySettings.size.height;
+        const xPos = this.overlaySettings.position.x || (width - overlayWidth - 20);
+        const yPos = this.overlaySettings.position.y || ((height - overlayHeight) / 2);
+
         this.overlayWindow = new BrowserWindow({
-            width: 340,
-            height: 680, // Increased height for additional widgets
-            x: width - 360,
-            y: 20,
+            width: overlayWidth,
+            height: overlayHeight,
+            x: xPos,
+            y: yPos,
             frame: false,
             alwaysOnTop: true,
             skipTaskbar: true,
-            resizable: false,
+            resizable: this.overlaySettings.resizable, // 💜 Allow resizing with love
             transparent: true,
+            opacity: this.overlaySettings.transparency, // 💜 Adjustable transparency
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
                 webSecurity: false
             },
-            type: process.platform === 'darwin' ? 'panel' : 'toolbar'
+            type: process.platform === 'darwin' ? 'panel' : 'toolbar',
+            titleBarStyle: 'hidden',
+            movable: true, // 💜 Allow moving the overlay
+            minimizable: true,
+            maximizable: false,
+            closable: true
         });
 
-        this.overlayWindow.loadFile(path.join(__dirname, 'overlay.html'));
-
+        // 💜 Enable window controls with love
         this.overlayWindow.setIgnoreMouseEvents(false);
         this.overlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
+        // 💜 Handle window events with compassion
         this.overlayWindow.on('closed', () => {
             this.overlayWindow = null;
             this.isOverlayVisible = false;
         });
 
+        this.overlayWindow.on('resize', () => {
+            const bounds = this.overlayWindow.getBounds();
+            this.overlaySettings.size.width = bounds.width;
+            this.overlaySettings.size.height = bounds.height;
+            this.saveOverlaySettings(); // 💜 Remember user preferences
+        });
+
+        this.overlayWindow.on('move', () => {
+            const bounds = this.overlayWindow.getBounds();
+            this.overlaySettings.position.x = bounds.x;
+            this.overlaySettings.position.y = bounds.y;
+            this.saveOverlaySettings(); // 💜 Remember position with love
+        });
+
+        this.overlayWindow.loadFile(path.join(__dirname, 'overlay.html'));
+
         this.overlayWindow.webContents.once('did-finish-load', () => {
             this.sendDataToOverlay();
+            this.sendOverlaySettings(); // 💜 Share settings with overlay
         });
     }
 
