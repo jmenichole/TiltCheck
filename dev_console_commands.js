@@ -1,4 +1,4 @@
-testYourTransaction()testYourTransaction()// 🔍 Solscan Pro API - Browser Dev Console Commands
+testYourTransaction(); testYourTransaction(); // 🔍 Solscan Pro API - Browser Dev Console Commands
 // Copy and paste these into your browser console at pro-api.solscan.io
 
 console.log('🚀 Solscan Pro API Dev Console Commands');
