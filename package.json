@@ -5,6 +5,14 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "watch": "nodemon --watch . --ext js,json --ignore node_modules/ --ignore .git/ --delay 2 index.js",
+    "auto-restart": "nodemon --watch . --ext js,json --ignore node_modules/ --ignore .git/ --ignore test-*.js --delay 2 --exec 'echo \"🔄 Restarting bot due to file changes...\" && node index.js'",
+    "forever": "forever start -l forever.log -o out.log -e err.log --minUptime 1000 --spin 5 index.js",
+    "forever-stop": "forever stop index.js",
+    "pm2": "pm2 start ecosystem.config.js",
+    "pm2-stop": "pm2 stop traphouse-bot",
+    "pm2-restart": "pm2 restart traphouse-bot",
+    "pm2-logs": "pm2 logs traphouse-bot",
     "docker:build": "docker build -t traphouse-bot .",
     "docker:run": "docker-compose up -d",
     "docker:stop": "docker-compose down",
@@ -41,6 +49,8 @@
     "web3": "^4.16.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.0"
+    "nodemon": "^3.0.0",
+    "forever": "^4.0.3",
+    "pm2": "^5.3.0"
   }
 }
