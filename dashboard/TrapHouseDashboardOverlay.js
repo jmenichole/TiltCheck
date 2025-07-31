@@ -249,6 +249,8 @@ class TrapHouseDashboardOverlay {
         this.setupIPCHandlers();
         this.startDataPolling();
         
+        console.log('🎯 TrapHouse Dashboard ready for maximum degen action!');
+        
         app.on('window-all-closed', () => {
             // Keep running in system tray with love 💜
         });
@@ -258,6 +260,132 @@ class TrapHouseDashboardOverlay {
                 this.createMainWindow();
             }
         });
+    }
+
+    initializeMockInterface() {
+        console.log('🎯 TrapHouse Dashboard Mock Interface Initialized');
+        console.log('   📊 Degen trait calculation system: READY');
+        console.log('   🎲 Tilt-O-Meter™: ACTIVE');
+        console.log('   🔥 Roast engine: LOADED');
+        console.log('   ⚡ Anti-tilt strategies: ARMED');
+        
+        // Demonstrate the degen calculation system
+        this.demonstrateDegenCalculation();
+        
+        // Start mock data polling
+        setInterval(() => {
+            this.updateMockData();
+        }, 5000);
+        
+        this.isReady = true;
+        console.log('\n🚀 Dashboard running in mock mode - ready for degen analysis!');
+    }
+
+    demonstrateDegenCalculation() {
+        console.log('\n🎯 DEMONSTRATING DEGEN TRAIT CALCULATION SYSTEM\n');
+        
+        // Create sample user data
+        const sampleUserData = {
+            patterns: {
+                longTermThinking: true,
+                calculatedRisks: true,
+                usesMindfulPause: true,
+                usesDataAnalysis: true,
+                patientAccumulation: false,
+                quickDecisions: true,
+                technicalAnalysis: true
+            },
+            behavior: {
+                meditationPractice: true,
+                emotionalIntelligence: 8,
+                selfAdvocacy: 8,
+                empathyLevel: 9,
+                riskCalculation: 7
+            },
+            empowermentFactors: {
+                selfEfficacy: 75,
+                personalAgency: 80,
+                skillDevelopment: 70,
+                supportNetwork: 85,
+                growthMindset: 90
+            },
+            mindfulnessPractices: {
+                presentAwareness: 80,
+                emotionalRegulation: 75,
+                bodyAwareness: 60,
+                breathWork: 70,
+                meditationConsistency: 85
+            },
+            strategyData: {
+                patternRecognition: 80,
+                riskAssessment: 85,
+                adaptivePlanning: 75,
+                executionConsistency: 70,
+                outcomeIntegration: 80
+            },
+            loveBasedData: {
+                selfCompassion: 85,
+                communityLove: 80,
+                loveBasedChoices: 75,
+                forgivenessPractice: 70,
+                gratitudePractice: 80
+            },
+            deterEffectiveness: {
+                mindfulPause: 85,
+                strategicAnalysis: 90,
+                vaultTimer: 70,
+                communitySupport: 80,
+                loveReflection: 75,
+                empowermentReminder: 80
+            },
+            decisionConfidence: 8,
+            presentMomentAwareness: 8,
+            kindnessActions: 25
+        };
+        
+        // Calculate and display traits
+        const traits = this.showDegenAnalysis(sampleUserData);
+        
+        console.log('\n🎲 VAULT TIMER RECOMMENDATIONS:');
+        if (traits.preferredDeterMethod.primary === 'Vault Timer' || traits.preferredDeterMethod.alternatives.includes('Vault Timer')) {
+            console.log(`
+⏰ OPTIMAL VAULT TIMER SETTINGS FOR ${traits.primary.type}:
+• Quick Decisions: 15-minute cooling period
+• Medium Stakes: 1-hour reflection time  
+• High Stakes: 24-hour wisdom lock
+• Emergency Mode: 72-hour circuit breaker
+
+💡 Personalized Timer Messages:
+• "Your ${traits.primary.type} energy is strong - use this pause to align with your highest self"
+• "Remember: ${traits.preferredDeterMethod.description}"
+• "${traits.recommendations[0]?.action || 'Trust your journey, even the pauses'}"
+            `);
+        } else {
+            console.log(`
+⏰ ALTERNATIVE DEGEN AID RECOMMENDATIONS FOR ${traits.primary.type}:
+Primary Method: ${traits.preferredDeterMethod.primary}
+Implementation: ${traits.preferredDeterMethod.implementation}
+
+Backup Methods: ${traits.preferredDeterMethod.alternatives.join(' + ')}
+            `);
+        }
+    }
+
+    updateMockData() {
+        // Simulate real-time data updates
+        const tiltScore = Math.floor(Math.random() * 100);
+        const currentHour = new Date().getHours();
+        
+        this.dashboardData.tiltCheck.currentRisk = tiltScore > 70 ? 'rekt' : 
+                                                  tiltScore > 50 ? 'full_degen' : 
+                                                  tiltScore > 30 ? 'sending_it' : 'chill';
+        
+        // Generate roast based on time and tilt level
+        if (tiltScore > 60 && (currentHour < 6 || currentHour > 22)) {
+            const roastMessage = this.generateRoastMessage('medium');
+            console.log(`🔥 LIVE ROAST: ${roastMessage.message}`);
+        }
+    }
 
         // 💜 Show welcome notification
         setTimeout(() => {
