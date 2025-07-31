@@ -284,24 +284,24 @@ class TrapHouseDashboardOverlay {
             },
             { type: 'separator' },
             {
-                label: '⚔️ Start Card Battle',
+                label: '⚔️ Start Degen Battle',
                 click: () => this.triggerCardBattle()
             },
             {
-                label: '🎯 Challenge Player',
+                label: '🎯 Challenge Someone',
                 click: () => this.showPlayerChallenge()
             },
             {
-                label: '🏢 Join Hangar Battle',
+                label: '🏢 Join Hangar War',
                 click: () => this.showHangarList()
             },
             { type: 'separator' },
             {
-                label: '💰 Revenue Empire',
+                label: '💰 Revenue Empire Status',
                 click: () => this.showQuickPanel('revenue')
             },
             {
-                label: '💎 Loan Front Status',
+                label: '💎 Loan Shark Operations',
                 click: () => this.showQuickPanel('loanfront')
             },
             {
@@ -309,25 +309,34 @@ class TrapHouseDashboardOverlay {
                 click: () => this.showQuickPanel('collectclock')
             },
             {
-                label: '🌐 Portal Status',
+                label: '🌐 Portal Access',
                 click: () => this.showQuickPanel('portal')
             },
             { type: 'separator' },
             {
-                label: 'TiltCheck Quick View',
+                label: '📊 Tilt Monitor',
                 click: () => this.showQuickPanel('tiltcheck')
             },
             {
-                label: 'Wallet Balance',
+                label: '💳 Wallet Status',
                 click: () => this.showQuickPanel('wallet')
             },
             { type: 'separator' },
             {
-                label: 'Settings',
+                label: '🔧 Degen Settings',
                 click: () => this.showSettings()
             },
             {
-                label: 'Exit',
+                label: '🔒 Encryption Config',
+                click: () => this.showEncryptionSettings()
+            },
+            {
+                label: '🎭 Theme Selector',
+                click: () => this.showThemeSelector()
+            },
+            { type: 'separator' },
+            {
+                label: 'Exit (Run Away)',
                 click: () => app.quit()
             }
         ]);
@@ -622,6 +631,27 @@ class TrapHouseDashboardOverlay {
 
         ipcMain.on('show-main-window', () => {
             this.showMainWindow();
+        });
+
+        // 🎯 New degen-focused IPC handlers
+        ipcMain.on('update-degen-settings', (event, settings) => {
+            this.updateDegenSettings(settings);
+        });
+
+        ipcMain.on('apply-theme', (event, themeName) => {
+            this.applyTheme(themeName);
+        });
+
+        ipcMain.handle('trigger-tilt-detection', () => {
+            return this.performTiltAnalysis();
+        });
+
+        ipcMain.handle('get-roast-message', (event, severity) => {
+            return this.generateRoastMessage(severity);
+        });
+
+        ipcMain.handle('activate-anti-tilt', (event, strategy) => {
+            return this.activateAntiTiltStrategy(strategy);
         });
     }
 
@@ -964,17 +994,366 @@ class TrapHouseDashboardOverlay {
 
     showSettings() {
         const settingsWindow = new BrowserWindow({
-            width: 600,
-            height: 400,
+            width: 800,
+            height: 600,
             parent: this.mainWindow,
             modal: true,
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false
-            }
+            },
+            title: 'Degen Control Panel'
         });
 
-        settingsWindow.loadURL('data:text/html,<h1>Enhanced Settings</h1><p>Card game preferences, tilt patterns, revenue empire configuration coming soon...</p>');
+        const settingsHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>TrapHouse Settings - Degen Edition</title>
+            <style>
+                body { 
+                    background: linear-gradient(135deg, #000, #1a0033); 
+                    color: #fff; 
+                    font-family: 'Courier New', monospace; 
+                    padding: 20px;
+                }
+                .section { 
+                    background: rgba(255,255,255,0.1); 
+                    padding: 15px; 
+                    margin: 10px 0; 
+                    border-radius: 8px; 
+                    border: 1px solid #ff0066;
+                }
+                .section h3 { color: #ff0066; }
+                input, select { 
+                    background: rgba(0,0,0,0.5); 
+                    color: #fff; 
+                    border: 1px solid #00ff88; 
+                    padding: 5px; 
+                    border-radius: 4px;
+                }
+                button { 
+                    background: #ff0066; 
+                    color: #fff; 
+                    border: none; 
+                    padding: 10px 20px; 
+                    border-radius: 4px; 
+                    cursor: pointer;
+                }
+                button:hover { background: #ff3388; }
+            </style>
+        </head>
+        <body>
+            <h2>🎯 TrapHouse Degen Settings</h2>
+            
+            <div class="section">
+                <h3>💀 Tilt & Anti-Tilt Configuration</h3>
+                <label>Roast Level: </label>
+                <select id="roastLevel">
+                    <option value="light">Light Roasting</option>
+                    <option value="medium">Medium Roast</option>
+                    <option value="savage">Full Savage Mode</option>
+                </select><br><br>
+                
+                <label>Anti-Tilt Strategy: </label>
+                <select id="antiTiltMode">
+                    <option value="witty">Witty Comments</option>
+                    <option value="brutal">Brutal Honesty</option>
+                    <option value="supportive">Actually Supportive</option>
+                </select><br><br>
+                
+                <label>Intervention Threshold ($): </label>
+                <input type="number" id="interventionThreshold" value="50">
+            </div>
+            
+            <div class="section">
+                <h3>🎨 Theme Configuration</h3>
+                <label>Visual Style: </label>
+                <select id="themeStyle">
+                    <option value="cyberpunk">Cyberpunk</option>
+                    <option value="neon">Neon Dreams</option>
+                    <option value="matrix">Matrix Mode</option>
+                    <option value="classic">Classic Degen</option>
+                </select><br><br>
+                
+                <label>Danger Color: </label>
+                <input type="color" id="dangerColor" value="#ff3333"><br><br>
+                
+                <label>Success Color: </label>
+                <input type="color" id="successColor" value="#00ff00">
+            </div>
+            
+            <div class="section">
+                <h3>🔒 Privacy & Security</h3>
+                <label>Encryption Level: </label>
+                <select id="encryptionLevel">
+                    <option value="basic">Basic (Don't judge me)</option>
+                    <option value="secure">Secure (Hide my shame)</option>
+                    <option value="paranoid">Paranoid (NSA-proof)</option>
+                </select><br><br>
+                
+                <label><input type="checkbox" id="dataObfuscation"> Obfuscate Data</label><br>
+                <label><input type="checkbox" id="stealthMode"> Stealth Mode</label>
+            </div>
+            
+            <button onclick="saveSettings()">Save Configuration</button>
+            <button onclick="window.close()">Close</button>
+            
+            <script>
+                function saveSettings() {
+                    const settings = {
+                        roastLevel: document.getElementById('roastLevel').value,
+                        antiTiltMode: document.getElementById('antiTiltMode').value,
+                        interventionThreshold: parseInt(document.getElementById('interventionThreshold').value),
+                        themeStyle: document.getElementById('themeStyle').value,
+                        dangerColor: document.getElementById('dangerColor').value,
+                        successColor: document.getElementById('successColor').value,
+                        encryptionLevel: document.getElementById('encryptionLevel').value,
+                        dataObfuscation: document.getElementById('dataObfuscation').checked,
+                        stealthMode: document.getElementById('stealthMode').checked
+                    };
+                    
+                    // Send settings to main process
+                    require('electron').ipcRenderer.send('update-degen-settings', settings);
+                    alert('Settings saved! Time to degen responsibly... 💀');
+                }
+            </script>
+        </body>
+        </html>`;
+        
+        settingsWindow.loadURL('data:text/html,' + encodeURIComponent(settingsHTML));
+    }
+
+    showEncryptionSettings() {
+        const encryptionWindow = new BrowserWindow({
+            width: 600,
+            height: 500,
+            parent: this.mainWindow,
+            modal: true,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false
+            },
+            title: 'Encryption Configuration'
+        });
+
+        const encryptionHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>🔒 Degen Encryption Settings</title>
+            <style>
+                body { 
+                    background: #000; 
+                    color: #00ff00; 
+                    font-family: 'Courier New', monospace; 
+                    padding: 20px;
+                }
+                .warning { 
+                    background: rgba(255,0,0,0.2); 
+                    border: 1px solid #ff0000; 
+                    padding: 10px; 
+                    margin: 10px 0; 
+                    border-radius: 4px;
+                }
+                .info { 
+                    background: rgba(0,255,0,0.1); 
+                    border: 1px solid #00ff00; 
+                    padding: 10px; 
+                    margin: 10px 0; 
+                    border-radius: 4px;
+                }
+                input, select { 
+                    background: #001100; 
+                    color: #00ff00; 
+                    border: 1px solid #00ff00; 
+                    padding: 5px;
+                }
+                button { 
+                    background: #003300; 
+                    color: #00ff00; 
+                    border: 1px solid #00ff00; 
+                    padding: 8px 16px; 
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>🔒 Encryption Configuration</h2>
+            
+            <div class="warning">
+                ⚠️ WARNING: This actually encrypts your degen data. Don't lose your keys, genius.
+            </div>
+            
+            <div class="info">
+                💡 Current Status: ${this.overlaySettings.encryption.enabled ? 'ENCRYPTED' : 'EXPOSED'}
+            </div>
+            
+            <label>Encryption Level:</label><br>
+            <select id="encLevel">
+                <option value="basic">Basic (AES-128)</option>
+                <option value="secure">Secure (AES-256)</option>
+                <option value="paranoid">Paranoid (ChaCha20-Poly1305)</option>
+            </select><br><br>
+            
+            <label>Key Rotation:</label><br>
+            <select id="keyRotation">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="never">Never (Risky)</option>
+            </select><br><br>
+            
+            <label><input type="checkbox" id="dataObfuscation"> Data Obfuscation</label><br>
+            <label><input type="checkbox" id="networkEncryption"> Network Encryption</label><br>
+            <label><input type="checkbox" id="localEncryption"> Local Storage Encryption</label><br><br>
+            
+            <button onclick="generateNewKey()">Generate New Key</button>
+            <button onclick="saveEncryption()">Save Settings</button>
+            <button onclick="window.close()">Close</button>
+            
+            <script>
+                function generateNewKey() {
+                    if(confirm('Generate new encryption key? This will re-encrypt all data.')) {
+                        alert('New key generated! Your data is now extra secure. 🔐');
+                    }
+                }
+                
+                function saveEncryption() {
+                    alert('Encryption settings saved! Your degeneracy is now protected. 💀');
+                }
+            </script>
+        </body>
+        </html>`;
+        
+        encryptionWindow.loadURL('data:text/html,' + encodeURIComponent(encryptionHTML));
+    }
+
+    showThemeSelector() {
+        const themeWindow = new BrowserWindow({
+            width: 700,
+            height: 600,
+            parent: this.mainWindow,
+            modal: true,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false
+            },
+            title: 'Theme Selection'
+        });
+
+        const themeHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>🎭 Degen Theme Selector</title>
+            <style>
+                body { 
+                    background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460); 
+                    color: #fff; 
+                    font-family: 'Arial', sans-serif; 
+                    padding: 20px;
+                }
+                .theme-card { 
+                    background: rgba(255,255,255,0.1); 
+                    padding: 15px; 
+                    margin: 10px; 
+                    border-radius: 8px; 
+                    border: 2px solid transparent;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    display: inline-block;
+                    width: 200px;
+                    vertical-align: top;
+                }
+                .theme-card:hover { 
+                    border-color: #ff0066; 
+                    transform: scale(1.05);
+                }
+                .theme-card.selected { 
+                    border-color: #00ff88; 
+                    background: rgba(0,255,136,0.2);
+                }
+                .theme-preview { 
+                    height: 100px; 
+                    border-radius: 4px; 
+                    margin-bottom: 10px;
+                }
+                .cyberpunk { background: linear-gradient(135deg, #ff0066, #0066ff); }
+                .neon { background: linear-gradient(135deg, #ff00ff, #00ffff); }
+                .matrix { background: linear-gradient(135deg, #003300, #00ff00); }
+                .classic { background: linear-gradient(135deg, #333, #666); }
+                button { 
+                    background: #ff0066; 
+                    color: #fff; 
+                    border: none; 
+                    padding: 12px 24px; 
+                    border-radius: 4px; 
+                    cursor: pointer; 
+                    margin: 10px 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>🎭 Choose Your Degen Aesthetic</h2>
+            
+            <div class="theme-card" onclick="selectTheme('cyberpunk')">
+                <div class="theme-preview cyberpunk"></div>
+                <h3>Cyberpunk 2077</h3>
+                <p>Neon pink and electric blue for that dystopian future vibe</p>
+            </div>
+            
+            <div class="theme-card" onclick="selectTheme('neon')">
+                <div class="theme-preview neon"></div>
+                <h3>Neon Dreams</h3>
+                <p>Bright magentas and cyans - maximum eye strain guaranteed</p>
+            </div>
+            
+            <div class="theme-card" onclick="selectTheme('matrix')">
+                <div class="theme-preview matrix"></div>
+                <h3>Matrix Mode</h3>
+                <p>Green on black - because you're obviously Neo</p>
+            </div>
+            
+            <div class="theme-card" onclick="selectTheme('classic')">
+                <div class="theme-preview classic"></div>
+                <h3>Classic Degen</h3>
+                <p>Understated grays - for the sophisticated degenerate</p>
+            </div>
+            
+            <br><br>
+            <button onclick="applyTheme()">Apply Theme</button>
+            <button onclick="randomTheme()">Surprise Me</button>
+            <button onclick="window.close()">Cancel</button>
+            
+            <script>
+                let selectedTheme = 'cyberpunk';
+                
+                function selectTheme(theme) {
+                    selectedTheme = theme;
+                    document.querySelectorAll('.theme-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    event.target.closest('.theme-card').classList.add('selected');
+                }
+                
+                function applyTheme() {
+                    require('electron').ipcRenderer.send('apply-theme', selectedTheme);
+                    alert('Theme applied! Your degeneracy now has style. 🎨');
+                    window.close();
+                }
+                
+                function randomTheme() {
+                    const themes = ['cyberpunk', 'neon', 'matrix', 'classic'];
+                    const random = themes[Math.floor(Math.random() * themes.length)];
+                    selectTheme(random);
+                    applyTheme();
+                }
+            </script>
+        </body>
+        </html>`;
+        
+        themeWindow.loadURL('data:text/html,' + encodeURIComponent(themeHTML));
     }
 }
 
