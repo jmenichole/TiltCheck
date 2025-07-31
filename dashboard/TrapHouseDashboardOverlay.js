@@ -1355,6 +1355,222 @@ class TrapHouseDashboardOverlay {
         
         themeWindow.loadURL('data:text/html,' + encodeURIComponent(themeHTML));
     }
+
+    // 🎯 New degen-focused methods
+    updateDegenSettings(settings) {
+        Object.assign(this.overlaySettings.notifications, {
+            roastLevel: settings.roastLevel,
+            antiTiltMode: settings.antiTiltMode
+        });
+        
+        Object.assign(this.overlaySettings.theme, {
+            style: settings.themeStyle,
+            colors: {
+                ...this.overlaySettings.theme.colors,
+                danger: settings.dangerColor,
+                success: settings.successColor
+            }
+        });
+
+        Object.assign(this.overlaySettings.encryption, {
+            level: settings.encryptionLevel,
+            dataObfuscation: settings.dataObfuscation
+        });
+
+        this.overlaySettings.wallet.smartSpending.interventionThreshold = settings.interventionThreshold;
+        
+        this.saveOverlaySettings();
+        this.sendOverlaySettings();
+        
+        console.log('🎯 Degen settings updated with maximum efficiency');
+    }
+
+    applyTheme(themeName) {
+        const themes = {
+            cyberpunk: {
+                primary: '#ff0066',
+                secondary: '#0066ff',
+                accent: '#ff00ff',
+                background: 'linear-gradient(135deg, #1a0033, #330066)'
+            },
+            neon: {
+                primary: '#ff00ff',
+                secondary: '#00ffff',
+                accent: '#ffff00',
+                background: 'linear-gradient(135deg, #ff00ff, #00ffff)'
+            },
+            matrix: {
+                primary: '#00ff00',
+                secondary: '#003300',
+                accent: '#66ff66',
+                background: 'linear-gradient(135deg, #000000, #001100)'
+            },
+            classic: {
+                primary: '#666666',
+                secondary: '#333333',
+                accent: '#999999',
+                background: 'linear-gradient(135deg, #1a1a1a, #333333)'
+            }
+        };
+
+        if (themes[themeName]) {
+            this.overlaySettings.theme = {
+                ...this.overlaySettings.theme,
+                style: themeName,
+                colors: { ...this.overlaySettings.theme.colors, ...themes[themeName] }
+            };
+            
+            this.saveOverlaySettings();
+            this.sendOverlaySettings();
+            
+            // Update overlay immediately
+            if (this.overlayWindow && !this.overlayWindow.isDestroyed()) {
+                this.overlayWindow.webContents.send('theme-update', this.overlaySettings.theme);
+            }
+        }
+    }
+
+    performTiltAnalysis() {
+        const currentData = this.dashboardData;
+        let tiltScore = 0;
+        let indicators = [];
+
+        // Analyze session time
+        if (currentData.tiltCheck.sessionTime > 120) {
+            tiltScore += 30;
+            indicators.push("Marathon session detected - your chair has Stockholm syndrome");
+        }
+
+        // Analyze losses
+        if (currentData.tiltCheck.todayLosses > currentData.tiltCheck.limits.daily * 0.5) {
+            tiltScore += 25;
+            indicators.push("Losses approaching danger zone - even your calculator is concerned");
+        }
+
+        // Analyze consecutive losses (if available)
+        if (currentData.user.consecutiveLs > 5) {
+            tiltScore += 20;
+            indicators.push("Loss streak detected - time to touch grass");
+        }
+
+        // Analyze time patterns (if it's late night)
+        const currentHour = new Date().getHours();
+        if (currentHour < 6 || currentHour > 22) {
+            tiltScore += 15;
+            indicators.push("Late night degeneracy - your sleep schedule has left the chat");
+        }
+
+        let riskLevel = 'chill';
+        let recommendation = '';
+
+        if (tiltScore >= 70) {
+            riskLevel = 'rekt';
+            recommendation = "Stop. Just stop. Your future self is begging you.";
+        } else if (tiltScore >= 50) {
+            riskLevel = 'full_degen';
+            recommendation = "Danger zone activated. Maybe take a breath?";
+        } else if (tiltScore >= 30) {
+            riskLevel = 'sending_it';
+            recommendation = "You're pushing it, but we've all been there.";
+        } else if (tiltScore >= 15) {
+            riskLevel = 'cautious';
+            recommendation = "Looking good, but stay aware.";
+        }
+
+        // Update dashboard data
+        this.dashboardData.tiltCheck.currentRisk = riskLevel;
+        this.sendDataToOverlay();
+
+        return {
+            score: tiltScore,
+            level: riskLevel,
+            indicators: indicators,
+            recommendation: recommendation,
+            timestamp: Date.now()
+        };
+    }
+
+    generateRoastMessage(severity = 'medium') {
+        const roasts = {
+            light: [
+                "Hey, maybe consider not doing that? 🤔",
+                "Your wallet called, it's filing for divorce",
+                "Even a magic 8-ball would say 'outlook not so good'",
+                "Sir, this is a casino, not a charity",
+                "Your risk tolerance has left the building"
+            ],
+            medium: [
+                "Bro... maybe touch some grass? 🌱",
+                "Your ancestors didn't survive famines for this 💀",
+                "Even WSB would tell you to slow down",
+                "Sir, this is a Wendy's... oh wait, wrong app",
+                "Your future self is crying rn ngl",
+                "Tilt level: Italian mother discovering your browser history"
+            ],
+            savage: [
+                "Stop it. Get some help. Seriously.",
+                "Your bank account has filed a restraining order",
+                "Even your imaginary friends are concerned",
+                "The house always wins, and right now you ARE the house... for them",
+                "Your decision-making skills have left the chat",
+                "This is your intervention. We all care about you. Stop."
+            ]
+        };
+
+        const roastLevel = this.overlaySettings.notifications.roastLevel || 'medium';
+        const messages = roasts[roastLevel] || roasts.medium;
+        
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    activateAntiTiltStrategy(strategy = null) {
+        const selectedStrategy = strategy || this.overlaySettings.notifications.antiTiltMode || 'witty';
+        
+        const strategies = {
+            witty: [
+                "Go get a snack and contemplate your life choices",
+                "Take a cold shower (seriously)",
+                "Call your mom, she misses you",
+                "Do 20 pushups and remember you have a body",
+                "Look at your bank account... yeah, that should do it"
+            ],
+            brutal: [
+                "Stop being an idiot and walk away",
+                "You're literally throwing money into a black hole",
+                "Close the app. Touch grass. Become human again.",
+                "Your addiction is showing, fix it",
+                "This isn't investing, it's just expensive entertainment"
+            ],
+            supportive: [
+                "Hey, we've all been there. Take a break.",
+                "Your worth isn't determined by wins or losses",
+                "Sometimes the best move is not to play",
+                "You're stronger than this urge, we believe in you",
+                "Tomorrow is a new day with fresh perspectives"
+            ]
+        };
+
+        const selectedMessages = strategies[selectedStrategy] || strategies.witty;
+        const message = selectedMessages[Math.floor(Math.random() * selectedMessages.length)];
+
+        // Show anti-tilt notification
+        this.dashboardData.notifications.unshift({
+            title: '🛑 Anti-Tilt Activated',
+            message: message,
+            severity: 'warning',
+            roastLevel: selectedStrategy,
+            antiTilt: true,
+            timestamp: Date.now()
+        });
+
+        this.sendDataToOverlay();
+
+        return {
+            strategy: selectedStrategy,
+            message: message,
+            activated: true
+        };
+    }
 }
 
 // Initialize the enhanced application
