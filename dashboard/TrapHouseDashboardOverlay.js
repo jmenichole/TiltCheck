@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, screen, globalShortcut, Menu, Tray, nativeI
 const path = require('path');
 const fs = require('fs');
 const MischiefManagerCollectClockIntegration = require('./MischiefManagerCollectClockIntegration');
+const DegenMindfulBalanceHelper = require('./DegenMindfulBalanceHelper');
 
 /**
  * 🎯 TrapHouse Dashboard Overlay - Where Degens Become Legends �
@@ -27,6 +28,7 @@ class TrapHouseDashboardOverlay {
         this.tray = null;
         this.isOverlayVisible = true;
         this.mischiefManager = new MischiefManagerCollectClockIntegration();
+        this.balanceHelper = new DegenMindfulBalanceHelper();
         
         // 🎯 Dashboard customization for actual degenerates
         this.overlaySettings = {
@@ -392,10 +394,27 @@ Backup Methods: ${traits.preferredDeterMethod.alternatives.join(' + ')}
             console.log(`🔥 LIVE ROAST: ${roastMessage}`);
         }
         
-        // 💜 Show welcome notification occasionally
+        // 💜 Show welcome notification occasionally with balance check
         if (Math.random() > 0.95) {
             console.log('💜 Welcome back! Your mindful gambling companion is here to support your journey.');
-
+            
+            // Generate balance guidance based on current state
+            const balanceGuidance = this.balanceHelper.generateBalanceGuidance(
+                this.dashboardData.user.trustLevel || 'Balanced Degen Architect',
+                this.dashboardData.tiltCheck.currentRisk,
+                {
+                    escalatingBehavior: tiltScore > 70,
+                    ignoredWarnings: Math.random() > 0.8,
+                    supportNetworkAvoidance: false,
+                    selfCareNeglect: currentHour < 6 || currentHour > 22
+                }
+            );
+            
+            if (balanceGuidance.currentAssessment.urgencyLevel !== 'low') {
+                console.log(`\n🎯 BALANCE CHECK: ${balanceGuidance.encouragement}`);
+                console.log(`💡 Recommended: ${balanceGuidance.recommendedInterventions[0]?.userMessage || 'Take a mindful pause'}`);
+            }
+        }
     }
 
     createSystemTray() {

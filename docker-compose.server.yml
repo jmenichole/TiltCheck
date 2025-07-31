@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # TrapHouse TiltCheck Production Server for Railway Deployment
+  tiltcheck-server:
+    build: .
+    container_name: tiltcheck-server
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      
+      # Discord Bot Tokens
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - JUSTTHETIP_BOT_TOKEN=${JUSTTHETIP_BOT_TOKEN}
+      - DEGENS_BOT_TOKEN=${DEGENS_BOT_TOKEN}
+      
+      # Domain Configuration
+      - BASE_URL=https://tiltcheck.it.com
+      - app_url=https://tiltcheck.it.com
+      - OAUTH_REDIRECT_URI=https://tiltcheck.it.com/auth/callback
+      
+      # TiltCheck Configuration
+      - TILTCHECK_BASE_URL=https://api.tiltcheck.it.com
+      - TILTCHECK_WEBHOOK_URL=https://tiltcheck.it.com/webhook/tiltcheck
+      - TILTCHECK_VERIFICATION_ENABLED=true
+      - TILTCHECK_MIN_TRUST_SCORE=50
+      - TILTCHECK_REAL_TIME_MONITORING=true
+      
+      # CollectClock Integration
+      - COLLECTCLOCK_BASE_URL=https://collectclock.tiltcheck.it.com
+      - COLLECTCLOCK_GITHUB_FALLBACK=https://jmenichole.github.io/CollectClock/
+      - COLLECTCLOCK_API_URL=https://collectclock.tiltcheck.it.com/api
+      - COLLECTCLOCK_WEBHOOK_URL=https://tiltcheck.it.com/webhook/collectclock
+      - COLLECTCLOCK_VERIFICATION_ENABLED=true
+      
+      # Degens Cards Configuration
+      - DEGENS_CARDS_BASE_URL=https://cards.tiltcheck.it.com
+      - DEGENS_CARDS_API_URL=https://api.tiltcheck.it.com/cards
+      - DEGENS_CARDS_WEBHOOK_URL=https://tiltcheck.it.com/webhook/degencards
+      - DEGENS_CARDS_MULTIPLAYER_ENABLED=true
+      
+      # Railway Configuration
+      - RAILWAY_PROJECT_ID=0gapllg9
+      - RAILWAY_ENVIRONMENT=production
+      - RAILWAY_DOMAIN_MAPPING=tiltcheck.it.com
+      - RAILWAY_PORT=3000
+      - RAILWAY_TILTCHECK_URL=https://tiltcheck.it.com
+      
+      # Payment Configuration
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      
+      # Crypto Configuration
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL}
+      - SOLANA_USDC_DESTINATION_ADDRESS=${SOLANA_USDC_DESTINATION_ADDRESS}
+      - ETH_RPC_URL=${ETH_RPC_URL}
+      - ETHEREUM_RPC_URL=${ETHEREUM_RPC_URL}
+      
+      # Security
+      - JWT_SECRET=${JWT_SECRET}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      
+      # Feature Flags
+      - ENABLE_CRYPTO_DEPOSITS=true
+      - ENABLE_TILTCHECK=true
+      - ENABLE_COLLECTCLOCK_JUSTTHETIP=true
+      - ENABLE_DEGENS_CARDS_TRAPHOUSE=true
+      - ENABLE_DEGENS_CARDS_JUSTTHETIP=true
+      - ENABLE_DEGENS_CARDS_DEGENS=true
+      
+      # Degen-Mindful Balance System
+      - BALANCE_SYSTEM_ENABLED=true
+      - MINDFUL_DEGEN_INTEGRATION=true
+      - TILT_VS_UNTILT_TRACKING=true
+      - COMPASSION_GLITCH_PREVENTION=true
+      - DEGEN_HUMOR_ENABLED=true
+      - WITTY_LIFE_RELEVANCY=true
+      
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    ports:
+      - "3000:3000"
+    networks:
+      - tiltcheck-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Redis for session management and caching
+  redis:
+    image: redis:7-alpine
+    container_name: tiltcheck-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - tiltcheck-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  tiltcheck-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
