@@ -415,6 +415,62 @@ client.on('messageCreate', async (message) => {
         } else {
             await message.reply('💳 **TrapHouse Payment System**\n\n**Fiat Deposits:**\n`!deposit fiat <amount> [currency]` - Deposit via Stripe\nExample: `!deposit fiat 100 USD`\n\n**Crypto Deposits:**\n`!deposit crypto <CRYPTO>` - Generate deposit address\nExample: `!deposit crypto ETH`\n\nSupported: ETH, USDC, USDT, WBTC');
         }
+    } else if (command === '!verify-payment' || command === '!check-tx') {
+        // JustTheTip Solscan payment verification
+        if (!solscanTracker) {
+            return await message.reply('💡 Solscan tracking not available on this bot.');
+        }
+        
+        const signature = args[0];
+        if (!signature) {
+            return await message.reply('💡 **Verify Payment**\n\nUsage: `!verify-payment <transaction_signature>`\nExample: `!verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E`');
+        }
+        
+        try {
+            const isValid = await solscanTracker.verifyPaymentTransaction(signature);
+            
+            if (isValid) {
+                const paymentResult = await solscanTracker.processLoanPayment(signature);
+                
+                if (paymentResult.success) {
+                    const embed = {
+                        title: "✅ Payment Verified",
+                        color: 0x00ff00,
+                        fields: [
+                            {
+                                name: "Transaction",
+                                value: `\`${signature}\``,
+                                inline: false
+                            },
+                            {
+                                name: "Amount",
+                                value: `${paymentResult.transaction.amount} ${paymentResult.transaction.token}`,
+                                inline: true
+                            },
+                            {
+                                name: "Signer Verified",
+                                value: "✅ JustTheTip Payment Signer",
+                                inline: true
+                            },
+                            {
+                                name: "Solscan Link",
+                                value: `[View Transaction](https://solscan.io/tx/${signature})`,
+                                inline: false
+                            }
+                        ]
+                    };
+                    
+                    await message.reply({ embeds: [embed] });
+                } else {
+                    await message.reply(`❌ Could not process payment: ${paymentResult.error}`);
+                }
+            } else {
+                await message.reply('❌ Transaction not signed by JustTheTip payment signer or not found.');
+            }
+        } catch (error) {
+            console.error('Error verifying payment:', error);
+            await message.reply('❌ Error verifying payment. Please try again.');
+        }
     } else if (command === '!withdraw') {
         if (!paymentManager) {
             return await message.reply('💳 Payment system is initializing. Please try again in a moment.');
@@ -570,6 +626,64 @@ function getNextMonday() {
     const nextMonday = new Date();
     nextMonday.setDate(today.getDate() + (7 - today.getDay() + 1) % 7);
     return nextMonday.toDateString();
+}
+
+// Handle loan payments detected by Solscan
+async function handleLoanPayment(paymentData, client) {
+    try {
+        const { transaction, loanData } = paymentData;
+        
+        console.log(`💡 Processing loan payment: ${transaction.signature}`);
+        
+        // Get the loan channel
+        const loanChannelId = process.env.JUSTTHETIP_LOAN_CHANNEL_ID;
+        const loanChannel = client.channels.cache.get(loanChannelId);
+        
+        if (!loanChannel) {
+            console.error('❌ Loan channel not found');
+            return;
+        }
+        
+        // Create payment confirmation embed
+        const embed = {
+            title: "💡 JustTheTip Loan Payment Received",
+            color: 0x00ff00,
+            fields: [
+                {
+                    name: "Transaction Hash",
+                    value: `\`${transaction.signature}\``,
+                    inline: false
+                },
+                {
+                    name: "Amount",
+                    value: `${transaction.amount} ${transaction.token}`,
+                    inline: true
+                },
+                {
+                    name: "Block Time",
+                    value: new Date(transaction.timestamp * 1000).toLocaleString(),
+                    inline: true
+                },
+                {
+                    name: "Solscan Link",
+                    value: `[View Transaction](https://solscan.io/tx/${transaction.signature})`,
+                    inline: false
+                }
+            ],
+            timestamp: new Date(),
+            footer: {
+                text: "JustTheTip Loan Payment System"
+            }
+        };
+        
+        // Send to loan channel
+        await loanChannel.send({ embeds: [embed] });
+        
+        console.log('✅ Loan payment notification sent to Discord');
+        
+    } catch (error) {
+        console.error('❌ Error handling loan payment:', error.message);
+    }
 }
 
 // Handle button interactions for payment system
