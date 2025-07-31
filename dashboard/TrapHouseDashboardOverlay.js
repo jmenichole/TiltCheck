@@ -67,11 +67,20 @@ class TrapHouseDashboardOverlay {
                 sessionTime: 45,
                 todayLosses: 23.50,
                 limits: { daily: 100 },
-                compassionateMessages: [
-                    "You're doing great! Every mindful choice counts 💜",
-                    "Remember, we've all been where you are",
-                    "Learning from patterns makes us stronger",
-                    "Your awareness is your superpower"
+                roastMessages: [
+                    "Bro... maybe touch some grass? 🌱",
+                    "Your ancestors didn't survive famines for this 💀",
+                    "Even WSB would tell you to slow down",
+                    "Sir, this is a Wendy's... oh wait, wrong app",
+                    "Your future self is crying rn ngl",
+                    "Tilt level: Italian mother discovering your browser history"
+                ],
+                antiTiltStrategies: [
+                    "Go get a snack and contemplate your life choices",
+                    "Take a cold shower (seriously)",
+                    "Call your mom, she misses you",
+                    "Do 20 pushups and remember you have a body",
+                    "Look at your bank account... yeah, that should do it"
                 ]
             },
             wallet: {
