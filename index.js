@@ -291,6 +291,15 @@ client.once('ready', async () => {
     paymentManager = new PaymentManager(client);
     console.log('💳 Payment Manager initialized - Crypto & Fiat support ready!');
     
+    // Initialize BetCollective Support System
+    try {
+        supportIntegration = new SupportIntegration(client);
+        await supportIntegration.initialize();
+        console.log('🎫 BetCollective Support System initialized - @jmenichole dev pinging ready!');
+    } catch (error) {
+        console.error('❌ Failed to initialize Support System:', error);
+    }
+    
     // Initialize Crypto Tip System
     try {
         cryptoTipManager = new CryptoTipManager();
