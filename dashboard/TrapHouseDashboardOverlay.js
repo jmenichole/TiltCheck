@@ -506,6 +506,74 @@ class TrapHouseDashboardOverlay {
             return await this.mischiefManager.startHangarBattle(battleConfig);
         });
 
+        // 💜 Love-driven overlay customization handlers
+        ipcMain.handle('resize-overlay', (event, dimensions) => {
+            if (this.overlayWindow) {
+                this.overlayWindow.setSize(dimensions.width, dimensions.height);
+                this.overlaySettings.size = dimensions;
+                this.saveOverlaySettings();
+                return { success: true, message: 'Overlay resized with love 💜' };
+            }
+            return { success: false };
+        });
+
+        ipcMain.handle('adjust-transparency', (event, opacity) => {
+            if (this.overlayWindow && opacity >= 0.1 && opacity <= 1.0) {
+                this.overlayWindow.setOpacity(opacity);
+                this.overlaySettings.transparency = opacity;
+                this.saveOverlaySettings();
+                return { success: true, message: `Transparency set to ${Math.round(opacity * 100)}% 💜` };
+            }
+            return { success: false };
+        });
+
+        ipcMain.handle('toggle-notifications', (event, enabled) => {
+            this.overlaySettings.notifications.enabled = enabled;
+            this.saveOverlaySettings();
+            return { success: true, message: `Notifications ${enabled ? 'enabled' : 'disabled'} with love 💜` };
+        });
+
+        ipcMain.handle('toggle-popups', (event, enabled) => {
+            this.overlaySettings.notifications.popups = enabled;
+            this.saveOverlaySettings();
+            return { success: true, message: `Pop-ups ${enabled ? 'enabled' : 'disabled'} 💜` };
+        });
+
+        ipcMain.handle('send-instant-message', async (event, messageData) => {
+            // 💜 Send compassionate instant message
+            const message = {
+                to: messageData.recipient,
+                from: messageData.sender || 'You',
+                content: messageData.message,
+                timestamp: Date.now(),
+                tone: messageData.tone || 'supportive',
+                type: messageData.type || 'peer_support'
+            };
+
+            // Add to instant messaging history
+            this.dashboardData.instantMessaging.recentMessages.unshift(message);
+            this.dashboardData.instantMessaging.recentMessages = 
+                this.dashboardData.instantMessaging.recentMessages.slice(0, 10);
+
+            this.sendDataToOverlay();
+            return { success: true, message: 'Message sent with love 💜' };
+        });
+
+        ipcMain.handle('resync-data', async (event) => {
+            await this.forceDataResync();
+            return { success: true, message: 'Data resynced with love 💜' };
+        });
+
+        ipcMain.handle('get-overlay-settings', () => {
+            return this.overlaySettings;
+        });
+
+        ipcMain.handle('update-overlay-settings', (event, newSettings) => {
+            Object.assign(this.overlaySettings, newSettings);
+            this.saveOverlaySettings();
+            return { success: true, message: 'Settings updated with love 💜' };
+        });
+
         ipcMain.on('show-main-window', () => {
             this.showMainWindow();
         });
