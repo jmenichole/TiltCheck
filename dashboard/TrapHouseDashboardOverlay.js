@@ -230,13 +230,19 @@ class TrapHouseDashboardOverlay {
         if (this.isReady) return;
         
         // Check if we're in an Electron environment
-        if (!app || typeof app.whenReady !== 'function') {
-            console.log('🎯 Running in non-Electron environment - initializing mock interface...');
+        try {
+            if (!app || typeof app.whenReady !== 'function') {
+                console.log('🎯 Running in non-Electron environment - initializing mock interface...');
+                this.initializeMockInterface();
+                return;
+            }
+            
+            await app.whenReady();
+        } catch (error) {
+            console.log('🎯 Electron not available - running in mock mode:', error.message);
             this.initializeMockInterface();
             return;
         }
-        
-        await app.whenReady();
         this.isReady = true;
         
         // 💜 Load saved settings with love
