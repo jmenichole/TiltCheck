@@ -1,0 +1,91 @@
+{
+  "name": "traphouse-dashboard-overlay",
+  "version": "1.0.0",
+  "description": "TrapHouse Dashboard Overlay - Installable desktop application with AIM-style interface for real-time monitoring",
+  "main": "dashboard/TrapHouseDashboardOverlay.js",
+  "scripts": {
+    "start": "electron dashboard/TrapHouseDashboardOverlay.js",
+    "dev": "electron dashboard/TrapHouseDashboardOverlay.js --enable-logging",
+    "build": "electron-builder",
+    "build-mac": "electron-builder --mac",
+    "build-win": "electron-builder --win",
+    "build-linux": "electron-builder --linux",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --publish=never"
+  },
+  "keywords": [
+    "electron",
+    "dashboard",
+    "overlay",
+    "tiltcheck",
+    "justthetip",
+    "gambling",
+    "responsibile-gaming",
+    "aim-style"
+  ],
+  "author": "TrapHouse Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "ws": "^8.14.2"
+  },
+  "build": {
+    "appId": "com.traphouse.dashboard.overlay",
+    "productName": "TrapHouse Dashboard Overlay",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dashboard/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "dashboard/assets/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "icon": "dashboard/assets/icon.ico"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "dashboard/assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "TrapHouse Dashboard"
+    }
+  },
+  "homepage": "https://github.com/traphouse/dashboard-overlay",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/traphouse/dashboard-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/traphouse/dashboard-overlay/issues"
+  }
+}
