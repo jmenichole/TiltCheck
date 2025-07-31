@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # TrapHouse Discord Bot
+  traphouse-bot:
+    build: .
+    container_name: traphouse-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - TIPCC_API_KEY=${TIPCC_API_KEY}
+      - TIPCC_WEBHOOK_SECRET=${TIPCC_WEBHOOK_SECRET}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - PAYMENT_ADMIN_ID=${PAYMENT_ADMIN_ID}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    ports:
+      - "3001:3001"
+    networks:
+      - bot-network
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Health check')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Degens Against Decency Bot (placeholder)
+  degens-bot:
+    build:
+      context: ../degens_bot  # Adjust path as needed
+      dockerfile: Dockerfile
+    container_name: degens-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${DEGENS_DISCORD_TOKEN}
+    volumes:
+      - ../degens_bot/data:/app/data
+      - ../degens_bot/logs:/app/logs
+    ports:
+      - "3002:3002"
+    networks:
+      - bot-network
+    depends_on:
+      - redis
+
+  # Marketing Webapp
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    container_name: traphouse-webapp
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    ports:
+      - "3000:3000"
+    networks:
+      - bot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: traphouse-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - webapp
+      - traphouse-bot
+    networks:
+      - bot-network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: traphouse-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - bot-network
+    command: redis-server --appendonly yes
+
+  # Watchtower for auto-updates
+  watchtower:
+    image: containrrr/watchtower
+    container_name: traphouse-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *  # Daily at 4 AM
+    networks:
+      - bot-network
+
+networks:
+  bot-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

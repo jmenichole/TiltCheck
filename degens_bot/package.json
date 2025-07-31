@@ -1,0 +1,29 @@
+{
+  "name": "degens_against_decency_bot",
+  "version": "1.0.0",
+  "description": "Discord card game bot for degenerates - Cards Against Humanity style",
+  "main": "degens_bot.js",
+  "scripts": {
+    "start": "node degens_bot.js",
+    "dev": "nodemon degens_bot.js",
+    "test": "node test.js",
+    "setup": "echo 'Setting up Degens Against Decency...' && npm install && echo 'Setup complete! Copy .env.example to .env and add your bot token.'"
+  },
+  "keywords": ["discord", "bot", "cards", "game", "degens", "humor", "nsfw", "cards-against-humanity"],
+  "author": "Degens Against Decency",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmenichole/trap-house-discord-bot"
+  }
+}

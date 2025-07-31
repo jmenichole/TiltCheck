@@ -1,0 +1,32 @@
+# Degens Against Decency Bot Dockerfile
+# Note: Adjust this based on your actual degens bot structure
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p data logs cards
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "console.log('Degens bot health check')" || exit 1
+
+# Expose port for health checks
+EXPOSE 3002
+
+# Start the bot
+CMD ["node", "index.js"]

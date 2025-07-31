@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { getUserData } = require('./storage');
 const { getRankFromRespect, getLoanCapFromRespect } = require('./respectManager');
+const PaymentManager = require('./paymentManager');
 
 const path = './loans.json';
 
@@ -104,11 +105,20 @@ async function handleFrontCommand(message, args) {
         
         const repayAmount = Math.floor(amount * 1.5); // 150% (50% interest)
         
+        // Process loan issuance fee
+        try {
+            const paymentManager = new PaymentManager(message.client);
+            await paymentManager.processLoanIssuanceFee(userId, amount, `loan_${now}`);
+        } catch (error) {
+            console.error('Error processing loan issuance fee:', error);
+        }
+        
         // Generate tip.cc command for the user
         const tipCommand = `$tip <@${userId}> ${amount}`;
         
         return message.reply(`You been fronted 💸 $${amount}! You got 5 days to bring me back $${repayAmount} (150%).
 
+**💳 PROCESSING FEE:** $3 loan issuance fee will be charged via tip.cc
 **PAYMENT METHOD:** Use tip.cc to send payment
 **Admin will send you:** \`${tipCommand}\`
 **You repay with:** \`$tip <@ADMIN_ID> ${repayAmount}\`
@@ -133,6 +143,15 @@ Don't make me come lookin' for you... 🔫
         const isOverdue = now > loan.dueDate;
         
         if (isOverdue) {
+            // Process late repayment fee
+            try {
+                const daysLate = Math.ceil((now - loan.dueDate) / (24 * 60 * 60 * 1000));
+                const paymentManager = new PaymentManager(message.client);
+                await paymentManager.processLateRepaymentFee(userId, `loan_${loan.timestamp}`, daysLate);
+            } catch (error) {
+                console.error('Error processing late repayment fee:', error);
+            }
+            
             // Add late fees - extra 25% if overdue
             const lateFee = Math.floor(originalAmount * 0.25);
             const totalWithLateFee = totalDue + lateFee;
@@ -149,9 +168,9 @@ Don't make me come lookin' for you... 🔫
                 
                 saveLoans(loans);
                 saveUserTrust(trust);
-                return message.reply(`Bout time! You paid the full $${totalWithLateFee} (with late fees). Don't be late next time! ⏰💸\n\n**CONFIRM PAYMENT:** Send via tip.cc: \`$tip <@ADMIN_ID> ${totalWithLateFee}\``);
+                return message.reply(`Bout time! You paid the full $${totalWithLateFee} (with late fees). **💳 Additional $3 late payment fee charged via tip.cc.** Don't be late next time! ⏰💸\n\n**CONFIRM PAYMENT:** Send via tip.cc: \`$tip <@ADMIN_ID> ${totalWithLateFee}\``);
             } else {
-                return message.reply(`You're late! You owe $${totalWithLateFee} now (original $${totalDue} + $${lateFee} late fee). Pay up! 🚨\n\n**PAY NOW:** \`$tip <@ADMIN_ID> ${totalWithLateFee}\``);
+                return message.reply(`You're late! You owe $${totalWithLateFee} now (original $${totalDue} + $${lateFee} late fee). **💳 Additional $3 late payment fee will be charged via tip.cc.** Pay up! 🚨\n\n**PAY NOW:** \`$tip <@ADMIN_ID> ${totalWithLateFee}\``);
             }
         }
 

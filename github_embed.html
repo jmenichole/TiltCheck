@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrapHouse Discord Bot - GitHub Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .repo-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .repo-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .repo-icon {
+            width: 60px;
+            height: 60px;
+            background: #24292e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 24px;
+        }
+        .repo-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #24292e;
+            margin: 0;
+        }
+        .repo-description {
+            color: #586069;
+            font-size: 16px;
+            margin: 10px 0 20px 0;
+            line-height: 1.5;
+        }
+        .repo-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #586069;
+        }
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: #238636;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2ea043;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #f6f8fa;
+            color: #24292e;
+            border: 1px solid #d0d7de;
+        }
+        .btn-secondary:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #238636;
+        }
+        .feature-title {
+            font-weight: 600;
+            color: #24292e;
+            margin-bottom: 10px;
+        }
+        .feature-desc {
+            color: #586069;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .live-badge {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .embed-code {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            float: right;
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="repo-card">
+            <div class="repo-header">
+                <div class="repo-icon">🏠</div>
+                <div>
+                    <h1 class="repo-title">
+                        TrapHouse Discord Bot
+                        <span class="live-badge">LIVE</span>
+                    </h1>
+                    <p class="repo-description">
+                        Complete Discord lending system with tip.cc real money integration, respect-based ranking, and auto-start deployment
+                    </p>
+                </div>
+            </div>
+
+            <div class="repo-stats">
+                <div class="stat">
+                    <span>⭐</span>
+                    <span>Language: JavaScript</span>
+                </div>
+                <div class="stat">
+                    <span>📦</span>
+                    <span>55 Files</span>
+                </div>
+                <div class="stat">
+                    <span>🚀</span>
+                    <span>Production Ready</span>
+                </div>
+                <div class="stat">
+                    <span>💰</span>
+                    <span>Monetizable</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <a href="https://github.com/jmenichole/trap-house-discord-bot" class="btn btn-primary" target="_blank">
+                    📂 View on GitHub
+                </a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/archive/refs/heads/main.zip" class="btn btn-secondary" target="_blank">
+                    ⬇️ Download ZIP
+                </a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/fork" class="btn btn-secondary" target="_blank">
+                    🍴 Fork Repository
+                </a>
+                <button class="btn btn-secondary" onclick="window.open('https://discord.gg/your-server', '_blank')">
+                    💬 Join Discord
+                </button>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-title">💰 Real Money Lending</div>
+                    <div class="feature-desc">Integrated with tip.cc for actual Discord money transactions with 150% repayment system</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">👑 Respect System</div>
+                    <div class="feature-desc">5-tier ranking progression from Street Soldier to Boss with automatic role assignment</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">🚀 Auto-Start System</div>
+                    <div class="feature-desc">Complete macOS deployment with Launch Agent, monitoring, and crash recovery</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-title">🛡️ Trust Levels</div>
+                    <div class="feature-desc">Dynamic loan caps based on user behavior and respect levels</div>
+                </div>
+            </div>
+
+            <div class="embed-code">
+                <button class="copy-btn" onclick="copyEmbedCode()">Copy</button>
+                <strong>Embed this repository:</strong><br><br>
+                <code id="embed-code">&lt;iframe src="https://ghbtns.com/github-btn.html?user=jmenichole&repo=trap-house-discord-bot&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30"&gt;&lt;/iframe&gt;</code>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyEmbedCode() {
+            const code = document.getElementById('embed-code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Embed code copied to clipboard!');
+            });
+        }
+
+        // GitHub API integration (optional)
+        async function fetchGitHubStats() {
+            try {
+                const response = await fetch('https://api.github.com/repos/jmenichole/trap-house-discord-bot');
+                const data = await response.json();
+                
+                // Update stats with real GitHub data
+                console.log('GitHub Stats:', data);
+            } catch (error) {
+                console.log('GitHub API not available');
+            }
+        }
+
+        // Load GitHub stats on page load
+        fetchGitHubStats();
+    </script>
+</body>
+</html>

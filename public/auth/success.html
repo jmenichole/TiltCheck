@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrapHouse Bot - Authentication</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            color: #7289DA;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .status {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+        
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+        }
+        
+        .info {
+            background: rgba(0, 123, 255, 0.2);
+            border: 2px solid #007bff;
+            color: #007bff;
+        }
+        
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: left;
+        }
+        
+        .user-info h3 {
+            color: #7289DA;
+            margin-bottom: 0.5rem;
+        }
+        
+        .user-info p {
+            margin: 0.25rem 0;
+        }
+        
+        .button {
+            background: #7289DA;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            background: #5b6eae;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .loading {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏠</div>
+        <h1>TrapHouse Bot</h1>
+        
+        <div id="status-container">
+            <!-- Status messages will be inserted here -->
+        </div>
+        
+        <div id="user-container">
+            <!-- User info will be inserted here -->
+        </div>
+        
+        <div id="actions-container">
+            <!-- Action buttons will be inserted here -->
+        </div>
+        
+        <div class="footer">
+            <p>Secure Discord Authentication</p>
+            <p id="timestamp"></p>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                token: params.get('token'),
+                error: params.get('error'),
+                state: params.get('state')
+            };
+        }
+        
+        // Display status message
+        function showStatus(message, type = 'info') {
+            const container = document.getElementById('status-container');
+            container.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        // Display user information
+        function showUserInfo(userInfo) {
+            const container = document.getElementById('user-container');
+            container.innerHTML = `
+                <div class="user-info">
+                    <h3>Welcome, ${userInfo.discord.username}!</h3>
+                    <p><strong>Discord ID:</strong> ${userInfo.discord.id}</p>
+                    <p><strong>Respect Points:</strong> ${userInfo.bot.respect || 0}</p>
+                    <p><strong>Rank:</strong> ${userInfo.bot.rank || 'Street Soldier'}</p>
+                    <p><strong>Total Loans:</strong> ${userInfo.bot.loansCount || 0}</p>
+                    ${userInfo.permissions.isAdmin ? '<p><strong>Role:</strong> <span style="color: #ff6b6b;">Administrator</span></p>' : ''}
+                </div>
+            `;
+        }
+        
+        // Display action buttons
+        function showActions(isAuthenticated, isAdmin = false) {
+            const container = document.getElementById('actions-container');
+            
+            if (isAuthenticated) {
+                let buttons = `
+                    <a href="#" class="button" onclick="refreshUserData()">🔄 Refresh Data</a>
+                    <a href="#" class="button" onclick="logout()">🚪 Logout</a>
+                `;
+                
+                if (isAdmin) {
+                    buttons += `<a href="#" class="button" onclick="openAdminDashboard()">⚙️ Admin Dashboard</a>`;
+                }
+                
+                container.innerHTML = buttons;
+            } else {
+                container.innerHTML = `
+                    <a href="/auth/discord" class="button">🔐 Login with Discord</a>
+                `;
+            }
+        }
+        
+        // Fetch user data
+        async function fetchUserData(token) {
+            try {
+                const response = await fetch('/auth/user', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    throw new Error('Failed to fetch user data');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                return null;
+            }
+        }
+        
+        // Refresh user data
+        async function refreshUserData() {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                showStatus('❌ No authentication token found', 'error');
+                return;
+            }
+            
+            showStatus('🔄 Refreshing user data...', 'info');
+            
+            const userInfo = await fetchUserData(token);
+            if (userInfo) {
+                showUserInfo(userInfo);
+                showStatus('✅ User data refreshed successfully', 'success');
+            } else {
+                showStatus('❌ Failed to refresh user data', 'error');
+            }
+        }
+        
+        // Logout function
+        async function logout() {
+            try {
+                await fetch('/auth/logout', { method: 'POST' });
+                localStorage.removeItem('auth_token');
+                showStatus('✅ Logged out successfully', 'success');
+                showActions(false);
+                document.getElementById('user-container').innerHTML = '';
+                
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } catch (error) {
+                showStatus('❌ Logout failed', 'error');
+            }
+        }
+        
+        // Open admin dashboard
+        async function openAdminDashboard() {
+            const token = localStorage.getItem('auth_token');
+            try {
+                const response = await fetch('/admin/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(`Admin Dashboard\\n\\nServer Uptime: ${Math.floor(data.serverInfo.uptime / 3600)} hours\\nMemory Usage: ${Math.floor(data.serverInfo.memory.used / 1024 / 1024)} MB`);
+                } else {
+                    showStatus('❌ Admin access denied', 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Failed to access admin dashboard', 'error');
+            }
+        }
+        
+        // Initialize page
+        async function initialize() {
+            // Update timestamp
+            document.getElementById('timestamp').textContent = new Date().toLocaleString();
+            
+            const params = getUrlParams();
+            
+            if (params.error) {
+                showStatus(`❌ Authentication error: ${params.error}`, 'error');
+                showActions(false);
+                return;
+            }
+            
+            if (params.token) {
+                // Store token and show success
+                localStorage.setItem('auth_token', params.token);
+                showStatus('✅ Authentication successful!', 'success');
+                
+                // Fetch and display user data
+                const userInfo = await fetchUserData(params.token);
+                if (userInfo) {
+                    showUserInfo(userInfo);
+                    showActions(true, userInfo.permissions.isAdmin);
+                } else {
+                    showStatus('❌ Failed to fetch user data', 'error');
+                    showActions(true);
+                }
+                
+                // Clean URL
+                window.history.replaceState({}, document.title, '/auth/success');
+            } else {
+                // Check for stored token
+                const storedToken = localStorage.getItem('auth_token');
+                if (storedToken) {
+                    const userInfo = await fetchUserData(storedToken);
+                    if (userInfo) {
+                        showStatus('✅ Welcome back!', 'success');
+                        showUserInfo(userInfo);
+                        showActions(true, userInfo.permissions.isAdmin);
+                    } else {
+                        localStorage.removeItem('auth_token');
+                        showStatus('🔐 Please authenticate with Discord', 'info');
+                        showActions(false);
+                    }
+                } else {
+                    showStatus('🔐 Please authenticate with Discord', 'info');
+                    showActions(false);
+                }
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>

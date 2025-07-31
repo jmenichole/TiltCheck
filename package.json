@@ -1,17 +1,40 @@
 {
   "name": "traphouse_discordbot",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "2.0.0",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js",
+    "dev": "nodemon main.js",
+    "docker:build": "docker build -t traphouse-bot .",
+    "docker:run": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "test": "bash test-payments.sh",
+    "deploy": "bash deploy.sh"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "discord",
+    "bot",
+    "lending",
+    "tipcc",
+    "stripe",
+    "payments"
+  ],
+  "author": "TrapHouse Development",
+  "license": "MIT",
   "type": "commonjs",
-  "description": "",
+  "description": "TrapHouse Discord Bot with integrated payment processing via tip.cc and Stripe - Unicode Resistant",
   "dependencies": {
+    "axios": "^1.11.0",
+    "crypto": "^1.0.1",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "express": "^4.21.2",
+    "express-session": "^1.18.2",
+    "iconv-lite": "^0.6.3",
+    "jsonwebtoken": "^9.0.2",
+    "stripe": "^14.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }
