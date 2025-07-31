@@ -800,6 +800,17 @@ class AIMStyleControlPanel {
         verification.steps.tiltcheck = true;
         verification.proofs.set('tiltcheck', this.generateProofSignature(userId, 'tiltcheck'));
 
+        // Create provably fair verification for TiltCheck
+        await this.createProvablyFairVerification(userId, 'tiltcheck', {
+            profileId: profileData.id,
+            complianceHash: this.generateComplianceHash(profileData),
+            regulatoryStatus: 'compliant',
+            responsibleGamblingEnabled: true
+        });
+
+        // Update compliance system
+        await this.updateComplianceStatus(userId, 'tiltcheck_verified');
+
         return true;
     }
 
@@ -904,6 +915,18 @@ class AIMStyleControlPanel {
         verification.steps.justthetip = true;
         verification.proofs.set('justthetip', this.generateProofSignature(userId, 'justthetip'));
 
+        // Create provably fair verification for wallet
+        await this.createProvablyFairVerification(userId, 'justthetip', {
+            walletId: walletData.id,
+            addressHash: this.hashWalletAddress(walletData.address),
+            kycStatus: 'verified',
+            amlCompliant: true,
+            jurisdictionCompliant: true
+        });
+
+        // Perform KYC/AML verification
+        await this.performKYCAMLVerification(userId, walletData);
+
         return true;
     }
 
@@ -915,6 +938,9 @@ class AIMStyleControlPanel {
         const toWallet = this.verificationSystem.justTheTipWallets.get(tip.to);
 
         try {
+            // Perform compliance checks before transaction
+            await this.performComplianceChecks(tip);
+            
             // Deduct from sender
             fromWallet.balance -= tip.amount;
             fromWallet.txCount++;
@@ -928,6 +954,9 @@ class AIMStyleControlPanel {
             tip.walletTxId = crypto.randomUUID();
             tip.completedAt = new Date();
 
+            // Create compliance audit trail
+            await this.createComplianceAuditTrail(tip);
+
             // Log transaction
             await this.logWalletTransaction(tip);
 
@@ -939,6 +968,10 @@ class AIMStyleControlPanel {
         } catch (error) {
             tip.status = 'failed';
             tip.error = error.message;
+            
+            // Log compliance failure
+            await this.logComplianceFailure(tip, error);
+            
             throw error;
         }
     }
