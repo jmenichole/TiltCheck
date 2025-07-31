@@ -25,9 +25,10 @@ class SolscanPaymentTracker {
     /**
      * Get transaction details by signature
      * @param {string} signature - Transaction signature
+     * @param {Object} options - Additional options
      * @returns {Promise<Object>} Transaction details
      */
-    async getTransactionDetail(signature) {
+    async getTransactionDetail(signature, options = {}) {
         try {
             const headers = {
                 'Content-Type': 'application/json'
@@ -37,10 +38,16 @@ class SolscanPaymentTracker {
                 headers['Authorization'] = `Bearer ${this.apiKey}`;
             }
 
+            const params = {
+                signature,
+                commitment: options.commitment || 'finalized',
+                maxSupportedTransactionVersion: options.maxSupportedTransactionVersion || 0
+            };
+
             const response = await axios.get(
                 `${this.apiUrl}/transaction/detail`,
                 {
-                    params: { signature },
+                    params,
                     headers
                 }
             );
@@ -48,17 +55,21 @@ class SolscanPaymentTracker {
             return response.data;
         } catch (error) {
             console.error('❌ Error fetching transaction details:', error.message);
+            if (error.response) {
+                console.error(`Status: ${error.response.status}, Data:`, error.response.data);
+            }
             return null;
         }
     }
 
     /**
      * Get transactions for the payment signer
-     * @param {number} limit - Number of transactions to fetch
+     * @param {number} limit - Number of transactions to fetch (max 100)
      * @param {string} before - Cursor for pagination
+     * @param {Object} options - Additional options
      * @returns {Promise<Array>} Array of transactions
      */
-    async getSignerTransactions(limit = 50, before = null) {
+    async getSignerTransactions(limit = 50, before = null, options = {}) {
         try {
             const headers = {
                 'Content-Type': 'application/json'
@@ -70,11 +81,18 @@ class SolscanPaymentTracker {
 
             const params = {
                 address: this.paymentSigner,
-                limit
+                limit: Math.min(limit, 100), // Ensure we don't exceed API limits
+                commitment: options.commitment || 'finalized',
+                exclude_vote: options.exclude_vote !== false, // Default to true
+                exclude_failed: options.exclude_failed || false
             };
 
             if (before) {
                 params.before = before;
+            }
+
+            if (options.after) {
+                params.after = options.after;
             }
 
             const response = await axios.get(
@@ -88,6 +106,141 @@ class SolscanPaymentTracker {
             return response.data.data || [];
         } catch (error) {
             console.error('❌ Error fetching signer transactions:', error.message);
+            if (error.response) {
+                console.error(`Status: ${error.response.status}, Data:`, error.response.data);
+            }
+            return [];
+        }
+    }
+
+    /**
+     * Get account balance for the payment signer
+     * @param {Object} options - Additional options
+     * @returns {Promise<Object>} Account balance information
+     */
+    async getAccountBalance(options = {}) {
+        try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (this.apiKey && this.apiKey !== 'your_solscan_api_key_here') {
+                headers['Authorization'] = `Bearer ${this.apiKey}`;
+            }
+
+            const params = {
+                address: this.paymentSigner,
+                commitment: options.commitment || 'finalized'
+            };
+
+            const response = await axios.get(
+                `${this.apiUrl}/account/balance`,
+                {
+                    params,
+                    headers
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.error('❌ Error fetching account balance:', error.message);
+            if (error.response) {
+                console.error(`Status: ${error.response.status}, Data:`, error.response.data);
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Get token holdings for the payment signer
+     * @param {Object} options - Additional options
+     * @returns {Promise<Array>} Token holdings information
+     */
+    async getTokenHoldings(options = {}) {
+        try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (this.apiKey && this.apiKey !== 'your_solscan_api_key_here') {
+                headers['Authorization'] = `Bearer ${this.apiKey}`;
+            }
+
+            const params = {
+                address: this.paymentSigner,
+                commitment: options.commitment || 'finalized'
+            };
+
+            if (options.token) {
+                params.token = options.token;
+            }
+
+            const response = await axios.get(
+                `${this.apiUrl}/account/token-holdings`,
+                {
+                    params,
+                    headers
+                }
+            );
+
+            return response.data.data || [];
+        } catch (error) {
+            console.error('❌ Error fetching token holdings:', error.message);
+            if (error.response) {
+                console.error(`Status: ${error.response.status}, Data:`, error.response.data);
+            }
+            return [];
+        }
+    }
+
+    /**
+     * Get token transfer history for the payment signer
+     * @param {number} limit - Number of transfers to fetch
+     * @param {Object} options - Additional options
+     * @returns {Promise<Array>} Token transfer history
+     */
+    async getTokenTransfers(limit = 50, options = {}) {
+        try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (this.apiKey && this.apiKey !== 'your_solscan_api_key_here') {
+                headers['Authorization'] = `Bearer ${this.apiKey}`;
+            }
+
+            const params = {
+                address: this.paymentSigner,
+                limit: Math.min(limit, 100),
+                commitment: options.commitment || 'finalized'
+            };
+
+            if (options.token) {
+                params.token = options.token;
+            }
+
+            if (options.before) {
+                params.before = options.before;
+            }
+
+            if (options.after) {
+                params.after = options.after;
+            }
+
+            const response = await axios.get(
+                `${this.apiUrl}/account/token-transfers`,
+                {
+                    params,
+                    headers
+                }
+            );
+
+            return response.data.data || [];
+        } catch (error) {
+            console.error('❌ Error fetching token transfers:', error.message);
+            if (error.response) {
+                console.error(`Status: ${error.response.status}, Data:`, error.response.data);
+            }
             return [];
         }
     }

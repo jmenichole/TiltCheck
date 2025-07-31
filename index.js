@@ -620,7 +620,7 @@ client.on('messageCreate', async (message) => {
                 },
                 {
                     name: "Available Commands",
-                    value: "`!verify-payment <tx>` - Verify transaction\n`!check-tx <tx>` - Same as above\n`!solscan-status` - Show this status",
+                    value: "`!verify-payment <tx>` - Verify transaction\n`!check-tx <tx>` - Same as above\n`!solscan-status` - Show this status\n`!test-balance` - Test account balance API\n`!test-tokens` - Test token holdings API\n`!test-tx <sig>` - Test transaction detail API",
                     inline: false
                 }
             ],
@@ -638,6 +638,93 @@ client.on('messageCreate', async (message) => {
         }
         
         await message.reply({ embeds: [embed] });
+        
+    } else if (command === '!test-balance') {
+        if (CURRENT_BOT !== 'JustTheTip') return;
+
+        const balanceData = await solscanTracker.getAccountBalance();
+        
+        const balanceEmbed = {
+            title: '💰 Account Balance Test',
+            color: balanceData ? 0x00ff00 : 0xff0000,
+            timestamp: new Date().toISOString(),
+            fields: []
+        };
+
+        if (balanceData) {
+            balanceEmbed.description = `✅ Successfully fetched balance for payment signer`;
+            balanceEmbed.fields.push(
+                { name: 'Balance', value: `${balanceData.lamports || 0} lamports`, inline: true },
+                { name: 'SOL Balance', value: `${(balanceData.lamports || 0) / 1e9} SOL`, inline: true }
+            );
+        } else {
+            balanceEmbed.description = '❌ Failed to fetch account balance';
+            balanceEmbed.fields.push({ name: 'Note', value: 'Check API key configuration or try again later' });
+        }
+
+        await message.reply({ embeds: [balanceEmbed] });
+        
+    } else if (command === '!test-tokens') {
+        if (CURRENT_BOT !== 'JustTheTip') return;
+
+        const tokenData = await solscanTracker.getTokenHoldings();
+        
+        const tokenEmbed = {
+            title: '🪙 Token Holdings Test',
+            color: tokenData.length > 0 ? 0x00ff00 : 0xff0000,
+            timestamp: new Date().toISOString(),
+            fields: []
+        };
+
+        if (tokenData.length > 0) {
+            const tokenList = tokenData.slice(0, 5).map(token => 
+                `${token.tokenSymbol || 'Unknown'}: ${token.amount || 0}`
+            ).join('\n');
+            
+            tokenEmbed.description = `✅ Found ${tokenData.length} token holdings`;
+            tokenEmbed.fields.push({ name: 'Top Holdings', value: tokenList || 'No tokens found' });
+        } else {
+            tokenEmbed.description = 'ℹ️ No token holdings found or API error';
+            tokenEmbed.fields.push({ name: 'Note', value: 'This may be normal if the account has no tokens' });
+        }
+
+        await message.reply({ embeds: [tokenEmbed] });
+        
+    } else if (command === '!test-tx') {
+        if (CURRENT_BOT !== 'JustTheTip') return;
+
+        const txSignature = args[0];
+        if (!txSignature) {
+            await message.reply('Please provide a transaction signature: `!test-tx <signature>`');
+            return;
+        }
+
+        const txData = await solscanTracker.getTransactionDetail(txSignature, {
+            commitment: 'finalized',
+            maxSupportedTransactionVersion: 0
+        });
+        
+        const txEmbed = {
+            title: '🔍 Transaction Detail Test',
+            color: txData ? 0x00ff00 : 0xff0000,
+            timestamp: new Date().toISOString(),
+            fields: []
+        };
+
+        if (txData) {
+            txEmbed.description = `✅ Successfully fetched transaction details`;
+            txEmbed.fields.push(
+                { name: 'Signature', value: txSignature, inline: false },
+                { name: 'Status', value: txData.status || 'Unknown', inline: true },
+                { name: 'Block Time', value: txData.blockTime ? new Date(txData.blockTime * 1000).toISOString() : 'Unknown', inline: true }
+            );
+        } else {
+            txEmbed.description = '❌ Failed to fetch transaction details';
+            txEmbed.fields.push({ name: 'Note', value: 'Transaction may not exist or API error occurred' });
+        }
+
+        await message.reply({ embeds: [txEmbed] });
+        
     } else if (command === '!withdraw') {
         if (!paymentManager) {
             return await message.reply('💳 Payment system is initializing. Please try again in a moment.');

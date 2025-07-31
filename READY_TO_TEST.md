@@ -120,6 +120,12 @@ Make sure your bot has these permissions in your Discord server:
 # Your transaction signer:
 TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E
 
+# Check current API status:
+!solscan-status
+
+# Test transaction verification (limited mode without API key):
+!verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E
+
 # Test the API directly:
 curl --request GET \
      --url 'https://pro-api.solscan.io/v2.0/transaction/detail?signature=YOUR_TX_SIGNATURE' \
@@ -127,10 +133,11 @@ curl --request GET \
      --header 'Authorization: Bearer YOUR_API_KEY'
 ```
 
-### **Webhook Configuration:**
-- ✅ **Loan Channel**: 1383031657006632970
-- ✅ **Webhook URL**: Configured for notifications
-- ✅ **Payment Monitoring**: Active (every 30 seconds)
+### **Current Status:**
+- ⚠️ **Limited Mode**: API verification works but requires Pro API key for full functionality
+- ✅ **Payment Signer**: Configured and tracked
+- ✅ **Webhook & Channel**: Ready for loan notifications
+- 🔄 **Monitoring**: Active (shows 401 errors without API key - this is expected)
 
 ## 🛠️ Your Generated Solana Wallet
 
