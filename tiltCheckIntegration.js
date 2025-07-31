@@ -44,6 +44,9 @@ class TiltCheckIntegration {
         
         // Load TiltCheck module from cloned repo
         this.loadTiltCheckModule();
+        
+        // Load existing data on startup
+        this.loadTiltData();
     }
 
     loadTiltCheckModule() {
@@ -59,6 +62,41 @@ class TiltCheckIntegration {
         } catch (error) {
             console.error('Error loading TiltCheck module:', error);
             this.tiltCheckAvailable = false;
+        }
+    }
+
+    // Load existing tilt data from file
+    async loadTiltData() {
+        try {
+            const fs = require('fs').promises;
+            const data = JSON.parse(await fs.readFile('tiltcheck-data.json', 'utf8'));
+            
+            // Convert stored objects back to Maps
+            this.userTiltData = new Map(Object.entries(data.userTiltData || {}));
+            this.userSessions = new Map(Object.entries(data.userSessions || {}));
+            
+            console.log('✅ TiltCheck data loaded successfully');
+        } catch (error) {
+            console.log('📝 No existing tilt data found, starting fresh');
+            this.userTiltData = new Map();
+            this.userSessions = new Map();
+        }
+    }
+
+    // Save tilt data to file
+    async saveTiltData() {
+        try {
+            const fs = require('fs').promises;
+            const data = {
+                userTiltData: Object.fromEntries(this.userTiltData),
+                userSessions: Object.fromEntries(this.userSessions),
+                lastSaved: new Date().toISOString()
+            };
+            
+            await fs.writeFile('tiltcheck-data.json', JSON.stringify(data, null, 2));
+            console.log('💾 TiltCheck data saved successfully');
+        } catch (error) {
+            console.error('❌ Error saving tilt data:', error);
         }
     }
 
@@ -94,9 +132,10 @@ class TiltCheckIntegration {
             case 'help':
             default:
                 await this.showTiltCheckHelp(message);
+                break;
         }
     }
-
+    
     // Start gambling session tracking
     async startSession(message, args) {
         const platform = args[0] || 'Unknown';
@@ -117,6 +156,9 @@ class TiltCheckIntegration {
         };
         
         this.userSessions.set(userId, sessionData);
+        
+        // Save data after session creation
+        await this.saveTiltData();
         
         const embed = new EmbedBuilder()
             .setColor('#00ff88')
@@ -155,6 +197,68 @@ class TiltCheckIntegration {
         
         // Set automatic monitoring
         setTimeout(() => this.checkSessionTime(userId), 60000);
+    }
+
+    // Critical function: Check session time with interventions
+    async checkSessionTime(userId) {
+        const session = this.userSessions.get(userId);
+        if (!session) return;
+        
+        const sessionDuration = (Date.now() - session.startTime) / (1000 * 60); // minutes
+        
+        // Check various time thresholds
+        if (sessionDuration > this.alertThresholds.timeAtTable) {
+            try {
+                // Try to get user and send intervention
+                const user = await this.client?.users?.fetch(userId);
+                if (user) {
+                    const interventionMessage = this.mischiefResponses.intervention[
+                        Math.floor(Math.random() * this.mischiefResponses.intervention.length)
+                    ];
+                    
+                    const embed = new EmbedBuilder()
+                        .setColor('#ff0000')
+                        .setTitle('🚨 SESSION TIME INTERVENTION')
+                        .setDescription(interventionMessage)
+                        .addFields(
+                            {
+                                name: '⏰ Session Duration',
+                                value: `${Math.floor(sessionDuration)} minutes`,
+                                inline: true
+                            },
+                            {
+                                name: '🎯 Recommended Action',
+                                value: 'Take a 30-minute break minimum',
+                                inline: true
+                            },
+                            {
+                                name: '🏦 JustTheTip Suggestion',
+                                value: '**GRASS TOUCHING VAULT** activated\nTime to step away and reset',
+                                inline: false
+                            }
+                        )
+                        .setFooter({ text: 'TiltCheck: Your future self will thank you' });
+                    
+                    await user.send({ embeds: [embed] });
+                    
+                    // Log the intervention
+                    session.sessionAlerts.push({
+                        type: 'TIME_INTERVENTION',
+                        time: new Date(),
+                        duration: sessionDuration
+                    });
+                    
+                    await this.saveTiltData();
+                }
+            } catch (error) {
+                console.log('Could not send DM to user, they may have DMs disabled');
+            }
+        }
+        
+        // Continue monitoring if session is still active
+        if (this.userSessions.has(userId)) {
+            setTimeout(() => this.checkSessionTime(userId), 60000);
+        }
     }
 
     // Log individual bets with personality
@@ -199,6 +303,9 @@ class TiltCheckIntegration {
         // Check for alerts with Mischief Manager intervention
         await this.checkAlertsWithPersonality(message, session, bet);
         
+        // Save data after bet logging
+        await this.saveTiltData();
+        
         // Show bet result with encouraging/warning tone
         const isPositiveResult = outcome === 'win';
         const encouragingMessage = isPositiveResult ? 
@@ -225,12 +332,521 @@ class TiltCheckIntegration {
             
         await message.reply({ embeds: [embed] });
     }
-                await this.resetTiltData(message);
-                break;
-            case 'help':
-            default:
-                await this.showTiltCheckHelp(message);
+
+    // Critical function: Alert system with Mischief Manager personality
+    async checkAlertsWithPersonality(message, session, bet) {
+        const alerts = [];
+        const userId = message.author.id;
+        
+        // 1. Check stake escalation (200% increase)
+        if (bet.stake > session.maxStake * (this.alertThresholds.stakeIncrease / 100)) {
+            alerts.push({
+                type: 'STAKE_ESCALATION',
+                severity: 'HIGH',
+                message: this.mischiefResponses.tiltWarning[0],
+                embed: {
+                    color: '#ff6b6b',
+                    title: '🚨 STAKE ESCALATION DETECTED',
+                    description: `Your bet size just increased by ${Math.round((bet.stake / session.maxStake) * 100)}%!\n\n${this.mischiefResponses.tiltWarning[0]}`,
+                    fields: [
+                        { name: 'Previous Max Stake', value: `$${session.maxStake.toFixed(2)}`, inline: true },
+                        { name: 'Current Stake', value: `$${bet.stake.toFixed(2)}`, inline: true },
+                        { name: '🏦 JustTheTip Recommendation', value: '**REGRET VAULT** - Lock funds before you chase losses', inline: false }
+                    ]
+                }
+            });
         }
+        
+        // 2. Check consecutive losses (5+ losses)
+        if (session.consecutiveLosses >= this.alertThresholds.lossSequence) {
+            alerts.push({
+                type: 'LOSS_SEQUENCE',
+                severity: 'CRITICAL',
+                message: this.mischiefResponses.intervention[0],
+                embed: {
+                    color: '#ff0000',
+                    title: '🆘 LOSS STREAK INTERVENTION',
+                    description: `${session.consecutiveLosses} consecutive losses detected!\n\n${this.mischiefResponses.intervention[0]}`,
+                    fields: [
+                        { name: 'Consecutive Losses', value: `${session.consecutiveLosses}`, inline: true },
+                        { name: 'Total Lost', value: `$${(session.bankroll - session.currentBalance).toFixed(2)}`, inline: true },
+                        { name: '🏦 Emergency Protocol', value: '**THERAPY VAULT** - 7-day forced lockup recommended', inline: false }
+                    ]
+                }
+            });
+        }
+        
+        // 3. Check balance depletion (80% of bankroll lost)
+        const depletionPercentage = ((session.bankroll - session.currentBalance) / session.bankroll) * 100;
+        if (depletionPercentage >= this.alertThresholds.balanceDepletion) {
+            alerts.push({
+                type: 'BALANCE_DEPLETION',
+                severity: 'EMERGENCY',
+                message: '🆘 EMERGENCY: 80% of bankroll depleted. STOP NOW!',
+                embed: {
+                    color: '#8B0000',
+                    title: '🚨 EMERGENCY STOP - BALANCE CRITICAL',
+                    description: `You've lost ${depletionPercentage.toFixed(1)}% of your bankroll!\n\n🆘 **IMMEDIATE INTERVENTION REQUIRED**`,
+                    fields: [
+                        { name: 'Original Bankroll', value: `$${session.bankroll.toFixed(2)}`, inline: true },
+                        { name: 'Current Balance', value: `$${session.currentBalance.toFixed(2)}`, inline: true },
+                        { name: '🏦 Crisis Management', value: '**ALL VAULTS LOCKED** - Contact accountability buddy immediately', inline: false }
+                    ]
+                }
+            });
+        }
+        
+        // 4. Check rapid betting velocity (10 bets in 5 minutes)
+        const velocityCheck = this.checkBettingVelocity(session);
+        if (velocityCheck.alert) {
+            alerts.push({
+                type: 'RAPID_BETTING',
+                severity: 'HIGH',
+                message: velocityCheck.message,
+                embed: {
+                    color: '#ff9500',
+                    title: '⚡ RAPID BETTING DETECTED',
+                    description: `${velocityCheck.betsCount} bets in 5 minutes!\n\n${velocityCheck.message}`,
+                    fields: [
+                        { name: 'Betting Velocity', value: `${velocityCheck.betsCount} bets/5min`, inline: true },
+                        { name: 'Recommended Pace', value: 'Max 6 bets/5min', inline: true },
+                        { name: '🏦 Velocity Control', value: '**HODL VAULT** - Slow down and think', inline: false }
+                    ]
+                }
+            });
+        }
+        
+        // Send alerts with escalating urgency
+        for (const alert of alerts) {
+            // Log alert to session
+            session.sessionAlerts.push({
+                type: alert.type,
+                severity: alert.severity,
+                time: new Date(),
+                betStake: bet.stake,
+                sessionBalance: session.currentBalance
+            });
+            
+            // Send alert message
+            const alertEmbed = new EmbedBuilder()
+                .setColor(alert.embed.color)
+                .setTitle(alert.embed.title)
+                .setDescription(alert.embed.description)
+                .addFields(alert.embed.fields)
+                .setFooter({ text: 'TiltCheck: Made for degens by degens who learned the hard way' })
+                .setTimestamp();
+            
+            await message.channel.send({ embeds: [alertEmbed] });
+            
+            // For critical/emergency alerts, also try to DM
+            if (alert.severity === 'CRITICAL' || alert.severity === 'EMERGENCY') {
+                try {
+                    await message.author.send({ embeds: [alertEmbed] });
+                } catch (error) {
+                    console.log('Could not send DM to user for critical alert');
+                }
+            }
+        }
+        
+        return alerts.length > 0;
+    }
+
+    // Helper function: Check betting velocity
+    checkBettingVelocity(session) {
+        const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+        const recentBets = session.bets.filter(bet => 
+            new Date(bet.time).getTime() > fiveMinutesAgo
+        );
+        
+        if (recentBets.length >= this.alertThresholds.rapidBetting) {
+            return {
+                alert: true,
+                betsCount: recentBets.length,
+                message: "🚨 RAPID BETTING DETECTED - Slow down, degen! Your brain needs time to process each decision."
+            };
+        }
+        return { alert: false, betsCount: recentBets.length };
+    }
+
+    // Show session status with detailed analytics
+    async showSessionStatus(message) {
+        const userId = message.author.id;
+        const session = this.userSessions.get(userId);
+        
+        if (!session) {
+            return await message.reply('❌ No active session! Start one with `!tiltcheck start <platform> <bankroll>`');
+        }
+        
+        const sessionDuration = (Date.now() - session.startTime) / (1000 * 60); // minutes
+        const winRate = session.bets.length > 0 ? 
+            (session.bets.filter(bet => bet.outcome === 'win').length / session.bets.length * 100).toFixed(1) : 0;
+        
+        const embed = new EmbedBuilder()
+            .setColor(session.netPnL >= 0 ? '#00ff88' : '#ff6b6b')
+            .setTitle('📊 TiltCheck Session Status')
+            .setDescription(`**${session.platform}** - Active for ${Math.floor(sessionDuration)} minutes`)
+            .addFields(
+                {
+                    name: '💰 Financial Status',
+                    value: `Starting: $${session.bankroll.toFixed(2)}\nCurrent: $${session.currentBalance.toFixed(2)}\nNet P&L: ${session.netPnL >= 0 ? '+' : ''}$${session.netPnL.toFixed(2)}`,
+                    inline: true
+                },
+                {
+                    name: '🎯 Betting Stats',
+                    value: `Total Bets: ${session.bets.length}\nTotal Wagered: $${session.totalWagered.toFixed(2)}\nWin Rate: ${winRate}%\nMax Stake: $${session.maxStake.toFixed(2)}`,
+                    inline: true
+                },
+                {
+                    name: '⚠️ Risk Indicators',
+                    value: `Consecutive Losses: ${session.consecutiveLosses}\nSession Alerts: ${session.sessionAlerts.length}\nTime at Table: ${Math.floor(sessionDuration)}min`,
+                    inline: true
+                }
+            )
+            .setFooter({ text: 'TiltCheck: Knowledge is power, awareness is protection' });
+        
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Generate comprehensive tilt report
+    async generateTiltReport(message, args) {
+        const userId = message.author.id;
+        const session = this.userSessions.get(userId);
+        
+        if (!session) {
+            return await message.reply('❌ No active session data for audit!');
+        }
+        
+        // Calculate risk score
+        const riskScore = this.calculateTiltRisk(session);
+        const riskLevel = riskScore >= 70 ? 'HIGH' : riskScore >= 40 ? 'MEDIUM' : 'LOW';
+        const riskColor = riskScore >= 70 ? '#ff0000' : riskScore >= 40 ? '#ff9500' : '#00ff88';
+        
+        // Generate recommendations
+        const recommendations = this.generateRecommendations(session, riskScore);
+        
+        const embed = new EmbedBuilder()
+            .setColor(riskColor)
+            .setTitle('🔍 TiltCheck Audit Report')
+            .setDescription(`**Risk Level: ${riskLevel}** (Score: ${riskScore}/100)`)
+            .addFields(
+                {
+                    name: '📈 Session Summary',
+                    value: `Duration: ${Math.floor((Date.now() - session.startTime) / (1000 * 60))}min\nBets: ${session.bets.length}\nAlerts: ${session.sessionAlerts.length}`,
+                    inline: true
+                },
+                {
+                    name: '🎯 Behavior Analysis',
+                    value: `Max Stake: $${session.maxStake.toFixed(2)}\nConsecutive Losses: ${session.consecutiveLosses}\nVelocity: ${this.checkBettingVelocity(session).betsCount} bets/5min`,
+                    inline: true
+                },
+                {
+                    name: '🏦 JustTheTip Recommendations',
+                    value: recommendations,
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'TiltCheck: Data-driven decisions for better outcomes' });
+        
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Calculate comprehensive tilt risk score
+    calculateTiltRisk(session) {
+        let riskScore = 0;
+        const sessionDuration = (Date.now() - session.startTime) / (1000 * 60);
+        
+        // Time factor (max 25 points)
+        if (sessionDuration > this.alertThresholds.timeAtTable) {
+            riskScore += Math.min(25, (sessionDuration / this.alertThresholds.timeAtTable) * 15);
+        }
+        
+        // Stake escalation (max 25 points)
+        if (session.bets.length > 0) {
+            const avgStake = session.totalWagered / session.bets.length;
+            if (session.maxStake > avgStake * 2) {
+                riskScore += Math.min(25, ((session.maxStake / avgStake) - 1) * 10);
+            }
+        }
+        
+        // Loss sequence (max 20 points)
+        riskScore += Math.min(20, (session.consecutiveLosses / this.alertThresholds.lossSequence) * 20);
+        
+        // Balance depletion (max 20 points)
+        const depletionPercentage = ((session.bankroll - session.currentBalance) / session.bankroll) * 100;
+        riskScore += Math.min(20, (depletionPercentage / this.alertThresholds.balanceDepletion) * 20);
+        
+        // Alert count (max 10 points)
+        riskScore += Math.min(10, session.sessionAlerts.length * 2);
+        
+        return Math.round(riskScore);
+    }
+
+    // Generate personalized recommendations
+    generateRecommendations(session, riskScore) {
+        if (riskScore >= 70) {
+            return '🆘 **EMERGENCY LOCKDOWN**\n• THERAPY VAULT (7-day lockup)\n• Contact accountability buddy\n• Take 24-hour break minimum';
+        } else if (riskScore >= 40) {
+            return '⚠️ **HIGH RISK DETECTED**\n• GRASS TOUCHING VAULT recommended\n• Reduce stake sizes by 50%\n• Take 2-hour break';
+        } else {
+            return '✅ **HEALTHY PATTERNS**\n• HODL VAULT for profits\n• Continue current strategy\n• Stay aware of limits';
+        }
+    }
+
+    // End session with comprehensive summary
+    async endSession(message) {
+        const userId = message.author.id;
+        const session = this.userSessions.get(userId);
+        
+        if (!session) {
+            return await message.reply('❌ No active session to end!');
+        }
+        
+        // Generate final report
+        const sessionDuration = (Date.now() - session.startTime) / (1000 * 60);
+        const winRate = session.bets.length > 0 ? 
+            (session.bets.filter(bet => bet.outcome === 'win').length / session.bets.length * 100).toFixed(1) : 0;
+        const riskScore = this.calculateTiltRisk(session);
+        
+        // Archive session data to user's history
+        if (!this.userTiltData.has(userId)) {
+            this.userTiltData.set(userId, { sessions: [], totalSessions: 0 });
+        }
+        
+        const userData = this.userTiltData.get(userId);
+        userData.sessions.push({
+            ...session,
+            endTime: new Date(),
+            finalRiskScore: riskScore,
+            sessionDuration: sessionDuration
+        });
+        userData.totalSessions++;
+        
+        // Remove active session
+        this.userSessions.delete(userId);
+        
+        // Save data
+        await this.saveTiltData();
+        
+        const embed = new EmbedBuilder()
+            .setColor(session.netPnL >= 0 ? '#00ff88' : '#ff6b6b')
+            .setTitle('🏁 Session Ended - Final Report')
+            .setDescription(`**${session.platform}** session completed`)
+            .addFields(
+                {
+                    name: '⏰ Session Stats',
+                    value: `Duration: ${Math.floor(sessionDuration)} minutes\nTotal Bets: ${session.bets.length}\nWin Rate: ${winRate}%`,
+                    inline: true
+                },
+                {
+                    name: '💰 Financial Summary',
+                    value: `Started: $${session.bankroll.toFixed(2)}\nEnded: $${session.currentBalance.toFixed(2)}\nNet Result: ${session.netPnL >= 0 ? '+' : ''}$${session.netPnL.toFixed(2)}`,
+                    inline: true
+                },
+                {
+                    name: '🎯 Risk Assessment',
+                    value: `Final Risk Score: ${riskScore}/100\nAlerts Triggered: ${session.sessionAlerts.length}\nMax Consecutive Losses: ${session.consecutiveLosses}`,
+                    inline: false
+                },
+                {
+                    name: '🏦 Post-Session Recommendation',
+                    value: this.generateRecommendations(session, riskScore),
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'TiltCheck: Every session is a learning opportunity' });
+        
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Show comprehensive help guide
+    async showTiltCheckHelp(message) {
+        const embed = new EmbedBuilder()
+            .setColor('#0099ff')
+            .setTitle('🎰 TiltCheck - Your Gambling Accountability Buddy')
+            .setDescription('**Made for degens by degens who learned the hard way** ❤️')
+            .addFields(
+                {
+                    name: '🎯 Session Commands',
+                    value: '`!tiltcheck start <platform> <bankroll>` - Start tracking\n`!tiltcheck bet <stake> <win/loss> [payout]` - Log a bet\n`!tiltcheck status` - Check current session\n`!tiltcheck end` - End session with report',
+                    inline: false
+                },
+                {
+                    name: '📊 Analysis Commands',
+                    value: '`!tiltcheck audit` - Generate risk report\n`!tiltcheck alerts` - View alert thresholds\n`!tiltcheck intervention` - Manual intervention mode',
+                    inline: false
+                },
+                {
+                    name: '🛠️ Management Commands',
+                    value: '`!tiltcheck reset` - Reset user data\n`!tiltcheck help` - Show this guide',
+                    inline: false
+                },
+                {
+                    name: '🚨 Auto-Protection Features',
+                    value: '• **Stake Escalation**: Alerts at 200% increase\n• **Time Monitoring**: Warnings after 3 hours\n• **Loss Streaks**: Intervention after 5 losses\n• **Rapid Betting**: Alerts for 10+ bets/5min\n• **Balance Depletion**: Emergency at 80% loss',
+                    inline: false
+                },
+                {
+                    name: '🏦 JustTheTip Integration',
+                    value: '• **HODL Vault**: For disciplined profits\n• **REGRET Vault**: Stop loss chasing\n• **GRASS TOUCHING**: Time-based breaks\n• **THERAPY Vault**: 7-day emergency lockup',
+                    inline: false
+                },
+                {
+                    name: '💡 Example Usage',
+                    value: '```\n!tiltcheck start "Stake.us" 500\n!tiltcheck bet 25 win 75\n!tiltcheck bet 50 loss\n!tiltcheck status\n!tiltcheck end\n```',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'TiltCheck: Your future self will thank you for using this' });
+        
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Reset user tilt data (with confirmation)
+    async resetTiltData(message) {
+        const userId = message.author.id;
+        
+        // Check if user has active session
+        if (this.userSessions.has(userId)) {
+            return await message.reply('❌ Please end your current session first with `!tiltcheck end` before resetting data.');
+        }
+        
+        // Clear user data
+        this.userTiltData.delete(userId);
+        await this.saveTiltData();
+        
+        const embed = new EmbedBuilder()
+            .setColor('#ff6b6b')
+            .setTitle('🗑️ TiltCheck Data Reset')
+            .setDescription('Your gambling history has been cleared. Fresh start activated!')
+            .addFields(
+                {
+                    name: '✅ Data Cleared',
+                    value: '• Session history\n• Risk profiles\n• Alert records\n• Performance statistics',
+                    inline: true
+                },
+                {
+                    name: '🎯 Next Steps',
+                    value: '• Start new session anytime\n• All protections still active\n• Learning from fresh baseline',
+                    inline: true
+                }
+            )
+            .setFooter({ text: 'TiltCheck: Every day is a chance to build better habits' });
+        
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Manual intervention trigger
+    async triggerIntervention(message) {
+        const userId = message.author.id;
+        const session = this.userSessions.get(userId);
+        
+        if (!session) {
+            return await message.reply('❌ No active session for intervention. Start one first!');
+        }
+        
+        // Force intervention protocols
+        const interventionMessage = this.mischiefResponses.intervention[
+            Math.floor(Math.random() * this.mischiefResponses.intervention.length)
+        ];
+        
+        const riskScore = this.calculateTiltRisk(session);
+        const recommendations = this.generateRecommendations(session, Math.max(riskScore, 70)); // Force high-risk recommendations
+        
+        const embed = new EmbedBuilder()
+            .setColor('#8B0000')
+            .setTitle('🆘 MANUAL INTERVENTION ACTIVATED')
+            .setDescription(`**You or someone who cares about you triggered this intervention.**\n\n${interventionMessage}`)
+            .addFields(
+                {
+                    name: '🎯 Current Session Risk',
+                    value: `Risk Score: ${riskScore}/100\nConsecutive Losses: ${session.consecutiveLosses}\nTime Playing: ${Math.floor((Date.now() - session.startTime) / (1000 * 60))} minutes`,
+                    inline: false
+                },
+                {
+                    name: '🏦 Emergency Protocols',
+                    value: recommendations,
+                    inline: false
+                },
+                {
+                    name: '🤝 Remember',
+                    value: 'Someone cares about your wellbeing. This intervention comes from a place of love and concern for your future.',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'TiltCheck: Sometimes we need someone else to hit the brakes' });
+        
+        // Log manual intervention
+        session.sessionAlerts.push({
+            type: 'MANUAL_INTERVENTION',
+            time: new Date(),
+            severity: 'EMERGENCY',
+            triggeredBy: 'USER_REQUEST'
+        });
+        
+        await this.saveTiltData();
+        await message.reply({ embeds: [embed] });
+        
+        // Also try to DM the intervention
+        try {
+            await message.author.send({ embeds: [embed] });
+        } catch (error) {
+            console.log('Could not send intervention DM to user');
+        }
+    }
+
+    // Set custom alert thresholds (admin feature)
+    async setTiltThresholds(message, args) {
+        if (args.length < 2) {
+            const embed = new EmbedBuilder()
+                .setColor('#0099ff')
+                .setTitle('⚙️ Current TiltCheck Thresholds')
+                .setDescription('These are your current protection settings:')
+                .addFields(
+                    {
+                        name: '📊 Alert Thresholds',
+                        value: `**Stake Increase**: ${this.alertThresholds.stakeIncrease}% escalation\n**Time at Table**: ${this.alertThresholds.timeAtTable} minutes\n**Loss Sequence**: ${this.alertThresholds.lossSequence} consecutive losses\n**Rapid Betting**: ${this.alertThresholds.rapidBetting} bets in 5 minutes\n**Balance Depletion**: ${this.alertThresholds.balanceDepletion}% of bankroll`,
+                        inline: false
+                    },
+                    {
+                        name: '🛠️ Modify Thresholds',
+                        value: 'Usage: `!tiltcheck alerts <setting> <value>`\n\nSettings: `stake`, `time`, `losses`, `velocity`, `depletion`',
+                        inline: false
+                    }
+                )
+                .setFooter({ text: 'TiltCheck: Customize your protection levels' });
+            
+            return await message.reply({ embeds: [embed] });
+        }
+        
+        const setting = args[0].toLowerCase();
+        const value = parseInt(args[1]);
+        
+        if (isNaN(value) || value <= 0) {
+            return await message.reply('❌ Please provide a valid positive number for the threshold value.');
+        }
+        
+        // Update thresholds based on setting
+        switch (setting) {
+            case 'stake':
+                this.alertThresholds.stakeIncrease = value;
+                break;
+            case 'time':
+                this.alertThresholds.timeAtTable = value;
+                break;
+            case 'losses':
+                this.alertThresholds.lossSequence = value;
+                break;
+            case 'velocity':
+                this.alertThresholds.rapidBetting = value;
+                break;
+            case 'depletion':
+                this.alertThresholds.balanceDepletion = Math.min(value, 100); // Cap at 100%
+                break;
+            default:
+                return await message.reply('❌ Invalid setting. Use: `stake`, `time`, `losses`, `velocity`, or `depletion`');
+        }
+        
+        await message.reply(`✅ **${setting}** threshold updated to **${value}**\n\n🛡️ Your protection levels have been adjusted. Stay safe out there!`);
     }
 
     // Show current tilt status with JustTheTip humor

@@ -3,7 +3,7 @@ const GitHubIntegration = require('./github-integration');
 
 // Initialize Express app for GitHub webhooks
 const app = express();
-const port = process.env.PORT || 3001;
+let port = process.env.PORT || 3001;
 
 // Middleware
 app.use(express.json());
@@ -311,10 +311,21 @@ app.get('/github/callback', (req, res) => {
 function initializeWebhookServer(discordClient) {
     githubIntegration = new GitHubIntegration(discordClient);
     
-    app.listen(port, () => {
+    // Try to start server with error handling for port conflicts
+    const server = app.listen(port, () => {
         console.log(`🐙 GitHub webhook server running on port ${port}`);
         console.log(`📡 Webhook URL: http://localhost:${port}/github/webhook`);
         console.log(`🔗 Callback URL: http://localhost:${port}/github/callback`);
+    });
+    
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`⚠️ Port ${port} is already in use. Trying port ${port + 1}...`);
+            port = port + 1;
+            setTimeout(() => initializeWebhookServer(discordClient), 1000);
+        } else {
+            console.error('❌ Webhook server error:', err);
+        }
     });
     
     return githubIntegration;
