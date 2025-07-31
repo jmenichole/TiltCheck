@@ -222,11 +222,15 @@ class TrapHouseDashboardOverlay {
             lastUpdated: new Date().toISOString()
         };
         
-        this.initializeApp();
+        // Initialize app properly when ready - don't call initializeApp() directly
+        this.isReady = false;
     }
 
     async initializeApp() {
+        if (this.isReady) return;
+        
         await app.whenReady();
+        this.isReady = true;
         
         // 💜 Load saved settings with love
         this.loadOverlaySettings();
@@ -1578,6 +1582,7 @@ let dashboardApp;
 
 const initializeApp = async () => {
     dashboardApp = new TrapHouseDashboardOverlay();
+    await dashboardApp.initializeApp();
 };
 
 // Start when Electron is ready
@@ -1593,7 +1598,9 @@ if (app && app.whenReady) {
     });
 } else {
     // Fallback for direct execution
-    setTimeout(initializeApp, 1000);
+    setTimeout(async () => {
+        await initializeApp();
+    }, 1000);
 }
 
 module.exports = TrapHouseDashboardOverlay;
