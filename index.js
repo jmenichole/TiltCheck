@@ -441,6 +441,9 @@ client.on('messageCreate', async (message) => {
         await tiltCheckManager.handleTiltCheck(message, args);
     } else if (command === '!ecosystem') {
         await ecosystem.handleEcosystemCommand(message, args);
+    } else if (command === '!enhanced' || command === '$enhanced') {
+        // Enhanced systems integration - all new features
+        await enhancedSystems.handleEnhancedCommand(message, args);
     }
     
     // ========== CRYPTO TIP SYSTEM COMMANDS (JUSTTHETIP BOT ONLY) ==========
