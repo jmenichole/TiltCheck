@@ -1,4 +1,4 @@
-# 🎉 Your Bot is Now Fully Configured!
+# 🎉 Your Multi-Bot System is Now Fully Configured!
 
 ## ✅ What's Complete
 
@@ -7,6 +7,13 @@
 - ✅ **Admin Role**: 1329229731995848704
 - ✅ **Moderator Role**: 1329229035271884891
 - ✅ **All Channels**: Payment, Log, General, Crypto Tips, Notifications
+
+### **JustTheTip Bot Configuration:**
+- ✅ **JustTheTip Bot**: Smart crypto assistant with loans & payments
+- ✅ **Webhook URL**: Configured for loan notifications
+- ✅ **Loan Channel**: 1383031657006632970
+- ✅ **Payment Signer**: TyZFfCtcU6...34FC47M6DFeZyverJkm14BCe8E
+- ✅ **Solscan Integration**: Ready for payment tracking
 
 ### **Solana Crypto Configuration:**
 - ✅ **Solana Address**: `8WpJPzTKFU6TRmVqUUd4R8qw1Pa4ZdnqepFzx7Yd3f6Z`
