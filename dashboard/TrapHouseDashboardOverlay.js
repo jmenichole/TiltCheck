@@ -395,7 +395,7 @@ Backup Methods: ${traits.preferredDeterMethod.alternatives.join(' + ')}
         // 💜 Show welcome notification occasionally
         if (Math.random() > 0.95) {
             console.log('💜 Welcome back! Your mindful gambling companion is here to support your journey.');
-        }
+
     }
 
     createSystemTray() {
@@ -1710,6 +1710,506 @@ Backup Methods: ${traits.preferredDeterMethod.alternatives.join(' + ')}
             message: message,
             activated: true
         };
+    }
+
+    /**
+     * 🎯 COMPREHENSIVE DEGEN TRAIT CALCULATION SYSTEM
+     * "Made with love, mindful, empowered tilt check pattern and strategy analysis trap house empire building"
+     * 
+     * This is the heart of understanding what type of degen you're dealing with
+     * and what interventions will actually work based on their preferred deter methods.
+     */
+    showDegenAnalysis(userData) {
+        console.log('🎯 ANALYZING DEGEN TRAITS WITH LOVE AND UNDERSTANDING...\n');
+        
+        // Calculate comprehensive trait analysis
+        const traits = this.calculateAdvancedDegenTraits(userData);
+        
+        // Determine archetype with confidence scoring
+        const archetype = this.determineDegenArchetype(traits);
+        
+        // Calculate most effective intervention methods
+        const preferredDeterMethod = this.calculatePreferredDeterMethod(userData, traits);
+        
+        // Generate personalized recommendations
+        const recommendations = this.generatePersonalizedRecommendations(archetype, traits, userData);
+        
+        // Display comprehensive analysis
+        console.log(`
+🎯 COMPREHENSIVE DEGEN TRAIT ANALYSIS
+═══════════════════════════════════════════════════════════════
+
+PRIMARY ARCHETYPE: ${archetype.type}
+Confidence Level: ${archetype.confidence}%
+Core Description: ${archetype.description}
+
+DETAILED TRAIT BREAKDOWN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Mindfulness Mastery: ${traits.mindfulness}/100 ${this.getTraitEmoji(traits.mindfulness)}
+• Strategic Empowerment: ${traits.empowerment}/100 ${this.getTraitEmoji(traits.empowerment)}  
+• Love-Based Decision Making: ${traits.loveBasedChoices}/100 ${this.getTraitEmoji(traits.loveBasedChoices)}
+• Pattern Recognition Excellence: ${traits.patternRecognition}/100 ${this.getTraitEmoji(traits.patternRecognition)}
+• Strategic Thinking Depth: ${traits.strategicThinking}/100 ${this.getTraitEmoji(traits.strategicThinking)}
+• Tilt Resistance Foundation: ${traits.tiltResistance}/100 ${this.getTraitEmoji(traits.tiltResistance)}
+
+PREFERRED INTERVENTION METHOD:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🥇 Primary: ${preferredDeterMethod.primary} (${preferredDeterMethod.effectiveness}% effective)
+   Implementation: ${preferredDeterMethod.implementation}
+   
+🥈 Backup Methods: ${preferredDeterMethod.alternatives.join(' → ')}
+
+PERSONALIZED RECOMMENDATIONS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${recommendations.map(rec => `💡 ${rec.category}: ${rec.action}`).join('\n')}
+
+VAULT TIMER OPTIMIZATION FOR ${archetype.type.toUpperCase()}:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${this.calculateVaultTimerSettings(userData, traits, archetype)}
+
+EMPIRE BUILDING STRATEGY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${this.generateEmpireBuildingStrategy(archetype, traits)}
+
+═══════════════════════════════════════════════════════════════
+        `);
+        
+        return {
+            primary: archetype,
+            traits: traits,
+            preferredDeterMethod: preferredDeterMethod,
+            recommendations: recommendations,
+            vaultTimerSettings: this.calculateVaultTimerSettings(userData, traits, archetype),
+            empireBuildingStrategy: this.generateEmpireBuildingStrategy(archetype, traits)
+        };
+    }
+
+    getTraitEmoji(score) {
+        if (score >= 90) return '🔥';
+        if (score >= 80) return '💪';
+        if (score >= 70) return '👍';
+        if (score >= 60) return '✅';
+        if (score >= 50) return '⚡';
+        return '🌱';
+    }
+
+    calculateAdvancedDegenTraits(userData) {
+        // Enhanced mindfulness calculation
+        const mindfulness = Math.round(
+            (userData.mindfulnessPractices.presentAwareness * 0.25 +
+             userData.mindfulnessPractices.emotionalRegulation * 0.25 +
+             userData.mindfulnessPractices.meditationConsistency * 0.2 +
+             userData.mindfulnessPractices.breathWork * 0.15 +
+             userData.mindfulnessPractices.bodyAwareness * 0.15) * 0.01 * 100
+        );
+
+        // Strategic empowerment composite
+        const empowerment = Math.round(
+            (userData.empowermentFactors.selfEfficacy * 0.25 +
+             userData.empowermentFactors.personalAgency * 0.25 +
+             userData.empowermentFactors.skillDevelopment * 0.2 +
+             userData.empowermentFactors.supportNetwork * 0.15 +
+             userData.empowermentFactors.growthMindset * 0.15) * 0.01 * 100
+        );
+
+        // Love-based decision framework
+        const loveBasedChoices = Math.round(
+            (userData.loveBasedData.selfCompassion * 0.3 +
+             userData.loveBasedData.communityLove * 0.25 +
+             userData.loveBasedData.loveBasedChoices * 0.25 +
+             userData.loveBasedData.forgivenessPractice * 0.1 +
+             userData.loveBasedData.gratitudePractice * 0.1) * 0.01 * 100
+        );
+
+        // Advanced strategic thinking
+        const strategicThinking = Math.round(
+            (userData.strategyData.patternRecognition * 0.25 +
+             userData.strategyData.riskAssessment * 0.25 +
+             userData.strategyData.adaptivePlanning * 0.2 +
+             userData.strategyData.executionConsistency * 0.15 +
+             userData.strategyData.outcomeIntegration * 0.15) * 0.01 * 100
+        );
+
+        // Enhanced pattern recognition with behavioral factors
+        const patternRecognition = Math.round(
+            (userData.strategyData.patternRecognition * 0.4 +
+             (userData.patterns.longTermThinking ? 25 : 0) +
+             (userData.patterns.usesDataAnalysis ? 20 : 0) +
+             (userData.patterns.technicalAnalysis ? 15 : 0)) * 0.01 * 100
+        );
+
+        // Advanced tilt resistance calculation
+        const tiltResistance = Math.round(
+            (userData.deterEffectiveness.mindfulPause * 0.25 +
+             userData.deterEffectiveness.strategicAnalysis * 0.2 +
+             userData.deterEffectiveness.empowermentReminder * 0.2 +
+             userData.behavior.emotionalIntelligence * 8 +
+             userData.behavior.selfAdvocacy * 8 +
+             userData.presentMomentAwareness * 10 +
+             userData.decisionConfidence * 8) * 0.01 * 100
+        );
+
+        return {
+            mindfulness,
+            empowerment,
+            loveBasedChoices,
+            strategicThinking,
+            patternRecognition,
+            tiltResistance
+        };
+    }
+
+    determineDegenArchetype(traits) {
+        const archetypes = [
+            {
+                type: "Mindful Strategist Sensei",
+                description: "Master of awareness and tactical thinking - makes data-driven decisions with emotional intelligence",
+                thresholds: { mindfulness: 75, strategicThinking: 75, patternRecognition: 70 },
+                confidence: 0,
+                strengthAreas: ["meditation", "risk_assessment", "pattern_analysis"],
+                empireStyle: "methodical_expansion"
+            },
+            {
+                type: "Empowered Love Warrior",
+                description: "Combines personal strength with compassionate decision-making - protects self and community",
+                thresholds: { empowerment: 80, loveBasedChoices: 75, tiltResistance: 70 },
+                confidence: 0,
+                strengthAreas: ["leadership", "community_building", "emotional_support"],
+                empireStyle: "collaborative_growth"
+            },
+            {
+                type: "Pattern Recognition Wizard",
+                description: "Sees connections others miss, learns rapidly from experience, adapts strategies fluidly",
+                thresholds: { patternRecognition: 85, strategicThinking: 70, mindfulness: 60 },
+                confidence: 0,
+                strengthAreas: ["trend_analysis", "rapid_learning", "strategic_adaptation"],
+                empireStyle: "adaptive_innovation"
+            },
+            {
+                type: "Balanced Degen Architect",
+                description: "Well-rounded excellence across all domains - no significant weaknesses, steady reliable growth",
+                thresholds: { mindfulness: 65, empowerment: 65, loveBasedChoices: 65, strategicThinking: 65 },
+                confidence: 0,
+                strengthAreas: ["consistency", "reliability", "sustainable_growth"],
+                empireStyle: "steady_foundation_building"
+            },
+            {
+                type: "Emerging Conscious Padawan",
+                description: "Rising awareness and developing better patterns - high growth potential with proper guidance",
+                thresholds: { mindfulness: 45, empowerment: 50, strategicThinking: 45 },
+                confidence: 0,
+                strengthAreas: ["rapid_improvement", "openness_to_learning", "growth_mindset"],
+                empireStyle: "accelerated_development"
+            },
+            {
+                type: "Intuitive Love-Guided Navigator",
+                description: "Makes heart-centered decisions with strong community bonds - leads with compassion and understanding",
+                thresholds: { loveBasedChoices: 80, empowerment: 60, mindfulness: 65 },
+                confidence: 0,
+                strengthAreas: ["intuitive_decisions", "community_leadership", "compassionate_guidance"],
+                empireStyle: "heart_centered_expansion"
+            }
+        ];
+
+        // Calculate confidence scores for each archetype
+        archetypes.forEach(archetype => {
+            let score = 0;
+            let matchedCriteria = 0;
+            let totalCriteria = Object.keys(archetype.thresholds).length;
+            
+            Object.entries(archetype.thresholds).forEach(([trait, threshold]) => {
+                if (traits[trait] >= threshold) {
+                    score += (traits[trait] - threshold) + 60; // Base score + excess
+                    matchedCriteria++;
+                } else {
+                    score += Math.max(0, traits[trait] - (threshold * 0.7)); // Partial credit
+                }
+            });
+            
+            // Bonus for exceeding expectations
+            if (matchedCriteria === totalCriteria) {
+                score *= 1.2;
+            }
+            
+            archetype.confidence = Math.min(98, Math.round(
+                (score / totalCriteria) * (matchedCriteria / totalCriteria) * 1.3
+            ));
+        });
+
+        // Return the highest confidence archetype
+        const bestMatch = archetypes.sort((a, b) => b.confidence - a.confidence)[0];
+        
+        // Add secondary archetype for mixed types
+        const secondBest = archetypes.sort((a, b) => b.confidence - a.confidence)[1];
+        if (bestMatch.confidence < 75 && secondBest.confidence > 50) {
+            bestMatch.secondary = secondBest.type;
+            bestMatch.description += ` with ${secondBest.type} tendencies`;
+        }
+        
+        return bestMatch;
+    }
+
+    calculatePreferredDeterMethod(userData, traits) {
+        const methods = {
+            'Vault Timer': {
+                effectiveness: Math.round(
+                    userData.deterEffectiveness.vaultTimer * 0.5 +
+                    (traits.strategicThinking * 0.25) +
+                    (traits.patternRecognition * 0.25)
+                ),
+                description: 'Progressive time-based cooling periods with personalized reflection prompts',
+                implementation: 'Smart delays: 15min quick → 1hr medium → 24hr high → 72hr emergency circuit breaker'
+            },
+            'Mindful Pause Protocol': {
+                effectiveness: Math.round(
+                    userData.deterEffectiveness.mindfulPause * 0.5 +
+                    (traits.mindfulness * 0.3) +
+                    (userData.mindfulnessPractices.breathWork * 0.2)
+                ),
+                description: 'Breath-work and present moment awareness integration before all decisions',
+                implementation: 'Mandatory 3-breath minimum, body awareness scan, intention alignment check'
+            },
+            'Strategic Analysis Framework': {
+                effectiveness: Math.round(
+                    userData.deterEffectiveness.strategicAnalysis * 0.5 +
+                    (traits.strategicThinking * 0.3) +
+                    (traits.patternRecognition * 0.2)
+                ),
+                description: 'Data-driven decision framework with comprehensive risk/reward modeling',
+                implementation: 'Expected value calculations, historical pattern analysis, outcome probability modeling'
+            },
+            'Community Wisdom Network': {
+                effectiveness: Math.round(
+                    userData.deterEffectiveness.communitySupport * 0.5 +
+                    (userData.empowermentFactors.supportNetwork * 0.3) +
+                    (traits.loveBasedChoices * 0.2)
+                ),
+                description: 'Peer accountability system and collective wisdom sharing platform',
+                implementation: 'Buddy verification system, group wisdom circles, shared accountability tracking'
+            },
+            'Love-Centered Reflection': {
+                effectiveness: Math.round(
+                    userData.deterEffectiveness.loveReflection * 0.5 +
+                    (traits.loveBasedChoices * 0.3) +
+                    (userData.loveBasedData.selfCompassion * 0.2)
+                ),
+                description: 'Compassion-based decision framework with self-care integration',
+                implementation: 'Self-compassion activation, values alignment verification, future self visualization'
+            },
+            'Empowerment Activation System': {
+                effectiveness: Math.round(
+                    userData.deterEffectiveness.empowermentReminder * 0.5 +
+                    (traits.empowerment * 0.3) +
+                    (userData.behavior.selfAdvocacy * 10 * 0.2)
+                ),
+                description: 'Personal agency reinforcement with capability recognition protocols',
+                implementation: 'Strength inventory activation, past success pattern recall, capability affirmation sequence'
+            }
+        };
+
+        // Sort by effectiveness and create response
+        const sortedMethods = Object.entries(methods)
+            .sort(([,a], [,b]) => b.effectiveness - a.effectiveness);
+
+        return {
+            primary: sortedMethods[0][0],
+            effectiveness: sortedMethods[0][1].effectiveness,
+            description: sortedMethods[0][1].description,
+            implementation: sortedMethods[0][1].implementation,
+            alternatives: sortedMethods.slice(1, 4).map(([name]) => name)
+        };
+    }
+
+    generatePersonalizedRecommendations(archetype, traits, userData) {
+        const recommendations = [];
+
+        // Mindfulness development path
+        if (traits.mindfulness < 70) {
+            recommendations.push({
+                category: 'Mindfulness Development',
+                action: 'Begin with 3-minute daily meditation sessions focusing on breath awareness and present moment anchoring'
+            });
+        } else if (traits.mindfulness < 85) {
+            recommendations.push({
+                category: 'Advanced Mindfulness',
+                action: 'Expand practice to include body scans, loving-kindness meditation, and emotional awareness training'
+            });
+        }
+
+        // Strategic thinking enhancement
+        if (traits.strategicThinking < 75) {
+            recommendations.push({
+                category: 'Strategic Enhancement',
+                action: 'Start comprehensive decision outcome tracking and develop pattern recognition journaling practice'
+            });
+        }
+
+        // Empowerment building
+        if (traits.empowerment < 70) {
+            recommendations.push({
+                category: 'Empowerment Building',
+                action: 'Create daily wins documentation system and establish regular capability recognition rituals'
+            });
+        }
+
+        // Tilt resistance strengthening
+        if (traits.tiltResistance < 65) {
+            recommendations.push({
+                category: 'Tilt Resistance',
+                action: 'Implement graduated cooling-off protocols and develop advanced emotional regulation toolkit'
+            });
+        }
+
+        // Love-based decision enhancement
+        if (traits.loveBasedChoices < 70) {
+            recommendations.push({
+                category: 'Compassionate Decisions',
+                action: 'Practice self-compassion exercises and develop values-based decision-making framework'
+            });
+        }
+
+        // Archetype-specific advanced recommendations
+        switch (archetype.type) {
+            case 'Mindful Strategist Sensei':
+                recommendations.push({
+                    category: 'Master Level Development',
+                    action: 'Create advanced probabilistic thinking frameworks and mentor others in mindful strategy'
+                });
+                break;
+            case 'Empowered Love Warrior':
+                recommendations.push({
+                    category: 'Leadership Expansion',
+                    action: 'Develop community leadership skills and create support systems for fellow travelers'
+                });
+                break;
+            case 'Pattern Recognition Wizard':
+                recommendations.push({
+                    category: 'Advanced Pattern Mastery',
+                    action: 'Build predictive models and develop rapid adaptation protocols for changing conditions'
+                });
+                break;
+            case 'Emerging Conscious Padawan':
+                recommendations.push({
+                    category: 'Accelerated Growth',
+                    action: 'Focus on foundational practices and seek mentorship from advanced practitioners'
+                });
+                break;
+        }
+
+        return recommendations;
+    }
+
+    calculateVaultTimerSettings(userData, traits, archetype) {
+        let settings = {
+            quickDecisions: 15,    // minutes
+            mediumStakes: 60,      // minutes  
+            highStakes: 1440,      // 24 hours
+            emergencyMode: 4320    // 72 hours
+        };
+
+        // Archetype-based adjustments
+        switch (archetype.type) {
+            case 'Mindful Strategist Sensei':
+                settings.quickDecisions = 10; // Faster processing for experienced mindful users
+                settings.mediumStakes = 45;
+                break;
+            case 'Pattern Recognition Wizard':
+                settings.quickDecisions = 12; // Quick pattern recognition
+                settings.mediumStakes = 30;   // Rapid adaptation capability
+                break;
+            case 'Emerging Conscious Padawan':
+                settings.quickDecisions = 25; // More time needed for development
+                settings.mediumStakes = 90;
+                settings.highStakes = 2160;   // 36 hours
+                break;
+        }
+
+        // Trait-based fine-tuning
+        if (traits.tiltResistance < 55) {
+            // Increase all timers for high-tilt vulnerability
+            Object.keys(settings).forEach(key => {
+                settings[key] = Math.round(settings[key] * 1.5);
+            });
+        }
+
+        if (traits.strategicThinking > 80) {
+            // Reduce medium stakes time for high strategic thinkers
+            settings.mediumStakes = Math.round(settings.mediumStakes * 0.8);
+        }
+
+        return `
+⏰ OPTIMIZED VAULT TIMER SETTINGS:
+• Quick Decisions: ${settings.quickDecisions} minutes
+• Medium Stakes: ${Math.round(settings.mediumStakes)} minutes (${Math.round(settings.mediumStakes/60)} hours)
+• High Stakes: ${Math.round(settings.highStakes/60)} hours
+• Emergency Circuit Breaker: ${Math.round(settings.emergencyMode/60)} hours
+
+🎯 PERSONALIZED TIMER MESSAGES:
+• "Your ${archetype.type} wisdom is activating - use this pause to align with your highest potential"
+• "This pause is your superpower, not a limitation - trust the process"
+• "Your future self is cheering for this moment of conscious choice"
+• "Every pause strengthens your empire-building foundation"
+
+💡 IMPLEMENTATION NOTES:
+• Progressive escalation based on session risk assessment
+• Mindfulness prompts during each pause period
+• Pattern recognition reminders for strategic users
+• Community support options during longer pauses
+        `;
+    }
+
+    generateEmpireBuildingStrategy(archetype, traits) {
+        const strategies = {
+            'Mindful Strategist Sensei': `
+🏗️ METHODICAL EXPANSION STRATEGY:
+• Phase 1: Master risk assessment and pattern recognition systems
+• Phase 2: Build data-driven decision frameworks  
+• Phase 3: Develop mentorship capabilities for other strategists
+• Phase 4: Create systematic wealth accumulation protocols
+• Empire Foundation: Knowledge, wisdom, and strategic mastery`,
+
+            'Empowered Love Warrior': `
+🤝 COLLABORATIVE GROWTH STRATEGY:  
+• Phase 1: Strengthen personal empowerment and self-advocacy
+• Phase 2: Build strong community support networks
+• Phase 3: Develop leadership and mentoring capabilities
+• Phase 4: Create sustainable impact through collective action
+• Empire Foundation: Relationships, trust, and shared prosperity`,
+
+            'Pattern Recognition Wizard': `
+🔮 ADAPTIVE INNOVATION STRATEGY:
+• Phase 1: Master rapid pattern identification and analysis
+• Phase 2: Develop predictive capability and trend recognition  
+• Phase 3: Create adaptive systems for changing conditions
+• Phase 4: Build innovation frameworks for continuous evolution
+• Empire Foundation: Adaptability, innovation, and market timing`,
+
+            'Balanced Degen Architect': `
+🏛️ STEADY FOUNDATION BUILDING:
+• Phase 1: Establish consistent habits across all skill areas
+• Phase 2: Build reliable systems and sustainable practices
+• Phase 3: Create redundancy and risk management protocols
+• Phase 4: Scale systematically while maintaining quality
+• Empire Foundation: Reliability, consistency, and long-term thinking`,
+
+            'Emerging Conscious Padawan': `
+🌱 ACCELERATED DEVELOPMENT STRATEGY:
+• Phase 1: Focus on foundational skill building and learning
+• Phase 2: Seek mentorship and accelerated growth opportunities
+• Phase 3: Practice application of new skills in low-risk environments  
+• Phase 4: Gradually increase complexity and responsibility
+• Empire Foundation: Growth mindset, learning agility, and potential`,
+
+            'Intuitive Love-Guided Navigator': `
+💖 HEART-CENTERED EXPANSION:
+• Phase 1: Develop intuitive decision-making capabilities
+• Phase 2: Build compassionate leadership and guidance skills
+• Phase 3: Create supportive community ecosystems
+• Phase 4: Scale impact through heart-centered influence
+• Empire Foundation: Intuition, compassion, and authentic connection`
+        };
+
+        return strategies[archetype.type] || strategies['Balanced Degen Architect'];
     }
 
     // 🎯 COMPREHENSIVE DEGEN TRAIT CALCULATION SYSTEM

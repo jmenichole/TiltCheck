@@ -138,6 +138,24 @@
             </div>
 
             <div class="test-section">
+                <h2>🌐 DNS & Domain Testing</h2>
+                <input type="text" id="domain-name" placeholder="Domain Name" value="tiltcheck.it.com">
+                <button class="button" onclick="testDNS()">Test DNS Resolution</button>
+                <button class="button warning" onclick="testSSL()">Test SSL Certificate</button>
+                <button class="button" onclick="testSubdomains()">Test All Subdomains</button>
+                <div id="dns-result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>🔧 TiltCheck Integration</h2>
+                <button class="button" onclick="testTiltCheckAPI()">Test TiltCheck API</button>
+                <button class="button" onclick="testCollectClock()">Test CollectClock</button>
+                <button class="button warning" onclick="testDegenAnalysis()">Test Degen Analysis</button>
+                <button class="button" onclick="testVaultTimer()">Test Vault Timer</button>
+                <div id="tiltcheck-result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="test-section">
                 <h2>🌐 Quick Links</h2>
                 <a href="/stripe/marketplace" class="button" target="_blank">Marketplace</a>
                 <a href="/stripe/seller-dashboard" class="button" target="_blank">Seller Dashboard</a>
@@ -277,7 +295,11 @@
             // Test 1: Health Check
             results.push(await apiCall('GET', '/webhook/health'));
             
-            // Test 2: Create Account
+            // Test 2: DNS Testing
+            const dnsResults = await testDNSResolution();
+            results.push({ test: 'DNS Resolution', result: dnsResults });
+            
+            // Test 3: Create Account
             const accountResult = await apiCall('POST', '/stripe/accounts/create', {
                 email: 'autotest' + Date.now() + '@traphouse.com',
                 discordUserId: 'autotest_' + Date.now()
@@ -287,10 +309,10 @@
             if (accountResult.success) {
                 const accountId = accountResult.data.accountId;
                 
-                // Test 3: Account Status
+                // Test 4: Account Status
                 results.push(await apiCall('GET', `/stripe/accounts/${accountId}/status`));
                 
-                // Test 4: Create Product
+                // Test 5: Create Product
                 results.push(await apiCall('POST', '/stripe/products/create', {
                     connectedAccountId: accountId,
                     name: 'Auto Test Product',
@@ -298,7 +320,7 @@
                     priceInCents: 1000
                 }));
                 
-                // Test 5: Test Mode Checkout
+                // Test 6: Test Mode Checkout
                 results.push(await apiCall('POST', '/stripe/checkout/create', {
                     connectedAccountId: accountId,
                     productName: 'Auto Test Product',
@@ -308,9 +330,226 @@
                 }));
             }
             
+            // Test 7: TiltCheck Integration
+            const tiltCheckResults = await testTiltCheckIntegration();
+            results.push({ test: 'TiltCheck Integration', result: tiltCheckResults });
+            
             document.getElementById('global-status').innerHTML = 
                 '<div class="status success">Full Test Suite Complete!</div>';
             showResult('global-results', results);
+        }
+
+        // DNS Testing Functions
+        async function testDNS() {
+            const domain = document.getElementById('domain-name').value;
+            const results = await testDNSResolution(domain);
+            showResult('dns-result', results);
+        }
+
+        async function testDNSResolution(domain = 'tiltcheck.it.com') {
+            const subdomains = [
+                domain,
+                `dashboard.${domain}`,
+                `api.${domain}`,
+                `collectclock.${domain}`,
+                `tilt.${domain}`,
+                `admin.${domain}`,
+                `vault.${domain}`,
+                `portal.${domain}`,
+                `bot.${domain}`
+            ];
+
+            const results = {};
+            
+            for (const subdomain of subdomains) {
+                try {
+                    // Test if subdomain resolves by attempting to fetch
+                    const response = await fetch(`https://${subdomain}`, { 
+                        method: 'HEAD',
+                        mode: 'no-cors',
+                        timeout: 5000
+                    });
+                    results[subdomain] = 'Accessible';
+                } catch (error) {
+                    // Try HTTP as fallback
+                    try {
+                        const httpResponse = await fetch(`http://${subdomain}`, { 
+                            method: 'HEAD',
+                            mode: 'no-cors',
+                            timeout: 5000
+                        });
+                        results[subdomain] = 'HTTP Only (No SSL)';
+                    } catch (httpError) {
+                        results[subdomain] = 'Not Accessible';
+                    }
+                }
+            }
+            
+            return results;
+        }
+
+        async function testSSL() {
+            const domain = document.getElementById('domain-name').value;
+            const sslResults = {};
+            
+            const testDomains = [domain, `dashboard.${domain}`, `api.${domain}`];
+            
+            for (const testDomain of testDomains) {
+                try {
+                    const response = await fetch(`https://${testDomain}`, { 
+                        method: 'HEAD',
+                        timeout: 10000
+                    });
+                    sslResults[testDomain] = {
+                        ssl: 'Valid',
+                        status: response.status,
+                        headers: Object.fromEntries(response.headers.entries())
+                    };
+                } catch (error) {
+                    sslResults[testDomain] = {
+                        ssl: 'Invalid or Missing',
+                        error: error.message
+                    };
+                }
+            }
+            
+            showResult('dns-result', sslResults);
+        }
+
+        async function testSubdomains() {
+            const domain = document.getElementById('domain-name').value;
+            const results = await testDNSResolution(domain);
+            
+            // Add specific endpoint testing
+            const endpointTests = {};
+            const endpoints = [
+                { url: `https://${domain}/health`, name: 'Main Health' },
+                { url: `https://dashboard.${domain}`, name: 'Dashboard' },
+                { url: `https://api.${domain}/health`, name: 'API Health' },
+                { url: `https://api.${domain}/webhook/health`, name: 'Webhook Health' },
+                { url: `https://collectclock.${domain}`, name: 'CollectClock' },
+                { url: `https://tilt.${domain}`, name: 'Tilt Monitor' },
+                { url: `https://vault.${domain}`, name: 'Vault System' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url, { timeout: 5000 });
+                    endpointTests[endpoint.name] = {
+                        status: response.status,
+                        ok: response.ok,
+                        url: endpoint.url
+                    };
+                } catch (error) {
+                    endpointTests[endpoint.name] = {
+                        error: error.message,
+                        url: endpoint.url
+                    };
+                }
+            }
+            
+            showResult('dns-result', { 
+                dnsResolution: results, 
+                endpointTests: endpointTests 
+            });
+        }
+
+        // TiltCheck Testing Functions
+        async function testTiltCheckAPI() {
+            const results = await testTiltCheckIntegration();
+            showResult('tiltcheck-result', results);
+        }
+
+        async function testTiltCheckIntegration() {
+            const tests = {};
+            
+            // Test TiltCheck endpoints
+            const tiltCheckEndpoints = [
+                '/api/tiltcheck/status',
+                '/api/tiltcheck/analysis',
+                '/api/tiltcheck/patterns',
+                '/api/degens/traits',
+                '/api/vault/timer',
+                '/api/collectclock/integration'
+            ];
+            
+            for (const endpoint of tiltCheckEndpoints) {
+                try {
+                    const result = await apiCall('GET', endpoint);
+                    tests[endpoint] = result;
+                } catch (error) {
+                    tests[endpoint] = { error: error.message };
+                }
+            }
+            
+            return tests;
+        }
+
+        async function testCollectClock() {
+            const collectClockTests = {
+                integration: await apiCall('GET', '/api/collectclock/status'),
+                verification: await apiCall('GET', '/api/collectclock/verify'),
+                bonusTracking: await apiCall('GET', '/api/collectclock/bonuses')
+            };
+            
+            showResult('tiltcheck-result', collectClockTests);
+        }
+
+        async function testDegenAnalysis() {
+            // Mock degen analysis data
+            const mockUserData = {
+                patterns: {
+                    longTermThinking: true,
+                    calculatedRisks: true,
+                    usesMindfulPause: true,
+                    usesDataAnalysis: true,
+                    technicalAnalysis: true
+                },
+                behavior: {
+                    meditationPractice: true,
+                    emotionalIntelligence: 8,
+                    selfAdvocacy: 8,
+                    empathyLevel: 9
+                },
+                empowermentFactors: {
+                    selfEfficacy: 75,
+                    personalAgency: 80,
+                    skillDevelopment: 70,
+                    supportNetwork: 85,
+                    growthMindset: 90
+                },
+                mindfulnessPractices: {
+                    presentAwareness: 80,
+                    emotionalRegulation: 75,
+                    bodyAwareness: 60,
+                    breathWork: 70,
+                    meditationConsistency: 85
+                },
+                deterEffectiveness: {
+                    mindfulPause: 85,
+                    strategicAnalysis: 90,
+                    vaultTimer: 70,
+                    communitySupport: 80,
+                    loveReflection: 75,
+                    empowermentReminder: 80
+                }
+            };
+            
+            const analysisResult = await apiCall('POST', '/api/degens/analyze', mockUserData);
+            showResult('tiltcheck-result', analysisResult);
+        }
+
+        async function testVaultTimer() {
+            const vaultTests = {
+                settings: await apiCall('GET', '/api/vault/settings'),
+                activation: await apiCall('POST', '/api/vault/activate', { 
+                    duration: 15, 
+                    type: 'mindful_pause' 
+                }),
+                status: await apiCall('GET', '/api/vault/status')
+            };
+            
+            showResult('tiltcheck-result', vaultTests);
         }
     </script>
 </body>
