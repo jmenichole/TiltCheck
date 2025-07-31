@@ -27,15 +27,23 @@
 ```
 !ping                    # Test bot responsiveness
 !help                    # Show available commands
-!verify-payment <tx>     # Verify Solscan transaction
-!check-tx <signature>    # Check transaction details
+!solscan-status          # Check Solscan API configuration
+!api-status              # Same as above
+!verify-payment <tx>     # Verify Solscan transaction (limited mode)
+!check-tx <signature>    # Check transaction details (limited mode)
 !jtt                     # JustTheTip specific features
 !tiltcheck               # TiltCheck functionality
 ```
 
-### **2. Test Solscan Payment Verification:**
+### **2. Test Solscan Integration (Limited Mode):**
 ```
+# Check API status first
+!solscan-status
+
+# Test transaction verification (will show limited mode info)
 !verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E
+
+# Check any transaction signature
 !check-tx <your_transaction_signature>
 ```
 
@@ -146,11 +154,15 @@ curl --request GET \
 
 ## 📋 Next Steps Options
 
-### **Option A: Start Testing Now**
-Your bot is ready! Go test the SOLUSDC features.
+### **Option A: Start Testing JustTheTip Now**
+Your JustTheTip bot is ready! Go test the Solscan payment verification.
 
-### **Option B: Add More Crypto Networks**
-Set up Ethereum, Polygon, BSC addresses for more options.
+### **Option B: Get Solscan Pro API Key**
+For enhanced monitoring:
+1. Visit https://pro-api.solscan.io/
+2. Get your API key
+3. Add to .env: `SOLSCAN_API_KEY=your_key_here`
+4. Restart bot: `node launcher.js justthetip`
 
 ### **Option C: Production Setup**
 - Move to a VPS/cloud server
@@ -173,13 +185,18 @@ Set up Ethereum, Polygon, BSC addresses for more options.
 
 1. **Bot not responding?**
    - Check if bot is online in Discord
-   - Restart with `node index.js`
+   - Restart with `node launcher.js justthetip`
 
 2. **Commands not working?**
    - Make sure you're using the right prefix (! for basic, $ for crypto)
    - Check you have the right permissions
 
-3. **Want to generate a new wallet?**
-   - Run `node generate_solana_wallet.js` again
+3. **Payment verification failing?**
+   - Make sure transaction signature is correct
+   - Check if it was signed by your payment signer
+   - Consider getting a Solscan Pro API key
 
-**Your bot is now ready for SOLUSDC testing! 🚀**
+4. **Want to switch bots?**
+   - Use `node launcher.js` to see all options
+
+**Your JustTheTip bot with Solscan integration is ready! 🚀**

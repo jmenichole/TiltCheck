@@ -418,15 +418,58 @@ client.on('messageCreate', async (message) => {
     } else if (command === '!verify-payment' || command === '!check-tx') {
         // JustTheTip Solscan payment verification
         if (!solscanTracker) {
-            return await message.reply('💡 Solscan tracking not available on this bot.');
+            return await message.reply('💡 Solscan tracking not available on this bot. Use `node launcher.js justthetip` to run JustTheTip bot.');
         }
         
         const signature = args[0];
         if (!signature) {
-            return await message.reply('💡 **Verify Payment**\n\nUsage: `!verify-payment <transaction_signature>`\nExample: `!verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E`');
+            return await message.reply('💡 **Verify Payment**\n\nUsage: `!verify-payment <transaction_signature>`\nExample: `!verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E`\n\n⚠️ **Note:** Full verification requires Solscan Pro API key');
         }
         
         try {
+            // First, let's check if we have a proper API key
+            const hasApiKey = process.env.SOLSCAN_API_KEY && process.env.SOLSCAN_API_KEY !== 'your_solscan_api_key_here';
+            
+            if (!hasApiKey) {
+                const embed = {
+                    title: "⚠️ Limited Verification Mode",
+                    color: 0xffaa00,
+                    fields: [
+                        {
+                            name: "Transaction Signature",
+                            value: `\`${signature}\``,
+                            inline: false
+                        },
+                        {
+                            name: "Expected Payment Signer",
+                            value: `\`${process.env.JUSTTHETIP_PAYMENT_SIGNER?.substring(0, 20)}...\``,
+                            inline: false
+                        },
+                        {
+                            name: "Status",
+                            value: "⚠️ Cannot fully verify without Solscan Pro API key",
+                            inline: false
+                        },
+                        {
+                            name: "Manual Verification",
+                            value: `[View on Solscan](https://solscan.io/tx/${signature})\n[View on Solana Explorer](https://explorer.solana.com/tx/${signature})`,
+                            inline: false
+                        },
+                        {
+                            name: "How to Enable Full Verification",
+                            value: "1. Get API key from https://pro-api.solscan.io/\n2. Add to .env: `SOLSCAN_API_KEY=your_key`\n3. Restart bot: `node launcher.js justthetip`",
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "JustTheTip Payment Verification • Limited Mode"
+                    }
+                };
+                
+                return await message.reply({ embeds: [embed] });
+            }
+            
+            // If we have an API key, proceed with full verification
             const isValid = await solscanTracker.verifyPaymentTransaction(signature);
             
             if (isValid) {
@@ -457,7 +500,10 @@ client.on('messageCreate', async (message) => {
                                 value: `[View Transaction](https://solscan.io/tx/${signature})`,
                                 inline: false
                             }
-                        ]
+                        ],
+                        footer: {
+                            text: "JustTheTip Payment Verification • Full Mode"
+                        }
                     };
                     
                     await message.reply({ embeds: [embed] });
@@ -465,12 +511,133 @@ client.on('messageCreate', async (message) => {
                     await message.reply(`❌ Could not process payment: ${paymentResult.error}`);
                 }
             } else {
-                await message.reply('❌ Transaction not signed by JustTheTip payment signer or not found.');
+                const embed = {
+                    title: "❌ Payment Verification Failed",
+                    color: 0xff0000,
+                    fields: [
+                        {
+                            name: "Transaction",
+                            value: `\`${signature}\``,
+                            inline: false
+                        },
+                        {
+                            name: "Issue",
+                            value: "Transaction not signed by JustTheTip payment signer or not found",
+                            inline: false
+                        },
+                        {
+                            name: "Expected Signer",
+                            value: `\`${process.env.JUSTTHETIP_PAYMENT_SIGNER?.substring(0, 20)}...\``,
+                            inline: false
+                        },
+                        {
+                            name: "Manual Check",
+                            value: `[View on Solscan](https://solscan.io/tx/${signature})\n[View on Solana Explorer](https://explorer.solana.com/tx/${signature})`,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "JustTheTip Payment Verification"
+                    }
+                };
+                
+                await message.reply({ embeds: [embed] });
             }
         } catch (error) {
             console.error('Error verifying payment:', error);
-            await message.reply('❌ Error verifying payment. Please try again.');
+            
+            const embed = {
+                title: "❌ Verification Error",
+                color: 0xff0000,
+                fields: [
+                    {
+                        name: "Error",
+                        value: "Unable to verify payment - API error",
+                        inline: false
+                    },
+                    {
+                        name: "Transaction",
+                        value: `\`${signature}\``,
+                        inline: false
+                    },
+                    {
+                        name: "Manual Verification",
+                        value: `[View on Solscan](https://solscan.io/tx/${signature})\n[View on Solana Explorer](https://explorer.solana.com/tx/${signature})`,
+                        inline: false
+                    },
+                    {
+                        name: "Possible Issues",
+                        value: "• Solscan API key missing or invalid\n• Transaction not found\n• Network connectivity issues",
+                        inline: false
+                    }
+                ],
+                footer: {
+                    text: "JustTheTip Payment Verification • Error Mode"
+                }
+            };
+            
+            await message.reply({ embeds: [embed] });
         }
+    } else if (command === '!solscan-status' || command === '!api-status') {
+        // Check Solscan API configuration and status
+        if (!solscanTracker) {
+            return await message.reply('💡 Solscan tracking not available. Run `node launcher.js justthetip` to enable.');
+        }
+        
+        const hasApiKey = process.env.SOLSCAN_API_KEY && process.env.SOLSCAN_API_KEY !== 'your_solscan_api_key_here';
+        const paymentSigner = process.env.JUSTTHETIP_PAYMENT_SIGNER;
+        const loanChannel = process.env.JUSTTHETIP_LOAN_CHANNEL_ID;
+        const webhookUrl = process.env.JUSTTHETIP_WEBHOOK_URL;
+        
+        const embed = {
+            title: "🔍 JustTheTip Solscan Configuration",
+            color: hasApiKey ? 0x00ff00 : 0xffaa00,
+            fields: [
+                {
+                    name: "API Status",
+                    value: hasApiKey ? "✅ Solscan Pro API Key configured" : "⚠️ No API key - Limited functionality",
+                    inline: false
+                },
+                {
+                    name: "Payment Signer",
+                    value: paymentSigner ? `\`${paymentSigner.substring(0, 20)}...\`` : "❌ Not configured",
+                    inline: true
+                },
+                {
+                    name: "Loan Channel",
+                    value: loanChannel ? `<#${loanChannel}>` : "❌ Not configured",
+                    inline: true
+                },
+                {
+                    name: "Webhook",
+                    value: webhookUrl && !webhookUrl.includes('your_webhook') ? "✅ Configured" : "❌ Not configured",
+                    inline: true
+                },
+                {
+                    name: "Monitoring Status",
+                    value: "🔄 Active (checks every 30 seconds)",
+                    inline: false
+                },
+                {
+                    name: "Available Commands",
+                    value: "`!verify-payment <tx>` - Verify transaction\n`!check-tx <tx>` - Same as above\n`!solscan-status` - Show this status",
+                    inline: false
+                }
+            ],
+            footer: {
+                text: hasApiKey ? "JustTheTip • Full API Access" : "JustTheTip • Limited Access - Get API key at pro-api.solscan.io"
+            }
+        };
+        
+        if (!hasApiKey) {
+            embed.fields.push({
+                name: "🚀 Enable Full Features",
+                value: "1. Visit https://pro-api.solscan.io/\n2. Get your API key\n3. Add to .env: `SOLSCAN_API_KEY=your_key`\n4. Restart: `node launcher.js justthetip`",
+                inline: false
+            });
+        }
+        
+        await message.reply({ embeds: [embed] });
     } else if (command === '!withdraw') {
         if (!paymentManager) {
             return await message.reply('💳 Payment system is initializing. Please try again in a moment.');
