@@ -705,7 +705,7 @@ class AIMStyleControlPanel {
             embed.addFields(
                 {
                     name: '🚀 Get Verified',
-                    value: 'Complete verification to access:\n• Instant messaging with verified degens\n• Fast tips and airdrops\n• Exclusive chat rooms\n• Anti-scam protection\n• Advanced casino integrations',
+                    value: 'Complete verification to access:\n• Instant messaging with verified degens\n• Fast tips via JustTheTip wallet\n• TiltCheck responsible gambling tools\n• Exclusive chat rooms\n• Anti-scam protection\n• Advanced casino integrations',
                     inline: false
                 }
             );
@@ -738,8 +738,255 @@ class AIMStyleControlPanel {
         return crypto.createHash('sha256').update(data).digest('hex');
     }
 
-    // Additional helper methods would be implemented here...
-    // Device fingerprinting, behavioral analysis, message filtering, etc.
+    // ===== TILTCHECK INTEGRATION =====
+
+    /**
+     * Get or create TiltCheck profile for user
+     */
+    async getTiltCheckProfile(userId) {
+        // Check if TiltCheck profile already exists in TrapHouse bot
+        if (this.trapHouse?.tiltCheckVerification) {
+            return await this.trapHouse.tiltCheckVerification.getUserProfile(userId);
+        }
+        return null;
+    }
+
+    /**
+     * Link TiltCheck profile to verification system
+     */
+    async linkTiltCheckProfile(userId, profileData) {
+        const verification = this.verificationSystem.pendingVerifications.get(userId);
+        if (!verification) return false;
+
+        // Create or update TiltCheck profile link
+        this.verificationSystem.tiltCheckProfiles.set(userId, {
+            profileId: profileData.id,
+            status: profileData.status || 'active',
+            currentRisk: profileData.currentRisk || 'low',
+            totalSessions: profileData.totalSessions || 0,
+            linkedAt: new Date(),
+            lastSync: new Date(),
+            settings: {
+                alertThreshold: profileData.alertThreshold || 0.7,
+                sessionLimit: profileData.sessionLimit || 120,
+                lossLimit: profileData.lossLimit || 100,
+                cooldownPeriod: profileData.cooldownPeriod || 30
+            }
+        });
+
+        // Mark TiltCheck verification as complete
+        verification.steps.tiltcheck = true;
+        verification.proofs.set('tiltcheck', this.generateProofSignature(userId, 'tiltcheck'));
+
+        return true;
+    }
+
+    /**
+     * Check tilt patterns before processing tip
+     */
+    async checkTiltPatternsBeforeTip(userId, amount, currency) {
+        const tiltProfile = this.verificationSystem.tiltCheckProfiles.get(userId);
+        if (!tiltProfile) return;
+
+        // Check if user is currently in tilt state
+        if (tiltProfile.currentRisk === 'high') {
+            throw new Error('Transaction blocked - TiltCheck high risk detected');
+        }
+
+        // Check if tip amount exceeds tilt limits
+        if (amount > tiltProfile.settings.lossLimit) {
+            await this.sendTiltAlert(userId, 'large_tip', { amount, currency });
+            throw new Error(`Tip amount exceeds TiltCheck limit ($${tiltProfile.settings.lossLimit})`);
+        }
+
+        // Log transaction for tilt analysis
+        await this.logTiltTransaction(userId, 'tip_sent', { amount, currency });
+    }
+
+    /**
+     * Send tilt alert to user
+     */
+    async sendTiltAlert(userId, alertType, data) {
+        const user = await this.collectClock.client.users.fetch(userId);
+        const tiltProfile = this.verificationSystem.tiltCheckProfiles.get(userId);
+
+        const embed = new EmbedBuilder()
+            .setColor('#ff4444')
+            .setTitle('🛡️ TiltCheck Alert')
+            .setDescription('Responsible gambling protection activated')
+            .addFields(
+                {
+                    name: '⚠️ Alert Type',
+                    value: this.getTiltAlertMessage(alertType),
+                    inline: false
+                },
+                {
+                    name: '📊 Your Data',
+                    value: `**Risk Level:** ${tiltProfile.currentRisk}\n**Session Time:** ${data.sessionTime || 'N/A'}\n**Amount:** $${data.amount || 0}`,
+                    inline: true
+                },
+                {
+                    name: '🛠️ Recommended Actions',
+                    value: '• Take a break from gambling\n• Review your limits\n• Contact accountability buddy\n• Use cooling-off period',
+                    inline: true
+                }
+            );
+
+        await user.send({ embeds: [embed] });
+    }
+
+    // ===== JUSTTHETIP WALLET INTEGRATION =====
+
+    /**
+     * Get or create JustTheTip wallet for user
+     */
+    async getJustTheTipWallet(userId) {
+        // Check if wallet already exists
+        const existingWallet = this.verificationSystem.justTheTipWallets.get(userId);
+        if (existingWallet) return existingWallet;
+
+        // Create new wallet (mock implementation)
+        return null;
+    }
+
+    /**
+     * Link JustTheTip wallet to verification system
+     */
+    async linkJustTheTipWallet(userId, walletData) {
+        const verification = this.verificationSystem.pendingVerifications.get(userId);
+        if (!verification) return false;
+
+        // Create or update JustTheTip wallet link
+        this.verificationSystem.justTheTipWallets.set(userId, {
+            walletId: walletData.id || crypto.randomUUID(),
+            address: walletData.address,
+            balance: walletData.balance || 0,
+            status: walletData.status || 'active',
+            linkedAt: new Date(),
+            lastSync: new Date(),
+            txCount: 0,
+            settings: {
+                tipLimit: walletData.tipLimit || 50,
+                dailyLimit: walletData.dailyLimit || 200,
+                autoBackup: walletData.autoBackup || true,
+                twoFactorEnabled: walletData.twoFactorEnabled || false
+            },
+            security: {
+                multisig: walletData.multisig || false,
+                backupSeed: walletData.backupSeed || null,
+                recoveryEmail: walletData.recoveryEmail || null
+            }
+        });
+
+        // Mark JustTheTip verification as complete
+        verification.steps.justthetip = true;
+        verification.proofs.set('justthetip', this.generateProofSignature(userId, 'justthetip'));
+
+        return true;
+    }
+
+    /**
+     * Process tip transaction through JustTheTip wallet
+     */
+    async processJustTheTipTransaction(tip) {
+        const fromWallet = this.verificationSystem.justTheTipWallets.get(tip.from);
+        const toWallet = this.verificationSystem.justTheTipWallets.get(tip.to);
+
+        try {
+            // Deduct from sender
+            fromWallet.balance -= tip.amount;
+            fromWallet.txCount++;
+
+            // Add to recipient
+            toWallet.balance += tip.amount;
+            toWallet.txCount++;
+
+            // Update tip status
+            tip.status = 'completed';
+            tip.walletTxId = crypto.randomUUID();
+            tip.completedAt = new Date();
+
+            // Log transaction
+            await this.logWalletTransaction(tip);
+
+            // Send notifications
+            await this.sendTipNotifications(tip);
+
+            return tip;
+
+        } catch (error) {
+            tip.status = 'failed';
+            tip.error = error.message;
+            throw error;
+        }
+    }
+
+    /**
+     * Log wallet transaction for audit trail
+     */
+    async logWalletTransaction(tip) {
+        // Implementation would log to database/file for audit
+        console.log(`💰 JustTheTip Transaction: ${tip.from} -> ${tip.to} ($${tip.amount})`);
+    }
+
+    /**
+     * Send tip completion notifications
+     */
+    async sendTipNotifications(tip) {
+        const fromUser = await this.collectClock.client.users.fetch(tip.from);
+        const toUser = await this.collectClock.client.users.fetch(tip.to);
+
+        // Sender notification
+        const senderEmbed = new EmbedBuilder()
+            .setColor('#00ff88')
+            .setTitle('💸 Tip Sent Successfully!')
+            .setDescription(`Your tip was processed via JustTheTip wallet`)
+            .addFields(
+                {
+                    name: '💰 Transaction Details',
+                    value: `**Amount:** $${tip.amount}\n**Recipient:** ${toUser.username}\n**Message:** ${tip.message || 'No message'}\n**TX ID:** \`${tip.walletTxId}\``,
+                    inline: false
+                }
+            );
+
+        await fromUser.send({ embeds: [senderEmbed] });
+
+        // Recipient notification
+        const recipientEmbed = new EmbedBuilder()
+            .setColor('#ffd700')
+            .setTitle('💰 Tip Received!')
+            .setDescription(`You received a tip from a verified degen!`)
+            .addFields(
+                {
+                    name: '🎁 Tip Details',
+                    value: `**Amount:** $${tip.amount}\n**From:** ${fromUser.username}\n**Message:** ${tip.message || 'No message'}\n**TX ID:** \`${tip.walletTxId}\``,
+                    inline: false
+                }
+            );
+
+        await toUser.send({ embeds: [recipientEmbed] });
+    }
+
+    /**
+     * Get tilt alert message based on type
+     */
+    getTiltAlertMessage(alertType) {
+        const messages = {
+            'large_tip': 'Large tip amount detected - consider your spending',
+            'high_frequency': 'Frequent transactions detected - take a break',
+            'session_limit': 'Session time limit exceeded',
+            'loss_limit': 'Daily loss limit approached'
+        };
+        return messages[alertType] || 'Responsible gambling reminder';
+    }
+
+    /**
+     * Log transaction for tilt analysis
+     */
+    async logTiltTransaction(userId, type, data) {
+        // Implementation would log to TiltCheck system
+        console.log(`🛡️ TiltCheck Log: ${userId} - ${type} - $${data.amount || 0}`);
+    }
 }
 
 module.exports = AIMStyleControlPanel;

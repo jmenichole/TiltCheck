@@ -293,6 +293,12 @@ class CollectClockIntegration {
             case 'tip':
                 await this.handleFastTip(message, args.slice(1));
                 break;
+            case 'tilt':
+                await this.handleTiltCheckCommands(message, args.slice(1));
+                break;
+            case 'wallet':
+                await this.handleWalletCommands(message, args.slice(1));
+                break;
             default:
                 await this.showCollectionStatus(message);
         }
@@ -1021,7 +1027,7 @@ class CollectClockIntegration {
             .addFields(
                 {
                     name: '🔐 Verification Commands',
-                    value: '• `!cc verify start` - Begin verification process\n• `!cc verify status` - Check verification status\n• `!cc verify help` - Verification help',
+                    value: '• `!cc verify start` - Begin verification process\n• `!cc verify status` - Check verification status\n• `!cc tilt link` - Connect TiltCheck profile\n• `!cc wallet link` - Connect JustTheTip wallet',
                     inline: false
                 },
                 {
@@ -1031,12 +1037,12 @@ class CollectClockIntegration {
                 },
                 {
                     name: '💰 Tip Commands',
-                    value: '• `!cc tip @user amount` - Send fast tip\n• `!cc tip @user amount USD message` - Tip with message\n• Anti-farming protection included',
+                    value: '• `!cc tip @user amount` - Send fast tip via JustTheTip\n• `!cc wallet balance` - Check wallet balance\n• `!cc tilt status` - Check responsible gambling status\n• TiltCheck protection included',
                     inline: false
                 },
                 {
                     name: '🎮 Control Panel',
-                    value: '• `!cc aim panel` - Open AIM control panel\n• Full verification required for access\n• Real-time messaging and tips',
+                    value: '• `!cc aim panel` - Open AIM control panel\n• `!cc tilt status` - TiltCheck integration\n• `!cc wallet balance` - JustTheTip wallet info\n• Full verification required for access',
                     inline: false
                 }
             )
@@ -1052,6 +1058,248 @@ class CollectClockIntegration {
         if (score >= 60) return 'Verified Degen ✅';
         if (score >= 40) return 'New Degen 🌱';
         return 'Unverified ❌';
+    }
+
+    // ===== TILTCHECK INTEGRATION COMMANDS =====
+
+    // Handle TiltCheck commands
+    async handleTiltCheckCommands(message, args) {
+        const subcommand = args[0]?.toLowerCase();
+        const userId = message.author.id;
+
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ TiltCheck integration not available. Please contact support.');
+        }
+
+        switch (subcommand) {
+            case 'status':
+                await this.showTiltCheckStatus(message);
+                break;
+            case 'link':
+                await this.linkTiltCheckProfile(message);
+                break;
+            case 'settings':
+                await this.showTiltCheckSettings(message);
+                break;
+            case 'alert':
+                await this.testTiltAlert(message);
+                break;
+            default:
+                await this.showTiltCheckHelp(message);
+        }
+    }
+
+    // Show TiltCheck status
+    async showTiltCheckStatus(message) {
+        const userId = message.author.id;
+        const tiltProfile = this.aimControlPanel?.verificationSystem.tiltCheckProfiles.get(userId);
+        
+        const embed = new EmbedBuilder()
+            .setColor(tiltProfile ? '#00ff88' : '#ffa500')
+            .setTitle('🛡️ TiltCheck Status')
+            .setDescription('Responsible gambling protection status');
+
+        if (tiltProfile) {
+            embed.addFields(
+                {
+                    name: '📊 Profile Status',
+                    value: `**Status:** ${tiltProfile.status}\n**Risk Level:** ${tiltProfile.currentRisk}\n**Total Sessions:** ${tiltProfile.totalSessions}`,
+                    inline: true
+                },
+                {
+                    name: '⚙️ Current Settings',
+                    value: `**Alert Threshold:** ${(tiltProfile.settings.alertThreshold * 100).toFixed(0)}%\n**Session Limit:** ${tiltProfile.settings.sessionLimit}min\n**Loss Limit:** $${tiltProfile.settings.lossLimit}`,
+                    inline: true
+                },
+                {
+                    name: '🔗 Integration',
+                    value: `**Linked:** ${tiltProfile.linkedAt.toLocaleDateString()}\n**Last Sync:** ${tiltProfile.lastSync.toLocaleTimeString()}\n**Verification:** ✅ Active`,
+                    inline: false
+                }
+            );
+        } else {
+            embed.addFields({
+                name: '❌ Not Connected',
+                value: 'TiltCheck profile not linked to your verification.\n\nUse `!cc tilt link` to connect your profile and enable:\n• Transaction monitoring\n• Tilt alerts\n• Responsible gambling tools\n• Loss limits integration',
+                inline: false
+            });
+        }
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Link TiltCheck profile
+    async linkTiltCheckProfile(message) {
+        const userId = message.author.id;
+        
+        if (!this.aimControlPanel?.isUserVerified(userId)) {
+            return await message.reply('❌ Verification required to link TiltCheck profile. Use `!cc verify start`');
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#ff6b6b')
+            .setTitle('🔗 Link TiltCheck Profile')
+            .setDescription('Connect your TiltCheck profile for enhanced protection')
+            .addFields(
+                {
+                    name: '🛡️ What This Enables',
+                    value: '• Real-time transaction monitoring\n• Automatic tilt detection\n• Loss limit enforcement\n• Session time tracking\n• Responsible gambling alerts',
+                    inline: false
+                },
+                {
+                    name: '🔐 Privacy & Security',
+                    value: '• Only verification status is shared\n• Gambling data stays private\n• User-controlled settings\n• Can be unlinked anytime',
+                    inline: false
+                },
+                {
+                    name: '⚡ Quick Setup',
+                    value: 'React with ✅ to link existing profile or 🆕 to create new profile',
+                    inline: false
+                }
+            );
+
+        const reply = await message.reply({ embeds: [embed] });
+        await reply.react('✅');
+        await reply.react('🆕');
+    }
+
+    // ===== JUSTTHETIP WALLET COMMANDS =====
+
+    // Handle wallet commands
+    async handleWalletCommands(message, args) {
+        const subcommand = args[0]?.toLowerCase();
+        const userId = message.author.id;
+
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ JustTheTip wallet integration not available. Please contact support.');
+        }
+
+        switch (subcommand) {
+            case 'balance':
+                await this.showWalletBalance(message);
+                break;
+            case 'link':
+                await this.linkJustTheTipWallet(message);
+                break;
+            case 'history':
+                await this.showTransactionHistory(message);
+                break;
+            case 'settings':
+                await this.showWalletSettings(message);
+                break;
+            case 'backup':
+                await this.showWalletBackup(message);
+                break;
+            default:
+                await this.showWalletHelp(message);
+        }
+    }
+
+    // Show wallet balance
+    async showWalletBalance(message) {
+        const userId = message.author.id;
+        const wallet = this.aimControlPanel?.verificationSystem.justTheTipWallets.get(userId);
+        
+        const embed = new EmbedBuilder()
+            .setColor(wallet ? '#ffd700' : '#ffa500')
+            .setTitle('💰 JustTheTip Wallet Status')
+            .setDescription('Your verified wallet information');
+
+        if (wallet) {
+            embed.addFields(
+                {
+                    name: '💵 Current Balance',
+                    value: `**$${wallet.balance.toFixed(2)}** USD`,
+                    inline: true
+                },
+                {
+                    name: '📊 Statistics',
+                    value: `**Transactions:** ${wallet.txCount}\n**Status:** ${wallet.status}\n**Linked:** ${wallet.linkedAt.toLocaleDateString()}`,
+                    inline: true
+                },
+                {
+                    name: '⚙️ Limits',
+                    value: `**Tip Limit:** $${wallet.settings.tipLimit}\n**Daily Limit:** $${wallet.settings.dailyLimit}\n**2FA:** ${wallet.settings.twoFactorEnabled ? '✅' : '❌'}`,
+                    inline: true
+                },
+                {
+                    name: '🔐 Security',
+                    value: `**MultiSig:** ${wallet.security.multisig ? '✅' : '❌'}\n**Backup:** ${wallet.settings.autoBackup ? '✅' : '❌'}\n**Recovery:** ${wallet.security.recoveryEmail ? '✅' : '❌'}`,
+                    inline: false
+                }
+            );
+        } else {
+            embed.addFields({
+                name: '❌ Wallet Not Connected',
+                value: 'JustTheTip wallet not linked to your verification.\n\nUse `!cc wallet link` to connect and enable:\n• Instant tips to verified degens\n• Lightning-fast transactions\n• Secure multi-signature protection\n• Automated backup and recovery',
+                inline: false
+            });
+        }
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Link JustTheTip wallet
+    async linkJustTheTipWallet(message) {
+        const userId = message.author.id;
+        
+        if (!this.aimControlPanel?.isUserVerified(userId)) {
+            return await message.reply('❌ Verification required to link JustTheTip wallet. Use `!cc verify start`');
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#ffd700')
+            .setTitle('🔗 Link JustTheTip Wallet')
+            .setDescription('Connect your wallet for instant verified transactions')
+            .addFields(
+                {
+                    name: '⚡ What This Enables',
+                    value: '• Instant tips to verified degens\n• Lightning airdrops\n• Vault integration\n• Cross-platform transactions\n• Enhanced security features',
+                    inline: false
+                },
+                {
+                    name: '🔐 Security Features',
+                    value: '• Multi-signature protection\n• Automated backups\n• Recovery options\n• Transaction limits\n• Two-factor authentication',
+                    inline: false
+                },
+                {
+                    name: '🚀 Quick Setup',
+                    value: 'React with 🆕 to create new wallet or 🔗 to link existing wallet',
+                    inline: false
+                }
+            );
+
+        const reply = await message.reply({ embeds: [embed] });
+        await reply.react('🆕');
+        await reply.react('🔗');
+    }
+
+    // Show wallet help
+    async showWalletHelp(message) {
+        const embed = new EmbedBuilder()
+            .setColor('#ffd700')
+            .setTitle('💰 JustTheTip Wallet Commands')
+            .setDescription('Secure wallet integration for verified degens')
+            .addFields(
+                {
+                    name: '💵 Balance & Info',
+                    value: '• `!cc wallet balance` - Check wallet balance\n• `!cc wallet history` - Transaction history\n• `!cc wallet settings` - Wallet configuration',
+                    inline: false
+                },
+                {
+                    name: '🔗 Setup & Management',
+                    value: '• `!cc wallet link` - Connect JustTheTip wallet\n• `!cc wallet backup` - Backup and recovery\n• Verification required for all features',
+                    inline: false
+                },
+                {
+                    name: '⚡ Quick Transactions',
+                    value: '• `!cc tip @user amount` - Send instant tip\n• Works only between verified users\n• Integrated with TiltCheck protection',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'JustTheTip Wallet • Verified transactions only' });
+
+        await message.reply({ embeds: [embed] });
     }
 
     // Mark collections as completed
