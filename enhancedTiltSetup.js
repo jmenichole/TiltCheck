@@ -829,7 +829,7 @@ class EnhancedTiltSetup {
         
         switch (chain.toUpperCase()) {
             case 'SOLANA':
-                return address.length >= 32 && address.length <= 44;
+                return address.length >= 32 && address.length <= 44 && /^[1-9A-HJ-NP-Za-km-z]+$/.test(address);
             case 'ETHEREUM':
             case 'POLYGON':
             case 'BSC':
