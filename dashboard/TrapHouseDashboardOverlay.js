@@ -1575,6 +1575,396 @@ class TrapHouseDashboardOverlay {
             activated: true
         };
     }
+
+    // 🎯 COMPREHENSIVE DEGEN TRAIT CALCULATION SYSTEM
+    // "Made with love, mindful, empowered tilt check pattern and strategy analysis"
+    calculateDegenTraits(userData) {
+        const traits = {
+            primary: this.calculatePrimaryDegenType(userData),
+            secondary: this.calculateSecondaryTraits(userData),
+            empowermentLevel: this.calculateEmpowermentLevel(userData),
+            mindfulnessScore: this.calculateMindfulnessScore(userData),
+            strategyMastery: this.calculateStrategyMastery(userData),
+            preferredDeterMethod: this.calculatePreferredDeterMethod(userData),
+            loveBasedGrowth: this.calculateLoveBasedGrowth(userData),
+            degenScore: 0,
+            recommendations: []
+        };
+
+        // Calculate overall degen score (0-100)
+        traits.degenScore = this.calculateOverallDegenScore(traits, userData);
+        
+        // Generate personalized recommendations
+        traits.recommendations = this.generateDegenRecommendations(traits, userData);
+
+        return traits;
+    }
+
+    calculatePrimaryDegenType(userData) {
+        const patterns = userData.patterns || {};
+        const behavior = userData.behavior || {};
+
+        // Analyze core degen archetypes with love-based understanding
+        const types = {
+            'Mindful Moon Shot': {
+                score: 0,
+                description: 'Strategic risk-taker who practices mindful awareness',
+                traits: ['calculated_risks', 'meditation_practice', 'long_term_vision'],
+                deterMethod: 'Mindful Pause + Strategic Analysis'
+            },
+            'Empowered Scalper': {
+                score: 0,
+                description: 'Quick decision maker with emotional intelligence',
+                traits: ['rapid_adaptation', 'emotional_mastery', 'technical_precision'],
+                deterMethod: 'Vault Timer + Community Check-in'
+            },
+            'Loving Hodler': {
+                score: 0,
+                description: 'Patient accumulator with community focus',
+                traits: ['patience_mastery', 'community_support', 'steady_growth'],
+                deterMethod: 'Love-Based Reflection + Empowerment Reminder'
+            },
+            'Compassionate Degen': {
+                score: 0,
+                description: 'High-risk player with harm reduction awareness',
+                traits: ['risk_awareness', 'self_compassion', 'recovery_focus'],
+                deterMethod: 'Community Check-in + Mindful Pause'
+            },
+            'Strategic Sensei': {
+                score: 0,
+                description: 'Master strategist who teaches through example',
+                traits: ['mentorship', 'pattern_mastery', 'wisdom_sharing'],
+                deterMethod: 'Strategic Analysis + Love-Based Reflection'
+            },
+            'Balanced Warrior': {
+                score: 0,
+                description: 'Combines aggression with mindful boundaries',
+                traits: ['controlled_aggression', 'boundary_setting', 'tactical_patience'],
+                deterMethod: 'Vault Timer + Empowerment Reminder'
+            }
+        };
+
+        // Score each type based on behavioral patterns
+        if (patterns.longTermThinking) types['Mindful Moon Shot'].score += 25;
+        if (behavior.meditationPractice) types['Mindful Moon Shot'].score += 20;
+        if (patterns.calculatedRisks) types['Mindful Moon Shot'].score += 30;
+
+        if (patterns.quickDecisions) types['Empowered Scalper'].score += 30;
+        if (behavior.emotionalIntelligence > 7) types['Empowered Scalper'].score += 25;
+        if (patterns.technicalAnalysis) types['Empowered Scalper'].score += 20;
+
+        if (patterns.patientAccumulation) types['Loving Hodler'].score += 35;
+        if (behavior.communityEngagement > 8) types['Loving Hodler'].score += 25;
+        if (patterns.steadyGrowth) types['Loving Hodler'].score += 20;
+
+        if (patterns.highRiskAwareness) types['Compassionate Degen'].score += 30;
+        if (behavior.selfCompassion > 7) types['Compassionate Degen'].score += 25;
+        if (userData.recoveryFocus) types['Compassionate Degen'].score += 25;
+
+        if (behavior.mentorshipActive) types['Strategic Sensei'].score += 35;
+        if (patterns.patternMastery > 8) types['Strategic Sensei'].score += 30;
+        if (userData.wisdomShared > 50) types['Strategic Sensei'].score += 20;
+
+        if (patterns.controlledAggression) types['Balanced Warrior'].score += 30;
+        if (behavior.boundaryMastery > 7) types['Balanced Warrior'].score += 25;
+        if (patterns.tacticalPatience) types['Balanced Warrior'].score += 25;
+
+        // Find highest scoring type
+        let primaryType = 'Mindful Moon Shot';
+        let highestScore = 0;
+        
+        for (const [typeName, typeData] of Object.entries(types)) {
+            if (typeData.score > highestScore) {
+                highestScore = typeData.score;
+                primaryType = typeName;
+            }
+        }
+
+        return {
+            type: primaryType,
+            score: highestScore,
+            description: types[primaryType].description,
+            traits: types[primaryType].traits,
+            preferredDeterMethod: types[primaryType].deterMethod,
+            confidence: Math.min(100, highestScore)
+        };
+    }
+
+    calculatePreferredDeterMethod(userData) {
+        const patterns = userData.patterns || {};
+        const effectiveness = userData.deterEffectiveness || {};
+
+        const methods = {
+            'Mindful Pause': {
+                score: 0,
+                description: 'Brief meditation before decisions',
+                effectiveness: effectiveness.mindfulPause || 0,
+                implementation: 'Set automatic 2-minute pause before major decisions'
+            },
+            'Love-Based Reflection': {
+                score: 0,
+                description: 'Asking "What would love do?"',
+                effectiveness: effectiveness.loveReflection || 0,
+                implementation: 'Display love-based question prompts during high-risk moments'
+            },
+            'Strategic Analysis': {
+                score: 0,
+                description: 'Data-driven decision framework',
+                effectiveness: effectiveness.strategicAnalysis || 0,
+                implementation: 'Show risk/reward calculations and pattern data'
+            },
+            'Community Check-in': {
+                score: 0,
+                description: 'Consulting trusted advisors',
+                effectiveness: effectiveness.communitySupport || 0,
+                implementation: 'Auto-ping accountability partner during tilt detection'
+            },
+            'Vault Timer': {
+                score: 0,
+                description: 'Time-locked decision delays',
+                effectiveness: effectiveness.vaultTimer || 0,
+                implementation: 'Implement cooling-off periods with encouraging messages'
+            },
+            'Empowerment Reminder': {
+                score: 0,
+                description: 'Recalling personal power & choice',
+                effectiveness: effectiveness.empowermentReminder || 0,
+                implementation: 'Show personal achievements and growth reminders'
+            }
+        };
+
+        // Score based on patterns and effectiveness
+        if (patterns.usesMindfulPause) methods['Mindful Pause'].score += 30;
+        if (patterns.usesLoveBasedDecisions) methods['Love-Based Reflection'].score += 25;
+        if (patterns.usesDataAnalysis) methods['Strategic Analysis'].score += 35;
+        if (patterns.seeksCommunityInput) methods['Community Check-in'].score += 30;
+        if (patterns.usesTimeDelays) methods['Vault Timer'].score += 25;
+        if (patterns.usesEmpowermentFraming) methods['Empowerment Reminder'].score += 30;
+
+        // Boost by effectiveness
+        Object.keys(methods).forEach(method => {
+            methods[method].score += methods[method].effectiveness * 0.5;
+        });
+
+        // Find most effective method
+        let preferredMethod = 'Mindful Pause';
+        let highestScore = 0;
+        
+        for (const [methodName, methodData] of Object.entries(methods)) {
+            if (methodData.score > highestScore) {
+                highestScore = methodData.score;
+                preferredMethod = methodName;
+            }
+        }
+
+        return {
+            primary: preferredMethod,
+            score: highestScore,
+            description: methods[preferredMethod].description,
+            effectiveness: methods[preferredMethod].effectiveness,
+            implementation: methods[preferredMethod].implementation,
+            alternatives: Object.keys(methods).filter(m => m !== preferredMethod).slice(0, 2)
+        };
+    }
+
+    calculateEmpowermentLevel(userData) {
+        let empowermentScore = 0;
+        const factors = userData.empowermentFactors || {};
+
+        empowermentScore += (factors.selfEfficacy || 0) * 2;
+        empowermentScore += (factors.personalAgency || 0) * 2;
+        empowermentScore += (factors.skillDevelopment || 0) * 1.5;
+        empowermentScore += (factors.supportNetwork || 0) * 1.5;
+        empowermentScore += (factors.growthMindset || 0) * 2;
+
+        return {
+            score: Math.min(100, empowermentScore),
+            level: empowermentScore > 80 ? 'Highly Empowered' : empowermentScore > 60 ? 'Moderately Empowered' : empowermentScore > 40 ? 'Developing Empowerment' : 'Early Empowerment Journey'
+        };
+    }
+
+    calculateMindfulnessScore(userData) {
+        let mindfulnessScore = 0;
+        const practices = userData.mindfulnessPractices || {};
+
+        mindfulnessScore += (practices.presentAwareness || 0) * 2.5;
+        mindfulnessScore += (practices.emotionalRegulation || 0) * 2;
+        mindfulnessScore += (practices.bodyAwareness || 0) * 1.5;
+        mindfulnessScore += (practices.breathWork || 0) * 1.5;
+        mindfulnessScore += (practices.meditationConsistency || 0) * 2;
+
+        return {
+            score: Math.min(100, mindfulnessScore),
+            level: mindfulnessScore > 80 ? 'Zen Master' : mindfulnessScore > 60 ? 'Mindful Practitioner' : mindfulnessScore > 40 ? 'Awareness Developer' : 'Mindfulness Beginner'
+        };
+    }
+
+    calculateStrategyMastery(userData) {
+        let strategyScore = 0;
+        const strategy = userData.strategyData || {};
+
+        strategyScore += (strategy.patternRecognition || 0) * 2;
+        strategyScore += (strategy.riskAssessment || 0) * 2.5;
+        strategyScore += (strategy.adaptivePlanning || 0) * 2;
+        strategyScore += (strategy.executionConsistency || 0) * 2;
+        strategyScore += (strategy.outcomeIntegration || 0) * 1.5;
+
+        return {
+            score: Math.min(100, strategyScore),
+            mastery: strategyScore > 80 ? 'Strategy Sensei' : strategyScore > 60 ? 'Tactical Thinker' : strategyScore > 40 ? 'Pattern Learner' : 'Strategy Student'
+        };
+    }
+
+    calculateSecondaryTraits(userData) {
+        const traits = [];
+        const behavior = userData.behavior || {};
+        const patterns = userData.patterns || {};
+
+        if (behavior.selfAdvocacy > 7) traits.push('Self-Advocate');
+        if (patterns.boundaryEnforcement) traits.push('Boundary Master');
+        if (userData.decisionConfidence > 8) traits.push('Confident Decider');
+        if (behavior.leadershipTendency) traits.push('Natural Leader');
+        if (userData.presentMomentAwareness > 7) traits.push('Present-Focused');
+        if (behavior.emotionalRegulation > 8) traits.push('Emotionally Balanced');
+        if (behavior.empathyLevel > 8) traits.push('Natural Empath');
+        if (userData.kindnessActions > 20) traits.push('Kindness Warrior');
+        if (patterns.dataAnalysis > 7) traits.push('Data Wizard');
+        if (behavior.riskCalculation > 8) traits.push('Risk Strategist');
+
+        return traits;
+    }
+
+    calculateLoveBasedGrowth(userData) {
+        let loveScore = 0;
+        const love = userData.loveBasedData || {};
+
+        loveScore += (love.selfCompassion || 0) * 2;
+        loveScore += (love.communityLove || 0) * 1.5;
+        loveScore += (love.loveBasedChoices || 0) * 2.5;
+        loveScore += (love.forgivenessPractice || 0) * 2;
+        loveScore += (love.gratitudePractice || 0) * 1.5;
+
+        return {
+            score: Math.min(100, loveScore),
+            level: loveScore > 80 ? 'Love Embodied' : loveScore > 60 ? 'Love Practitioner' : loveScore > 40 ? 'Love Learner' : 'Love Seeker'
+        };
+    }
+
+    calculateOverallDegenScore(traits, userData) {
+        let score = 0;
+        score += traits.primary.confidence * 0.2;
+        score += traits.empowermentLevel.score * 0.25;
+        score += traits.mindfulnessScore.score * 0.2;
+        score += traits.strategyMastery.score * 0.2;
+        score += traits.loveBasedGrowth.score * 0.15;
+        return Math.min(100, Math.round(score));
+    }
+
+    generateDegenRecommendations(traits, userData) {
+        const recommendations = [];
+        
+        // Primary type recommendations
+        switch(traits.primary.type) {
+            case 'Mindful Moon Shot':
+                recommendations.push({
+                    category: 'Mindfulness Enhancement',
+                    action: 'Try the 5-4-3-2-1 grounding technique before major decisions',
+                    reason: 'Strengthens your natural mindful awareness for better long-term choices'
+                });
+                break;
+            case 'Empowered Scalper':
+                recommendations.push({
+                    category: 'Emotional Mastery', 
+                    action: 'Practice the RAIN technique (Recognize, Allow, Investigate, Nurture)',
+                    reason: 'Enhances your quick emotional processing for clearer decision-making'
+                });
+                break;
+            case 'Loving Hodler':
+                recommendations.push({
+                    category: 'Community Building',
+                    action: 'Become a mentor to newer community members',
+                    reason: 'Leverages your natural patience and support abilities'
+                });
+                break;
+            case 'Compassionate Degen':
+                recommendations.push({
+                    category: 'Self-Compassion',
+                    action: 'Develop a personalized harm reduction protocol',
+                    reason: 'Channels your risk awareness into protective action'
+                });
+                break;
+            case 'Strategic Sensei':
+                recommendations.push({
+                    category: 'Knowledge Sharing',
+                    action: 'Create educational content about your successful patterns',
+                    reason: 'Expands your natural teaching and mentorship gifts'
+                });
+                break;
+            case 'Balanced Warrior':
+                recommendations.push({
+                    category: 'Boundary Mastery',
+                    action: 'Implement tactical timeouts during high-intensity moments',
+                    reason: 'Balances your controlled aggression with strategic patience'
+                });
+                break;
+        }
+
+        // Deter method recommendations
+        switch(traits.preferredDeterMethod.primary) {
+            case 'Vault Timer':
+                recommendations.push({
+                    category: 'Timer Optimization',
+                    action: 'Experiment with different vault timer durations (15min, 1hr, 24hr)',
+                    reason: 'Find your optimal cooling-off period for different decision types'
+                });
+                break;
+            case 'Community Check-in':
+                recommendations.push({
+                    category: 'Support Network',
+                    action: 'Establish 3-person decision council for major choices',
+                    reason: 'Leverages your preference for community wisdom'
+                });
+                break;
+            case 'Strategic Analysis':
+                recommendations.push({
+                    category: 'Analysis Framework',
+                    action: 'Develop a personal decision matrix with weighted criteria',
+                    reason: 'Enhances your natural analytical approach'
+                });
+                break;
+        }
+
+        return recommendations;
+    }
+
+    // 🎯 Enhanced dashboard method to show degen analysis
+    showDegenAnalysis(userData) {
+        const traits = this.calculateDegenTraits(userData);
+        
+        console.log(`
+🎯 DEGEN TRAIT ANALYSIS - Made with Love 💜
+
+PRIMARY TYPE: ${traits.primary.type} (${traits.primary.confidence}% confidence)
+Description: ${traits.primary.description}
+
+EMPOWERMENT LEVEL: ${traits.empowermentLevel.level} (${traits.empowermentLevel.score}/100)
+MINDFULNESS SCORE: ${traits.mindfulnessScore.level} (${traits.mindfulnessScore.score}/100)  
+STRATEGY MASTERY: ${traits.strategyMastery.mastery} (${traits.strategyMastery.score}/100)
+LOVE-BASED GROWTH: ${traits.loveBasedGrowth.level} (${traits.loveBasedGrowth.score}/100)
+
+PREFERRED DETER METHOD: ${traits.preferredDeterMethod.primary}
+Implementation: ${traits.preferredDeterMethod.implementation}
+
+SECONDARY TRAITS: ${traits.secondary.join(', ')}
+
+OVERALL DEGEN SCORE: ${traits.degenScore}/100
+
+PERSONALIZED RECOMMENDATIONS:
+${traits.recommendations.map(r => `• ${r.category}: ${r.action}\n  Reason: ${r.reason}`).join('\n')}
+        `);
+
+        return traits;
+    }
 }
 
 // Initialize the enhanced application
