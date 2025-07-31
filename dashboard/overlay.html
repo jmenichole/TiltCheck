@@ -22,8 +22,8 @@
         }
 
         .overlay-container {
-            width: 320px;
-            height: 480px;
+            width: 340px;
+            height: 680px;
             background: linear-gradient(135deg, 
                 rgba(20, 20, 40, 0.95) 0%,
                 rgba(40, 20, 60, 0.95) 50%,
@@ -258,6 +258,270 @@
             0% { background: rgba(0, 255, 136, 0.3); }
             100% { background: transparent; }
         }
+
+        /* Card Game and Battle Styles */
+        .connection-indicators {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .connection-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Battle Modal Styles */
+        .battle-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .battle-container {
+            background: linear-gradient(135deg, 
+                rgba(20, 20, 40, 0.95) 0%,
+                rgba(60, 20, 80, 0.95) 50%,
+                rgba(20, 60, 80, 0.95) 100%);
+            border: 3px solid rgba(0, 255, 136, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+        }
+
+        .battle-header {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .battle-header h2 {
+            color: #00ff88;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .close-battle {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 24px;
+            height: 24px;
+            background: #ff4444;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .battle-arena {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 15px;
+        }
+
+        .degeneracy-card, .decency-card {
+            flex: 1;
+            max-width: 180px;
+        }
+
+        .card-face {
+            background: linear-gradient(145deg, rgba(40, 40, 60, 0.9), rgba(60, 40, 80, 0.9));
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-face.evil {
+            border-color: #ff4444;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+        }
+
+        .card-face.good {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .card-face h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .card-power {
+            font-weight: bold;
+            color: #ffaa00;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .card-effect {
+            font-size: 10px;
+            color: #cccccc;
+            font-style: italic;
+        }
+
+        .vs-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 60px;
+        }
+
+        .vs-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffaa00;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+
+        .battle-sparks {
+            font-size: 12px;
+            animation: sparkle 1s infinite alternate;
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0.5; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .battle-choice {
+            text-align: center;
+        }
+
+        .choice-prompt h4 {
+            color: #00ff88;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .choice-prompt p {
+            color: #ffaa00;
+            font-size: 11px;
+            margin-bottom: 15px;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .choice-btn {
+            flex: 1;
+            max-width: 160px;
+            padding: 12px 8px;
+            border: 2px solid;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .resist-btn {
+            border-color: #00ff88;
+        }
+
+        .resist-btn:hover {
+            background: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .succumb-btn {
+            border-color: #ff4444;
+        }
+
+        .succumb-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+        }
+
+        .choice-btn small {
+            display: block;
+            font-size: 9px;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .battle-outcome {
+            text-align: center;
+            padding: 15px;
+            border: 2px solid;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .battle-outcome.victory {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .battle-outcome.defeat {
+            border-color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        /* Revenue Empire Styles */
+        #empireEarnings {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        #activeLoans {
+            color: #ffaa00;
+        }
+
+        #nextFunding {
+            color: #00aaff;
+        }
+
+        /* Portal Status Styles */
+        #securityBadge.GOLD {
+            background: linear-gradient(45deg, #ffaa00, #ff8800);
+        }
+
+        #securityBadge.PLATINUM {
+            background: linear-gradient(45deg, #cccccc, #ffffff);
+        }
+
+        /* Respect Points Animation */
+        #respectValue {
+            animation: respectGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes respectGlow {
+            0% { text-shadow: 0 0 5px #00ff88; }
+            100% { text-shadow: 0 0 15px #00ff88, 0 0 25px #00ff88; }
+        }
     </style>
 </head>
 <body>
@@ -337,6 +601,164 @@
                 <button class="quick-btn" onclick="openMainDashboard()">🎮 Dashboard</button>
                 <button class="quick-btn" onclick="toggleInteraction()">🖱️ Interact</button>
             </div>
+
+            <!-- Card Game Widget -->
+            <div class="widget" id="cardGameWidget">
+                <div class="widget-header">
+                    <span class="widget-title">⚔️ Degeneracy Battle</span>
+                    <span class="widget-value" id="respectPoints">👑 <span id="respectValue">247</span></span>
+                </div>
+                <div class="widget-subtitle" id="battleStatus">No active battles</div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="startCardBattle()">🎴 Battle</button>
+                    <button class="quick-btn" onclick="viewCardCollection()">📚 Cards</button>
+                </div>
+            </div>
+
+            <!-- Revenue Empire Widget -->
+            <div class="widget" id="revenueWidget">
+                <div class="widget-header">
+                    <span class="widget-title">💰 Empire Status</span>
+                    <span class="widget-value">$<span id="empireEarnings">342.75</span></span>
+                </div>
+                <div class="widget-subtitle">Active Loans: <span id="activeLoans">3</span> | Next: $<span id="nextFunding">75</span></div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="viewLoans()">📊 Loans</button>
+                    <button class="quick-btn" onclick="checkFunding()">💎 Fund</button>
+                </div>
+            </div>
+
+            <!-- Portal Connection Widget -->
+            <div class="widget" id="portalWidget">
+                <div class="widget-header">
+                    <span class="widget-title">🌐 Portal Status</span>
+                    <div class="verification-badge" id="securityBadge">GOLD</div>
+                </div>
+                <div class="widget-subtitle">
+                    <div class="connection-indicators">
+                        <span class="connection-dot online" title="Discord"></span>
+                        <span class="connection-dot online" title="JustTheTip"></span>
+                        <span class="connection-dot online" title="Stake API"></span>
+                        <span class="connection-dot online" title="Custom Patterns"></span>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="openPortal()">🚪 Portal</button>
+                    <button class="quick-btn" onclick="managePatterns()">⚙️ Patterns</button>
+                </div>
+            </div>
+
+            <!-- CollectClock Verification Widget -->
+            <div class="widget" id="collectClockWidget">
+                <div class="widget-header">
+                    <span class="widget-title">🔐 CollectClock</span>
+                    <span class="widget-value">Step <span id="verificationStep">3</span></span>
+                </div>
+                <div class="widget-subtitle" id="verificationLevel">Financial Verified</div>
+                <div class="widget-subtitle">Next: <span id="nextUpgrade">Community Standing</span></div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="upgradeVerification()">⬆️ Upgrade</button>
+                    <button class="quick-btn" onclick="viewBenefits()">🎁 Benefits</button>
+                </div>
+            </div>
+
+            <!-- Multiplayer Battles Widget -->
+            <div class="widget" id="multiplayerWidget">
+                <div class="widget-header">
+                    <span class="widget-title">⚔️ Live Battles</span>
+                    <span class="widget-value" id="activeBattleCount">2 Active</span>
+                </div>
+                <div class="widget-subtitle">Challenges: <span id="pendingChallenges">2</span> | Win Rate: <span id="winRate">68%</span></div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="challengePlayer()">🎯 Challenge</button>
+                    <button class="quick-btn" onclick="joinHangar()">🏢 Hangars</button>
+                </div>
+            </div>
+
+            <!-- Loan Front Widget -->
+            <div class="widget" id="loanFrontWidget">
+                <div class="widget-header">
+                    <span class="widget-title">💎 Loan Front</span>
+                    <span class="widget-value">$<span id="approvedAmount">350</span></span>
+                </div>
+                <div class="widget-subtitle">Active: <span id="activeLoanCount">2</span> | Vouching: <span id="vouchingEarnings">$45</span></div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="applyLoan()">📝 Apply</button>
+                    <button class="quick-btn" onclick="vouchUser()">🤝 Vouch</button>
+                </div>
+            </div>
+
+            <!-- Group Hangars Widget -->
+            <div class="widget" id="hangarsWidget">
+                <div class="widget-header">
+                    <span class="widget-title">🏢 Battle Hangars</span>
+                    <span class="widget-value" id="hangarCount">2 Joined</span>
+                </div>
+                <div class="widget-subtitle">Invites: <span id="hangarInvites">1</span> | Revenue: $<span id="hangarRevenue">23.50</span></div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="browseHangars()">🔍 Browse</button>
+                    <button class="quick-btn" onclick="createHangar()">➕ Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Battle Modal -->
+    <div id="cardBattleModal" class="battle-modal" style="display: none;">
+        <div class="battle-container">
+            <div class="battle-header">
+                <h2>⚔️ DEGENERACY VS DECENCY BATTLE! ⚔️</h2>
+                <button class="close-battle" onclick="closeBattle()">×</button>
+            </div>
+            
+            <div class="battle-arena">
+                <div class="card-display">
+                    <div class="degeneracy-card">
+                        <div class="card-face evil">
+                            <h3 id="degeneracyCardName">😈 Tilt Demon</h3>
+                            <div class="card-power" id="degeneracyPower">Power: 8</div>
+                            <div class="card-effect" id="degeneracyEffect">Forces immediate high-risk bet</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vs-indicator">
+                        <div class="vs-text">VS</div>
+                        <div class="battle-sparks">⚡️⚔️⚡️</div>
+                    </div>
+                    
+                    <div class="decency-card">
+                        <div class="card-face good">
+                            <h3 id="decencyCardName">😇 Mindful Monk</h3>
+                            <div class="card-power" id="decencyPower">Power: 7</div>
+                            <div class="card-effect" id="decencyEffect">Enforces 10-minute meditation break</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="battle-choice">
+                    <div class="choice-prompt">
+                        <h4>⚡️ Choose Your Path! ⚡️</h4>
+                        <p id="battleStakes">Stakes: Your next bet decision</p>
+                    </div>
+                    
+                    <div class="choice-buttons">
+                        <button class="choice-btn resist-btn" onclick="chooseBattleSide('resist')">
+                            🛡️ Resist Degeneracy<br>
+                            <small>+Respect Points</small>
+                        </button>
+                        <button class="choice-btn succumb-btn" onclick="chooseBattleSide('succumb')">
+                            😈 Embrace the Degen<br>
+                            <small>-Respect Points</small>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="battle-outcome" id="battleOutcome" style="display: none;">
+                    <div class="outcome-header"></div>
+                    <div class="outcome-effect"></div>
+                    <div class="respect-change"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -401,6 +823,84 @@
             // Update notifications
             if (dashboardData.notifications) {
                 updateNotifications();
+            }
+
+            // Update card game widget
+            if (dashboardData.cardGame) {
+                document.getElementById('respectValue').textContent = dashboardData.cardGame.respectPoints;
+                const battleStatus = dashboardData.cardGame.activeBattles > 0 
+                    ? `${dashboardData.cardGame.activeBattles} active battles`
+                    : dashboardData.cardGame.availableBattles > 0 
+                        ? `${dashboardData.cardGame.availableBattles} battles available`
+                        : 'No active battles';
+                document.getElementById('battleStatus').textContent = battleStatus;
+            }
+
+            // Update revenue empire widget
+            if (dashboardData.revenueEmpire) {
+                document.getElementById('empireEarnings').textContent = dashboardData.revenueEmpire.totalEarnings.toFixed(2);
+                document.getElementById('activeLoans').textContent = dashboardData.revenueEmpire.activeLoans;
+                document.getElementById('nextFunding').textContent = dashboardData.revenueEmpire.nextFundingThreshold;
+            }
+
+            // Update portal widget
+            if (dashboardData.portal) {
+                document.getElementById('securityBadge').textContent = dashboardData.portal.securityLevel;
+                
+                // Update connection indicators
+                const connectionDots = document.querySelectorAll('.connection-dot');
+                connectionDots.forEach((dot, index) => {
+                    const platforms = ['discord', 'justthetip', 'stake_api', 'custom'];
+                    const platform = platforms[index];
+                    
+                    if (dashboardData.portal.connectedPlatforms.includes(platform)) {
+                        dot.className = 'connection-dot online';
+                    } else if (platform === 'stake_api' && dashboardData.portal.stakeApiStatus === 'warning') {
+                        dot.className = 'connection-dot warning';
+                    } else {
+                        dot.className = 'connection-dot offline';
+                    }
+                });
+            }
+
+            // Update CollectClock widget
+            if (dashboardData.collectClock) {
+                const stepMatch = dashboardData.collectClock.verificationLevel.match(/Step (\d+)/);
+                document.getElementById('verificationStep').textContent = stepMatch ? stepMatch[1] : '?';
+                document.getElementById('verificationLevel').textContent = 
+                    dashboardData.collectClock.verificationLevel.replace(/Step \d+ - /, '');
+                document.getElementById('nextUpgrade').textContent = 
+                    dashboardData.collectClock.nextUpgrade.replace(/.*\(/, '').replace(/\).*/, '');
+            }
+
+            // Update multiplayer widget
+            if (dashboardData.cardGame && dashboardData.cardGame.multiplayerStats) {
+                document.getElementById('activeBattleCount').textContent = 
+                    `${dashboardData.cardGame.activeBattles} Active`;
+                document.getElementById('pendingChallenges').textContent = 
+                    dashboardData.cardGame.pendingChallenges ? dashboardData.cardGame.pendingChallenges.length : 0;
+                document.getElementById('winRate').textContent = 
+                    `${dashboardData.cardGame.multiplayerStats.winRate}%`;
+            }
+
+            // Update loan front widget
+            if (dashboardData.loanFront) {
+                const totalApproved = dashboardData.loanFront.approvedLoans.reduce((sum, loan) => sum + loan.amount, 0);
+                document.getElementById('approvedAmount').textContent = totalApproved;
+                document.getElementById('activeLoanCount').textContent = 
+                    dashboardData.loanFront.approvedLoans.filter(loan => loan.status === 'active').length;
+                document.getElementById('vouchingEarnings').textContent = 
+                    dashboardData.revenueEmpire.vouchingEarnings.toFixed(2);
+            }
+
+            // Update hangars widget
+            if (dashboardData.hangars) {
+                document.getElementById('hangarCount').textContent = 
+                    `${dashboardData.hangars.activeHangars.length} Joined`;
+                document.getElementById('hangarInvites').textContent = 
+                    dashboardData.hangars.invitations.length;
+                document.getElementById('hangarRevenue').textContent = 
+                    dashboardData.revenueEmpire.hangarRevenue.toFixed(2);
             }
 
             // Update last update time
@@ -518,6 +1018,373 @@
             setInterval(() => {
                 updateUI();
             }, 60000);
+        }
+
+        // Card Game Functions
+        function startCardBattle() {
+            const modal = document.getElementById('cardBattleModal');
+            modal.style.display = 'flex';
+            
+            // Simulate battle setup
+            const battles = generateRandomBattle();
+            setupBattleCards(battles.degeneracy, battles.decency);
+        }
+
+        function generateRandomBattle() {
+            const degeneracyCards = [
+                { name: '😈 Tilt Demon', power: 8, effect: 'Forces immediate high-risk bet' },
+                { name: '👹 FOMO Spirit', power: 6, effect: 'Multiplies next bet by 2x' },
+                { name: '🔥 Revenge Trader', power: 7, effect: 'Ignores all risk management' },
+                { name: '💀 Degen Overlord', power: 10, effect: 'Ultimate tilt - maximum chaos' }
+            ];
+            
+            const decencyCards = [
+                { name: '😇 Mindful Monk', power: 7, effect: 'Enforces 10-minute meditation break' },
+                { name: '🛡️ Budget Guardian', power: 8, effect: 'Locks wallet until tomorrow' },
+                { name: '👁️ Reality Check', power: 6, effect: 'Shows actual P&L vs perceived' },
+                { name: '🤝 Accountability Buddy', power: 9, effect: 'Sends intervention message to friend' }
+            ];
+
+            return {
+                degeneracy: degeneracyCards[Math.floor(Math.random() * degeneracyCards.length)],
+                decency: decencyCards[Math.floor(Math.random() * decencyCards.length)]
+            };
+        }
+
+        function setupBattleCards(degeneracyCard, decencyCard) {
+            document.getElementById('degeneracyCardName').textContent = degeneracyCard.name;
+            document.getElementById('degeneracyPower').textContent = `Power: ${degeneracyCard.power}`;
+            document.getElementById('degeneracyEffect').textContent = degeneracyCard.effect;
+            
+            document.getElementById('decencyCardName').textContent = decencyCard.name;
+            document.getElementById('decencyPower').textContent = `Power: ${decencyCard.power}`;
+            document.getElementById('decencyEffect').textContent = decencyCard.effect;
+            
+            // Store battle data for resolution
+            window.currentBattle = { degeneracyCard, decencyCard };
+        }
+
+        function chooseBattleSide(choice) {
+            const outcome = resolveBattle(choice);
+            showBattleOutcome(outcome);
+            
+            // Update respect points
+            const currentRespect = parseInt(document.getElementById('respectValue').textContent);
+            const newRespect = currentRespect + outcome.respectChange;
+            document.getElementById('respectValue').textContent = newRespect;
+            
+            // Flash respect points
+            const respectElement = document.getElementById('respectValue');
+            respectElement.classList.add('data-updated');
+            setTimeout(() => {
+                respectElement.classList.remove('data-updated');
+            }, 500);
+        }
+
+        function resolveBattle(choice) {
+            const { degeneracyCard, decencyCard } = window.currentBattle;
+            const powerDiff = decencyCard.power - degeneracyCard.power;
+            const userWillpower = Math.floor(Math.random() * 3) + 1; // 1-3 bonus
+            
+            if (choice === 'resist' && powerDiff + userWillpower > 0) {
+                return {
+                    winner: 'decency',
+                    effect: decencyCard.effect,
+                    respectChange: Math.abs(powerDiff) + 5,
+                    message: '🏆 Victory! You resisted degeneracy!'
+                };
+            } else {
+                return {
+                    winner: 'degeneracy', 
+                    effect: degeneracyCard.effect,
+                    respectChange: -Math.max(2, Math.abs(powerDiff)),
+                    message: choice === 'resist' ? '💀 Defeat! The degen side was too strong...' : '😈 You embraced the chaos!'
+                };
+            }
+        }
+
+        function showBattleOutcome(outcome) {
+            const outcomeDiv = document.getElementById('battleOutcome');
+            outcomeDiv.innerHTML = `
+                <div class="outcome-header">${outcome.message}</div>
+                <div class="outcome-effect">Effect: ${outcome.effect}</div>
+                <div class="respect-change">Respect Points: ${outcome.respectChange > 0 ? '+' : ''}${outcome.respectChange}</div>
+            `;
+            
+            outcomeDiv.className = `battle-outcome ${outcome.winner === 'decency' ? 'victory' : 'defeat'}`;
+            outcomeDiv.style.display = 'block';
+            
+            // Auto-close after 3 seconds
+            setTimeout(() => {
+                closeBattle();
+            }, 3000);
+        }
+
+        function closeBattle() {
+            document.getElementById('cardBattleModal').style.display = 'none';
+            document.getElementById('battleOutcome').style.display = 'none';
+        }
+
+        function viewCardCollection() {
+            alert('🎴 Card Collection feature coming soon!\n\nYou\'ll be able to:\n• View all unlocked cards\n• See card stats and effects\n• Upgrade card powers\n• Build custom decks');
+        }
+
+        // Revenue Empire Functions
+        function viewLoans() {
+            const mockLoans = [
+                { id: 1, amount: 50, rate: 0.15, due: '3 days', borrower: '@DegenerateGambler' },
+                { id: 2, amount: 100, rate: 0.12, due: '1 week', borrower: '@TiltMaster' },
+                { id: 3, amount: 25, rate: 0.18, due: '2 days', borrower: '@YOLOTrader' }
+            ];
+            
+            let loansList = 'Active Loans:\n\n';
+            mockLoans.forEach(loan => {
+                loansList += `💰 $${loan.amount} @ ${(loan.rate * 100)}% APR\n`;
+                loansList += `   👤 ${loan.borrower}\n`;
+                loansList += `   ⏰ Due: ${loan.due}\n\n`;
+            });
+            
+            alert(loansList);
+        }
+
+        function checkFunding() {
+            const walletBalance = parseFloat(document.getElementById('walletBalance').textContent);
+            
+            let fundingMessage = '💎 Funding Opportunities:\n\n';
+            
+            if (walletBalance >= 100) {
+                fundingMessage += '✅ Starter Loan: $25 @ 15% APR\n';
+            }
+            if (walletBalance >= 500) {
+                fundingMessage += '✅ Bronze Loan: $100 @ 12% APR\n';
+            }
+            if (walletBalance >= 1000) {
+                fundingMessage += '✅ Silver Loan: $250 @ 10% APR\n';
+            }
+            if (walletBalance < 100) {
+                fundingMessage += '❌ Minimum $100 balance required\n';
+                fundingMessage += '💡 Tip: Earn more through tips and respect points!';
+            }
+            
+            alert(fundingMessage);
+        }
+
+        // Portal Functions
+        function openPortal() {
+            alert('🌐 CollectClock Portal\n\n' +
+                  'Connected Platforms:\n' +
+                  '✅ Discord - Elite verification\n' +
+                  '✅ JustTheTip - Wallet linked\n' +
+                  '⚠️ Stake API - Reconnection needed\n' +
+                  '✅ Custom Patterns - 5 active\n\n' +
+                  'Security Level: GOLD 🏆\n' +
+                  'Upgrade to PLATINUM for AI predictions!');
+        }
+
+        function managePatterns() {
+            alert('⚙️ Custom Tilt Patterns\n\n' +
+                  'Active Patterns:\n' +
+                  '🔴 Late Night Warning (after 2AM)\n' +
+                  '🟡 Bet Size Escalation (>50% increase)\n' +
+                  '🟢 Session Time Limit (4 hours)\n' +
+                  '🔵 Loss Chasing Detection\n' +
+                  '🟣 Emotional Language Alert\n\n' +
+                  'Add custom patterns in the main dashboard!');
+        }
+
+        // New Integrated Functions for CollectClock & Multiplayer Features
+
+        // CollectClock Verification Functions
+        function upgradeVerification() {
+            alert('🔐 Verification Upgrade\n\n' +
+                  'Current: Step 3 - Financial Verified\n' +
+                  'Next: Step 4 - Community Standing\n\n' +
+                  'Requirements:\n' +
+                  '• 200+ Respect Points (Current: 247 ✅)\n' +
+                  '• 3+ Peer Vouches (Current: 1)\n' +
+                  '• Clean Loan History ✅\n\n' +
+                  'Benefits of Step 4:\n' +
+                  '• Host Private Hangars\n' +
+                  '• Issue Loans to Others\n' +
+                  '• Access Elite Tournaments');
+        }
+
+        function viewBenefits() {
+            alert('🎁 Current Verification Benefits\n\n' +
+                  'Step 3 - Financial Verified:\n' +
+                  '✅ Card Game Tournaments\n' +
+                  '✅ Betting in Battles\n' +
+                  '✅ Join Private Hangars\n' +
+                  '✅ Loan Front Access\n' +
+                  '✅ Advanced Tilt Patterns\n\n' +
+                  'Upgrade to unlock:\n' +
+                  '🔒 Host Hangars\n' +
+                  '🔒 Mentor Status\n' +
+                  '🔒 Loan Issuing');
+        }
+
+        // Multiplayer Battle Functions
+        function challengePlayer() {
+            const challengeModal = `
+                <div class="challenge-modal">
+                    <h3>🎯 Challenge a Player</h3>
+                    <select id="playerSelect">
+                        <option>@DegenSlayer (Online)</option>
+                        <option>@CardMaster (In Battle)</option>
+                        <option>@WisdomSeeker (Online)</option>
+                        <option>@ProGamer (Away)</option>
+                    </select>
+                    <select id="battleType">
+                        <option>Quick Duel (5-10 min)</option>
+                        <option>Hangar Battle (15-30 min)</option>
+                        <option>Tournament Entry</option>
+                    </select>
+                    <input type="number" id="stakeAmount" placeholder="Respect Points Stake" min="10" max="100">
+                    <button onclick="sendChallenge()">Send Challenge</button>
+                    <button onclick="closeChallengeModal()">Cancel</button>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', challengeModal);
+        }
+
+        function sendChallenge() {
+            const player = document.getElementById('playerSelect').value;
+            const battleType = document.getElementById('battleType').value;
+            const stakes = document.getElementById('stakeAmount').value;
+            
+            alert(`⚔️ Challenge Sent!\n\n` +
+                  `Player: ${player}\n` +
+                  `Battle: ${battleType}\n` +
+                  `Stakes: ${stakes} Respect Points\n\n` +
+                  `Waiting for response...`);
+            
+            closeChallengeModal();
+        }
+
+        function closeChallengeModal() {
+            const modal = document.querySelector('.challenge-modal');
+            if (modal) modal.remove();
+        }
+
+        function joinHangar() {
+            alert('🏢 Available Battle Hangars\n\n' +
+                  '🟢 Degen\'s Den (Public)\n' +
+                  '   Members: 47 | Active Battles: 3\n\n' +
+                  '🟡 High Rollers Club (Private)\n' +
+                  '   Members: 12 | Active Battles: 1\n\n' +
+                  '🔴 Elite Battle Arena (Invitation)\n' +
+                  '   From: @HangarMaster\n' +
+                  '   Expires: 2 hours\n\n' +
+                  'Select hangar in main dashboard!');
+        }
+
+        // Loan Front Functions
+        function applyLoan() {
+            alert('📝 Loan Front Application\n\n' +
+                  'Current Eligibility:\n' +
+                  '✅ Bronze Tier: $100 @ 12% APR\n' +
+                  '✅ Silver Tier: $250 @ 10% APR\n\n' +
+                  'Application Process:\n' +
+                  '1. Security deposit (5%)\n' +
+                  '2. TrapHouse bot verification\n' +
+                  '3. Peer vouching (optional)\n' +
+                  '4. Instant funding\n\n' +
+                  'Apply in main dashboard!');
+        }
+
+        function vouchUser() {
+            alert('🤝 Vouching Requests\n\n' +
+                  '📋 @NewPlayer\n' +
+                  '   Loan: $150 @ 15% APR\n' +
+                  '   Incentive: $5 vouching reward\n' +
+                  '   Risk Score: Medium\n\n' +
+                  '📋 @RiskyGambler\n' +
+                  '   Loan: $75 @ 18% APR\n' +
+                  '   Incentive: $3 vouching reward\n' +
+                  '   Risk Score: High\n\n' +
+                  'Review applications in main dashboard!');
+        }
+
+        // Group Hangar Functions
+        function browseHangars() {
+            alert('🔍 Browse Battle Hangars\n\n' +
+                  '🌟 Featured Hangars:\n\n' +
+                  '🎮 Degen\'s Den\n' +
+                  '   Type: Public | Fee: Free\n' +
+                  '   Features: Open battles, spectator mode\n\n' +
+                  '💎 VIP Lounge\n' +
+                  '   Type: Premium | Fee: $10/month\n' +
+                  '   Features: High stakes, private voice\n\n' +
+                  '🏆 Championship Arena\n' +
+                  '   Type: Tournament | Fee: Entry based\n' +
+                  '   Features: Prizes, live streaming\n\n' +
+                  'Join through main dashboard!');
+        }
+
+        function createHangar() {
+            const userVerification = 3; // Current verification level
+            
+            if (userVerification < 4) {
+                alert('🚫 Hangar Creation Restricted\n\n' +
+                      'Requirement: Step 4 Verification\n' +
+                      'Current: Step 3\n\n' +
+                      'To unlock hangar creation:\n' +
+                      '• Reach 200+ Respect Points ✅\n' +
+                      '• Get 3+ Peer Vouches (1/3)\n' +
+                      '• Maintain clean loan history ✅\n\n' +
+                      'Continue building your reputation!');
+            } else {
+                alert('➕ Create New Hangar\n\n' +
+                      'Available Options:\n' +
+                      '🟢 Public Hangar (Free)\n' +
+                      '🟡 Private Hangar ($50 setup)\n' +
+                      '🔴 Premium Hangar ($200 setup)\n\n' +
+                      'Create in main dashboard!');
+            }
+        }
+
+        // IPC Event Handlers for Integration
+        if (typeof require !== 'undefined') {
+            const { ipcRenderer } = require('electron');
+
+            // Handle player challenge modal
+            ipcRenderer.on('show-player-challenge-modal', () => {
+                challengePlayer();
+            });
+
+            // Handle hangar list modal
+            ipcRenderer.on('show-hangar-list-modal', () => {
+                joinHangar();
+            });
+
+            // Handle verification updates
+            ipcRenderer.on('verification-updated', (event, data) => {
+                document.getElementById('verificationStep').textContent = data.step;
+                document.getElementById('verificationLevel').textContent = data.level;
+                document.getElementById('nextUpgrade').textContent = data.nextUpgrade;
+            });
+
+            // Handle multiplayer battle data updates
+            ipcRenderer.on('multiplayer-data-update', (event, data) => {
+                document.getElementById('activeBattleCount').textContent = `${data.activeBattles} Active`;
+                document.getElementById('pendingChallenges').textContent = data.pendingChallenges;
+                document.getElementById('winRate').textContent = `${data.winRate}%`;
+            });
+
+            // Handle loan front updates
+            ipcRenderer.on('loanfront-data-update', (event, data) => {
+                document.getElementById('approvedAmount').textContent = data.approvedAmount;
+                document.getElementById('activeLoanCount').textContent = data.activeLoans;
+                document.getElementById('vouchingEarnings').textContent = `$${data.vouchingEarnings}`;
+            });
+
+            // Handle hangar updates
+            ipcRenderer.on('hangar-data-update', (event, data) => {
+                document.getElementById('hangarCount').textContent = `${data.joinedCount} Joined`;
+                document.getElementById('hangarInvites').textContent = data.invitations;
+                document.getElementById('hangarRevenue').textContent = data.revenue;
+            });
         }
 
         // Prevent context menu
