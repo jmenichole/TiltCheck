@@ -194,6 +194,9 @@ class TrapHouseDashboardOverlay {
     async initializeApp() {
         await app.whenReady();
         
+        // 💜 Load saved settings with love
+        this.loadOverlaySettings();
+        
         this.createSystemTray();
         this.createMainWindow();
         this.createOverlayWindow();
@@ -202,7 +205,7 @@ class TrapHouseDashboardOverlay {
         this.startDataPolling();
         
         app.on('window-all-closed', () => {
-            // Keep running in system tray
+            // Keep running in system tray with love 💜
         });
 
         app.on('activate', () => {
@@ -210,6 +213,15 @@ class TrapHouseDashboardOverlay {
                 this.createMainWindow();
             }
         });
+
+        // 💜 Show welcome notification
+        setTimeout(() => {
+            this.showCompassionateNotification({
+                title: '💜 Welcome Back!',
+                message: 'Your mindful gambling companion is here to support your journey.',
+                tone: 'welcoming'
+            });
+        }, 2000);
     }
 
     createSystemTray() {
