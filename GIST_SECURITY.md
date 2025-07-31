@@ -20,7 +20,7 @@
 
 ```javascript
 // ❌ NEVER do this
-const token = "MTMzNjk2ODc0NjQ1MDgxMjkyOA.GqMKMJ.EXAMPLE_FAKE_TOKEN_NEVER_COMMIT_REAL_TOKENS";
+const token = "YOUR_BOT_TOKEN_HERE.FAKE_EXAMPLE.NEVER_COMMIT_REAL_TOKENS";
 
 // ✅ Always use environment variables
 const token = process.env.DISCORD_BOT_TOKEN;
