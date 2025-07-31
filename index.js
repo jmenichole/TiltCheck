@@ -16,12 +16,14 @@ const CryptoTipAdmin = require('./cryptoTipAdmin');
 const EnhancedCryptoTipManager = require('./enhancedCryptoTipManager');
 const BlockchainDiscordCommands = require('./blockchainDiscordCommands');
 const SupportIntegration = require('./supportIntegration');
+const EnhancedSystemIntegration = require('./enhancedSystemIntegration');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
 const collectClock = new CollectClockIntegration();
 const tiltCheckManager = new TiltCheckMischiefManager();
 const ecosystem = new EcosystemManager();
+const enhancedSystems = new EnhancedSystemIntegration();
 let paymentManager; // Will be initialized after client is ready
 
 // Initialize Crypto Tip System
@@ -282,6 +284,7 @@ client.once('ready', async () => {
     console.log('🐙 GitHub Integration initialized!');
     console.log('💧 CollectClock Integration ready!');
     console.log('🎰 TiltCheck Mischief Manager loaded!');
+    console.log('🚀 Enhanced System Integration loaded!');
     console.log('🌐 Ecosystem Manager initializing...');
     
     // Initialize ecosystem manager
