@@ -15,6 +15,7 @@ const CryptoTipManager = require('./cryptoTipManager');
 const CryptoTipAdmin = require('./cryptoTipAdmin');
 const EnhancedCryptoTipManager = require('./enhancedCryptoTipManager');
 const BlockchainDiscordCommands = require('./blockchainDiscordCommands');
+const SupportIntegration = require('./supportIntegration');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
@@ -28,6 +29,7 @@ let cryptoTipManager;
 let cryptoTipAdmin;
 let enhancedCryptoTipManager;
 let blockchainCommands;
+let supportIntegration;
 
 // Initialize Solscan Payment Tracker for JustTheTip
 let solscanTracker;

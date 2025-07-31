@@ -115,27 +115,94 @@ async function linkCryptoTipCCToPhantom() {
         console.log(`💎 SOLANA: Virtual=${enhancedSol.virtual}, OnChain=${enhancedSol.onChain}, Total=${enhancedSol.total}`);
         console.log(`💎 SOLUSDC: Virtual=${enhancedUsdc.virtual}, OnChain=${enhancedUsdc.onChain}, Total=${enhancedUsdc.total}`);
         
+        // Show remaining balance summary
+        console.log('\n💼 Remaining tip.cc Balance Summary:');
+        try {
+            const tipCCPublicKey = new PublicKey(tipCCWallet);
+            const tipCCSolBalance = await mainnetConnection.getBalance(tipCCPublicKey);
+            const tipCCSol = tipCCSolBalance / LAMPORTS_PER_SOL;
+            
+            let tipCCUsdc = 0;
+            try {
+                const { getAssociatedTokenAddress } = require('@solana/spl-token');
+                const usdcMintMainnet = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
+                const tipCCUsdcAccount = await getAssociatedTokenAddress(usdcMintMainnet, tipCCPublicKey);
+                const tipCCUsdcInfo = await mainnetConnection.getTokenAccountBalance(tipCCUsdcAccount);
+                tipCCUsdc = parseFloat(tipCCUsdcInfo.value.uiAmount || 0);
+            } catch (error) {
+                // USDC account doesn't exist
+            }
+            
+            console.log(`📊 Available to transfer:`);
+            console.log(`   💰 SOL: ${tipCCSol.toFixed(6)} (${(tipCCSol * 150).toFixed(2)} USD est.)`);
+            console.log(`   💵 USDC: ${tipCCUsdc.toFixed(6)} USD`);
+            console.log(`   💎 Total Value: ~$${(tipCCSol * 150 + tipCCUsdc).toFixed(2)} USD`);
+            
+        } catch (error) {
+            console.log('❌ Error calculating remaining balance');
+        }
+        
         // Show transfer instructions
-        console.log('\n🚀 How to Transfer from tip.cc to Phantom:\n');
+        console.log('\n🚀 HOW TO TRANSFER REMAINING CRYPTO:\n');
         
-        console.log('📱 Using tip.cc Discord Bot:');
-        console.log('   1. In Discord, use: `/withdraw` or `/send`');
-        console.log('   2. Enter Phantom address: 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
-        console.log('   3. Specify amount and token (SOL or USDC)');
-        console.log('   4. Confirm the transaction');
+        console.log('🎯 RECOMMENDED: tip.cc Discord Bot Commands');
+        console.log('   Open Discord and type these EXACT commands:');
+        console.log('');
+        console.log('   💰 Transfer ALL SOL:');
+        console.log('   /withdraw sol all 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('');
+        console.log('   💵 Transfer ALL USDC:');
+        console.log('   /withdraw usdc all 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('');
+        console.log('   💎 Or transfer specific amounts:');
+        console.log('   /withdraw sol 0.01 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('   /withdraw usdc 5.0 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
         
-        console.log('\n🌐 Using tip.cc Website:');
+        console.log('\n🌐 ALTERNATIVE: tip.cc Website Method:');
         console.log('   1. Go to https://tip.cc');
-        console.log('   2. Connect your Discord account');
-        console.log('   3. Navigate to Withdraw/Send');
-        console.log('   4. Paste Phantom address: 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
-        console.log('   5. Complete the withdrawal');
+        console.log('   2. Click "Login with Discord"');
+        console.log('   3. Go to "Wallet" → "Withdraw"');
+        console.log('   4. Select SOL or USDC');
+        console.log('   5. Enter amount (or click "Max")');
+        console.log('   6. Paste address: 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('   7. Confirm withdrawal');
         
-        console.log('\n👻 Using Phantom Wallet:');
-        console.log('   1. Open Phantom wallet');
-        console.log('   2. Go to Receive tab');
-        console.log('   3. Copy your address (should match): 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
-        console.log('   4. Use this address in tip.cc for withdrawal');
+        console.log('\n📱 STEP-BY-STEP Discord Instructions:');
+        console.log('   1. Open Discord app/website');
+        console.log('   2. Find a server where tip.cc bot is active');
+        console.log('   3. Type: /withdraw');
+        console.log('   4. Select currency: sol or usdc');
+        console.log('   5. Amount: type "all" or specific amount');
+        console.log('   6. Address: 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('   7. Confirm the transaction');
+        console.log('   8. Wait for blockchain confirmation (1-2 minutes)');
+        
+        console.log('\n⚠️  IMPORTANT TRANSFER TIPS:');
+        console.log('');
+        console.log('🔐 Security:');
+        console.log('   • Always double-check the Phantom address');
+        console.log('   • Start with small test amounts first');
+        console.log('   • Never share your private keys');
+        console.log('');
+        console.log('⏱️  Timing:');
+        console.log('   • Transfers usually take 1-2 minutes');
+        console.log('   • Check Phantom wallet for confirmation');
+        console.log('   • Save transaction IDs for reference');
+        console.log('');
+        console.log('💡 Troubleshooting:');
+        console.log('   • If Discord command fails, try website method');
+        console.log('   • Refresh Phantom wallet if balance doesn\'t update');
+        console.log('   • "Expected String" errors are usually display issues');
+        console.log('   • Check blockchain explorer if unsure about transaction');
+        
+        console.log('\n🎯 Your Phantom Wallet Address:');
+        console.log('6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('');
+        console.log('📋 Copy this address exactly when withdrawing from tip.cc');
+        
+        console.log('\n✅ Quick Commands Summary:');
+        console.log('Transfer ALL SOL: /withdraw sol all 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
+        console.log('Transfer ALL USDC: /withdraw usdc all 6VP8eBikxrkK7rfNgsUqZWwGAb31XymBdPjrhRwbAoCB');
         
         // Show Discord bot integration
         console.log('\n🎯 Discord Bot Integration:');
