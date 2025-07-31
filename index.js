@@ -418,8 +418,13 @@ client.on('messageCreate', async (message) => {
         await ecosystem.handleEcosystemCommand(message, args);
     }
     
-    // ========== CRYPTO TIP SYSTEM COMMANDS ==========
+    // ========== CRYPTO TIP SYSTEM COMMANDS (JUSTTHETIP BOT ONLY) ==========
     else if (command.startsWith('$tip') || command.startsWith('$balance') || command.startsWith('$history') || command.startsWith('$solusdc')) {
+        // Only allow crypto commands on JustTheTip bot
+        if (process.env.CURRENT_BOT !== 'JUSTTHETIP') {
+            return message.reply('💡 **Crypto commands are only available on JustTheTip bot!**\n\nUse `node launcher.js justthetip` to run the JustTheTip bot with crypto features.\n\nOr switch to JustTheTip bot in your Discord server.');
+        }
+        
         if (!cryptoTipManager) {
             return message.reply('❌ Crypto Tip System not available. Contact admin.');
         }
@@ -441,8 +446,13 @@ client.on('messageCreate', async (message) => {
         }
     }
     
-    // Crypto Tip Admin commands - Admin only
+    // Crypto Tip Admin commands - Admin only (JUSTTHETIP BOT ONLY)
     else if (command.startsWith('!tip-admin')) {
+        // Only allow crypto admin commands on JustTheTip bot
+        if (process.env.CURRENT_BOT !== 'JUSTTHETIP') {
+            return message.reply('💡 **Crypto admin commands are only available on JustTheTip bot!**\n\nUse `node launcher.js justthetip` to run the JustTheTip bot with crypto features.');
+        }
+        
         if (!cryptoTipAdmin) {
             return message.reply('❌ Crypto Tip Admin System not available. Contact admin.');
         }
