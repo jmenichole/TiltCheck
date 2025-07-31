@@ -18,6 +18,7 @@ const BlockchainDiscordCommands = require('./blockchainDiscordCommands');
 const SupportIntegration = require('./supportIntegration');
 const EnhancedSystemIntegration = require('./enhancedSystemIntegration');
 const PersonalizedTiltProtection = require('./personalizedTiltProtection');
+const EnhancedTiltSetup = require('./enhancedTiltSetup');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
@@ -26,6 +27,9 @@ const tiltCheckManager = new TiltCheckMischiefManager();
 const ecosystem = new EcosystemManager();
 const enhancedSystems = new EnhancedSystemIntegration();
 const personalizedTiltProtection = new PersonalizedTiltProtection();
+
+// Initialize Enhanced Tilt Setup (will be initialized after solscanTracker is ready)
+let enhancedTiltSetup;
 let paymentManager; // Will be initialized after client is ready
 
 // Initialize Crypto Tip System
@@ -337,6 +341,14 @@ client.once('ready', async () => {
         });
         
         console.log('🔍 Solscan payment tracker active');
+    }
+    
+    // Initialize Enhanced Tilt Setup with integrations
+    try {
+        enhancedTiltSetup = new EnhancedTiltSetup(personalizedTiltProtection, solscanTracker);
+        console.log('🚀 Enhanced Tilt Setup initialized - JustTheIP + Stake API integration ready!');
+    } catch (error) {
+        console.error('❌ Failed to initialize Enhanced Tilt Setup:', error);
     }
     
     // Connect integrations to TrapHouse for cross-platform features
@@ -1304,24 +1316,60 @@ async function handlePersonalizedTiltCommand(message, args) {
     const subcommand = args[0]?.toLowerCase();
 
     try {
-        switch (subcommand) {
-            case 'setup':
-                await setupPersonalizedTiltProtection(message);
-                break;
-            case 'analyze':
-                await personalizedTiltProtection.analyzeStakeOriginalsPerception(message);
-                break;
-            case 'check':
-                await checkCurrentTiltStatus(message);
-                break;
-            case 'emergency':
-                await triggerEmergencyProtection(message);
-                break;
-            case 'patterns':
-                await showTiltPatterns(message);
-                break;
-            default:
-                await showPersonalizedTiltHelp(message);
+        // Use enhanced tilt setup if available
+        if (enhancedTiltSetup) {
+            switch (subcommand) {
+                case 'setup':
+                    await enhancedTiltSetup.setupEnhancedTiltProtection(message);
+                    break;
+                case 'wallet':
+                    await enhancedTiltSetup.showWalletAnalysis(message);
+                    break;
+                case 'stake':
+                    await enhancedTiltSetup.showStakeAnalysis(message);
+                    break;
+                case 'combined':
+                    await enhancedTiltSetup.showCombinedAnalysis(message);
+                    break;
+                case 'status':
+                    await enhancedTiltSetup.showEnhancedStatus(message);
+                    break;
+                case 'analyze':
+                    await personalizedTiltProtection.analyzeStakeOriginalsPerception(message);
+                    break;
+                case 'check':
+                    await checkCurrentTiltStatus(message);
+                    break;
+                case 'emergency':
+                    await triggerEmergencyProtection(message);
+                    break;
+                case 'patterns':
+                    await showTiltPatterns(message);
+                    break;
+                default:
+                    await enhancedTiltSetup.showEnhancedHelp(message);
+            }
+        } else {
+            // Fallback to basic tilt protection
+            switch (subcommand) {
+                case 'setup':
+                    await setupPersonalizedTiltProtection(message);
+                    break;
+                case 'analyze':
+                    await personalizedTiltProtection.analyzeStakeOriginalsPerception(message);
+                    break;
+                case 'check':
+                    await checkCurrentTiltStatus(message);
+                    break;
+                case 'emergency':
+                    await triggerEmergencyProtection(message);
+                    break;
+                case 'patterns':
+                    await showTiltPatterns(message);
+                    break;
+                default:
+                    await showPersonalizedTiltHelp(message);
+            }
         }
     } catch (error) {
         console.error('Personalized tilt protection error:', error);
