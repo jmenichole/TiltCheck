@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrapHouse Testing Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button.danger {
+            background: #f44336;
+        }
+        .button.warning {
+            background: #ff9800;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-sizing: border-box;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .status {
+            padding: 8px 16px;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        .status.success { background: #4CAF50; }
+        .status.error { background: #f44336; }
+        .status.warning { background: #ff9800; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 TrapHouse Testing Dashboard</h1>
+            <p>Complete testing interface for Stripe Connect marketplace</p>
+        </div>
+
+        <div class="grid">
+            <div class="test-section">
+                <h2>🔧 System Status</h2>
+                <button class="button" onclick="checkHealth()">Check Health</button>
+                <button class="button" onclick="checkStripeConfig()">Check Stripe Config</button>
+                <div id="health-result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>👤 Account Management</h2>
+                <input type="email" id="seller-email" placeholder="Seller Email" value="test@traphouse.com">
+                <input type="text" id="discord-id" placeholder="Discord User ID" value="test_user_123">
+                <button class="button" onclick="createAccount()">Create Account</button>
+                <button class="button warning" onclick="getAccountStatus()">Check Status</button>
+                <button class="button" onclick="createOnboarding()">Create Onboarding Link</button>
+                <div id="account-result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>📦 Product Management</h2>
+                <input type="text" id="product-name" placeholder="Product Name" value="TrapHouse Test Product">
+                <input type="text" id="product-description" placeholder="Product Description" value="Test product for development">
+                <input type="number" id="product-price" placeholder="Price in cents" value="2500">
+                <button class="button" onclick="createProduct()">Create Product</button>
+                <button class="button warning" onclick="listProducts()">List Products</button>
+                <div id="product-result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>💳 Checkout Testing</h2>
+                <input type="text" id="checkout-product" placeholder="Product Name" value="TrapHouse Test Item">
+                <input type="number" id="checkout-price" placeholder="Price in cents" value="1999">
+                <input type="number" id="checkout-quantity" placeholder="Quantity" value="1">
+                <select id="checkout-mode">
+                    <option value="true">Test Mode (No Onboarding)</option>
+                    <option value="false">Production Mode (Requires Onboarding)</option>
+                </select>
+                <button class="button" onclick="createCheckout()">Create Checkout</button>
+                <div id="checkout-result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>🌐 Quick Links</h2>
+                <a href="/stripe/marketplace" class="button" target="_blank">Marketplace</a>
+                <a href="/stripe/seller-dashboard" class="button" target="_blank">Seller Dashboard</a>
+                <a href="/webhook/health" class="button" target="_blank">API Health</a>
+                <button class="button danger" onclick="runFullTest()">Run Full Test Suite</button>
+            </div>
+
+            <div class="test-section">
+                <h2>📊 Test Results</h2>
+                <div id="global-status"></div>
+                <div id="global-results" class="result" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAccountId = null;
+
+        async function apiCall(method, endpoint, data = null) {
+            const options = {
+                method: method,
+                headers: { 'Content-Type': 'application/json' }
+            };
+            
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+
+            try {
+                const response = await fetch(endpoint, options);
+                const result = await response.json();
+                return { success: response.ok, data: result };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function showResult(elementId, result) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function checkHealth() {
+            const result = await apiCall('GET', '/webhook/health');
+            showResult('health-result', result);
+        }
+
+        async function createAccount() {
+            const email = document.getElementById('seller-email').value;
+            const discordId = document.getElementById('discord-id').value;
+            
+            const result = await apiCall('POST', '/stripe/accounts/create', {
+                email: email,
+                discordUserId: discordId
+            });
+            
+            if (result.success && result.data.accountId) {
+                currentAccountId = result.data.accountId;
+                document.getElementById('global-status').innerHTML = 
+                    '<div class="status success">Account Created: ' + currentAccountId + '</div>';
+            }
+            
+            showResult('account-result', result);
+        }
+
+        async function getAccountStatus() {
+            if (!currentAccountId) {
+                alert('Please create an account first');
+                return;
+            }
+            
+            const result = await apiCall('GET', `/stripe/accounts/${currentAccountId}/status`);
+            showResult('account-result', result);
+        }
+
+        async function createOnboarding() {
+            if (!currentAccountId) {
+                alert('Please create an account first');
+                return;
+            }
+            
+            const result = await apiCall('POST', `/stripe/accounts/${currentAccountId}/onboard`);
+            
+            if (result.success && result.data.onboardingUrl) {
+                window.open(result.data.onboardingUrl, '_blank');
+            }
+            
+            showResult('account-result', result);
+        }
+
+        async function createProduct() {
+            if (!currentAccountId) {
+                alert('Please create an account first');
+                return;
+            }
+            
+            const result = await apiCall('POST', '/stripe/products/create', {
+                connectedAccountId: currentAccountId,
+                name: document.getElementById('product-name').value,
+                description: document.getElementById('product-description').value,
+                priceInCents: parseInt(document.getElementById('product-price').value)
+            });
+            
+            showResult('product-result', result);
+        }
+
+        async function createCheckout() {
+            if (!currentAccountId) {
+                alert('Please create an account first');
+                return;
+            }
+            
+            const testMode = document.getElementById('checkout-mode').value === 'true';
+            
+            const result = await apiCall('POST', '/stripe/checkout/create', {
+                connectedAccountId: currentAccountId,
+                productName: document.getElementById('checkout-product').value,
+                priceInCents: parseInt(document.getElementById('checkout-price').value),
+                quantity: parseInt(document.getElementById('checkout-quantity').value),
+                testMode: testMode
+            });
+            
+            if (result.success && result.data.checkoutUrl) {
+                window.open(result.data.checkoutUrl, '_blank');
+            }
+            
+            showResult('checkout-result', result);
+        }
+
+        async function runFullTest() {
+            const results = [];
+            
+            document.getElementById('global-status').innerHTML = 
+                '<div class="status warning">Running Full Test Suite...</div>';
+            
+            // Test 1: Health Check
+            results.push(await apiCall('GET', '/webhook/health'));
+            
+            // Test 2: Create Account
+            const accountResult = await apiCall('POST', '/stripe/accounts/create', {
+                email: 'autotest' + Date.now() + '@traphouse.com',
+                discordUserId: 'autotest_' + Date.now()
+            });
+            results.push(accountResult);
+            
+            if (accountResult.success) {
+                const accountId = accountResult.data.accountId;
+                
+                // Test 3: Account Status
+                results.push(await apiCall('GET', `/stripe/accounts/${accountId}/status`));
+                
+                // Test 4: Create Product
+                results.push(await apiCall('POST', '/stripe/products/create', {
+                    connectedAccountId: accountId,
+                    name: 'Auto Test Product',
+                    description: 'Automated test product',
+                    priceInCents: 1000
+                }));
+                
+                // Test 5: Test Mode Checkout
+                results.push(await apiCall('POST', '/stripe/checkout/create', {
+                    connectedAccountId: accountId,
+                    productName: 'Auto Test Product',
+                    priceInCents: 1000,
+                    quantity: 1,
+                    testMode: true
+                }));
+            }
+            
+            document.getElementById('global-status').innerHTML = 
+                '<div class="status success">Full Test Suite Complete!</div>';
+            showResult('global-results', results);
+        }
+    </script>
+</body>
+</html>

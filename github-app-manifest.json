@@ -1,0 +1,29 @@
+{
+  "name": "JustTheTip Smart Crypto Assistant",
+  "url": "https://justthetip.bot",
+  "hook_attributes": {
+    "url": "https://api.justthetip.bot/github/webhook"
+  },
+  "redirect_url": "https://app.justthetip.bot/auth/github/callback",
+  "callback_urls": [
+    "https://app.justthetip.bot/auth/github/callback"
+  ],
+  "description": "Smart crypto accountability bot built by degens, for degens - but with a soft spot for financial responsibility.",
+  "public": true,
+  "default_permissions": {
+    "contents": "read",
+    "issues": "write",
+    "pull_requests": "write",
+    "metadata": "read",
+    "repository_hooks": "write"
+  },
+  "default_events": [
+    "push",
+    "pull_request", 
+    "issues",
+    "repository",
+    "installation",
+    "installation_repositories"
+  ],
+  "request_oauth_on_install": true
+}
