@@ -62,11 +62,11 @@ class BlockchainDiscordCommands {
                 response += '💡 Virtual balances only\n';
             }
             
-            return await message.reply(response);
+            return await message.reply({ content: response, ephemeral: true });
             
         } catch (error) {
             console.error('Enhanced balance error:', error);
-            return await message.reply('❌ Error checking enhanced balance. Please try again.');
+            return await message.reply({ content: '❌ Error checking enhanced balance. Please try again.', ephemeral: true });
         }
     }
 
@@ -77,7 +77,7 @@ class BlockchainDiscordCommands {
         const discordId = message.author.id;
         
         if (!this.tipManager.isBlockchainEnabled) {
-            return await message.reply('❌ Blockchain integration is not enabled.');
+            return await message.reply({ content: '❌ Blockchain integration is not enabled.', ephemeral: true });
         }
         
         try {
@@ -111,7 +111,7 @@ class BlockchainDiscordCommands {
                     response += '`$wallet link <address>` - Link existing wallet\n';
                 }
                 
-                return await message.reply(response);
+                return await message.reply({ content: response, ephemeral: true });
                 
             } else if (args[0] === 'generate') {
                 // Generate new wallet
@@ -124,27 +124,27 @@ class BlockchainDiscordCommands {
                 response += '🔗 **Network:** ' + this.tipManager.getBlockchainStatus().network + '\n\n';
                 response += '💡 Use `$airdrop` to get testnet SOL\n';
                 
-                return await message.reply(response);
+                return await message.reply({ content: response, ephemeral: true });
                 
             } else if (args[0] === 'link' && args[1]) {
                 // Link existing wallet
                 const walletAddress = args[1];
                 
                 if (!this.tipManager.blockchain.isValidAddress(walletAddress)) {
-                    return await message.reply('❌ Invalid wallet address format.');
+                    return await message.reply({ content: '❌ Invalid wallet address format.', ephemeral: true });
                 }
                 
                 await this.tipManager.linkUserWallet(discordId, walletAddress);
                 
-                return await message.reply(`✅ Wallet linked successfully!\n📍 Address: \`${walletAddress}\``);
+                return await message.reply({ content: `✅ Wallet linked successfully!\n📍 Address: \`${walletAddress}\``, ephemeral: true });
                 
             } else {
-                return await message.reply('❌ Invalid wallet command. Use `$wallet` for help.');
+                return await message.reply({ content: '❌ Invalid wallet command. Use `$wallet` for help.', ephemeral: true });
             }
             
         } catch (error) {
             console.error('Wallet command error:', error);
-            return await message.reply('❌ Error managing wallet. Please try again.');
+            return await message.reply({ content: '❌ Error managing wallet. Please try again.', ephemeral: true });
         }
     }
 
@@ -155,11 +155,11 @@ class BlockchainDiscordCommands {
         const discordId = message.author.id;
         
         if (!this.tipManager.isBlockchainEnabled) {
-            return await message.reply('❌ Blockchain integration is not enabled.');
+            return await message.reply({ content: '❌ Blockchain integration is not enabled.', ephemeral: true });
         }
         
         if (args.length < 3) {
-            return await message.reply('❌ Usage: `$withdraw <CHAIN> <AMOUNT> <ADDRESS>`\nExample: `$withdraw SOLUSDC 10 <wallet_address>`');
+            return await message.reply({ content: '❌ Usage: `$withdraw <CHAIN> <AMOUNT> <ADDRESS>`\nExample: `$withdraw SOLUSDC 10 <wallet_address>`', ephemeral: true });
         }
         
         try {
@@ -167,11 +167,11 @@ class BlockchainDiscordCommands {
             const amount = parseFloat(amountStr);
             
             if (isNaN(amount) || amount <= 0) {
-                return await message.reply('❌ Invalid amount. Must be a positive number.');
+                return await message.reply({ content: '❌ Invalid amount. Must be a positive number.', ephemeral: true });
             }
             
             if (!this.tipManager.blockchain.isValidAddress(toAddress)) {
-                return await message.reply('❌ Invalid destination address.');
+                return await message.reply({ content: '❌ Invalid destination address.', ephemeral: true });
             }
             
             // Show confirmation message first
@@ -180,7 +180,7 @@ class BlockchainDiscordCommands {
             confirmMsg += `📍 To: \`${toAddress.substring(0, 8)}...${toAddress.substring(toAddress.length - 8)}\`\n`;
             confirmMsg += `⏳ Processing...`;
             
-            const statusMessage = await message.reply(confirmMsg);
+            const statusMessage = await message.reply({ content: confirmMsg, ephemeral: true });
             
             // Process withdrawal
             const withdrawal = await this.tipManager.withdrawToBlockchain(discordId, chain, amount, toAddress);
@@ -197,7 +197,7 @@ class BlockchainDiscordCommands {
             
         } catch (error) {
             console.error('Withdraw error:', error);
-            return await message.reply(`❌ Withdrawal failed: ${error.message}`);
+            return await message.reply({ content: `❌ Withdrawal failed: ${error.message}`, ephemeral: true });
         }
     }
 
@@ -208,26 +208,26 @@ class BlockchainDiscordCommands {
         const discordId = message.author.id;
         
         if (!this.tipManager.isBlockchainEnabled) {
-            return await message.reply('❌ Blockchain integration is not enabled.');
+            return await message.reply({ content: '❌ Blockchain integration is not enabled.', ephemeral: true });
         }
         
         const status = this.tipManager.getBlockchainStatus();
         if (status.network === 'mainnet') {
-            return await message.reply('❌ Airdrops are only available on devnet/testnet.');
+            return await message.reply({ content: '❌ Airdrops are only available on devnet/testnet.', ephemeral: true });
         }
         
         try {
             const walletAddress = await this.tipManager.getUserWalletAddress(discordId);
             if (!walletAddress) {
-                return await message.reply('❌ No wallet linked. Use `$wallet generate` first.');
+                return await message.reply({ content: '❌ No wallet linked. Use `$wallet generate` first.', ephemeral: true });
             }
             
             const amount = args[0] ? parseFloat(args[0]) : 0.5;
             if (amount > 2) {
-                return await message.reply('❌ Maximum airdrop amount is 2 SOL.');
+                return await message.reply({ content: '❌ Maximum airdrop amount is 2 SOL.', ephemeral: true });
             }
             
-            const statusMessage = await message.reply(`⏳ Requesting ${amount} SOL airdrop...`);
+            const statusMessage = await message.reply({ content: `⏳ Requesting ${amount} SOL airdrop...`, ephemeral: true });
             
             const signature = await this.tipManager.requestTestnetAirdrop(walletAddress, amount);
             
@@ -242,7 +242,7 @@ class BlockchainDiscordCommands {
             
         } catch (error) {
             console.error('Airdrop error:', error);
-            return await message.reply(`❌ Airdrop failed: ${error.message}`);
+            return await message.reply({ content: `❌ Airdrop failed: ${error.message}`, ephemeral: true });
         }
     }
 

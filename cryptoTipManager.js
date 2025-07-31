@@ -354,11 +354,11 @@ class CryptoTipManager {
                 inline: false
             });
 
-            await message.reply({ embeds: [embed] });
+            await message.reply({ embeds: [embed], ephemeral: true });
 
         } catch (error) {
             console.error('Error handling balance command:', error);
-            await message.reply(`❌ Error checking balance: ${error.message}`);
+            await message.reply({ content: `❌ Error checking balance: ${error.message}`, ephemeral: true });
         }
     }
 
@@ -402,11 +402,11 @@ class CryptoTipManager {
                 inline: false
             });
 
-            await message.reply({ embeds: [embed] });
+            await message.reply({ embeds: [embed], ephemeral: true });
 
         } catch (error) {
             console.error('Error handling history command:', error);
-            await message.reply(`❌ Error loading history: ${error.message}`);
+            await message.reply({ content: `❌ Error loading history: ${error.message}`, ephemeral: true });
         }
     }
 
