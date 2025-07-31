@@ -31,5 +31,16 @@
     "chain": "SOLUSDC",
     "status": "completed",
     "timestamp": "2025-07-31T16:39:36.286Z"
+  },
+  "tip_1753981080480_test": {
+    "id": "tip_1753981080480_test",
+    "fromUserId": "555666777",
+    "fromUsername": "TestUser",
+    "toUserId": "1153034319271559328",
+    "toUsername": "YourUsername",
+    "amount": 100,
+    "chain": "SOLUSDC",
+    "status": "completed",
+    "timestamp": "2025-07-31T16:58:00.480Z"
   }
 }
