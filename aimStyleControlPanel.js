@@ -106,8 +106,8 @@ class AIMStyleControlPanel {
             startedAt: new Date(),
             steps: {
                 discord: false,
-                wallet: false,
-                casino: false,
+                tiltcheck: false,
+                justthetip: false,
                 device: false,
                 behavioral: false
             },
