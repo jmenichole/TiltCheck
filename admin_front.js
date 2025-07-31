@@ -111,7 +111,7 @@ function handleAdminFrontCommand(message, args) {
             debtList += `\n`;
         }
         
-        debtList += `\nUse \`!admin_front confirm @user\` when payment received via tip.cc`;
+        debtList += `\nUse \`!admin_front confirm @user\` when payment received via crypto`;
         return message.reply(debtList);
     }
 

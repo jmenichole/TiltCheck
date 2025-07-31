@@ -155,10 +155,10 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary)
                     .setEmoji('💳'),
                 new ButtonBuilder()
-                    .setCustomId('subscribe_tipcc')
-                    .setLabel('Pay with tip.cc')
+                    .setCustomId('subscribe_crypto')
+                    .setLabel('Pay with Crypto')
                     .setStyle(ButtonStyle.Secondary)
-                    .setEmoji('🪙'),
+                    .setEmoji('⚡'),
                 new ButtonBuilder()
                     .setCustomId('payment_info')
                     .setLabel('More Info')
@@ -176,8 +176,8 @@ module.exports = {
             .setDescription('Choose the payment option that works best for you.')
             .addFields(
                 {
-                    name: '🪙 Per-Transaction (tip.cc)',
-                    value: `**Loan Issuance Fee:** $${config.FEES.LOAN_ISSUANCE_FEE}\n**Late Payment Fee:** $${config.FEES.LATE_REPAYMENT_FEE}\n\n✅ Pay only when you use the service\n✅ No upfront costs\n✅ Automatic processing`,
+                    name: '⚡ Per-Transaction (Crypto Only)',
+                    value: `**Loan Issuance Fee:** $${config.FEES.LOAN_ISSUANCE_FEE}\n**Late Payment Fee:** $${config.FEES.LATE_REPAYMENT_FEE}\n\n✅ Pay only when you use the service\n✅ No upfront costs\n✅ Direct crypto payments\n✅ ETH, BTC, USDC, USDT supported`,
                     inline: true
                 },
                 {

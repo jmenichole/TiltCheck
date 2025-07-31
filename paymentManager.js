@@ -554,8 +554,8 @@ class PaymentManager {
             
             console.log(`Processing $${feeAmount} loan issuance fee for user ${userId}`);
 
-            // Create payment request via tip.cc
-            const paymentRequest = await this.createTipccPayment(
+            // Create manual payment request (no tip.cc integration)
+            const paymentRequest = await this.createManualPaymentRequest(
                 userId,
                 feeAmount,
                 `Loan Issuance Fee - Loan #${loanId}`,
@@ -774,8 +774,8 @@ class PaymentManager {
             
             console.log(`Processing $${feeAmount} late repayment fee for user ${userId}`);
 
-            // Create payment request via tip.cc
-            const paymentRequest = await this.createTipccPayment(
+            // Create manual payment request (no tip.cc integration)
+            const paymentRequest = await this.createManualPaymentRequest(
                 userId,
                 feeAmount,
                 `Late Repayment Fee - Loan #${loanId} (${daysLate} days late)`,
@@ -807,52 +807,55 @@ class PaymentManager {
         }
     }
 
-    // ============ TIP.CC INTEGRATION ============
+    // ============ CRYPTO-ONLY PAYMENTS (NO TIP.CC) ============
 
-    async createTipccPayment(userId, amount, description, type) {
+    async createCryptoOnlyPayment(userId, amount, description, type) {
         try {
-            const paymentData = {
-                amount: amount,
-                currency: config.TIPCC.CURRENCY,
-                description: description,
-                metadata: {
-                    userId: userId,
-                    type: type,
-                    timestamp: Date.now()
-                }
-            };
-
-            // Create payment request via tip.cc API
-            const response = await axios.post(`${config.TIPCC.BASE_URL}/payments`, paymentData, {
-                headers: {
-                    'Authorization': `Bearer ${config.TIPCC.API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            // Store payment record
+            // For JustTheTip - direct crypto payments only
+            const paymentId = `crypto_${Date.now()}_${userId}`;
+            
             await this.storePaymentRecord({
-                paymentId: response.data.id,
+                paymentId: paymentId,
                 userId: userId,
                 amount: amount,
                 type: type,
-                status: 'pending',
+                status: 'crypto_pending',
                 created: new Date().toISOString(),
-                description: description
+                description: description,
+                method: 'crypto'
             });
 
+            // Generate crypto payment instructions
+            const cryptoInstructions = this.generateCryptoPaymentInstructions(amount, type);
+
             return {
-                paymentId: response.data.id,
-                paymentUrl: response.data.payment_url,
+                paymentId: paymentId,
+                paymentUrl: null, // No external payment URL - direct crypto only
                 amount: amount,
-                status: 'pending'
+                status: 'crypto_pending',
+                instructions: cryptoInstructions
             };
         } catch (error) {
-            console.error('Error creating tip.cc payment:', error);
+            console.error('Error creating crypto payment:', error);
             
             // Fallback: Create manual payment request
             return this.createManualPaymentRequest(userId, amount, description, type);
         }
+    }
+
+    generateCryptoPaymentInstructions(amount, type) {
+        return {
+            message: `💰 **Crypto Payment Required**\n\n` +
+                    `**Amount:** $${amount} USD equivalent\n` +
+                    `**Accepted:** ETH, BTC, USDC, USDT, MATIC, BNB\n\n` +
+                    `**Instructions:**\n` +
+                    `• Use your preferred crypto wallet\n` +
+                    `• Send equivalent amount to admin wallet\n` +
+                    `• Include transaction hash for verification\n` +
+                    `• Payment confirmed within 15 minutes\n\n` +
+                    `*No tip.cc integration - pure crypto payments only*`,
+            supportedChains: config.JUSTTHETIP.SUPPORTED_CHAINS
+        };
     }
 
     async createManualPaymentRequest(userId, amount, description, type) {
@@ -963,15 +966,15 @@ class PaymentManager {
                 buttons = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setLabel('Pay with tip.cc')
-                            .setStyle(ButtonStyle.Link)
-                            .setURL(paymentData.paymentUrl)
-                            .setEmoji('💳'),
-                        new ButtonBuilder()
+                            .setLabel('Manual Payment Only')
+                            .setStyle(ButtonStyle.Primary)
                             .setCustomId('payment_manual')
-                            .setLabel('Manual Payment')
+                            .setEmoji('�'),
+                        new ButtonBuilder()
+                            .setCustomId('crypto_instructions')
+                            .setLabel('Crypto Payment Info')
                             .setStyle(ButtonStyle.Secondary)
-                            .setEmoji('🏦')
+                            .setEmoji('⚡')
                     );
             } else {
                 buttons = new ActionRowBuilder()

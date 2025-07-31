@@ -6,7 +6,7 @@ services:
   traphouse-bot:
     build: .
     ports:
-      - 3001:3001
+      - 3011:3001
     environment:
       NODE_ENV: development
       BOT_TYPE: TRAPHOUSE
@@ -29,7 +29,7 @@ services:
   justthetip-bot:
     build: .
     ports:
-      - 3002:3002
+      - 3012:3002
     environment:
       NODE_ENV: development
       BOT_TYPE: JUSTTHETIP
@@ -45,7 +45,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - 6379:6379
+      - 6389:6379
 
   # PostgreSQL for development
   postgres:
@@ -55,7 +55,7 @@ services:
       POSTGRES_USER: traphouse
       POSTGRES_PASSWORD: dev_password
     ports:
-      - 5432:5432
+      - 5442:5432
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
 
@@ -63,7 +63,7 @@ services:
   webhook-server:
     build: .
     ports:
-      - 3000:3000
+      - 3010:3000
     environment:
       NODE_ENV: development
       SERVICE_TYPE: WEBHOOK

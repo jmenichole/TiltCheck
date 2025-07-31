@@ -1,18 +1,18 @@
 const express = require('express');
 const crypto = require('crypto');
-const PaymentManager = require('./paymentManager');
-const config = require('./config/payments');
+const PaymentManager = require('../paymentManager');
+const config = require('../config/payments');
 
 const router = express.Router();
 
-// tip.cc Webhook Handler
-router.post('/tipcc', async (req, res) => {
+// JustTheTip Webhook Handler (Crypto-only, no tip.cc)
+router.post('/justthetip', async (req, res) => {
     try {
         // Verify webhook signature
-        const signature = req.headers['x-tipcc-signature'];
+        const signature = req.headers['x-justthetip-signature'];
         const payload = JSON.stringify(req.body);
         const expectedSignature = crypto
-            .createHmac('sha256', config.TIPCC.WEBHOOK_SECRET)
+            .createHmac('sha256', config.JUSTTHETIP.WEBHOOK_SECRET)
             .update(payload)
             .digest('hex');
 
@@ -22,15 +22,18 @@ router.post('/tipcc', async (req, res) => {
 
         const { event_type, data } = req.body;
 
-        if (event_type === 'payment.completed') {
-            await handleTipccPaymentCompleted(data);
-        } else if (event_type === 'payment.failed') {
-            await handleTipccPaymentFailed(data);
+        // Only handle crypto payment events (no tip.cc integration)
+        if (event_type === 'crypto.payment_confirmed') {
+            await handleJustTheTipCryptoPayment(data);
+        } else if (event_type === 'crypto.payment_failed') {
+            await handleJustTheTipCryptoFailed(data);
+        } else {
+            console.log('JustTheTip: Ignoring non-crypto event:', event_type);
         }
 
         res.status(200).json({ received: true });
     } catch (error) {
-        console.error('Error processing tip.cc webhook:', error);
+        console.error('Error processing JustTheTip crypto webhook:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -90,49 +93,51 @@ router.post('/discord-boost', async (req, res) => {
 
 // ============ WEBHOOK HANDLERS ============
 
-async function handleTipccPaymentCompleted(paymentData) {
+async function handleJustTheTipCryptoPayment(paymentData) {
     try {
-        const { id, amount, metadata } = paymentData;
+        const { transaction_hash, amount, chain, metadata } = paymentData;
         const { userId, type } = metadata;
 
-        console.log(`tip.cc payment completed: ${id}, $${amount}, type: ${type}`);
+        console.log(`JustTheTip crypto payment confirmed: ${transaction_hash}, ${amount} ${chain}, type: ${type}`);
 
         // Mark payment as completed
         const paymentManager = new PaymentManager();
-        await paymentManager.markPaymentComplete(id);
+        await paymentManager.markPaymentComplete(transaction_hash);
 
         // Send confirmation to user and admin
         await sendPaymentConfirmation(userId, {
-            paymentId: id,
+            paymentId: transaction_hash,
             amount: amount,
+            chain: chain,
             type: type,
-            method: 'tip.cc',
+            method: 'crypto',
             status: 'completed'
         });
 
     } catch (error) {
-        console.error('Error handling tip.cc payment completion:', error);
+        console.error('Error handling JustTheTip crypto payment:', error);
     }
 }
 
-async function handleTipccPaymentFailed(paymentData) {
+async function handleJustTheTipCryptoFailed(paymentData) {
     try {
-        const { id, amount, metadata } = paymentData;
+        const { transaction_hash, amount, chain, metadata } = paymentData;
         const { userId, type } = metadata;
 
-        console.log(`tip.cc payment failed: ${id}, $${amount}, type: ${type}`);
+        console.log(`JustTheTip crypto payment failed: ${transaction_hash}, ${amount} ${chain}, type: ${type}`);
 
         // Send failure notification
         await sendPaymentFailureNotification(userId, {
-            paymentId: id,
+            paymentId: transaction_hash,
             amount: amount,
+            chain: chain,
             type: type,
-            method: 'tip.cc',
+            method: 'crypto',
             status: 'failed'
         });
 
     } catch (error) {
-        console.error('Error handling tip.cc payment failure:', error);
+        console.error('Error handling JustTheTip crypto payment failure:', error);
     }
 }
 

@@ -2,14 +2,14 @@
 module.exports = {
     // Payment Methods
     PAYMENT_METHODS: {
-        TIPCC: 'tipcc',
+        JUSTTHETIP: 'justthetip',
         STRIPE: 'stripe',
         DISCORD_NITRO: 'discord'
     },
 
     // Fee Structure
     FEES: {
-        // Per-loan fees (tip.cc)
+        // Per-loan fees (JustTheTip)
         LOAN_ISSUANCE_FEE: 3.00,           // $3 per loan
         LATE_REPAYMENT_FEE: 3.00,          // $3 per late payment
         
@@ -30,12 +30,12 @@ module.exports = {
         NOTIFICATION_WEBHOOK: process.env.PAYMENT_WEBHOOK_URL
     },
 
-    // tip.cc Configuration
-    TIPCC: {
-        API_KEY: process.env.TIPCC_API_KEY,
-        WEBHOOK_SECRET: process.env.TIPCC_WEBHOOK_SECRET,
-        BASE_URL: 'https://api.tip.cc/v1',
-        CURRENCY: 'USD'
+    // JustTheTip Configuration (Crypto-only, no tip.cc)
+    JUSTTHETIP: {
+        WEBHOOK_SECRET: process.env.JUSTTHETIP_WEBHOOK_SECRET,
+        BASE_URL: 'https://api.justthetip.bot/v1',
+        CRYPTO_ONLY: true, // No tip.cc integration
+        SUPPORTED_CHAINS: ['ETH', 'BTC', 'MATIC', 'BNB', 'USDC', 'USDT']
     },
 
     // Stripe Configuration

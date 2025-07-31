@@ -113,13 +113,13 @@ async function handleFrontCommand(message, args) {
             console.error('Error processing loan issuance fee:', error);
         }
         
-        // Generate tip.cc command for the user
+        // Generate crypto payment instructions for the user
         const tipCommand = `$tip <@${userId}> ${amount}`;
         
         return message.reply(`You been fronted 💸 $${amount}! You got 5 days to bring me back $${repayAmount} (150%).
 
-**💳 PROCESSING FEE:** $3 loan issuance fee will be charged via tip.cc
-**PAYMENT METHOD:** Use tip.cc to send payment
+**💳 PROCESSING FEE:** $3 loan issuance fee will be charged via crypto payment
+**PAYMENT METHOD:** Use crypto wallet to send payment
 **Admin will send you:** \`${tipCommand}\`
 **You repay with:** \`$tip <@ADMIN_ID> ${repayAmount}\`
 
@@ -131,7 +131,7 @@ Don't make me come lookin' for you... 🔫
     if (subCommand === 'repay') {
         const amount = parseInt(args[1]);
         if (isNaN(amount) || amount <= 0) {
-            return message.reply("How much you payin'? Type a real number. 💵\n\n**Remember:** Use tip.cc to pay: `$tip <@ADMIN_ID> [amount]`");
+            return message.reply("How much you payin'? Type a real number. 💵\n\n**Remember:** Use crypto wallet to pay admin directly");
         }
         if (!loans[userId] || loans[userId].repaid) {
             return message.reply("You don't owe nothin'… yet. 😏");
@@ -168,9 +168,9 @@ Don't make me come lookin' for you... 🔫
                 
                 saveLoans(loans);
                 saveUserTrust(trust);
-                return message.reply(`Bout time! You paid the full $${totalWithLateFee} (with late fees). **💳 Additional $3 late payment fee charged via tip.cc.** Don't be late next time! ⏰💸\n\n**CONFIRM PAYMENT:** Send via tip.cc: \`$tip <@ADMIN_ID> ${totalWithLateFee}\``);
+                return message.reply(`Bout time! You paid the full $${totalWithLateFee} (with late fees). **💳 Additional $3 late payment fee charged via crypto.** Don't be late next time! ⏰💸\n\n**CONFIRM PAYMENT:** Send via crypto: Contact admin for wallet address`);
             } else {
-                return message.reply(`You're late! You owe $${totalWithLateFee} now (original $${totalDue} + $${lateFee} late fee). **💳 Additional $3 late payment fee will be charged via tip.cc.** Pay up! 🚨\n\n**PAY NOW:** \`$tip <@ADMIN_ID> ${totalWithLateFee}\``);
+                return message.reply(`You're late! You owe $${totalWithLateFee} now (original $${totalDue} + $${lateFee} late fee). **💳 Additional $3 late payment fee will be charged via crypto.** Pay up! 🚨\n\n**PAY NOW:** Contact admin for crypto wallet address`);
             }
         }
 
@@ -201,7 +201,7 @@ Don't make me come lookin' for you... 🔫
 
 You got some fo me? That's okkk, I got more for you when you need it! 🤝
 
-**CONFIRM PAYMENT:** Send via tip.cc: \`$tip <@ADMIN_ID> ${totalDue}\``);
+**CONFIRM PAYMENT:** Send via crypto: Contact admin for wallet address`);
         } else {
             return message.reply(`Partial payments ain't how we do business here. You owe $${totalDue} total. Bring the full amount! 💸\n\n**PAY FULL:** \`$tip <@ADMIN_ID> ${totalDue}\``);
         }
@@ -284,7 +284,7 @@ ${trustLevel === 'high' ? '• You got the keys to the kingdom! 👑' : ''}`);
 ⏰ **5 days to repay**  
 💰 **150% repayment** (borrow $20, repay $30)
 🏆 **Respect + Trust system** - climb ranks for bigger amounts
-💳 **tip.cc payments** - all money via Discord tip bot
+💳 **Crypto payments** - all money via direct wallet transfers
 
 **Commands:**
 • \`!front me <amount>\` - Request a front (Mondays only)
