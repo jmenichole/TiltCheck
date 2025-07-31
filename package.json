@@ -26,6 +26,7 @@
   "dependencies": {
     "@solana/web3.js": "^1.98.2",
     "axios": "^1.11.0",
+    "bs58": "^6.0.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "discord.js": "^14.21.0",
