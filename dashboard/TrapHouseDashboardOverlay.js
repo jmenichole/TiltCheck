@@ -4,21 +4,21 @@ const fs = require('fs');
 const MischiefManagerCollectClockIntegration = require('./MischiefManagerCollectClockIntegration');
 
 /**
- * 💜 TrapHouse Dashboard Overlay - Made by Degens, for Degens, with Love 💜
+ * 🎯 TrapHouse Dashboard Overlay - Where Degens Become Legends �
  * 
- * The Heart of It:
- * This dashboard understands that every degen has been where you are. It's not about 
- * stopping the mischief - it's about managing it mindfully, learning from it, and 
- * growing stronger through compassionate technology.
+ * Real Talk:
+ * This ain't your mama's monitoring software. We get it - you're gonna degen anyway,
+ * so why not do it with style? Think of this as your gambling wingman who actually
+ * knows when to tell you to chill vs when to send it to the moon.
  * 
- * Features:
- * - Always-on-top overlay with love-driven design
- * - Resizable dashboard that adapts to your needs
- * - Adjustable transparency for non-intrusive monitoring
- * - Compassionate notifications that educate, don't judge
- * - Instant messaging for peer support and battles
- * - JustTheTip wallet integration for mindful spending
- * - TrapHouse bot integration for understanding intervention
+ * Features That Actually Matter:
+ * - Always-on-top overlay that doesn't judge your life choices
+ * - Resizable because we respect your screen real estate
+ * - Transparency controls for when you need to hide your shame
+ * - Smart notifications that roast you just enough to wake you up
+ * - Instant messaging for coordinating with your fellow degenerates
+ * - JustTheTip wallet integration because "just the tip" never stops there
+ * - TrapHouse bot integration for when shit gets too real
  */
 class TrapHouseDashboardOverlay {
     constructor() {
@@ -28,25 +28,36 @@ class TrapHouseDashboardOverlay {
         this.isOverlayVisible = true;
         this.mischiefManager = new MischiefManagerCollectClockIntegration();
         
-        // 💜 Dashboard customization with love
+        // 🎯 Dashboard customization for actual degenerates
         this.overlaySettings = {
             size: { width: 340, height: 680 },
-            transparency: 0.95, // Default transparency
-            position: { x: null, y: null }, // Auto-calculate
+            transparency: 0.95, // Because stealth mode matters
+            position: { x: null, y: null }, // Auto-calculate like a boss
             resizable: true,
             notifications: {
                 enabled: true,
-                compassionate: true, // Educational tone
+                roastLevel: 'medium', // light, medium, savage
                 popups: true,
-                sounds: false // Gentle by default
+                sounds: false, // Silent but deadly
+                tiltDetection: true,
+                antiTiltMode: 'witty' // witty, brutal, supportive
             },
             theme: {
-                heartMode: true, // 💜 Compassionate design
+                degenMode: true, // � Full degen aesthetic
                 colors: {
-                    primary: '#9932cc', // Purple for the heart
-                    secondary: '#00ff88', // Green for growth
-                    accent: '#ff69b4'  // Pink for love
-                }
+                    primary: '#ff0066', // Hot pink for attention
+                    secondary: '#00ff88', // Green for the money
+                    danger: '#ff3333',  // Red for when you're fucked
+                    warning: '#ffaa00', // Orange for "maybe chill"
+                    success: '#00ff00'  // Green for rare wins
+                },
+                style: 'cyberpunk' // cyberpunk, neon, matrix, classic
+            },
+            encryption: {
+                enabled: true,
+                level: 'paranoid', // basic, secure, paranoid
+                keyRotation: 'weekly',
+                dataObfuscation: true
             }
         };
         this.dashboardData = {
@@ -389,7 +400,7 @@ class TrapHouseDashboardOverlay {
             this.saveOverlaySettings(); // 💜 Remember position with love
         });
 
-        this.overlayWindow.loadFile(path.join(__dirname, 'overlay.html'));
+        this.overlayWindow.loadFile(path.join(__dirname, 'overlay-love.html'));
 
         this.overlayWindow.webContents.once('did-finish-load', () => {
             this.sendDataToOverlay();
