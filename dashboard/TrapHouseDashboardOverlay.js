@@ -50,68 +50,102 @@ class TrapHouseDashboardOverlay {
             }
         };
         this.dashboardData = {
-            user: { trustLevel: 'Elite Degen 👑', username: 'User' },
+            user: { trustLevel: 'Recovering Degen �', username: 'User' },
             tiltCheck: {
                 currentRisk: 'low',
                 sessionTime: 45,
                 todayLosses: 23.50,
-                limits: { daily: 100 }
+                limits: { daily: 100 },
+                compassionateMessages: [
+                    "You're doing great! Every mindful choice counts 💜",
+                    "Remember, we've all been where you are",
+                    "Learning from patterns makes us stronger",
+                    "Your awareness is your superpower"
+                ]
             },
             wallet: {
                 balance: 156.73,
                 todayTips: 3,
-                todayTipAmount: 15.50
+                todayTipAmount: 15.50,
+                mindfulSpending: {
+                    enabled: true,
+                    pauseBeforeSpend: 5, // seconds
+                    reflectionPrompts: true
+                }
             },
             verification: {
                 score: 92,
-                verified: true
+                verified: true,
+                journey: "Step 3: Growing Stronger Together 💜"
             },
             notifications: [
-                { title: 'Tip Received', message: 'Got $5.00 from @DegenerateGambler', severity: 'success' },
-                { title: 'Card Battle Challenge', message: '@ProGamer wants to battle!', severity: 'warning' },
-                { title: 'Loan Front Approved', message: 'Your $250 loan has been verified and approved', severity: 'success' }
+                { 
+                    title: '💜 Mindful Moment', 
+                    message: 'You paused before that last bet - that\'s growth!', 
+                    severity: 'love',
+                    tone: 'compassionate'
+                },
+                { 
+                    title: '🤝 Peer Support', 
+                    message: '@DegenFriend shared their recovery story', 
+                    severity: 'success',
+                    tone: 'supportive'
+                },
+                { 
+                    title: '⚔️ Friendly Challenge', 
+                    message: '@WisdomSeeker wants to practice mindful battles!', 
+                    severity: 'info',
+                    tone: 'encouraging'
+                }
             ],
-            // Enhanced features with full integration
+            // Enhanced features with love and compassion
             cardGame: {
                 respectPoints: 247,
                 activeBattles: 2,
                 recentWins: 5,
                 availableBattles: 3,
+                learningJourney: {
+                    lessonsLearned: 12,
+                    patternsRecognized: 8,
+                    mindfulChoices: 23
+                },
                 pendingChallenges: [
-                    { from: '@DegenSlayer', type: 'Quick Duel', stakes: '50 respect' },
-                    { from: '@CardMaster', type: 'Hangar Battle', stakes: '100 respect + $5 tip' }
+                    { from: '@WisdomSeeker', type: 'Learning Duel', stakes: '50 respect', tone: 'supportive' },
+                    { from: '@MindfulMaster', type: 'Growth Battle', stakes: '100 respect + learning', tone: 'educational' }
                 ],
                 multiplayerStats: {
                     totalBattles: 47,
                     winRate: 68,
-                    favoriteOpponents: ['@DegenSlayer', '@CardMaster', '@WisdomSeeker']
+                    favoriteOpponents: ['@WisdomSeeker', '@MindfulMaster', '@GrowthGuru'],
+                    supportNetwork: 15 // People who've helped in journey
                 }
             },
             collectClock: {
-                verificationLevel: 'Step 3 - Financial Verified',
+                verificationLevel: 'Step 3 - Growing Together 💜',
                 connectedPlatforms: ['discord', 'justthetip', 'stake_api'],
-                nextUpgrade: 'Community Standing (200+ respect needed)',
-                hangarAccess: ['public_hangars', 'private_hangars'],
-                cardGamePermissions: ['tournaments', 'betting', 'hosting']
+                nextUpgrade: 'Community Wisdom (Share experiences to help others)',
+                hangarAccess: ['supportive_hangars', 'learning_circles'],
+                cardGamePermissions: ['educational_tournaments', 'peer_mentoring', 'story_sharing']
             },
             loanFront: {
                 approvedLoans: [
-                    { id: 'LF001', amount: 250, rate: 0.12, status: 'active', verifiedBy: 'traphouse_bot' },
-                    { id: 'LF002', amount: 100, rate: 0.15, status: 'paid', verifiedBy: 'user_vouching' }
+                    { id: 'LF001', amount: 250, rate: 0.12, status: 'active', verifiedBy: 'community_love', purpose: 'learning_opportunity' },
+                    { id: 'LF002', amount: 100, rate: 0.15, status: 'paid', verifiedBy: 'peer_support', growthStory: 'Used responsibly, paid back early' }
                 ],
                 pendingApplications: 1,
                 vouchingRequests: [
-                    { from: '@NewPlayer', amount: 150, incentive: '$5 vouching reward' }
+                    { from: '@NewJourney', amount: 150, incentive: '$5 + good karma', story: 'Starting their mindful gambling journey' }
                 ],
-                eligibilityScore: 85
+                eligibilityScore: 85,
+                communityTrust: 'High - Known for helping others 💜'
             },
             hangars: {
                 activeHangars: [
-                    { name: 'Degen\'s Den', type: 'public', members: 47, activeBattles: 3 },
-                    { name: 'High Rollers Club', type: 'private', members: 12, activeBattles: 1 }
+                    { name: 'Mindful Degens Circle 💜', type: 'supportive', members: 47, activeBattles: 3, vibe: 'compassionate' },
+                    { name: 'Growth & Learning Club', type: 'educational', members: 12, activeBattles: 1, vibe: 'encouraging' }
                 ],
                 invitations: [
-                    { hangar: 'Elite Battle Arena', from: '@HangarMaster', expires: '2 hours' }
+                    { hangar: 'Wisdom Seekers Arena 💜', from: '@MentorMaster', expires: '2 hours', message: 'Come share your journey!' }
                 ],
                 ownedHangars: 0
             },
@@ -120,13 +154,36 @@ class TrapHouseDashboardOverlay {
                 activeLoans: 5,
                 nextFundingThreshold: 50,
                 vouchingEarnings: 45.00,
-                hangarRevenue: 23.50
+                hangarRevenue: 23.50,
+                karmaPoints: 156, // Earned through helping others
+                givingBack: 89.50 // Amount given to support others
             },
             portal: {
-                securityLevel: 'GOLD',
+                securityLevel: 'HEART 💜',
                 connectedPlatforms: ['discord', 'justthetip', 'custom'],
                 customPatterns: 5,
-                stakeApiStatus: 'connected'
+                stakeApiStatus: 'connected',
+                compassionateAI: {
+                    enabled: true,
+                    understandingLevel: 'high',
+                    interventionStyle: 'educational'
+                }
+            },
+            instantMessaging: {
+                enabled: true,
+                supportNetwork: [
+                    { name: '@WisdomSeeker', status: 'online', relationship: 'mentor' },
+                    { name: '@MindfulMaster', status: 'online', relationship: 'peer' },
+                    { name: '@GrowthGuru', status: 'away', relationship: 'friend' }
+                ],
+                recentMessages: [
+                    { from: '@WisdomSeeker', message: 'How was your session today? 💜', time: '5m ago' },
+                    { from: '@MindfulMaster', message: 'Great job on that mindful pause!', time: '15m ago' }
+                ],
+                groupChats: [
+                    { name: 'Daily Check-ins 💜', members: 8, lastMessage: 'Remember, progress not perfection!' },
+                    { name: 'Learning Together', members: 15, lastMessage: 'Anyone want to share a pattern they noticed?' }
+                ]
             },
             lastUpdated: new Date().toISOString()
         };
