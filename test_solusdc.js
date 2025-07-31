@@ -18,12 +18,28 @@ async function testSOLUSDC() {
         // Wait for initialization
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Test users
+        // Your personal Discord ID and wallet setup
+        const yourDiscordId = '1153034319271559328';  // Your actual Discord ID
+        const yourUsername = 'YourUsername';  // Update with your Discord username
+        
+        // Test users (keeping for testing scenarios)
         const aliceId = '123456789';
         const bobId = '987654321';
         
-        // Add SOLUSDC to Alice
-        console.log('📝 Adding 100 SOLUSDC to Alice...');
+        console.log(`🔗 Setting up personal wallet for Discord ID: ${yourDiscordId}`);
+        
+        console.log(`🔗 Setting up personal wallet for Discord ID: ${yourDiscordId}`);
+        
+        // Add initial SOLUSDC balance to your personal wallet
+        console.log('💰 Adding initial 1000 SOLUSDC to your personal wallet...');
+        await tipManager.addUserBalance(yourDiscordId, 'SOLUSDC', 1000);
+        
+        // Check your personal balance
+        const yourBalance = tipManager.getUserBalance(yourDiscordId, 'SOLUSDC');
+        console.log(`💎 Your personal SOLUSDC balance: ${yourBalance}`);
+        
+        // Add SOLUSDC to Alice for testing
+        console.log('📝 Adding 100 SOLUSDC to Alice (test user)...');
         await tipManager.addUserBalance(aliceId, 'SOLUSDC', 100);
         
         // Check Alice's balance
