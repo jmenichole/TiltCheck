@@ -24,16 +24,19 @@
   "type": "commonjs",
   "description": "TrapHouse Discord Bot with integrated payment processing via tip.cc and Stripe - Unicode Resistant",
   "dependencies": {
+    "@solana/web3.js": "^1.98.2",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "discord.js": "^14.21.0",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0",
     "express": "^4.21.2",
     "express-session": "^1.18.2",
     "iconv-lite": "^0.6.3",
     "jsonwebtoken": "^9.0.2",
-    "stripe": "^14.25.0"
+    "stripe": "^14.25.0",
+    "web3": "^4.16.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"

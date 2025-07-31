@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'traphouse-bots'
+    static_configs:
+      - targets: 
+        - 'traphouse-bot:3001'
+        - 'justthetip-bot:3002'
+        - 'collectclock-bot:3003'
+        - 'degens-bot:3004'
+
+  - job_name: 'webhook-server'
+    static_configs:
+      - targets: ['webhook-server:3000']
+
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']

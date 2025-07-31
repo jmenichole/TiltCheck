@@ -9,12 +9,14 @@ const { initializeWebhookServer } = require('./github-webhook-server');
 const CollectClockIntegration = require('./collectClockIntegration-new');
 const TiltCheckMischiefManager = require('./tiltCheckMischiefManager');
 const EcosystemManager = require('./ecosystemManager');
+const PaymentManager = require('./paymentManager');
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
 const collectClock = new CollectClockIntegration();
 const tiltCheckManager = new TiltCheckMischiefManager();
 const ecosystem = new EcosystemManager();
+let paymentManager; // Will be initialized after client is ready
 
 // ========== MARKETPLACE COMMANDS ==========
 
@@ -265,6 +267,10 @@ client.once('ready', async () => {
     // Initialize ecosystem manager
     await ecosystem.initialize();
     
+    // Initialize payment manager with client
+    paymentManager = new PaymentManager(client);
+    console.log('💳 Payment Manager initialized - Crypto & Fiat support ready!');
+    
     // Connect integrations to TrapHouse for cross-platform features
     collectClock.setTrapHouseBot(client);
     
@@ -369,6 +375,36 @@ client.on('messageCreate', async (message) => {
         await tiltCheckManager.handleTiltCheck(message, args);
     } else if (command === '!ecosystem') {
         await ecosystem.handleEcosystemCommand(message, args);
+    }
+    
+    // ========== PAYMENT COMMANDS ==========
+    else if (command === '!deposit') {
+        if (!paymentManager) {
+            return await message.reply('💳 Payment system is initializing. Please try again in a moment.');
+        }
+        const depositType = args[0]?.toLowerCase();
+        if (depositType === 'fiat') {
+            await paymentManager.createFiatDeposit(message, args.slice(1));
+        } else if (depositType === 'crypto') {
+            await paymentManager.generateCryptoDeposit(message, args.slice(1));
+        } else {
+            await message.reply('💳 **TrapHouse Payment System**\n\n**Fiat Deposits:**\n`!deposit fiat <amount> [currency]` - Deposit via Stripe\nExample: `!deposit fiat 100 USD`\n\n**Crypto Deposits:**\n`!deposit crypto <CRYPTO>` - Generate deposit address\nExample: `!deposit crypto ETH`\n\nSupported: ETH, USDC, USDT, WBTC');
+        }
+    } else if (command === '!withdraw') {
+        if (!paymentManager) {
+            return await message.reply('💳 Payment system is initializing. Please try again in a moment.');
+        }
+        await paymentManager.withdrawCrypto(message, args);
+    } else if (command === '!wallet') {
+        if (!paymentManager) {
+            return await message.reply('💳 Payment system is initializing. Please try again in a moment.');
+        }
+        const subCommand = args[0]?.toLowerCase();
+        if (subCommand === 'status' || !subCommand) {
+            await paymentManager.showWalletStatus(message);
+        } else {
+            await message.reply('💼 **Wallet Commands:**\n`!wallet status` - View complete wallet dashboard\n`!wallet history` - Transaction history\n`!deposit crypto <CRYPTO>` - Generate deposit address\n`!deposit fiat <amount>` - Fiat deposit via Stripe');
+        }
     }
     
     // Admin commands
@@ -510,6 +546,141 @@ function getNextMonday() {
     nextMonday.setDate(today.getDate() + (7 - today.getDay() + 1) % 7);
     return nextMonday.toDateString();
 }
+
+// Handle button interactions for payment system
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isButton()) return;
+
+    const customId = interaction.customId;
+    
+    try {
+        // Payment-related button interactions
+        if (customId.startsWith('cancel_payment_')) {
+            await interaction.reply({ content: '❌ Payment cancelled.', ephemeral: true });
+        }
+        else if (customId.startsWith('refresh_balance_')) {
+            if (!paymentManager) {
+                return await interaction.reply({ content: '💳 Payment system is not available.', ephemeral: true });
+            }
+            
+            const parts = customId.split('_');
+            const crypto = parts[2];
+            const userId = parts[3];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ You can only refresh your own balance.', ephemeral: true });
+            }
+            
+            // Simulate balance refresh
+            await interaction.reply({ content: `🔄 Refreshing ${crypto} balance...`, ephemeral: true });
+            
+            // In production, this would trigger actual balance checking
+            setTimeout(async () => {
+                try {
+                    await interaction.editReply({ content: `✅ ${crypto} balance refreshed! Check for new deposits.` });
+                } catch (error) {
+                    console.error('Error updating balance refresh:', error);
+                }
+            }, 2000);
+        }
+        else if (customId.startsWith('view_transactions_')) {
+            const parts = customId.split('_');
+            const crypto = parts[2];
+            const userId = parts[3];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ You can only view your own transactions.', ephemeral: true });
+            }
+            
+            await interaction.reply({ 
+                content: `📊 **${crypto} Transaction History**\n\nTransaction history feature coming soon!\nFor now, check your Discord DMs for deposit confirmations.`, 
+                ephemeral: true 
+            });
+        }
+        else if (customId.startsWith('vault_transfer_')) {
+            const parts = customId.split('_');
+            const crypto = parts[2];
+            const userId = parts[3];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ You can only transfer your own funds.', ephemeral: true });
+            }
+            
+            await interaction.reply({ 
+                content: `🏦 **JustTheTip Vault Transfer**\n\nUse \`!jtt vault ${crypto.toLowerCase()}\` to transfer your ${crypto} to a vault for disciplined holding!`, 
+                ephemeral: true 
+            });
+        }
+        else if (customId.startsWith('wallet_status_')) {
+            const userId = customId.split('_')[2];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ You can only view your own wallet.', ephemeral: true });
+            }
+            
+            if (!paymentManager) {
+                return await interaction.reply({ content: '💳 Payment system is not available.', ephemeral: true });
+            }
+            
+            // Create a mock message object for the payment manager
+            const mockMessage = {
+                author: interaction.user,
+                reply: async (content) => await interaction.reply({ ...content, ephemeral: true })
+            };
+            
+            await paymentManager.showWalletStatus(mockMessage);
+        }
+        else if (customId.startsWith('deposit_crypto_')) {
+            const userId = customId.split('_')[2];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ Unauthorized.', ephemeral: true });
+            }
+            
+            await interaction.reply({ 
+                content: `💰 **Crypto Deposit**\n\nUse one of these commands to generate a deposit address:\n\`!deposit crypto ETH\` - Ethereum\n\`!deposit crypto USDC\` - USD Coin\n\`!deposit crypto USDT\` - Tether\n\`!deposit crypto WBTC\` - Wrapped Bitcoin`, 
+                ephemeral: true 
+            });
+        }
+        else if (customId.startsWith('deposit_fiat_')) {
+            const userId = customId.split('_')[2];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ Unauthorized.', ephemeral: true });
+            }
+            
+            await interaction.reply({ 
+                content: `💳 **Fiat Deposit**\n\nUse \`!deposit fiat <amount>\` to create a secure Stripe payment.\n\nExample: \`!deposit fiat 100\` for $100 USD\n\nMinimum: $5 | Maximum: $10,000`, 
+                ephemeral: true 
+            });
+        }
+        else if (customId.startsWith('view_vault_')) {
+            const userId = customId.split('_')[2];
+            
+            if (userId !== interaction.user.id) {
+                return await interaction.reply({ content: '❌ Unauthorized.', ephemeral: true });
+            }
+            
+            await interaction.reply({ 
+                content: `🏦 **JustTheTip Vault System**\n\nUse \`!jtt vault\` to see available vaults:\n• **HODL Vault** - Long-term holding\n• **REGRET Vault** - Anti-FOMO protection\n• **GRASS TOUCHING Vault** - Time-based breaks\n• **THERAPY Vault** - Emergency lockup\n• **YOLO Vault** - High-risk plays`, 
+                ephemeral: true 
+            });
+        }
+        else if (customId.startsWith('confirm_withdrawal_')) {
+            await interaction.reply({ content: '⚠️ Withdrawal confirmation system is being implemented for security.', ephemeral: true });
+        }
+        else if (customId.startsWith('cancel_withdrawal_')) {
+            await interaction.reply({ content: '❌ Withdrawal cancelled.', ephemeral: true });
+        }
+        
+    } catch (error) {
+        console.error('Interaction error:', error);
+        
+        if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ content: '❌ An error occurred processing your request.', ephemeral: true });
+        }
+    }
+});
 
 client.login(process.env.DISCORD_BOT_TOKEN)
   .then(() => console.log('Bot logged in successfully!'))

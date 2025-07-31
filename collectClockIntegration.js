@@ -412,6 +412,8 @@ class CollectClockIntegration {
 
         await message.reply({ embeds: [embed] });
     }
+
+    async handleClockIn(message) {
         try {
             const userId = message.author.id;
             const timestamp = new Date();

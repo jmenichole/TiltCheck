@@ -1,0 +1,246 @@
+version: '3.8'
+
+# TrapHouse Discord Bot Ecosystem - Production Docker Stack
+services:
+  # Main TrapHouse Bot
+  traphouse-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: traphouse-main
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - BOT_TYPE=TRAPHOUSE
+      - DISCORD_BOT_TOKEN=${TRAPHOUSE_BOT_TOKEN}
+      - PORT=3001
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - bot-storage:/app/storage
+    networks:
+      - traphouse-network
+    ports:
+      - "3001:3001"
+    depends_on:
+      - redis
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # JustTheTip Bot
+  justthetip-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: justthetip-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - BOT_TYPE=JUSTTHETIP
+      - DISCORD_BOT_TOKEN=${JUSTTHETIP_BOT_TOKEN}
+      - PORT=3002
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - bot-storage:/app/storage
+    networks:
+      - traphouse-network
+    ports:
+      - "3002:3002"
+    depends_on:
+      - redis
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # CollectClock Bot
+  collectclock-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: collectclock-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - BOT_TYPE=COLLECTCLOCK
+      - DISCORD_BOT_TOKEN=${COLLECTCLOCK_BOT_TOKEN}
+      - PORT=3003
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - bot-storage:/app/storage
+    networks:
+      - traphouse-network
+    ports:
+      - "3003:3003"
+    depends_on:
+      - redis
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Degens Bot
+  degens-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.degens
+    container_name: degens-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - BOT_TYPE=DEGENS
+      - DISCORD_BOT_TOKEN=${DEGENS_BOT_TOKEN}
+      - PORT=3004
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - bot-storage:/app/storage
+    networks:
+      - traphouse-network
+    ports:
+      - "3004:3004"
+    depends_on:
+      - redis
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # GitHub Webhook Server
+  webhook-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: traphouse-webhooks
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SERVICE_TYPE=WEBHOOK
+      - PORT=3000
+    volumes:
+      - ./logs:/app/logs
+      - webhook-storage:/app/storage
+    networks:
+      - traphouse-network
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+    command: ["node", "github-webhook-server.js"]
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: traphouse-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - traphouse-network
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+  # PostgreSQL for persistent data
+  postgres:
+    image: postgres:15-alpine
+    container_name: traphouse-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=traphouse
+      - POSTGRES_USER=traphouse
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - traphouse-network
+    ports:
+      - "5432:5432"
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: traphouse-proxy
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - traphouse-network
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - webhook-server
+      - traphouse-bot
+      - justthetip-bot
+      - collectclock-bot
+      - degens-bot
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: traphouse-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - traphouse-network
+    ports:
+      - "9090:9090"
+
+  # Grafana for dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: traphouse-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    networks:
+      - traphouse-network
+    ports:
+      - "3010:3000"
+    depends_on:
+      - prometheus
+
+# Networks
+networks:
+  traphouse-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volumes
+volumes:
+  bot-storage:
+    driver: local
+  webhook-storage:
+    driver: local
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local

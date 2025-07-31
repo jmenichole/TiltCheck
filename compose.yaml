@@ -1,0 +1,78 @@
+# Simple development mode inspired by Docker official multi-container app
+# Use this for local development with hot reloading
+
+services:
+  # Main TrapHouse Bot (Development)
+  traphouse-bot:
+    build: .
+    ports:
+      - 3001:3001
+    environment:
+      NODE_ENV: development
+      BOT_TYPE: TRAPHOUSE
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+      - postgres
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: .
+          target: /app
+          action: sync
+
+  # JustTheTip Bot (Development)  
+  justthetip-bot:
+    build: .
+    ports:
+      - 3002:3002
+    environment:
+      NODE_ENV: development
+      BOT_TYPE: JUSTTHETIP
+      DISCORD_BOT_TOKEN: ${JUSTTHETIP_BOT_TOKEN:-${DISCORD_BOT_TOKEN}}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+      - postgres
+
+  # Redis for development
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
+  # PostgreSQL for development
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: traphouse_dev
+      POSTGRES_USER: traphouse
+      POSTGRES_PASSWORD: dev_password
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+
+  # GitHub Webhook Server (Development)
+  webhook-server:
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: development
+      SERVICE_TYPE: WEBHOOK
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+    command: ["node", "github-webhook-server.js"]
+
+volumes:
+  postgres_dev_data:

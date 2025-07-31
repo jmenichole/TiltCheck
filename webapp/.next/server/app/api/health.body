@@ -1,0 +1,1 @@
+{"status":"healthy","timestamp":"2025-07-31T10:25:41.340Z","service":"traphouse-webapp","version":"1.0.0","environment":"production","uptime":0.406088875,"memory":{"rss":80134144,"heapTotal":23461888,"heapUsed":16118584,"external":3564670,"arrayBuffers":78764}}
