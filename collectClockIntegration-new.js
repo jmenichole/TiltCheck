@@ -794,6 +794,266 @@ class CollectClockIntegration {
         await message.reply('🚧 API disconnection coming soon! Contact support if you need to remove a connection immediately.');
     }
 
+    // ===== AIM CONTROL PANEL COMMANDS =====
+
+    // Handle AIM Control Panel commands
+    async handleAIMCommands(message, args) {
+        const subcommand = args[0]?.toLowerCase();
+        const userId = message.author.id;
+
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ AIM Control Panel not available. Please contact support.');
+        }
+
+        switch (subcommand) {
+            case 'panel':
+                await this.showAIMControlPanel(message);
+                break;
+            case 'online':
+                await this.showOnlineVerifiedUsers(message);
+                break;
+            case 'rooms':
+                await this.showChatRooms(message);
+                break;
+            case 'create':
+                await this.createChatRoom(message, args.slice(1));
+                break;
+            case 'join':
+                await this.joinChatRoom(message, args.slice(1));
+                break;
+            default:
+                await this.showAIMHelp(message);
+        }
+    }
+
+    // Show AIM Control Panel
+    async showAIMControlPanel(message) {
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ AIM Control Panel not initialized.');
+        }
+
+        // Create fake interaction object for the control panel
+        const fakeInteraction = {
+            reply: async (options) => {
+                if (options.ephemeral) {
+                    return await message.author.send(options);
+                }
+                return await message.reply(options);
+            },
+            update: async (options) => await message.edit(options)
+        };
+
+        await this.aimControlPanel.showControlPanel(message.author.id, fakeInteraction);
+    }
+
+    // Handle verification commands
+    async handleVerificationCommands(message, args) {
+        const subcommand = args[0]?.toLowerCase();
+        const userId = message.author.id;
+
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ Verification system not available. Please contact support.');
+        }
+
+        switch (subcommand) {
+            case 'start':
+                await this.startVerificationProcess(message);
+                break;
+            case 'status':
+                await this.showVerificationStatus(message);
+                break;
+            case 'help':
+                await this.showVerificationHelp(message);
+                break;
+            default:
+                await this.startVerificationProcess(message);
+        }
+    }
+
+    // Start verification process
+    async startVerificationProcess(message) {
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ Verification system not available.');
+        }
+
+        await this.aimControlPanel.startVerification(message.author.id, message);
+    }
+
+    // Show verification status
+    async showVerificationStatus(message) {
+        const userId = message.author.id;
+        const isVerified = this.aimControlPanel?.isUserVerified(userId) || false;
+        
+        const embed = new EmbedBuilder()
+            .setColor(isVerified ? '#00ff88' : '#ffa500')
+            .setTitle('🔐 Verification Status')
+            .setDescription(isVerified ? 
+                '✅ **VERIFIED DEGEN** - Full access granted!' : 
+                '⚠️ **UNVERIFIED** - Complete verification to unlock features'
+            );
+
+        if (isVerified) {
+            const verificationData = this.aimControlPanel.verificationSystem.verifiedUsers.get(userId);
+            if (verificationData) {
+                embed.addFields(
+                    {
+                        name: '📊 Verification Details',
+                        value: `**Score:** ${verificationData.verificationScore}/100\n**Level:** ${this.getTrustLevel(verificationData.verificationScore)}\n**Verified:** ${verificationData.verifiedAt.toLocaleDateString()}`,
+                        inline: true
+                    },
+                    {
+                        name: '✅ Completed Steps',
+                        value: Object.entries(verificationData.steps)
+                            .map(([step, completed]) => `${completed ? '✅' : '❌'} ${step.charAt(0).toUpperCase() + step.slice(1)}`)
+                            .join('\n'),
+                        inline: true
+                    }
+                );
+            }
+        } else {
+            embed.addFields({
+                name: '🚀 Next Steps',
+                value: 'Use `!cc verify start` to begin verification process and unlock:\n• Instant messaging\n• Fast tips & airdrops\n• Verified chat rooms\n• Anti-scam protection',
+                inline: false
+            });
+        }
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Handle instant messaging
+    async handleInstantMessage(message, args) {
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ Instant messaging not available. Verification required.');
+        }
+
+        const userId = message.author.id;
+        
+        if (!this.aimControlPanel.isUserVerified(userId)) {
+            return await message.reply('❌ Verification required for instant messaging. Use `!cc verify start`');
+        }
+
+        // Parse target user and message
+        const targetMention = args[0];
+        const messageText = args.slice(1).join(' ');
+
+        if (!targetMention || !messageText) {
+            return await message.reply('❌ Usage: `!cc msg @user your message here`');
+        }
+
+        // Extract user ID from mention
+        const targetUserId = targetMention.replace(/[<@!>]/g, '');
+        
+        if (!this.aimControlPanel.isUserVerified(targetUserId)) {
+            return await message.reply('❌ Target user must be verified to receive instant messages.');
+        }
+
+        // Create fake interaction for messaging system
+        const fakeInteraction = {
+            reply: async (options) => await message.reply(options)
+        };
+
+        await this.aimControlPanel.sendInstantMessage(userId, targetUserId, messageText, fakeInteraction);
+    }
+
+    // Handle fast tips
+    async handleFastTip(message, args) {
+        if (!this.aimControlPanel) {
+            return await message.reply('❌ Fast tips not available. Verification required.');
+        }
+
+        const userId = message.author.id;
+        
+        if (!this.aimControlPanel.isUserVerified(userId)) {
+            return await message.reply('❌ Verification required for fast tips. Use `!cc verify start`');
+        }
+
+        // Parse tip command: !cc tip @user amount [currency] [message]
+        const targetMention = args[0];
+        const amount = parseFloat(args[1]);
+        const currency = args[2] || 'USD';
+        const tipMessage = args.slice(3).join(' ') || 'Tip from verified degen!';
+
+        if (!targetMention || isNaN(amount) || amount <= 0) {
+            return await message.reply('❌ Usage: `!cc tip @user amount [currency] [message]`');
+        }
+
+        const targetUserId = targetMention.replace(/[<@!>]/g, '');
+        
+        if (!this.aimControlPanel.isUserVerified(targetUserId)) {
+            return await message.reply('❌ Target user must be verified to receive tips.');
+        }
+
+        try {
+            const tipId = await this.aimControlPanel.sendFastTip(userId, targetUserId, amount, currency, tipMessage);
+            
+            const embed = new EmbedBuilder()
+                .setColor('#00ff88')
+                .setTitle('💰 Fast Tip Sent!')
+                .setDescription(`Successfully sent tip to verified degen!`)
+                .addFields(
+                    {
+                        name: '💸 Tip Details',
+                        value: `**Amount:** ${amount} ${currency}\n**Recipient:** <@${targetUserId}>\n**Message:** ${tipMessage}`,
+                        inline: false
+                    },
+                    {
+                        name: '🔐 Security',
+                        value: `**Tip ID:** \`${tipId}\`\n**Status:** Processing through verified channels\n**Anti-farming:** ✅ Verified`,
+                        inline: false
+                    }
+                )
+                .setFooter({ text: 'AIM Control Panel • Verified tips only' });
+
+            await message.reply({ embeds: [embed] });
+
+        } catch (error) {
+            await message.reply(`❌ Tip failed: ${error.message}`);
+        }
+    }
+
+    // Show AIM help
+    async showAIMHelp(message) {
+        const embed = new EmbedBuilder()
+            .setColor('#9932cc')
+            .setTitle('🎮 AIM Control Panel Commands')
+            .setDescription('Advanced Instant Messaging system for verified degens')
+            .addFields(
+                {
+                    name: '🔐 Verification Commands',
+                    value: '• `!cc verify start` - Begin verification process\n• `!cc verify status` - Check verification status\n• `!cc verify help` - Verification help',
+                    inline: false
+                },
+                {
+                    name: '💬 Messaging Commands',
+                    value: '• `!cc msg @user message` - Send instant message\n• `!cc aim online` - Show online verified users\n• `!cc aim rooms` - View active chat rooms\n• `!cc aim create [room_name]` - Create chat room',
+                    inline: false
+                },
+                {
+                    name: '💰 Tip Commands',
+                    value: '• `!cc tip @user amount` - Send fast tip\n• `!cc tip @user amount USD message` - Tip with message\n• Anti-farming protection included',
+                    inline: false
+                },
+                {
+                    name: '🎮 Control Panel',
+                    value: '• `!cc aim panel` - Open AIM control panel\n• Full verification required for access\n• Real-time messaging and tips',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'AIM Control Panel • Verification required for most features' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Helper method for trust levels
+    getTrustLevel(score) {
+        if (score >= 90) return 'Elite Degen 👑';
+        if (score >= 75) return 'Trusted Degen 💎';
+        if (score >= 60) return 'Verified Degen ✅';
+        if (score >= 40) return 'New Degen 🌱';
+        return 'Unverified ❌';
+    }
+
     // Mark collections as completed
     async markAsCollected(message, args) {
         const platformName = args.join(' ');
