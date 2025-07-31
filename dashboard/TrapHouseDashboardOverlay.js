@@ -4,14 +4,21 @@ const fs = require('fs');
 const MischiefManagerCollectClockIntegration = require('./MischiefManagerCollectClockIntegration');
 
 /**
- * Enhanced TrapHouse Dashboard Overlay with Full Integration
+ * 💜 TrapHouse Dashboard Overlay - Made by Degens, for Degens, with Love 💜
+ * 
+ * The Heart of It:
+ * This dashboard understands that every degen has been where you are. It's not about 
+ * stopping the mischief - it's about managing it mindfully, learning from it, and 
+ * growing stronger through compassionate technology.
+ * 
  * Features:
- * - Always-on-top overlay dashboard
- * - CollectClock verification integration
- * - Multiplayer card battle system with instant messaging
- * - Payment-verified loan fronts with TrapHouse bot verification
- * - Group hangar battle arenas
- * - User-to-user verification network
+ * - Always-on-top overlay with love-driven design
+ * - Resizable dashboard that adapts to your needs
+ * - Adjustable transparency for non-intrusive monitoring
+ * - Compassionate notifications that educate, don't judge
+ * - Instant messaging for peer support and battles
+ * - JustTheTip wallet integration for mindful spending
+ * - TrapHouse bot integration for understanding intervention
  */
 class TrapHouseDashboardOverlay {
     constructor() {
@@ -20,6 +27,28 @@ class TrapHouseDashboardOverlay {
         this.tray = null;
         this.isOverlayVisible = true;
         this.mischiefManager = new MischiefManagerCollectClockIntegration();
+        
+        // 💜 Dashboard customization with love
+        this.overlaySettings = {
+            size: { width: 340, height: 680 },
+            transparency: 0.95, // Default transparency
+            position: { x: null, y: null }, // Auto-calculate
+            resizable: true,
+            notifications: {
+                enabled: true,
+                compassionate: true, // Educational tone
+                popups: true,
+                sounds: false // Gentle by default
+            },
+            theme: {
+                heartMode: true, // 💜 Compassionate design
+                colors: {
+                    primary: '#9932cc', // Purple for the heart
+                    secondary: '#00ff88', // Green for growth
+                    accent: '#ff69b4'  // Pink for love
+                }
+            }
+        };
         this.dashboardData = {
             user: { trustLevel: 'Elite Degen 👑', username: 'User' },
             tiltCheck: {
