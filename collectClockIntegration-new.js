@@ -485,18 +485,286 @@ class CollectClockIntegration {
                 },
                 {
                     name: '💡 What You Get',
-                    value: '• Automatic streak tracking\n• Personalized vault recommendations\n• Collection reminders via DM\n• Leaderboard participation\n• Degen level calculations\n• TrapHouse respect integration',
+                    value: '• Automatic streak tracking\n• Personalized vault recommendations\n• Collection reminders via DM\n• Leaderboard participation\n• Degen level calculations\n• TrapHouse respect integration\n• **Casino API monitoring**\n• **Real-time balance tracking**',
                     inline: false
                 },
                 {
                     name: '🌐 TrapHouse Ecosystem',
                     value: '[**TrapHouse Bot**](https://traphousediscordbot.created.app) • [**GitHub**](https://github.com/jmenichole/trap-house-discord-bot)',
                     inline: false
+                },
+                {
+                    name: '🔌 API Features',
+                    value: 'After linking Discord, use `!cc api auth` to enable casino API monitoring for real-time balance tracking and tilt protection!',
+                    inline: false
                 }
             )
             .setFooter({ text: 'JustTheTip: Connected accounts = connected gains!' });
 
         await message.reply({ embeds: [embed] });
+    }
+
+    // Handle API-related commands
+    async handleApiCommands(message, args) {
+        const subcommand = args[0]?.toLowerCase();
+        const userId = message.author.id;
+
+        if (!this.casinoApiConnector) {
+            return await message.reply('❌ Casino API Connector not available. Please contact support.');
+        }
+
+        switch (subcommand) {
+            case 'status':
+                await this.showApiStatus(message);
+                break;
+            case 'connect':
+                await this.manualApiConnect(message, args.slice(1));
+                break;
+            case 'disconnect':
+                await this.disconnectApi(message, args.slice(1));
+                break;
+            case 'balances':
+                await this.showApiBalances(message);
+                break;
+            case 'docs':
+                await this.showApiDocumentation(message, args.slice(1));
+                break;
+            case 'auth':
+                await this.handleDiscordAuth(message);
+                break;
+            default:
+                await this.showApiHelp(message);
+        }
+    }
+
+    // Show API connection status
+    async showApiStatus(message) {
+        const userId = message.author.id;
+        const connections = this.casinoApiConnector.getUserConnections(userId);
+        
+        const embed = new EmbedBuilder()
+            .setColor('#0099ff')
+            .setTitle('🔌 CollectClock API Status')
+            .setDescription('Your casino API connections and monitoring status');
+
+        if (connections.length === 0) {
+            embed.addFields({
+                name: '📱 Connection Status',
+                value: 'No active API connections\n\nUse `!cc link` to connect your Discord account, then visit casinos through CollectClock for automatic API detection.',
+                inline: false
+            });
+        } else {
+            connections.forEach((conn, index) => {
+                embed.addFields({
+                    name: `🎰 ${conn.casino}`,
+                    value: `**Status:** ${conn.status}\n**Connected:** ${conn.connectedAt.toLocaleDateString()}\n**Balance:** ${conn.lastBalance?.success ? `$${conn.lastBalance.totalUSD?.toFixed(2)}` : 'Unavailable'}`,
+                    inline: true
+                });
+            });
+        }
+
+        embed.addFields({
+            name: '🛠️ API Commands',
+            value: '• `!cc api status` - View connections\n• `!cc api balances` - Check all balances\n• `!cc api docs [casino]` - View API documentation\n• `!cc api auth` - Discord authentication\n• `!cc api connect [casino]` - Manual connection',
+            inline: false
+        });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Show current API balances
+    async showApiBalances(message) {
+        const userId = message.author.id;
+        const connections = this.casinoApiConnector.getUserConnections(userId);
+        
+        if (connections.length === 0) {
+            return await message.reply('❌ No active API connections. Use `!cc api status` to view connection options.');
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#00ff88')
+            .setTitle('💰 Live Casino Balances')
+            .setDescription('Real-time balances from your connected casinos')
+            .setTimestamp();
+
+        let totalBalance = 0;
+        connections.forEach(conn => {
+            if (conn.lastBalance?.success) {
+                totalBalance += conn.lastBalance.totalUSD || 0;
+                embed.addFields({
+                    name: `🎰 ${conn.casino}`,
+                    value: `**Balance:** $${conn.lastBalance.totalUSD?.toFixed(2) || '0.00'}\n**Currencies:** ${conn.lastBalance.currencies?.join(', ') || 'N/A'}\n**Updated:** ${new Date(conn.lastBalance.lastUpdated).toLocaleTimeString()}`,
+                    inline: true
+                });
+            }
+        });
+
+        embed.addFields({
+            name: '💵 Total Portfolio',
+            value: `$${totalBalance.toFixed(2)} USD`,
+            inline: false
+        });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Show API documentation for a casino
+    async showApiDocumentation(message, args) {
+        const casino = args[0];
+        
+        if (!casino) {
+            // Show all supported casinos
+            const supportedCasinos = [];
+            for (const [domain, config] of this.casinoApiConnector.apiDocumentation) {
+                supportedCasinos.push(`• **${config.name}** (${domain}) - ${config.balanceSupport ? '✅' : '❌'} Balance API`);
+            }
+
+            const embed = new EmbedBuilder()
+                .setColor('#9932cc')
+                .setTitle('📚 Casino API Documentation')
+                .setDescription('Available casino API integrations')
+                .addFields({
+                    name: '🎰 Supported Casinos',
+                    value: supportedCasinos.join('\n') || 'No casinos configured',
+                    inline: false
+                })
+                .addFields({
+                    name: '💡 Usage',
+                    value: '`!cc api docs [casino_name]` - View specific casino API details',
+                    inline: false
+                });
+
+            return await message.reply({ embeds: [embed] });
+        }
+
+        // Find casino by name or domain
+        let casinoConfig = null;
+        for (const [domain, config] of this.casinoApiConnector.apiDocumentation) {
+            if (config.name.toLowerCase().includes(casino.toLowerCase()) || domain.includes(casino.toLowerCase())) {
+                casinoConfig = config;
+                break;
+            }
+        }
+
+        if (!casinoConfig) {
+            return await message.reply(`❌ Casino "${casino}" not found. Use \`!cc api docs\` to see all supported casinos.`);
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#ff6b6b')
+            .setTitle(`📋 ${casinoConfig.name} API Documentation`)
+            .setDescription(`API integration details for ${casinoConfig.name}`)
+            .addFields(
+                {
+                    name: '🔗 Base URL',
+                    value: casinoConfig.baseUrl,
+                    inline: false
+                },
+                {
+                    name: '🔐 Authentication',
+                    value: casinoConfig.authMethod.replace('_', ' ').toUpperCase(),
+                    inline: true
+                },
+                {
+                    name: '💰 Balance Support',
+                    value: casinoConfig.balanceSupport ? '✅ Yes' : '❌ No',
+                    inline: true
+                },
+                {
+                    name: '⚡ Real-time',
+                    value: casinoConfig.realTimeSupport ? '✅ Yes' : '❌ No',
+                    inline: true
+                },
+                {
+                    name: '📡 Available Endpoints',
+                    value: Object.entries(casinoConfig.availableEndpoints).map(([name, path]) => `• **${name}:** \`${path}\``).join('\n'),
+                    inline: false
+                },
+                {
+                    name: '⏱️ Rate Limits',
+                    value: `${casinoConfig.rateLimits.requestsPerMinute} requests/minute`,
+                    inline: false
+                }
+            );
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Handle Discord authentication for API access
+    async handleDiscordAuth(message) {
+        const userId = message.author.id;
+        
+        // Generate Discord OAuth URL
+        const authUrl = this.casinoApiConnector.generateDiscordOAuthUrl(userId);
+        
+        const embed = new EmbedBuilder()
+            .setColor('#7289da')
+            .setTitle('🔐 Discord Authentication Required')
+            .setDescription('Authenticate with Discord to enable casino API monitoring')
+            .addFields(
+                {
+                    name: '🔗 Authentication Link',
+                    value: `[Click here to authenticate](${authUrl})`,
+                    inline: false
+                },
+                {
+                    name: '📋 What This Enables',
+                    value: '• Automatic casino login detection\n• Real-time balance monitoring\n• Enhanced tilt protection\n• Cross-platform activity correlation',
+                    inline: false
+                },
+                {
+                    name: '🛡️ Privacy & Security',
+                    value: 'We only access basic Discord profile information. Casino credentials are processed securely and never stored permanently.',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'CollectClock API Connector • Secure OAuth 2.0 authentication' })
+            .setTimestamp();
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Show API help
+    async showApiHelp(message) {
+        const embed = new EmbedBuilder()
+            .setColor('#ffa500')
+            .setTitle('🔌 CollectClock API Commands')
+            .setDescription('Manage your casino API connections and monitoring')
+            .addFields(
+                {
+                    name: '📊 Status & Monitoring',
+                    value: '• `!cc api status` - View all API connections\n• `!cc api balances` - Check live casino balances\n• `!cc api auth` - Setup Discord authentication',
+                    inline: false
+                },
+                {
+                    name: '🔗 Connection Management',
+                    value: '• `!cc api connect [casino]` - Manual casino connection\n• `!cc api disconnect [casino]` - Remove casino connection',
+                    inline: false
+                },
+                {
+                    name: '📚 Documentation',
+                    value: '• `!cc api docs` - View all supported casinos\n• `!cc api docs [casino]` - Specific casino API details',
+                    inline: false
+                },
+                {
+                    name: '🤖 Automatic Detection',
+                    value: 'Visit casinos through CollectClock links after authentication for automatic API connection detection!',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'CollectClock API Connector • Real-time casino monitoring' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    // Manual API connect (placeholder)
+    async manualApiConnect(message, args) {
+        await message.reply('🚧 Manual API connection coming soon! For now, visit casinos through CollectClock links after authentication for automatic detection.');
+    }
+
+    // Disconnect API (placeholder)
+    async disconnectApi(message, args) {
+        await message.reply('🚧 API disconnection coming soon! Contact support if you need to remove a connection immediately.');
     }
 
     // Mark collections as completed
