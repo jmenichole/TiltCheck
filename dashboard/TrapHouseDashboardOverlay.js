@@ -125,26 +125,33 @@ class TrapHouseDashboardOverlay {
                     roastLevel: 'light'
                 }
             ],
-            // Enhanced features with love and compassion
+            // Enhanced features for professional degenerates
             cardGame: {
-                respectPoints: 247,
+                skillPoints: 247, // Earned through not being terrible
                 activeBattles: 2,
                 recentWins: 5,
                 availableBattles: 3,
-                learningJourney: {
+                degenJourney: {
                     lessonsLearned: 12,
                     patternsRecognized: 8,
-                    mindfulChoices: 23
+                    rageMoments: 23, // Times you wanted to throw your device
+                    comebacks: 7     // Epic recovery stories
                 },
                 pendingChallenges: [
-                    { from: '@WisdomSeeker', type: 'Learning Duel', stakes: '50 respect', tone: 'supportive' },
-                    { from: '@MindfulMaster', type: 'Growth Battle', stakes: '100 respect + learning', tone: 'educational' }
+                    { from: '@TiltKing', type: 'Ego Death Match', stakes: '50 skill points', tone: 'savage' },
+                    { from: '@RiskMaster', type: 'Bankroll Destroyer', stakes: '100 SP + street cred', tone: 'ruthless' }
                 ],
                 multiplayerStats: {
                     totalBattles: 47,
                     winRate: 68,
-                    favoriteOpponents: ['@WisdomSeeker', '@MindfulMaster', '@GrowthGuru'],
-                    supportNetwork: 15 // People who've helped in journey
+                    favoriteVictims: ['@TiltKing', '@RiskMaster', '@DegenSlayer'],
+                    nemesis: '@UnbeatableBot', // That one player who always wins
+                    hall_of_shame: 15 // Times you got completely rekt
+                },
+                currentMeta: {
+                    popularStrategy: 'Calculated Chaos',
+                    counterStrategy: 'Pure Spite',
+                    communityMood: 'Aggressively Optimistic'
                 }
             },
             collectClock: {
