@@ -3,7 +3,817 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💜 TrapHouse Mindful Dashboard - Made with Love</title>
+    <title>� TrapHouse Degen Dashboard - Where Legends Are Made</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, rgba(255, 0, 102, 0.9), rgba(0, 102, 255, 0.9));
+            color: #fff;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 102, 0.5);
+        }
+
+        .header h1 {
+            color: #ff0066;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 0, 102, 0.8);
+        }
+
+        .degen-message {
+            color: #00ff88;
+            font-size: 1.1em;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .overlay-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            padding: 8px 12px;
+            background: rgba(255, 0, 102, 0.8);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 0, 102, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 102, 0.4);
+        }
+
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .widget {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 102, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 0, 102, 0.3);
+            border-color: rgba(0, 255, 136, 0.6);
+        }
+
+        .widget-title {
+            color: #ff0066;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+
+        .widget-content {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0066, #00ff88);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #ff0066;
+        }
+
+        .instant-message-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            display: none;
+            z-index: 1001;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-top: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .message-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 102, 0.5);
+            z-index: 1002;
+            display: none;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .degen-indicator {
+            display: inline-block;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 50%, 100% { text-shadow: 0 0 5px currentColor; }
+            25%, 75% { text-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
+        }
+
+        .roast-section {
+            background: rgba(255, 51, 51, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 51, 51, 0.3);
+        }
+
+        .roast-message {
+            color: #ff6666;
+            font-style: italic;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 51, 51, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #ff3333;
+        }
+
+        .degen-journey {
+            background: linear-gradient(135deg, rgba(255, 0, 102, 0.2), rgba(0, 102, 255, 0.2));
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .journey-step {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .journey-step.completed {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .journey-step.current {
+            background: rgba(255, 170, 0, 0.2);
+            border: 1px solid rgba(255, 170, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .danger-zone {
+            background: rgba(255, 0, 0, 0.3);
+            border: 2px solid #ff0000;
+            animation: warning-flash 1s infinite;
+        }
+
+        @keyframes warning-flash {
+            0%, 100% { border-color: #ff0000; }
+            50% { border-color: #ff6666; }
+        }
+
+        .skill-points {
+            color: #00ff88;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .tilt-meter {
+            background: linear-gradient(90deg, #00ff00, #ffff00, #ff6600, #ff0000);
+            height: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .tilt-indicator {
+            position: absolute;
+            top: -5px;
+            width: 4px;
+            height: 20px;
+            background: #fff;
+            border-radius: 2px;
+            transition: left 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay-controls">
+        <button class="control-btn" onclick="toggleTransparency()">👁️ Stealth</button>
+        <button class="control-btn" onclick="resizeOverlay()">📏 Resize</button>
+        <button class="control-btn" onclick="toggleNotifications()">🔔 Roasts</button>
+        <button class="control-btn" onclick="showInstantMessage()">💬 Degen Chat</button>
+        <button class="control-btn" onclick="resyncData()">🔄 Refresh</button>
+    </div>
+
+    <div class="notification-toast" id="notificationToast"></div>
+
+    <div class="header">
+        <h1><span class="degen-indicator">💀</span> TrapHouse Degen Dashboard</h1>
+        <div class="degen-message">
+            Where degenerates become legends - Real recognize real
+        </div>
+        <div id="connectionStatus" style="color: #00ff88; font-weight: bold;">
+            🟢 Connected to CollectClock & The Network
+        </div>
+    </div>
+
+    <div class="widgets-grid">
+        <!-- Degen Journey Progress Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span class="degen-indicator">💀</span>
+                Degen Evolution Progress
+            </div>
+            <div class="widget-content">
+                <div class="degen-journey">
+                    <div class="journey-step completed">
+                        <span>✅ Accepted you're a degen</span>
+                    </div>
+                    <div class="journey-step current">
+                        <span>🔥 Learning to control the chaos</span>
+                    </div>
+                    <div class="journey-step">
+                        <span>🎯 Developing degen wisdom</span>
+                    </div>
+                    <div class="journey-step">
+                        <span>👑 Becoming a legend</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 35%"></div>
+                </div>
+                <div class="stats-row">
+                    <span>Evolution:</span>
+                    <span id="journeyProgress">35% Degen → Legend</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degen Network Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>🤝</span>
+                Degen Network Status
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Online Degenerates:</span>
+                    <span id="supportPeers" class="skill-points">47 legends</span>
+                </div>
+                <div class="stats-row">
+                    <span>Today's Roasts:</span>
+                    <span id="encouragements">28 savage burns</span>
+                </div>
+                <div class="stats-row">
+                    <span>Success Stories:</span>
+                    <span id="successStories">5 epic wins this week</span>
+                </div>
+                <div class="roast-message">
+                    "We've all been rekt. The difference is learning from it." - @DegenMaster
+                </div>
+            </div>
+        </div>
+
+        <!-- Tilt Detection Widget -->
+        <div class="widget" id="tiltWidget">
+            <div class="widget-title">
+                <span class="degen-indicator">🌡️</span>
+                Tilt-O-Meter™
+            </div>
+            <div class="widget-content">
+                <div class="tilt-meter">
+                    <div class="tilt-indicator" id="tiltIndicator" style="left: 35%"></div>
+                </div>
+                <div class="stats-row">
+                    <span>Current Status:</span>
+                    <span id="tiltStatus">Sending It (Manageable)</span>
+                </div>
+                <div class="stats-row">
+                    <span>Reality Checks Today:</span>
+                    <span id="realityChecks">3 interventions</span>
+                </div>
+                <div class="stats-row">
+                    <span>Grass Touched:</span>
+                    <span id="grassTouched">Not recently enough</span>
+                </div>
+                <div class="roast-section" id="currentRoast">
+                    <div class="roast-message">
+                        Your session time suggests you've achieved chair-human fusion. Impressive.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CollectClock Integration Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>⏰</span>
+                CollectClock Status
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Trust Level:</span>
+                    <span id="verificationLevel" class="skill-points">Level 3 - Not Completely Hopeless</span>
+                </div>
+                <div class="stats-row">
+                    <span>Degen Score:</span>
+                    <span id="trustScore">847 / 1000</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 84.7%"></div>
+                </div>
+                <div class="stats-row">
+                    <span>Next Level:</span>
+                    <span id="nextMilestone">Legend Status in 153 points</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Battle Arena Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>⚔️</span>
+                Battle Arena
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Active Battles:</span>
+                    <span id="activeBattles" class="skill-points">2 epic duels</span>
+                </div>
+                <div class="stats-row">
+                    <span>Skill Points:</span>
+                    <span id="learningPoints" class="skill-points">247 SP</span>
+                </div>
+                <div class="stats-row">
+                    <span>Win Streak:</span>
+                    <span id="mindfulWins">5 straight victories</span>
+                </div>
+                <div class="stats-row">
+                    <span>Hall of Shame:</span>
+                    <span id="hallOfShame">15 times completely rekt</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Shark Operations Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>🦈</span>
+                Loan Shark Operations
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Active Loans:</span>
+                    <span id="communitySupport" class="skill-points">$2,500 deployed</span>
+                </div>
+                <div class="stats-row">
+                    <span>Vouching Requests:</span>
+                    <span id="educationalResources">3 pending</span>
+                </div>
+                <div class="stats-row">
+                    <span>Street Cred:</span>
+                    <span id="mentorConnections" class="skill-points">Known for paying debts</span>
+                </div>
+                <div class="roast-message">
+                    Loan responsibly. Your future broke self will thank you.
+                </div>
+            </div>
+        </div>
+
+        <!-- Instant Degen Communication Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>💬</span>
+                Degen Communications
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Network Status:</span>
+                    <span id="chatStatus" class="skill-points">Connected & Ready to Roast</span>
+                </div>
+                <div class="stats-row">
+                    <span>Unread Messages:</span>
+                    <span id="unreadMessages">2 spicy takes</span>
+                </div>
+                <div class="stats-row">
+                    <span>Response Time:</span>
+                    <span id="responseTime">Instant savage mode</span>
+                </div>
+                <button class="control-btn" onclick="showInstantMessage()" style="width: 100%; margin-top: 10px;">
+                    💀 Open Degen Chat
+                </button>
+            </div>
+        </div>
+
+        <!-- JustTheTip Wallet Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>💰</span>
+                JustTheTip Wallet
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Current Balance:</span>
+                    <span id="walletBalance" class="skill-points">$156.73</span>
+                </div>
+                <div class="stats-row">
+                    <span>Daily Damage Limit:</span>
+                    <span id="mindfulSpending">$100 (self-preservation)</span>
+                </div>
+                <div class="stats-row">
+                    <span>Historical Fuck-ups:</span>
+                    <span id="historicalFuckups">3 legendary mistakes</span>
+                </div>
+                <div class="roast-message">
+                    Remember: "Just the tip" never stops there. Plan accordingly.
+                </div>
+            </div>
+        </div>
+
+        <!-- Group Hangar Wars Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>🚁</span>
+                Hangar Wars
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Active Hangars:</span>
+                    <span id="activeGroups" class="skill-points">3 war zones</span>
+                </div>
+                <div class="stats-row">
+                    <span>Team Battles Today:</span>
+                    <span id="teamBattles">5 epic conflicts</span>
+                </div>
+                <div class="stats-row">
+                    <span>Squad Rep:</span>
+                    <span id="groupSupport">Elite tier (892/1000)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degen Analytics Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span class="degen-indicator">📊</span>
+                Degen Analytics
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>Consecutive Ls:</span>
+                    <span id="awarenessStreaks">3 (could be worse)</span>
+                </div>
+                <div class="stats-row">
+                    <span>Best Streak:</span>
+                    <span id="learningCompletions" class="skill-points">12 wins straight</span>
+                </div>
+                <div class="stats-row">
+                    <span>Lifetime Regret:</span>
+                    <span id="peerHelps">23.7% of bankroll</span>
+                </div>
+                <div class="roast-message">
+                    Data doesn't lie. Your patterns are showing.
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span>💀</span>
+                System Status
+            </div>
+            <div class="widget-content">
+                <div class="stats-row">
+                    <span>All Systems:</span>
+                    <span id="systemHealth" class="skill-points">Fully Operational</span>
+                </div>
+                <div class="stats-row">
+                    <span>Encryption:</span>
+                    <span id="dataSync" class="skill-points">Paranoid Level Active</span>
+                </div>
+                <div class="stats-row">
+                    <span>Last Sync:</span>
+                    <span id="lastSync">Real-time</span>
+                </div>
+                <div class="roast-message">
+                    Your digital wingman is always watching. In a helpful way, not creepy.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="instant-message-container" id="instantMessageContainer">
+        <div class="widget-title">
+            <span>💬</span>
+            Degen Network Chat
+        </div>
+        <div id="messageHistory" style="height: 200px; overflow-y: auto; margin: 10px 0;">
+            <div class="roast-message">@TiltMaster: Anyone else think they're Neo today? Asking for a friend...</div>
+        </div>
+        <input type="text" class="message-input" placeholder="Drop your spiciest take..." id="messageInput">
+        <button class="control-btn" onclick="sendMessage()" style="width: 100%; margin-top: 10px;">Send It 💀</button>
+        <button class="control-btn" onclick="hideInstantMessage()" style="width: 100%; margin-top: 5px; opacity: 0.7;">Close Chat</button>
+    </div>
+
+    <script>
+        // 💀 Degen overlay functionality
+        const { ipcRenderer } = require('electron');
+
+        // Overlay controls with attitude
+        function toggleTransparency() {
+            ipcRenderer.send('adjust-transparency');
+        }
+
+        function resizeOverlay() {
+            ipcRenderer.send('resize-overlay');
+        }
+
+        function toggleNotifications() {
+            ipcRenderer.send('toggle-notifications');
+        }
+
+        function resyncData() {
+            ipcRenderer.send('resync-data');
+            showDegenToast('🔄 Refreshing your degen data...');
+        }
+
+        function showInstantMessage() {
+            document.getElementById('instantMessageContainer').style.display = 'block';
+        }
+
+        function hideInstantMessage() {
+            document.getElementById('instantMessageContainer').style.display = 'none';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (message) {
+                ipcRenderer.send('send-instant-message', message);
+                
+                // Add to local chat
+                const messageHistory = document.getElementById('messageHistory');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'roast-message';
+                messageDiv.textContent = `You: ${message}`;
+                messageHistory.appendChild(messageDiv);
+                messageHistory.scrollTop = messageHistory.scrollHeight;
+                
+                input.value = '';
+                
+                // Simulate roast response
+                setTimeout(() => {
+                    const responses = [
+                        "Solid take, respect 💀",
+                        "That's some galaxy brain thinking right there",
+                        "Found the person with actual brain cells",
+                        "Sir, this is a casino chat... but I like it",
+                        "Someone's been thinking with their upstairs brain today"
+                    ];
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'roast-message';
+                    responseDiv.textContent = `@DegenBot: ${responses[Math.floor(Math.random() * responses.length)]}`;
+                    messageHistory.appendChild(responseDiv);
+                    messageHistory.scrollTop = messageHistory.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        function showDegenToast(message) {
+            const toast = document.getElementById('notificationToast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        function updateTiltMeter(tiltLevel) {
+            const indicator = document.getElementById('tiltIndicator');
+            const widget = document.getElementById('tiltWidget');
+            
+            const positions = {
+                'chill': '10%',
+                'cautious': '30%',
+                'sending_it': '60%',
+                'full_degen': '80%',
+                'rekt': '95%'
+            };
+            
+            indicator.style.left = positions[tiltLevel] || '50%';
+            
+            if (tiltLevel === 'full_degen' || tiltLevel === 'rekt') {
+                widget.classList.add('danger-zone');
+            } else {
+                widget.classList.remove('danger-zone');
+            }
+        }
+
+        // Listen for updates from main process
+        ipcRenderer.on('dashboard-update', (event, data) => {
+            updateDashboard(data);
+        });
+
+        ipcRenderer.on('roast-notification', (event, notification) => {
+            showDegenToast(`💀 ${notification.title}: ${notification.message}`);
+        });
+
+        ipcRenderer.on('theme-update', (event, theme) => {
+            applyThemeToOverlay(theme);
+        });
+
+        function updateDashboard(data) {
+            // Update tilt meter
+            if (data.tiltCheck) {
+                updateTiltMeter(data.tiltCheck.currentRisk);
+                document.getElementById('tiltStatus').textContent = getTiltStatusText(data.tiltCheck.currentRisk);
+            }
+            
+            // Update other widgets with degen data
+            if (data.user) {
+                document.getElementById('verificationLevel').textContent = data.user.trustLevel || 'Level 3 - Not Completely Hopeless';
+            }
+            
+            if (data.cardGame) {
+                document.getElementById('learningPoints').textContent = `${data.cardGame.skillPoints || 247} SP`;
+                document.getElementById('hallOfShame').textContent = `${data.cardGame.multiplayerStats?.hall_of_shame || 15} times completely rekt`;
+            }
+            
+            if (data.wallet) {
+                document.getElementById('walletBalance').textContent = `$${data.wallet.balance}`;
+                if (data.wallet.historicalFuckUps) {
+                    document.getElementById('historicalFuckups').textContent = `${data.wallet.historicalFuckUps.length} legendary mistakes`;
+                }
+            }
+            
+            // Update last sync time
+            document.getElementById('lastSync').textContent = 'Just now';
+        }
+
+        function getTiltStatusText(riskLevel) {
+            const statusTexts = {
+                'chill': 'Zen Mode (Suspicious)',
+                'cautious': 'Slightly Aware',
+                'sending_it': 'Sending It (Manageable)',
+                'full_degen': 'Full Degen Mode',
+                'rekt': 'Completely Rekt'
+            };
+            return statusTexts[riskLevel] || 'Unknown Status';
+        }
+
+        function applyThemeToOverlay(theme) {
+            if (theme.colors) {
+                document.documentElement.style.setProperty('--primary-color', theme.colors.primary);
+                document.documentElement.style.setProperty('--secondary-color', theme.colors.secondary);
+                document.documentElement.style.setProperty('--accent-color', theme.colors.accent);
+            }
+        }
+
+        // Enhanced keyboard shortcuts for degenerates
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'm':
+                        e.preventDefault();
+                        showInstantMessage();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        resyncData();
+                        break;
+                    case 't':
+                        e.preventDefault();
+                        toggleTransparency();
+                        break;
+                    case 'Enter':
+                        if (e.target.id === 'messageInput') {
+                            sendMessage();
+                        }
+                        break;
+                }
+            }
+        });
+
+        // Initialize with degen energy
+        document.addEventListener('DOMContentLoaded', () => {
+            showDegenToast('💀 Welcome back, legend. Let\'s see what chaos awaits...');
+            
+            // Request initial data update
+            ipcRenderer.send('get-dashboard-data');
+            
+            // Trigger initial tilt analysis
+            ipcRenderer.invoke('trigger-tilt-detection').then(analysis => {
+                updateTiltMeter(analysis.level);
+                if (analysis.indicators.length > 0) {
+                    document.getElementById('currentRoast').innerHTML = 
+                        `<div class="roast-message">${analysis.recommendation}</div>`;
+                }
+            });
+        });
+
+        // Glow animation for degen indicators
+        setInterval(() => {
+            const degenIndicators = document.querySelectorAll('.degen-indicator');
+            degenIndicators.forEach(indicator => {
+                indicator.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    indicator.style.transform = 'scale(1)';
+                }, 200);
+            });
+        }, 3000);
+
+        // Random roast generator for entertainment
+        setInterval(() => {
+            if (Math.random() > 0.95) { // 5% chance every interval
+                ipcRenderer.invoke('get-roast-message', 'light').then(roast => {
+                    showDegenToast(`💀 Random Wisdom: ${roast}`);
+                });
+            }
+        }, 30000); // Every 30 seconds
+    </script>
+</body>
+</html>
     <style>
         * {
             margin: 0;
