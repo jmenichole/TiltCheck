@@ -23,15 +23,23 @@
 
 ## 🚀 What You Can Do Right Now
 
-### **1. Test Basic Bot Commands:**
+### **1. Test JustTheTip Bot Commands:**
 ```
-!help                # Show available commands
-!ping                # Test bot responsiveness
-!respect @user       # Give respect points
-!leaderboard         # View respect rankings
+!ping                    # Test bot responsiveness
+!help                    # Show available commands
+!verify-payment <tx>     # Verify Solscan transaction
+!check-tx <signature>    # Check transaction details
+!jtt                     # JustTheTip specific features
+!tiltcheck               # TiltCheck functionality
 ```
 
-### **2. Test SOLUSDC (Recommended):**
+### **2. Test Solscan Payment Verification:**
+```
+!verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E
+!check-tx <your_transaction_signature>
+```
+
+### **3. Test SOLUSDC (Recommended):**
 ```
 $solusdc add 100     # Add test SOLUSDC to your account
 $solusdc balance     # Check your balance  
@@ -39,14 +47,14 @@ $solusdc send @user 10   # Send SOLUSDC to someone
 $solusdc help        # Full SOLUSDC command guide
 ```
 
-### **3. Test General Crypto Tips:**
+### **4. Test General Crypto Tips:**
 ```
 $tip @user 5 SOLUSDC     # Tip using standard tip command
 $balance                 # Check all crypto balances
 $history                 # View tip history
 ```
 
-### **4. Admin Commands (if you have admin role):**
+### **5. Admin Commands (if you have admin role):**
 ```
 !tip-admin add-balance @user 50 SOLUSDC   # Add balance to user
 !tip-admin view-user @user                # View user's crypto balances
@@ -55,20 +63,37 @@ $history                 # View tip history
 
 ## 🔧 How to Start Testing
 
-### **CURRENT STATUS: Simplified Bot Running for Testing**
+### **CURRENT STATUS: JustTheTip Bot Running with Solscan Integration**
 
-Your bot **TrapHouseBot#5448** is now connected to Discord! 
+Your **JustTheTip Bot** is now connected to Discord with payment tracking! 
 
-### **Step 1: Test These Simple Commands First**
+### **Step 1: Test These JustTheTip Commands First**
 Go to your **BetCollective** Discord server and try:
 
 ```
 !ping    # Should respond with "🏓 Pong!"
 !help    # Shows available commands  
-!test    # Simple test message
+!verify-payment TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E
 ```
 
-### **Step 2: Verify Bot Permissions**
+### **Step 2: Switch Between Bots**
+You can now run different bots:
+
+```bash
+# Run JustTheTip Bot (crypto + loans + tiltcheck)
+node launcher.js justthetip
+
+# Run TrapHouse Bot (general features + respect)
+node launcher.js traphouse
+
+# Run Degens Bot (cards + crypto)
+node launcher.js degens
+
+# Show bot selection menu
+node launcher.js
+```
+
+### **Step 3: Verify Bot Permissions**
 Make sure your bot has these permissions in your Discord server:
 - ✅ View Channels
 - ✅ Send Messages  
@@ -76,9 +101,28 @@ Make sure your bot has these permissions in your Discord server:
 - ✅ Use External Emojis
 - ✅ Embed Links
 
-### **Step 3: Check Bot Role Position**
+### **Step 4: Check Bot Role Position**
 - The bot role should be **above** regular user roles
-- Check Server Settings → Roles → Move TrapHouseBot role higher
+- Check Server Settings → Roles → Move bot role higher
+
+## 💡 JustTheTip Payment System
+
+### **Solscan API Integration:**
+```bash
+# Your transaction signer:
+TyZFfCtcU6ytrHZ2dQcJy2VyMfB3Pm9W2i9X33FAwRduHEqhFSMtYKhWBghUU34FC47M6DFeZyverJkm14BCe8E
+
+# Test the API directly:
+curl --request GET \
+     --url 'https://pro-api.solscan.io/v2.0/transaction/detail?signature=YOUR_TX_SIGNATURE' \
+     --header 'content-Type: application/json' \
+     --header 'Authorization: Bearer YOUR_API_KEY'
+```
+
+### **Webhook Configuration:**
+- ✅ **Loan Channel**: 1383031657006632970
+- ✅ **Webhook URL**: Configured for notifications
+- ✅ **Payment Monitoring**: Active (every 30 seconds)
 
 ## 🛠️ Your Generated Solana Wallet
 
