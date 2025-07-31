@@ -229,6 +229,13 @@ class TrapHouseDashboardOverlay {
     async initializeApp() {
         if (this.isReady) return;
         
+        // Check if we're in an Electron environment
+        if (!app || typeof app.whenReady !== 'function') {
+            console.log('🎯 Running in non-Electron environment - initializing mock interface...');
+            this.initializeMockInterface();
+            return;
+        }
+        
         await app.whenReady();
         this.isReady = true;
         
