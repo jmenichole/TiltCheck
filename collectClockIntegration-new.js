@@ -1,5 +1,6 @@
 const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
+const CasinoApiConnector = require('./casinoApiConnector');
 require('dotenv').config();
 
 class CollectClockIntegration {
@@ -16,6 +17,7 @@ class CollectClockIntegration {
 
         this.isInitialized = false;
         this.trapHouseBot = null; // Reference to main TrapHouse bot
+        this.casinoApiConnector = null; // API connector for casino integration
         
         // Daily collection platforms from CollectClock website
         this.platforms = [
@@ -47,6 +49,9 @@ class CollectClockIntegration {
                 console.log(`🎰 Tracking ${this.platforms.length} daily bonus platforms`);
                 this.isInitialized = true;
                 
+                // Initialize Casino API Connector
+                this.initializeCasinoApiConnector();
+                
                 // Start daily reminder system
                 this.startDailyReminderSystem();
             });
@@ -71,6 +76,151 @@ class CollectClockIntegration {
     // Set reference to main TrapHouse bot for integration
     setTrapHouseBot(trapHouseBot) {
         this.trapHouseBot = trapHouseBot;
+    }
+
+    // Initialize Casino API Connector
+    initializeCasinoApiConnector() {
+        try {
+            // Get TiltCheck verification system if available
+            const tiltCheckVerification = this.trapHouseBot?.tiltCheckVerification || null;
+            
+            this.casinoApiConnector = new CasinoApiConnector(this, tiltCheckVerification);
+            this.casinoApiConnector.initialize();
+            
+            console.log('🔌 Casino API Connector integrated with CollectClock');
+        } catch (error) {
+            console.error('Failed to initialize Casino API Connector:', error);
+        }
+    }
+
+    // Handle casino login event (called when user logs into casino via CollectClock)
+    async handleCasinoLogin(userId, casinoUrl, loginData) {
+        if (!this.casinoApiConnector) {
+            console.log('⚠️ Casino API Connector not initialized');
+            return;
+        }
+
+        try {
+            console.log(`🎰 Processing casino login: ${userId} -> ${casinoUrl}`);
+            
+            const connectionResult = await this.casinoApiConnector.handleCasinoLogin(userId, casinoUrl, loginData);
+            
+            if (connectionResult.success) {
+                console.log(`✅ Casino API connection successful: ${connectionResult.casino}`);
+                
+                // Update user collection data with API connection
+                const userData = this.getUserCollectionData(userId);
+                if (!userData.apiConnections) userData.apiConnections = [];
+                
+                userData.apiConnections.push({
+                    casino: connectionResult.casino,
+                    connectedAt: new Date(),
+                    hasBalance: connectionResult.balance?.success || false,
+                    balanceAmount: connectionResult.balance?.totalUSD || 0
+                });
+                
+                this.saveUserCollectionData(userId, userData);
+                
+                // Send success notification
+                await this.sendApiConnectionSuccess(userId, connectionResult);
+                
+            } else {
+                console.log(`❌ Casino API connection failed: ${connectionResult.reason}`);
+                await this.sendApiConnectionFailure(userId, casinoUrl, connectionResult.reason);
+            }
+
+        } catch (error) {
+            console.error('Casino login handling error:', error);
+        }
+    }
+
+    // Send API connection success notification
+    async sendApiConnectionSuccess(userId, connectionResult) {
+        try {
+            const user = await this.client.users.fetch(userId);
+            if (!user) return;
+
+            const embed = new EmbedBuilder()
+                .setColor('#00ff88')
+                .setTitle('🎯 CollectClock API Integration Success!')
+                .setDescription(`Successfully connected to **${connectionResult.casino}** with live balance monitoring!`)
+                .addFields(
+                    {
+                        name: '💰 Current Balance',
+                        value: connectionResult.balance?.success ? 
+                            `$${connectionResult.balance.totalUSD?.toFixed(2) || '0.00'} (${connectionResult.balance.currencies?.length || 0} currencies)` :
+                            'Balance retrieval pending...',
+                        inline: true
+                    },
+                    {
+                        name: '🔗 API Features',
+                        value: Object.keys(connectionResult.apiDocumentation || {}).map(api => `• ${api}`).join('\n') || 'Basic monitoring',
+                        inline: true
+                    },
+                    {
+                        name: '🛡️ Monitoring Active',
+                        value: '• Real-time balance tracking\n• Automatic tilt alerts\n• Loss pattern detection\n• Responsible gambling tools',
+                        inline: false
+                    }
+                )
+                .setFooter({ text: 'CollectClock API Connector • Your gambling is now monitored for safety' })
+                .setTimestamp();
+
+            await user.send({ embeds: [embed] });
+
+        } catch (error) {
+            console.error('API success notification error:', error);
+        }
+    }
+
+    // Send API connection failure notification
+    async sendApiConnectionFailure(userId, casinoUrl, reason) {
+        try {
+            const user = await this.client.users.fetch(userId);
+            if (!user) return;
+
+            const embed = new EmbedBuilder()
+                .setColor('#ff4444')
+                .setTitle('⚠️ CollectClock API Connection Issue')
+                .setDescription(`Unable to establish API connection to casino`)
+                .addFields(
+                    {
+                        name: '🎰 Casino',
+                        value: new URL(casinoUrl).hostname,
+                        inline: true
+                    },
+                    {
+                        name: '❌ Reason',
+                        value: this.getFailureReasonMessage(reason),
+                        inline: true
+                    },
+                    {
+                        name: '💡 Next Steps',
+                        value: '• Manual collection tracking still available\n• Use `!cc collected [casino]` to log bonuses\n• Discord authentication may be required',
+                        inline: false
+                    }
+                )
+                .setFooter({ text: 'CollectClock • Manual tracking is always available' })
+                .setTimestamp();
+
+            await user.send({ embeds: [embed] });
+
+        } catch (error) {
+            console.error('API failure notification error:', error);
+        }
+    }
+
+    // Get human-readable failure reason
+    getFailureReasonMessage(reason) {
+        const messages = {
+            'unsupported_casino': 'Casino not supported for API integration',
+            'auth_failed': 'Discord authentication required',
+            'api_connection_failed': 'Casino API unavailable',
+            'no_credentials_found': 'Login credentials not detected',
+            'system_error': 'Technical error occurred'
+        };
+        
+        return messages[reason] || 'Unknown error occurred';
     }
 
     async handleMessage(message) {
@@ -113,9 +263,11 @@ class CollectClockIntegration {
             case 'collected':
                 await this.markAsCollected(message, args.slice(1));
                 break;
-            case 'help':
+            case 'api':
+                await this.handleApiCommands(message, args.slice(1));
+                break;
             default:
-                await this.showCollectClockHelp(message);
+                await this.showCollectionStatus(message);
         }
     }
 
