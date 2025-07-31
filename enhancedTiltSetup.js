@@ -829,7 +829,8 @@ class EnhancedTiltSetup {
         
         switch (chain.toUpperCase()) {
             case 'SOLANA':
-                return address.length >= 32 && address.length <= 44 && /^[1-9A-HJ-NP-Za-km-z]+$/.test(address);
+                // Accept both standard Solana addresses (32-44 chars) and extended keys (up to 88 chars)
+                return (address.length >= 32 && address.length <= 88) && /^[1-9A-HJ-NP-Za-km-z]+$/.test(address);
             case 'ETHEREUM':
             case 'POLYGON':
             case 'BSC':
