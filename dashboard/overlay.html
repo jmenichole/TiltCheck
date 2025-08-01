@@ -762,6 +762,10 @@
         </div>
     </div>
 
+    <script src="sounds/aim-sound-generator.js"></script>
+    <script src="aim-messenger.js"></script>
+    <script src="tiltcheck-aim-notifications.js"></script>
+    
     <script>
         const { ipcRenderer } = require('electron');
         
@@ -772,6 +776,33 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateUI();
             startPeriodicUpdates();
+            
+            // Initialize AIM Messenger with TiltCheck integration
+            setTimeout(() => {
+                if (window.aimMessenger) {
+                    // Add some gambling-related buddies
+                    window.aimMessenger.addBuddy('TiltMaster', 'gambling');
+                    window.aimMessenger.addBuddy('PokerPro2024', 'gambling');
+                    window.aimMessenger.addBuddy('SlotQueen', 'gambling');
+                    window.aimMessenger.addBuddy('ResponsibleGamer', 'online');
+                    
+                    // Set buddy statuses
+                    window.aimMessenger.setBuddyStatus('TiltMaster', 'online');
+                    window.aimMessenger.setBuddyStatus('PokerPro2024', 'away');
+                    window.aimMessenger.setBuddyStatus('SlotQueen', 'online');
+                    
+                    console.log('🎯 AIM Messenger integrated with TiltCheck overlay');
+                    
+                    // Demo: Simulate some messages after a delay
+                    setTimeout(() => {
+                        window.aimMessenger.receiveMessage('TiltMaster', 'Hey! How\'s your session going?');
+                    }, 3000);
+                    
+                    setTimeout(() => {
+                        window.aimMessenger.receiveMessage('SlotQueen', 'Just hit a nice win on slots! 🎰✨');
+                    }, 8000);
+                }
+            }, 1000);
         });
 
         // Listen for data updates from main process
