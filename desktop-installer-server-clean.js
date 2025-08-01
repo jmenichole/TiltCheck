@@ -19,7 +19,7 @@ const BASE_URL = IS_DEVELOPMENT ? 'http://localhost' : `https://${DOMAIN}`;
 const PORTS = {
     BETA: process.env.BETA_PORT || 3335,
     ANALYTICS: process.env.ANALYTICS_PORT || 3336,
-    INSTALLER: process.env.INSTALLER_PORT || 4002
+    INSTALLER: process.env.INSTALLER_PORT || 4001
 };
 
 // Enhanced mobile detection middleware

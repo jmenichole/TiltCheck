@@ -19,7 +19,7 @@ const BASE_URL = IS_DEVELOPMENT ? 'http://localhost' : `https://${DOMAIN}`;
 const PORTS = {
     BETA: process.env.BETA_PORT || 3335,
     ANALYTICS: process.env.ANALYTICS_PORT || 3336,
-    INSTALLER: process.env.INSTALLER_PORT || 4002
+    INSTALLER: process.env.INSTALLER_PORT || 4001  // Changed to 4001 as per deployment status
 };
 
 // Enhanced mobile detection middleware
@@ -321,347 +321,447 @@ app.get('/beta-access', async (req, res) => {
         `);
     }
 });
+// Author: jmenichole - LinkedIn: linkedin.com/in/jmenichole0 - GitHub: github.com/jmenichole
 
-// Contract signing endpoint
-app.post('/sign-contract', async (req, res) => {
-    try {
-        const { contractId, discordId, userSignature } = req.body;
-        
-        if (!contractId || !discordId || !userSignature) {
-            return res.json({ success: false, message: 'Missing required fields' });
-        }
-        
-        const success = await betaContract.signContract(contractId, userSignature);
-        
-        if (success) {
-            res.json({ success: true, message: 'Contract signed successfully' });
-        } else {
-            res.json({ success: false, message: 'Contract signing failed' });
-        }
-    } catch (error) {
-        console.error('Contract signing error:', error);
-        res.json({ success: false, message: 'Internal server error' });
+const express = require('express');
+const httpProxy = require('http-proxy');
+const path = require('path');
+
+const app = express();
+const proxy = httpProxy.createProxyServer({});
+
+// Configuration
+const PORT = 4001;
+const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
+const DESKTOP_DETECTION_ENABLED = true;
+const MOBILE_DETECTION_ENABLED = true;
+
+// Portfolio and Social Links
+const PORTFOLIO_LINKS = {
+    linkedin: 'https://linkedin.com/in/jmenichole0',
+    kofi: 'https://ko-fi.com/jmenichole',
+    github: 'https://github.com/jmenichole',
+    githubSponsors: 'https://github.com/sponsors/jmenichole',
+    collectClock: 'https://jmenichole.github.io/CollectClock/',
+    portfolioSite: 'https://traphousediscordbot.created.app'
+};
+
+// Approved Beta Users (Discord IDs)
+const APPROVED_BETA_USERS = [
+    '1155164907680043059',
+    '297854966591127552', 
+    '4927969932326994201217998526663888916'
+];
+
+// Configuration
+const DOMAIN = 'tiltcheck.it.com';
+const PORTS = {
+  INSTALLER: process.env.PORT || 4001,
+  BETA: 3335,
+  ANALYTICS: 3336
+};
+
+// Middleware: Block mobile clients
+app.use((req, res, next) => {
+    const userAgent = req.headers['user-agent'] || '';
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    
+    if (isMobile) {
+        return res.status(403).send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Desktop Only - TiltCheck Portfolio</title>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #654321 100%);
+                        color: #ffffff;
+                        text-align: center;
+                        padding: 50px 20px;
+                        margin: 0;
+                    }
+                    .container {
+                        max-width: 500px;
+                        margin: 0 auto;
+                        background: rgba(0, 0, 0, 0.8);
+                        padding: 40px;
+                        border-radius: 15px;
+                        border: 1px solid #ff6b00;
+                    }
+                    h1 { color: #ff6b00; font-size: 2rem; margin-bottom: 20px; }
+                    .portfolio-links { margin: 20px 0; }
+                    .portfolio-links a {
+                        color: #4CAF50;
+                        text-decoration: none;
+                        margin: 0 10px;
+                        padding: 8px 16px;
+                        border: 1px solid #4CAF50;
+                        border-radius: 5px;
+                        display: inline-block;
+                        margin-bottom: 10px;
+                    }
+                    .cta {
+                        background: linear-gradient(45deg, #ff6b00, #ff4444);
+                        color: #fff;
+                        padding: 15px 30px;
+                        border-radius: 30px;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-weight: bold;
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🖥️ Desktop Only Access</h1>
+                    <p>TiltCheck beta testing is currently only supported on desktop and laptop computers.</p>
+                    <div class="portfolio-links">
+                        <p><strong>Developer Portfolio:</strong></p>
+                        <a href="${PORTFOLIO_LINKS.portfolioSite}">Portfolio Site</a>
+                        <a href="${PORTFOLIO_LINKS.collectClock}">CollectClock</a>
+                        <a href="${PORTFOLIO_LINKS.linkedin}">LinkedIn</a>
+                        <a href="${PORTFOLIO_LINKS.github}">GitHub</a>
+                    </div>
+                    <p>Please visit from a desktop browser to access the full TiltCheck ecosystem.</p>
+                    <a href="https://${DOMAIN}" class="cta">Visit on Desktop</a>
+                </div>
+            </body>
+            </html>
+        `);
     }
+    next();
 });
 
-// Terms of Service with contract verification
-app.get('/tos', (req, res) => {
-    const contractSigned = req.query.contract_signed === 'true';
-    const contractVerified = req.query.contract_verified === 'true';
-    const discordId = req.query.discord_id;
-    
-    if (!contractSigned && !contractVerified) {
-        return res.redirect('/beta-access');
-    }
-    
+// Serve static landing pages
+app.use('/static', express.static(path.join(__dirname, 'landing-pages')));
+
+// Portfolio integration routes
+app.get('/portfolio', (req, res) => {
+    res.redirect(PORTFOLIO_LINKS.portfolioSite);
+});
+
+app.get('/collectclock', (req, res) => {
+    res.redirect(PORTFOLIO_LINKS.collectClock);
+});
+
+app.get('/developer', (req, res) => {
     res.send(`
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>TiltCheck Terms of Service</title>
+            <title>jmenichole - Developer Portfolio</title>
             <style>
-                body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 30px; }
-                .container { max-width: 900px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #00ff00; }
-                h1 { color: #00ff00; text-align: center; margin-bottom: 30px; }
-                .status { background: rgba(0,255,0,0.1); padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(0,255,0,0.3); text-align: center; }
-                .tos-content { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin: 20px 0; }
-                button { background: linear-gradient(45deg, #00ff00, #0080ff); color: #000; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; margin: 10px; }
-                .warning { background: rgba(255,107,0,0.1); border: 1px solid #ff6b00; padding: 15px; border-radius: 10px; margin: 20px 0; }
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                    color: #ffffff;
+                    text-align: center;
+                    padding: 50px 20px;
+                    margin: 0;
+                }
+                .container {
+                    max-width: 1000px;
+                    margin: 0 auto;
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 50px;
+                    border-radius: 15px;
+                    border: 1px solid #4CAF50;
+                }
+                h1 {
+                    font-size: 3rem;
+                    background: linear-gradient(45deg, #4CAF50, #2196F3);
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    margin-bottom: 30px;
+                }
+                .social-links {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin: 30px 0;
+                }
+                .social-link {
+                    background: rgba(76, 175, 80, 0.1);
+                    padding: 20px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(76, 175, 80, 0.3);
+                    text-decoration: none;
+                    color: #4CAF50;
+                    transition: transform 0.3s;
+                }
+                .social-link:hover {
+                    transform: translateY(-5px);
+                    background: rgba(76, 175, 80, 0.2);
+                }
+                .projects {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 30px;
+                    margin: 40px 0;
+                }
+                .project {
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 25px;
+                    border-radius: 10px;
+                    border-left: 4px solid #4CAF50;
+                }
             </style>
         </head>
         <body>
             <div class="container">
-                <h1>📜 TiltCheck Terms of Service</h1>
+                <h1>jmenichole</h1>
+                <p style="font-size: 1.3rem;">Full-Stack Developer & Discord Bot Specialist</p>
+                <p>Creator of TiltCheck, JustTheTip, and CollectClock</p>
                 
-                <div class="status">
-                    <strong>✅ Contract Status:</strong> ${contractSigned ? 'Newly Signed' : 'Previously Verified'}<br>
-                    <strong>Discord ID:</strong> ${discordId || 'Not provided'}
+                <div class="social-links">
+                    <a href="${PORTFOLIO_LINKS.linkedin}" class="social-link">
+                        <h3>💼 LinkedIn</h3>
+                        <p>Professional Network</p>
+                    </a>
+                    <a href="${PORTFOLIO_LINKS.github}" class="social-link">
+                        <h3>💻 GitHub</h3>
+                        <p>Code Repositories</p>
+                    </a>
+                    <a href="${PORTFOLIO_LINKS.githubSponsors}" class="social-link">
+                        <h3>💖 GitHub Sponsors</h3>
+                        <p>Support Development</p>
+                    </a>
+                    <a href="${PORTFOLIO_LINKS.kofi}" class="social-link">
+                        <h3>☕ Ko-fi</h3>
+                        <p>Buy Me a Coffee</p>
+                    </a>
                 </div>
                 
-                <div class="warning">
-                    <strong>⚠️ Beta Testing Agreement</strong><br>
-                    By proceeding, you acknowledge that you have signed a legally binding contract with crypto signature verification and device fingerprinting for legal protection.
+                <div class="projects">
+                    <div class="project">
+                        <h3>🎰 TiltCheck</h3>
+                        <p>Advanced gambling accountability system with real-time monitoring and addiction prevention.</p>
+                        <a href="/beta" style="color: #4CAF50;">Try Beta →</a>
+                    </div>
+                    <div class="project">
+                        <h3>💰 JustTheTip</h3>
+                        <p>Multi-chain crypto payment and tipping system for Discord communities.</p>
+                        <a href="/justthetip" style="color: #4CAF50;">Learn More →</a>
+                    </div>
+                    <div class="project">
+                        <h3>⏰ CollectClock</h3>
+                        <p>Time tracking and productivity tool with beautiful visualizations.</p>
+                        <a href="${PORTFOLIO_LINKS.collectClock}" style="color: #4CAF50;">View Project →</a>
+                    </div>
                 </div>
                 
-                <div class="tos-content">
-                    <h3>Terms and Conditions:</h3>
-                    <ol>
-                        <li><strong>Desktop-Only Access:</strong> Beta testing is restricted to desktop/laptop computers only</li>
-                        <li><strong>Crypto Wallet Required:</strong> JustTheTip features require funded crypto wallet for betting</li>
-                        <li><strong>Legal Protection:</strong> Device fingerprinting and crypto signatures provide legal tracking</li>
-                        <li><strong>Session Limits:</strong> 7-day maximum session duration with re-verification required</li>
-                        <li><strong>Feedback Required:</strong> Beta testers must provide feedback and report bugs</li>
-                        <li><strong>No Guarantees:</strong> No guarantees on gambling outcomes or profits</li>
-                        <li><strong>Personal Responsibility:</strong> Users are responsible for their gambling decisions</li>
-                        <li><strong>Data Collection:</strong> Monitoring and data collection for testing purposes</li>
-                        <li><strong>Risk Awareness:</strong> Gambling involves risk of financial loss</li>
-                        <li><strong>Legal Compliance:</strong> Users must comply with local gambling laws</li>
-                    </ol>
-                </div>
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <button onclick="proceedToBeta()">✅ Accept & Access Beta Dashboard</button>
-                    <button onclick="window.location.href='/portfolio'" style="background: #666;">View Portfolio Instead</button>
-                </div>
+                <p style="margin-top: 40px;">
+                    <a href="${PORTFOLIO_LINKS.portfolioSite}" style="color: #4CAF50; font-size: 1.2rem;">View Full Portfolio →</a>
+                </p>
             </div>
-            
-            <script>
-                function proceedToBeta() {
-                    // Store acceptance and redirect to beta dashboard
-                    localStorage.setItem('tos_accepted', 'true');
-                    localStorage.setItem('discord_id', '${discordId || ''}');
-                    localStorage.setItem('contract_verified', 'true');
-                    
-                    // Redirect to beta access with dashboard overlay
-                    window.location.href = '/dashboard';
-                }
-            </script>
         </body>
         </html>
     `);
 });
 
-// Dashboard with iframe overlay
-app.get('/dashboard', (req, res) => {
+// Landing page routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'tiltcheck.html'));
+});
+
+app.get('/justthetip', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'justthetip.html'));
+});
+
+app.get('/beta', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'tiltcheck-beta.html'));
+});
+
+app.get('/collectclock', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'collectclock-landing.html'));
+});
+
+app.get('/developer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'developer-portfolio.html'));
+});
+
+// Beta access validation
+app.get('/beta-access', (req, res) => {
+    const discordId = req.query.discord_id;
+    const isApproved = APPROVED_BETA_USERS.includes(discordId);
+    
     res.send(`
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>TiltCheck Beta Dashboard</title>
+            <title>TiltCheck Beta Access Validation</title>
             <style>
-                body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
-                .dashboard-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 50px;
-                    background: linear-gradient(45deg, #00ff00, #0080ff);
-                    color: #000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    padding: 0 20px;
-                    font-weight: bold;
-                    z-index: 1000;
-                    box-shadow: 0 2px 10px rgba(0,255,0,0.3);
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+                    color: #ffffff;
+                    text-align: center;
+                    padding: 50px 20px;
+                    margin: 0;
                 }
-                .dashboard-info { display: flex; gap: 20px; align-items: center; }
-                .dashboard-controls { display: flex; gap: 10px; }
-                .control-btn {
-                    background: rgba(0,0,0,0.2);
-                    border: 1px solid #000;
-                    color: #000;
-                    padding: 5px 15px;
+                .container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 50px;
                     border-radius: 15px;
-                    cursor: pointer;
-                    font-size: 12px;
-                    font-weight: bold;
+                    border: 1px solid ${isApproved ? '#00ff00' : '#ff4444'};
                 }
-                .control-btn:hover { background: rgba(0,0,0,0.4); }
-                .beta-frame {
-                    position: fixed;
-                    top: 50px;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    border: none;
-                    background: #000;
+                .status {
+                    font-size: 2rem;
+                    margin-bottom: 20px;
+                    color: ${isApproved ? '#00ff00' : '#ff4444'};
                 }
-                .status-indicator {
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 50%;
-                    background: #00ff00;
-                    animation: pulse 2s infinite;
+                .developer-info {
+                    background: rgba(76, 175, 80, 0.1);
+                    padding: 20px;
+                    border-radius: 10px;
+                    margin: 30px 0;
                 }
-                @keyframes pulse {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.5; }
+                .portfolio-links {
+                    display: flex;
+                    justify-content: center;
+                    gap: 20px;
+                    flex-wrap: wrap;
+                    margin: 20px 0;
+                }
+                .portfolio-links a {
+                    color: #4CAF50;
+                    text-decoration: none;
+                    padding: 10px 20px;
+                    border: 1px solid #4CAF50;
+                    border-radius: 5px;
                 }
             </style>
         </head>
         <body>
-            <div class="dashboard-overlay">
-                <div class="dashboard-info">
-                    <div class="status-indicator"></div>
-                    <span>TiltCheck Beta Dashboard - Contract Verified</span>
-                    <span id="sessionTime">Session: 0:00</span>
+            <div class="container">
+                <div class="status">
+                    ${isApproved ? '✅ Beta Access Approved' : '❌ Beta Access Required'}
                 </div>
-                <div class="dashboard-controls">
-                    <button class="control-btn" onclick="window.location.href='/portfolio'">Portfolio</button>
-                    <button class="control-btn" onclick="window.location.href='/justthetip'">JustTheTip</button>
-                    <button class="control-btn" onclick="toggleAnalytics()">Analytics</button>
-                    <button class="control-btn" onclick="endSession()">End Session</button>
+                
+                ${isApproved ? 
+                    '<p>Welcome to TiltCheck Beta! You have been approved for testing.</p><a href="/tos" style="background: #00ff00; color: #000; padding: 15px 30px; border-radius: 30px; text-decoration: none; font-weight: bold;">Continue to Beta →</a>' :
+                    '<p>Beta access is currently limited to approved Discord users. Please contact the developer for access.</p>'
+                }
+                
+                <div class="developer-info">
+                    <h3>🛠️ Developed by jmenichole</h3>
+                    <p>Full-stack developer specializing in Discord bots, crypto integration, and gambling accountability systems.</p>
+                    <div class="portfolio-links">
+                        <a href="${PORTFOLIO_LINKS.linkedin}">LinkedIn</a>
+                        <a href="${PORTFOLIO_LINKS.github}">GitHub</a>
+                        <a href="${PORTFOLIO_LINKS.githubSponsors}">Sponsor</a>
+                        <a href="${PORTFOLIO_LINKS.kofi}">Ko-fi</a>
+                        <a href="${PORTFOLIO_LINKS.portfolioSite}">Portfolio</a>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3>Other Projects:</h3>
+                    <a href="${PORTFOLIO_LINKS.collectClock}" style="color: #4CAF50;">CollectClock - Time Tracking Tool</a>
                 </div>
             </div>
-            
-            <iframe id="betaFrame" class="beta-frame" src="http://localhost:${PORTS.BETA}" onload="frameLoaded()"></iframe>
-            
-            <script>
-                let sessionStartTime = Date.now();
-                let analyticsOpen = false;
-                
-                // Update session timer
-                setInterval(() => {
-                    const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
-                    const minutes = Math.floor(elapsed / 60);
-                    const seconds = elapsed % 60;
-                    document.getElementById('sessionTime').textContent = 
-                        'Session: ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-                }, 1000);
-                
-                function frameLoaded() {
-                    console.log('Beta application loaded successfully');
-                }
-                
-                function toggleAnalytics() {
-                    if (!analyticsOpen) {
-                        window.open('http://localhost:${PORTS.ANALYTICS}', 'analytics', 'width=1200,height=800');
-                        analyticsOpen = true;
-                    }
-                }
-                
-                function endSession() {
-                    if (confirm('Are you sure you want to end your beta session?')) {
-                        localStorage.removeItem('tos_accepted');
-                        localStorage.removeItem('contract_verified');
-                        window.location.href = '/portfolio';
-                    }
-                }
-                
-                // Handle frame errors
-                document.getElementById('betaFrame').onerror = function() {
-                    this.src = 'data:text/html,<html><body style="background:#000;color:#fff;text-align:center;padding:50px;font-family:Arial;"><h1>🔧 Beta Application Loading...</h1><p>The TiltCheck beta application is starting up.</p><p>If this persists, the beta server may need to be started.</p><p><a href="/portfolio" style="color:#00ff00;">Return to Portfolio</a></p></body></html>';
-                };
-            </script>
         </body>
         </html>
     `);
 });
 
-// Health check endpoints
+// Serve TOS and agreements page
+app.get('/tos', (req, res) => {
+  res.sendFile(path.join(__dirname, 'tos.html'));
+});
+
+// Accept agreements endpoint
+app.post('/accept-tos', express.json(), (req, res) => {
+  console.log(`📋 TOS accepted at ${req.body.timestamp || new Date().toISOString()}`);
+  res.json({ 
+    success: true, 
+    message: 'Terms accepted. Redirecting to dashboard...',
+    redirect: '/dashboard'
+  });
+});
+
+// Proxy/forward beta dashboard requests to the analytics server (dashboard overlay)
+app.use('/dashboard', (req, res) => {
+  proxy.web(req, res, { 
+    target: `http://localhost:${PORTS.ANALYTICS}`,
+    changeOrigin: true
+  });
+});
+
+// Proxy/forward API requests to beta server
+app.use('/api', (req, res) => {
+  proxy.web(req, res, { 
+    target: `http://localhost:${PORTS.BETA}`,
+    changeOrigin: true
+  });
+});
+
+// Health check endpoint
 app.get('/health', (req, res) => {
-    res.json({
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        services: {
-            installer: 'running',
-            beta: `proxy to :${PORTS.BETA}`,
-            analytics: `proxy to :${PORTS.ANALYTICS}`
-        }
+  res.json({ 
+    status: 'healthy', 
+    domain: DOMAIN,
+    environment: IS_DEVELOPMENT ? 'development' : 'production',
+    developer: {
+      name: 'jmenichole',
+      portfolio: PORTFOLIO_LINKS.portfolioSite,
+      github: PORTFOLIO_LINKS.github,
+      linkedin: PORTFOLIO_LINKS.linkedin
+    },
+    approvedBetaUsers: APPROVED_BETA_USERS.length,
+    services: {
+      beta: `http://localhost:${PORTS.BETA}`,
+      analytics: `http://localhost:${PORTS.ANALYTICS}`,
+      installer: `http://localhost:${PORTS.INSTALLER}`,
+      collectclock: `http://localhost:${PORTS.COLLECTCLOCK}`,
+      portfolio: `http://localhost:${PORTS.PORTFOLIO}`
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Error handling for proxy
+proxy.on('error', (err, req, res) => {
+  console.error('❌ Proxy error:', err.message);
+  if (!res.headersSent) {
+    res.status(502).json({ 
+      error: 'Service unavailable', 
+      message: 'Backend service is not responding',
+      service: req.url.includes('/dashboard') ? 'analytics' : 'beta',
+      developer: {
+        contact: PORTFOLIO_LINKS.linkedin,
+        github: PORTFOLIO_LINKS.github
+      }
     });
+  }
 });
 
-app.get('/health/detailed', (req, res) => {
-    res.json({
-        status: 'healthy',
-        version: '2.0.0',
-        domain: DOMAIN,
-        ports: PORTS,
-        features: [
-            'Portfolio integration',
-            'Contract-based beta verification',
-            'Crypto signature verification',
-            'Device fingerprinting',
-            'Waitlist system',
-            'Social media integration'
-        ],
-        timestamp: new Date().toISOString(),
-        environment: IS_DEVELOPMENT ? 'development' : 'production'
-    });
+// Start the installer server
+app.listen(PORTS.INSTALLER, () => {
+  console.log(`🖥️ Desktop Installer Server for ${DOMAIN}`);
+  console.log(`👨‍💻 Developer: jmenichole`);
+  console.log(`🔗 Portfolio: ${PORTFOLIO_LINKS.portfolioSite}`);
+  console.log(`🌐 Running on http://localhost:${PORTS.INSTALLER}`);
+  console.log('📄 Landing pages available:');
+  console.log(`   • TiltCheck: http://localhost:${PORTS.INSTALLER}/`);
+  console.log(`   • JustTheTip: http://localhost:${PORTS.INSTALLER}/justthetip`);
+  console.log(`   • Beta: http://localhost:${PORTS.INSTALLER}/beta`);
+  console.log(`   • Developer: http://localhost:${PORTS.INSTALLER}/developer`);
+  console.log(`   • Portfolio: http://localhost:${PORTS.INSTALLER}/portfolio`);
+  console.log(`   • CollectClock: http://localhost:${PORTS.INSTALLER}/collectclock`);
+  console.log(`   • Dashboard: http://localhost:${PORTS.INSTALLER}/dashboard`);
+  console.log(`   • Terms: http://localhost:${PORTS.INSTALLER}/tos`);
+  console.log(`👥 Approved Beta Users: ${APPROVED_BETA_USERS.length}`);
+  console.log('🚫 Mobile clients blocked - Desktop only access');
+  console.log(`⚙️ Environment: ${IS_DEVELOPMENT ? 'Development' : 'Production'}`);
+  console.log(`🔗 Proxying to Beta: ${PORTS.BETA}, Analytics: ${PORTS.ANALYTICS}`);
 });
-
-// Proxy beta application requests
-app.use('/beta-app', (req, res) => {
-    proxy.web(req, res, {
-        target: `http://localhost:${PORTS.BETA}`,
-        changeOrigin: true
-    }, (err) => {
-        console.error('Beta proxy error:', err);
-        res.status(503).send(`
-            <!DOCTYPE html>
-            <html>
-            <head><title>Beta Unavailable</title></head>
-            <body style="background:#000;color:#fff;text-align:center;padding:50px;font-family:Arial;">
-                <h1>🔧 Beta Application Unavailable</h1>
-                <p>The TiltCheck beta application is currently unavailable.</p>
-                <p>Please try again later or contact support.</p>
-                <a href="/portfolio" style="color:#00ff00;">Return to Portfolio</a>
-            </body>
-            </html>
-        `);
-    });
-});
-
-// Proxy analytics requests
-app.use('/analytics', (req, res) => {
-    proxy.web(req, res, {
-        target: `http://localhost:${PORTS.ANALYTICS}`,
-        changeOrigin: true
-    }, (err) => {
-        console.error('Analytics proxy error:', err);
-        res.status(503).send('Analytics service unavailable');
-    });
-});
-
-// Error handling
-app.use((err, req, res, next) => {
-    console.error('Server error:', err);
-    res.status(500).send(`
-        <!DOCTYPE html>
-        <html>
-        <head><title>Server Error</title></head>
-        <body style="background:#000;color:#fff;text-align:center;padding:50px;font-family:Arial;">
-            <h1>⚠️ Server Error</h1>
-            <p>An unexpected error occurred.</p>
-            <a href="/portfolio" style="color:#00ff00;">Return to Portfolio</a>
-        </body>
-        </html>
-    `);
-});
-
-// 404 handler
-app.use((req, res) => {
-    res.status(404).send(`
-        <!DOCTYPE html>
-        <html>
-        <head><title>Page Not Found</title></head>
-        <body style="background:#000;color:#fff;text-align:center;padding:50px;font-family:Arial;">
-            <h1>🔍 Page Not Found</h1>
-            <p>The requested page could not be found.</p>
-            <div style="margin: 30px 0;">
-                <a href="/" style="color:#00ff00;margin:0 15px;">Home</a>
-                <a href="/portfolio" style="color:#00ff00;margin:0 15px;">Portfolio</a>
-                <a href="/beta" style="color:#00ff00;margin:0 15px;">Beta Access</a>
-            </div>
-        </body>
-        </html>
-    `);
-});
-
-// Start server
-const PORT = PORTS.INSTALLER;
-app.listen(PORT, () => {
-    console.log(`
-🚀 TiltCheck Desktop Installer Server Started
-📍 Server: http://localhost:${PORT}
-🌐 Domain: ${DOMAIN}
-📱 Mobile Access: Blocked (desktop-only)
-🧪 Beta Access: Contract-verified users only
-📊 Analytics: Port ${PORTS.ANALYTICS}
-🎯 Beta App: Port ${PORTS.BETA}
-
-✅ Features Active:
-  - Portfolio integration with social links
-  - Crypto signature contract verification
-  - Device fingerprinting for legal protection
-  - Approved Discord ID system
-  - Waitlist integration for non-approved users
-  - Landing pages ecosystem (TiltCheck, JustTheTip, Portfolio)
-    `);
-});
-
-module.exports = app;
