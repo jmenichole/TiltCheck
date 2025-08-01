@@ -11,6 +11,15 @@ const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const express = require('express');
 const path = require('path');
 const { BetaFeedbackManager, BetaMetricsCollector } = require('./beta-feedback-system');
+const { 
+    PORT_CONFIG, 
+    VERIFIED_BETA_TESTERS, 
+    desktopOnlyMiddleware, 
+    validateDesktopAgreements,
+    getLocalIP 
+} = require('./port-forwarding-config');
+
+// Beta Testing Configuration
 
 // Import core systems for testing
 const CryptoTipManager = require('./cryptoTipManager');
