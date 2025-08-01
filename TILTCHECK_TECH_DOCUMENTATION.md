@@ -91,6 +91,8 @@
 - **Input Validation**: Express middleware
 - **Rate Limiting**: Custom implementation
 - **Session Management**: JWT-like token system
+- **SSL/TLS Encryption**: Positive SSL certificate
+- **HTTPS Enforcement**: Automatic redirect to secure connections
 
 ### **DevOps & Deployment**
 - **Containerization**: Docker support
@@ -532,9 +534,10 @@ npm run test:support       # Test support page
 
 ### **Community Links**
 - **Discord Support**: https://discord.gg/K3Md6aZx
-- **Main Website**: https://tiltcheck.it.com
+- **Main Website**: https://tiltcheck.it.com (SSL Secured)
 - **Ecosystem Hub**: https://tiltcheckecosystem.created.app
 - **GitHub Repository**: https://github.com/jmenichole/trap-house-discord-bot
+- **SSL Configuration**: See SSL_CERTIFICATE_SETUP.md
 
 ### **Documentation**
 - API documentation available at `/api/docs`
