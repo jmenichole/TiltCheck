@@ -1,9 +1,11 @@
 // Beta Verification Contract System
 // Implements crypto signature verification and device fingerprinting for legal protection
+// Now includes NFT minting for verified contract signatures
 
 const crypto = require('crypto');
 const fs = require('fs').promises;
 const path = require('path');
+const BetaNFTContract = require('./beta-nft-contract');
 
 class BetaVerificationContract {
     constructor() {
@@ -17,6 +19,7 @@ class BetaVerificationContract {
         
         this.waitlistChannel = '1400663773102211166'; // Bet Collective Discord tickets channel
         this.contractsPath = path.join(__dirname, 'data', 'beta-contracts');
+        this.nftContract = new BetaNFTContract(); // Initialize NFT system
         this.init();
     }
 
@@ -92,36 +95,80 @@ class BetaVerificationContract {
         };
     }
 
-    // Create crypto signature for contract
-    async signContract(contract, userSignature) {
-        const contractData = JSON.stringify({
-            contractId: contract.contractId,
-            discordId: contract.discordId,
-            timestamp: contract.timestamp,
-            terms: contract.terms
-        });
+    // Create crypto signature for contract and mint NFT
+    async signContract(contractId, userSignature) {
+        try {
+            // Load the contract
+            const contracts = await this.getAllContracts();
+            const contract = contracts.find(c => c.contractId === contractId);
+            
+            if (!contract) {
+                throw new Error('Contract not found');
+            }
 
-        // Create server signature
-        const serverSignature = crypto
-            .createHmac('sha256', process.env.CONTRACT_SECRET || 'tiltcheck-beta-contract-2025')
-            .update(contractData)
-            .digest('hex');
+            const contractData = JSON.stringify({
+                contractId: contract.contractId,
+                discordId: contract.discordId,
+                timestamp: contract.timestamp,
+                terms: contract.terms
+            });
 
-        // Create combined signature
-        const combinedSignature = crypto
-            .createHash('sha256')
-            .update(`${serverSignature}${userSignature}${contract.deviceFingerprint.fingerprint}`)
-            .digest('hex');
+            // Create server signature
+            const serverSignature = crypto
+                .createHmac('sha256', process.env.CONTRACT_SECRET || 'tiltcheck-beta-contract-2025')
+                .update(contractData)
+                .digest('hex');
 
-        contract.signature = {
-            server: serverSignature,
-            user: userSignature,
-            combined: combinedSignature,
-            signedAt: new Date().toISOString()
-        };
+            // Create combined signature
+            const combinedSignature = crypto
+                .createHash('sha256')
+                .update(`${serverSignature}${userSignature}${contract.deviceFingerprint.fingerprint}`)
+                .digest('hex');
 
-        contract.status = 'signed';
-        return contract;
+            contract.signature = {
+                server: serverSignature,
+                user: userSignature,
+                combined: combinedSignature,
+                signedAt: new Date().toISOString()
+            };
+
+            contract.status = 'signed';
+
+            // Mint NFT for the signed contract
+            console.log(`🎨 Minting Beta NFT for Discord ID: ${contract.discordId}`);
+            const nft = await this.nftContract.mintBetaNFT(
+                contract.discordId,
+                contract.contractId,
+                contract.deviceFingerprint,
+                userSignature
+            );
+
+            // Add NFT details to contract
+            contract.nft = {
+                tokenId: nft.tokenId,
+                contractSignature: nft.contractSignature,
+                verificationUrl: nft.verificationUrl,
+                mintedAt: Date.now()
+            };
+
+            // Save updated contract
+            await this.saveContract(contract);
+
+            console.log(`✅ Beta NFT minted successfully: ${nft.tokenId}`);
+            return {
+                success: true,
+                contract,
+                nft,
+                message: 'Contract signed and NFT minted successfully'
+            };
+
+        } catch (error) {
+            console.error('❌ Failed to sign contract and mint NFT:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     // Verify Discord ID is approved for beta
