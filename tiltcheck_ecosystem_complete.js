@@ -1,5 +1,16 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('exp        // Root endpoint
+        this.app.get('/', (req, res) => {
+            res.json({
+                title: "TiltCheck.it.com - Complete Ecosystem",
+                status: "🟢 Live Production",
+                ecosystem: "https://tiltcheckecosystem.created.app",
+                version: "4.0.0",
+                developer: "jmenichole - Mischief Manager",
+                endpoints: 12,
+                newFeature: "🎨 NFT Minting for Legal Agreements at /nftmint",
+                footer: this.getFooter()
+            });
+        });t cors = require('cors');
 
 class TiltCheckEcosystemServer {
     constructor() {
@@ -174,6 +185,33 @@ class TiltCheckEcosystemServer {
             });
         });
 
+        // NFT Minting for Legal Agreements
+        this.app.get('/nftmint', (req, res) => {
+            res.json({
+                title: "TiltCheck NFT Mint - Legal Agreement Verification",
+                description: "Mint verifiable node NFTs when signing up and agreeing to legal terms via Discord linking",
+                process: {
+                    step1: "Discord OAuth verification",
+                    step2: "Legal terms agreement",
+                    step3: "NFT minting with cryptographic proof",
+                    step4: "Permanent Discord ID binding"
+                },
+                benefits: [
+                    "Legal protection through blockchain verification",
+                    "Cryptographic proof of agreement",
+                    "Non-transferable security binding",
+                    "Ecosystem access verification"
+                ],
+                integration: {
+                    ecosystem: "https://tiltcheckecosystem.created.app",
+                    suslink: "https://tiltcheckecosystem.created.app/suslink",
+                    mintingServer: "http://localhost:4002/nftmint"
+                },
+                status: "🟢 Live NFT Minting Available",
+                footer: this.getFooter()
+            });
+        });
+
         // Sitemap
         this.app.get('/sitemap.xml', (req, res) => {
             res.set('Content-Type', 'application/xml');
@@ -181,6 +219,7 @@ class TiltCheckEcosystemServer {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url><loc>https://tiltcheck.it.com/</loc><priority>1.0</priority></url>
     <url><loc>https://tiltcheck.it.com/ecosystem</loc><priority>0.9</priority></url>
+    <url><loc>https://tiltcheck.it.com/nftmint</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/degens-live</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/justthetip-live</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/communities</loc><priority>0.8</priority></url>
