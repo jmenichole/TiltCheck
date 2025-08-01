@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jmenichole - Full-Stack Developer Portfolio</title>
+    <meta name="description" content="jmenichole - Full-stack developer specializing in Discord bots, crypto integration, gambling accountability systems, and blockchain development.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff; 
+            line-height: 1.6; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .header { 
+            background: rgba(0, 0, 0, 0.9); 
+            padding: 20px 0; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: #4CAF50; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { color: #ffffff; text-decoration: none; transition: color 0.3s; }
+        .nav-links a:hover { color: #4CAF50; }
+        .hero { 
+            padding: 120px 0 80px; 
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+        }
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 20px; 
+            background: linear-gradient(45deg, #4CAF50, #2196F3); 
+            -webkit-background-clip: text; 
+            background-clip: text;
+            -webkit-text-fill-color: transparent; 
+        }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; color: #cccccc; }
+        .dashboard-link { 
+            background: linear-gradient(45deg, #ff6b00, #ff4444); 
+            color: #fff; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 30px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: transform 0.3s; 
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+        .dashboard-link:hover { transform: translateY(-3px); }
+        .projects { padding: 80px 0; background: rgba(0, 0, 0, 0.3); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .project-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 30px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(76, 175, 80, 0.2); 
+            backdrop-filter: blur(10px);
+        }
+        .project-card h3 { color: #4CAF50; margin-bottom: 15px; font-size: 1.3rem; }
+        .skills { padding: 60px 0; text-align: center; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .skill { 
+            background: rgba(76, 175, 80, 0.1); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        .contact { padding: 80px 0; background: rgba(0, 0, 0, 0.2); }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .contact-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 25px; 
+            border-radius: 10px; 
+            border-left: 4px solid #4CAF50;
+            text-align: center;
+        }
+        .contact-link {
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .contact-link:hover { transform: translateY(-2px); }
+        .footer { background: #000; padding: 40px 0; text-align: center; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">jmenichole 👨‍💻</div>
+                <ul class="nav-links">
+                    <li><a href="/">TiltCheck</a></li>
+                    <li><a href="/justthetip">JustTheTip</a></li>
+                    <li><a href="/beta">Beta</a></li>
+                    <li><a href="/collectclock">CollectClock</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>jmenichole</h1>
+            <p>Full-Stack Developer & Blockchain Specialist</p>
+            <p>Discord Bots • Crypto Integration • Gambling Accountability Systems</p>
+            <a href="/dashboard" class="dashboard-link">🎯 TiltCheck Dashboard</a>
+            <a href="/beta" class="dashboard-link">🧪 Beta Testing</a>
+        </div>
+    </section>
+
+    <section class="projects">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>🎰 TiltCheck</h3>
+                    <p>Advanced gambling accountability system with real-time monitoring, tilt detection, and addiction prevention. Built for the degen community with comprehensive casino trust scoring.</p>
+                    <a href="/" style="color: #4CAF50; text-decoration: none;">→ View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>💰 JustTheTip</h3>
+                    <p>Multi-chain crypto payment and tipping system supporting 7 blockchains. Enterprise-grade wallet management with Discord integration.</p>
+                    <a href="/justthetip" style="color: #4CAF50; text-decoration: none;">→ View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>⏰ CollectClock</h3>
+                    <p>Time tracking and productivity application with advanced analytics and project management features.</p>
+                    <a href="/collectclock" style="color: #4CAF50; text-decoration: none;">→ View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>🤖 TrapHouse Bot Ecosystem</h3>
+                    <p>Complete Discord bot ecosystem with enterprise separation, financial operations, and community engagement features.</p>
+                    <a href="/beta" style="color: #4CAF50; text-decoration: none;">→ Beta Test</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills">
+        <div class="container">
+            <h2 style="margin-bottom: 40px; font-size: 2.5rem;">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill">
+                    <h4 style="color: #4CAF50;">Frontend</h4>
+                    <p>React, Vue.js, HTML5, CSS3, JavaScript</p>
+                </div>
+                <div class="skill">
+                    <h4 style="color: #4CAF50;">Backend</h4>
+                    <p>Node.js, Express, Python, PHP</p>
+                </div>
+                <div class="skill">
+                    <h4 style="color: #4CAF50;">Blockchain</h4>
+                    <p>Web3.js, Solidity, Multi-chain Integration</p>
+                </div>
+                <div class="skill">
+                    <h4 style="color: #4CAF50;">Discord Bots</h4>
+                    <p>Discord.js, Slash Commands, Bot Architecture</p>
+                </div>
+                <div class="skill">
+                    <h4 style="color: #4CAF50;">Databases</h4>
+                    <p>MongoDB, MySQL, Redis, JSON Storage</p>
+                </div>
+                <div class="skill">
+                    <h4 style="color: #4CAF50;">DevOps</h4>
+                    <p>Docker, Railway, GitHub Actions, CI/CD</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">Connect & Support</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">💼 Professional</h3>
+                    <a href="https://linkedin.com/in/jmenichole0" class="contact-link">LinkedIn Profile</a>
+                    <a href="https://github.com/jmenichole" class="contact-link">GitHub Repository</a>
+                </div>
+                <div class="contact-card">
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">💖 Support My Work</h3>
+                    <a href="https://github.com/sponsors/jmenichole" class="contact-link">GitHub Sponsors</a>
+                    <a href="https://ko-fi.com/jmenichole" class="contact-link">Ko-fi Donations</a>
+                </div>
+                <div class="contact-card">
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">🌐 Portfolio Sites</h3>
+                    <a href="https://traphousediscordbot.created.app" class="contact-link">Main Portfolio</a>
+                    <a href="https://jmenichole.github.io/CollectClock/" class="contact-link">CollectClock Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 60px 0; text-align: center; background: rgba(76, 175, 80, 0.05);">
+        <div class="container">
+            <h2 style="margin-bottom: 30px; font-size: 2rem;">Ready to Explore TiltCheck?</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem;">Experience the complete gambling accountability ecosystem</p>
+            <a href="/dashboard" class="dashboard-link">📊 Open Dashboard</a>
+            <a href="/beta" class="dashboard-link">🧪 Join Beta Testing</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 jmenichole - Full-Stack Developer</p>
+            <p style="font-size: 0.9rem; color: #cccccc; margin-top: 10px;">Building the future of gambling accountability and crypto integration</p>
+        </div>
+    </footer>
+</body>
+</html>

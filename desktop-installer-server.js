@@ -9,6 +9,12 @@ const path = require('path');
 const app = express();
 const proxy = httpProxy.createProxyServer({});
 
+// Configuration
+const PORT = 4001;
+const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
+const DESKTOP_DETECTION_ENABLED = true;
+const MOBILE_DETECTION_ENABLED = true;
+
 // Portfolio and Social Links
 const PORTFOLIO_LINKS = {
     linkedin: 'https://linkedin.com/in/jmenichole0',
@@ -19,12 +25,11 @@ const PORTFOLIO_LINKS = {
     portfolioSite: 'https://traphousediscordbot.created.app'
 };
 
-// Approved Beta Test Discord IDs
+// Approved Beta Users (Discord IDs)
 const APPROVED_BETA_USERS = [
     '1155164907680043059',
     '297854966591127552', 
-    '997337840734187621',
-    '1271253905115975773'
+    '4927969932326994201217998526663888916'
 ];
 
 // Configuration
@@ -250,6 +255,14 @@ app.get('/justthetip', (req, res) => {
 
 app.get('/beta', (req, res) => {
   res.sendFile(path.join(__dirname, 'landing-pages', 'tiltcheck-beta.html'));
+});
+
+app.get('/collectclock', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'collectclock-landing.html'));
+});
+
+app.get('/developer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'developer-portfolio.html'));
 });
 
 // Beta access validation
