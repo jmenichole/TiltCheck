@@ -1,0 +1,34 @@
+# TiltCheck VPS API Configuration
+# Keep this file secure and never commit to public repositories
+
+# VPS Provider API Credentials
+VPS_API_KEY=S9LW9-8JW9R-E0FVM
+VPS_API_HASH=4917a66bb8446173b4940c837a0d3ac43ac40d9a
+
+# VPS Provider Settings (Adjust based on your provider)
+# Common providers: vultr, digitalocean, linode, aws
+VPS_PROVIDER=vultr
+VPS_API_BASE_URL=https://api.vultr.com/v2
+
+# Default VPS Configuration for TiltCheck
+VPS_REGION=ewr  # New Jersey
+VPS_PLAN=vc2-1c-2gb  # 1 CPU, 2GB RAM, 55GB SSD
+VPS_OS_ID=387  # Ubuntu 20.04 LTS
+VPS_LABEL=tiltcheck-production
+
+# TiltCheck Configuration
+DOMAIN=tiltcheck.it.com
+PROJECT_NAME=tiltcheck
+
+# Security Settings
+ENABLE_FIREWALL=true
+ENABLE_SSL=true
+ENABLE_AUTO_UPDATES=true
+
+# Backup Settings
+ENABLE_BACKUPS=true
+BACKUP_RETENTION_DAYS=7
+
+# Monitoring Settings
+ENABLE_MONITORING=true
+ALERT_EMAIL=admin@tiltcheck.it.com
