@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TrapHouse Beta - Terms of Service</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #181818; color: #fff; padding: 40px; }
+    .container { max-width: 600px; margin: auto; background: #222; border-radius: 10px; padding: 30px; }
+    h1 { color: #00ff00; }
+    button { background: #00ff00; color: #181818; border: none; padding: 12px 24px; border-radius: 5px; font-size: 1.1em; cursor: pointer; margin-top: 20px; }
+    button:disabled { background: #555; color: #aaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TrapHouse Beta - Terms of Service</h1>
+    <p>Please read and accept the Terms of Service and all required agreements to continue to the beta dashboard.</p>
+    <div style="height:200px; overflow:auto; background:#111; padding:10px; border-radius:5px; margin-bottom:20px;">
+      <p><strong>Terms of Service:</strong></p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisi nec erat. Etiam euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisi nec erat.</p>
+      <p>By clicking Accept, you agree to all terms and conditions for beta testing on desktop only.</p>
+    </div>
+    <button id="acceptBtn">Accept & Continue</button>
+  </div>
+  <script>
+    document.getElementById('acceptBtn').onclick = async function() {
+      this.disabled = true;
+      this.textContent = 'Processing...';
+      const res = await fetch('/accept-tos', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      const data = await res.json();
+      if (data.success) {
+        window.location.href = '/dashboard';
+      } else {
+        alert('Error: ' + data.message);
+        this.disabled = false;
+        this.textContent = 'Accept & Continue';
+      }
+    };
+  </script>
+</body>
+</html>
