@@ -314,20 +314,40 @@
         </div>
     </div>
 
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" id="loadingIndicator">
+        ⏳ Loading Ko-fi widget...
+    </div>
+    
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage">
+        ⚠️ Ko-fi widget failed to load. You can still visit <a href="https://ko-fi.com/jmenichole" target="_blank" style="color: #ff6b6b;">ko-fi.com/jmenichole</a> directly.
+    </div>
+
     <!-- Ko-fi Overlay Widget -->
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
     <script>
         // Initialize Ko-fi widget when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             try {
-                kofiWidgetOverlay.draw('jmenichole0', {
-                    'type': 'floating-chat',
-                    'floating-chat.donateButton.text': 'Tip Me',
-                    'floating-chat.donateButton.background-color': '#00bfa5',
-                    'floating-chat.donateButton.text-color': '#fff'
-                });
-                console.log('Ko-fi widget loaded successfully');
+                    kofiWidgetOverlay.draw('jmenichole0', {
+                        'type': 'floating-chat',
+                        'floating-chat.donateButton.text': 'Tip Me',
+                        'floating-chat.donateButton.background-color': '#00bfa5',
+                        'floating-chat.donateButton.text-color': '#fff'
+                    });
+                    
+                    // Hide loading indicator on success
+                    clearTimeout(widgetTimeout);
+                    loadingIndicator.style.display = 'none';
+                    console.log('Ko-fi widget loaded successfully');
+                } else {
+                    throw new Error('Ko-fi widget script not loaded');
+                }
             } catch (error) {
+                clearTimeout(widgetTimeout);
+                loadingIndicator.style.display = 'none';
+                errorMessage.style.display = 'block';
                 console.error('Ko-fi widget failed to load:', error);
             }
         });
@@ -339,13 +359,33 @@
         document.addEventListener('click', function(e) {
             if (e.target.tagName === 'A' && e.target.hostname !== window.location.hostname) {
                 console.log('External link clicked:', e.target.href);
+                
+                // Track specific platforms
+                if (e.target.href.includes('ko-fi.com')) {
+                    console.log('Ko-fi link clicked');
+                } else if (e.target.href.includes('gomining.com')) {
+                    console.log('GoMining referral clicked');
+                } else if (e.target.href.includes('discord.com/oauth2/authorize')) {
+                    console.log('Discord bot invite clicked:', e.target.href);
+                }
             }
         });
         
         // Handle any JavaScript errors gracefully
         window.addEventListener('error', function(e) {
             console.error('Page error:', e.error);
+            
+            // Hide loading indicator if there's an error
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
         });
+        
+        // Check if page is served over HTTPS (recommended for Ko-fi widget)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            console.warn('Page not served over HTTPS. Ko-fi widget may not work properly.');
+        }
     </script>
 </body>
 </html>
