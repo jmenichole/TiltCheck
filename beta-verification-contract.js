@@ -225,6 +225,99 @@ class BetaVerificationContract {
         }
     }
 
+    // Get all contracts (for internal use)
+    async getAllContracts() {
+        try {
+            const files = await fs.readdir(this.contractsPath);
+            const contractFiles = files.filter(file => file.startsWith('contract-') && file.endsWith('.json'));
+            
+            const contracts = [];
+            for (const file of contractFiles) {
+                try {
+                    const data = await fs.readFile(path.join(this.contractsPath, file), 'utf8');
+                    contracts.push(JSON.parse(data));
+                } catch (error) {
+                    console.error(`Failed to load contract file ${file}:`, error);
+                }
+            }
+            
+            return contracts;
+        } catch (error) {
+            console.error('Failed to get all contracts:', error);
+            return [];
+        }
+    }
+
+    // Verify NFT ownership for Discord ID
+    async verifyNFTOwnership(discordId) {
+        try {
+            const userNFTs = await this.nftContract.getUserNFTs(discordId);
+            return {
+                hasValidNFT: userNFTs.length > 0,
+                nfts: userNFTs,
+                totalNFTs: userNFTs.length
+            };
+        } catch (error) {
+            console.error('Failed to verify NFT ownership:', error);
+            return {
+                hasValidNFT: false,
+                nfts: [],
+                totalNFTs: 0,
+                error: error.message
+            };
+        }
+    }
+
+    // Get NFT details for verification page
+    async getNFTDetails(tokenId) {
+        try {
+            const metadata = await this.nftContract.getNFTMetadata(tokenId);
+            const ownership = await this.nftContract.verifyNFTOwnership(
+                metadata?.attributes?.find(attr => attr.trait_type === 'Discord ID')?.value,
+                tokenId
+            );
+            
+            return {
+                metadata,
+                ownership,
+                isValid: ownership.isValid
+            };
+        } catch (error) {
+            console.error('Failed to get NFT details:', error);
+            return {
+                metadata: null,
+                ownership: { isValid: false },
+                isValid: false,
+                error: error.message
+            };
+        }
+    }
+
+    // Check if user has valid contract with NFT
+    async hasValidContract(discordId) {
+        try {
+            const contracts = await this.getUserContracts(discordId);
+            const signedContracts = contracts.filter(c => c.status === 'signed' && c.nft);
+            
+            if (signedContracts.length > 0) {
+                // Verify NFT still exists and is valid
+                const latestContract = signedContracts[0];
+                if (latestContract.nft && latestContract.nft.tokenId) {
+                    const nftVerification = await this.nftContract.verifyNFTOwnership(
+                        discordId, 
+                        latestContract.nft.tokenId
+                    );
+                    return nftVerification.isValid;
+                }
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('Failed to check valid contract:', error);
+            return false;
+        }
+    }
+
     // Verify contract signature
     verifyContractSignature(contract) {
         if (!contract.signature) return false;
