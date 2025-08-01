@@ -185,6 +185,10 @@ app.get('/beta-access', async (req, res) => {
         // Generate new contract for approved user
         const contract = betaContract.generateBetaContract(discordId, deviceFingerprint);
         
+        // Save the contract immediately so it can be found during signing
+        await betaContract.saveContract(contract);
+        console.log(`📋 Generated and saved new contract: ${contract.contractId} for Discord ID: ${discordId}`);
+        
         res.send(`
             <!DOCTYPE html>
             <html lang="en">
