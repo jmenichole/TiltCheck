@@ -113,12 +113,22 @@ echo "🧪 Beta Server PID: $BETA_PID (http://localhost:3333/beta)"
 echo "🐙 GitHub Server PID: $GITHUB_PID (http://localhost:3001/health)"
 echo "⏰ CollectClock PID: $COLLECTCLOCK_PID (http://localhost:3002)"
 echo "🎮 Degens Bot PID: $DEGENS_PID"
+if [ ! -z "$TILTCHECK_PID" ]; then
+    echo "🎯 TiltCheck API PID: $TILTCHECK_PID (http://localhost:4001)"
+    echo "   ✅ Verified Node Confirmations: Active"
+    echo "   🔗 Production URL: https://tiltcheck.it.com"
+fi
 echo ""
 echo "📊 Available Dashboards:"
 echo "   • Beta Dashboard: http://localhost:3333/beta"
 echo "   • AIM Overlay: http://localhost:3333/aim-overlay"
 echo "   • Analytics: http://localhost:3333/analytics"
 echo "   • Dev Tools: http://localhost:3333/dev-tools"
+if [ ! -z "$TILTCHECK_PID" ]; then
+    echo "   • TiltCheck Main: http://localhost:4001"
+    echo "   • TiltCheck Health: http://localhost:4001/api/health"
+    echo "   • Node Verification: http://localhost:4001/api/verify"
+fi
 echo ""
 echo "📋 Discord Bot Installation Links:"
 echo "   • Main Bot: https://discord.com/api/oauth2/authorize?client_id=1354450590813655142&permissions=274881367104&scope=bot%20applications.commands"
@@ -143,6 +153,9 @@ echo "$BETA_PID" >> .bot_pids
 echo "$GITHUB_PID" >> .bot_pids
 echo "$COLLECTCLOCK_PID" >> .bot_pids
 echo "$DEGENS_PID" >> .bot_pids
+if [ ! -z "$TILTCHECK_PID" ]; then
+    echo "$TILTCHECK_PID" >> .bot_pids
+fi
 
 # Keep script running to monitor
 echo "💡 Press Ctrl+C to view logs or use './stop_bot.sh' to stop all services"
