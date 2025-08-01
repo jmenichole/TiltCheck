@@ -646,14 +646,60 @@ class UserTrustSystem {
     // ===== EXISTING METHODS (PRESERVED) =====
     
     async calculateSusScore(userId) {
-        // Preserve existing sus score calculation
-        // TODO: Integrate with scam reporting system
-        return 0;
+        try {
+            const userTrust = this.loadUserTrustScore(userId);
+            if (!userTrust) return 0;
+            
+            let susScore = 0;
+            
+            // Add penalties from scam reports received
+            const reportsReceived = userTrust.scamReports?.received || [];
+            susScore += reportsReceived.length * this.SUS_PENALTIES.scam_report_against;
+            
+            // Add other suspicious activity penalties
+            // TODO: Integrate with existing suspicious activity tracking
+            
+            return Math.min(susScore, 1000); // Cap at 1000
+        } catch (error) {
+            console.error('Sus score calculation error:', error);
+            return 0;
+        }
     }
     
     async calculateCasinoTrustScore(userId) {
-        // Preserve existing casino trust score calculation
-        return this.getDefaultCasinoTrustScore();
+        try {
+            // Existing casino trust score calculation
+            const userTrust = this.loadUserTrustScore(userId);
+            if (!userTrust || !userTrust.nftContractVerified) {
+                return this.getDefaultCasinoTrustScore();
+            }
+            
+            // Calculate casino-specific trust components
+            const paymentHistory = this.calculatePaymentHistory(userId);
+            const casinoConnections = this.calculateCasinoConnections(userId);
+            const complianceBonus = userTrust.totalTrustScore > 500 ? 20 : 0;
+            const diversityBonus = userTrust.verifiedLinks.length >= 3 ? 15 : 0;
+            const respectScore = Math.min(userTrust.totalTrustScore / 10, 50);
+            
+            const totalScore = paymentHistory + casinoConnections + complianceBonus + 
+                             diversityBonus + respectScore;
+            
+            return {
+                totalScore: Math.min(totalScore, 100),
+                breakdown: {
+                    paymentHistory,
+                    casinoConnections,
+                    complianceBonus,
+                    diversityBonus,
+                    respectScore
+                },
+                riskLevel: this.classifyRiskLevel(totalScore),
+                calculatedAt: new Date().toISOString()
+            };
+        } catch (error) {
+            console.error('Casino trust score calculation error:', error);
+            return this.getDefaultCasinoTrustScore();
+        }
     }
     
     getDefaultCasinoTrustScore() {
@@ -669,6 +715,121 @@ class UserTrustSystem {
             riskLevel: 'very_high',
             calculatedAt: new Date().toISOString()
         };
+    }
+    
+    calculatePaymentHistory(userId) {
+        // Calculate payment history score (0-30 points)
+        // TODO: Integrate with existing payment tracking
+        return 0;
+    }
+    
+    calculateCasinoConnections(userId) {
+        // Calculate casino connections score (0-25 points)
+        const userTrust = this.loadUserTrustScore(userId);
+        if (!userTrust) return 0;
+        
+        const casinoLinks = userTrust.verifiedLinks.filter(link => 
+            link.type === 'casino_account' && link.status === 'active'
+        );
+        
+        return Math.min(casinoLinks.length * 8, 25);
+    }
+    
+    classifyRiskLevel(score) {
+        if (score >= 80) return 'very_low';
+        if (score >= 60) return 'low';
+        if (score >= 40) return 'moderate';
+        if (score >= 20) return 'high';
+        return 'very_high';
+    }
+    
+    logSuspiciousActivity(userId, susScore, activityData) {
+        try {
+            const log = {
+                userId,
+                susScore,
+                activityData,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Log suspicious activity
+            const logPath = './data/suspicious_activity_log.json';
+            let logs = [];
+            
+            try {
+                logs = JSON.parse(fs.readFileSync(logPath, 'utf8'));
+            } catch (error) {
+                // File doesn't exist, start with empty array
+            }
+            
+            logs.push(log);
+            
+            // Keep last 500 entries
+            if (logs.length > 500) {
+                logs = logs.slice(-500);
+            }
+            
+            fs.writeFileSync(logPath, JSON.stringify(logs, null, 2));
+        } catch (error) {
+            console.error('Log suspicious activity error:', error);
+        }
+    }
+    
+    // ===== UTILITY METHODS =====
+    
+    classifyUserRisk(userTrustScore, susScore) {
+        if (susScore >= 80) return 'CRITICAL';
+        if (susScore >= 60) return 'HIGH_RISK';
+        if (userTrustScore < 200 && susScore >= 40) return 'MODERATE_HIGH';
+        if (susScore >= 40) return 'MODERATE_RISK';
+        if (susScore >= 20) return 'LOW_RISK';
+        return 'MINIMAL_RISK';
+    }
+    
+    getInterventionLevel(userTrustScore, susScore) {
+        const riskLevel = this.classifyUserRisk(userTrustScore, susScore);
+        
+        switch (riskLevel) {
+            case 'CRITICAL':
+                return 'immediate_intervention';
+            case 'HIGH_RISK':
+                return 'urgent_support';
+            case 'MODERATE_HIGH':
+            case 'MODERATE_RISK':
+                return 'proactive_outreach';
+            case 'LOW_RISK':
+                return 'gentle_guidance';
+            default:
+                return 'none';
+        }
+    }
+    
+    async getUserTrustSummary(userId) {
+        try {
+            const userTrust = await this.calculateUserTrustScore(userId);
+            const casinoTrust = await this.calculateCasinoTrustScore(userId);
+            const susScore = await this.calculateSusScore(userId);
+            const riskLevel = this.classifyUserRisk(userTrust.totalScore, susScore);
+            const interventionLevel = this.getInterventionLevel(userTrust.totalScore, susScore);
+            
+            return {
+                userId,
+                userTrust,
+                casinoTrust,
+                susScore,
+                riskLevel,
+                interventionLevel,
+                nftContractRequired: !userTrust || userTrust.totalScore === 0,
+                calculatedAt: new Date().toISOString()
+            };
+        } catch (error) {
+            console.error('Get user trust summary error:', error);
+            return {
+                userId,
+                error: error.message,
+                nftContractRequired: true
+            };
+        }
     }
 }
 
