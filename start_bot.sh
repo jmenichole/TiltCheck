@@ -63,6 +63,20 @@ node degens_bot.js > logs/degens-bot.log 2>&1 &
 DEGENS_PID=$!
 echo "   ✅ Degens bot started (PID: $DEGENS_PID)"
 
+# Start TiltCheck API server with verified nodes
+if [ -d "tiltcheck-server/api" ]; then
+    echo "🎯 Starting TiltCheck API with verified node confirmations..."
+    cd tiltcheck-server/api
+    node server.js > ../../logs/tiltcheck-api.log 2>&1 &
+    TILTCHECK_PID=$!
+    cd ../..
+    echo "   ✅ TiltCheck API started (PID: $TILTCHECK_PID)"
+    echo "   🔗 Local: http://localhost:4001"
+    echo "   🌐 Production: https://tiltcheck.it.com"
+else
+    echo "⚠️  TiltCheck server not found. Run ./setup-tiltcheck-domain.sh first"
+fi
+
 # Wait for services to fully initialize
 echo "⏳ Waiting for services to initialize..."
 sleep 5
@@ -87,6 +101,9 @@ check_health() {
 check_health "http://localhost:3333/health" "Beta Testing Server"
 check_health "http://localhost:3001/health" "GitHub Webhook Server" 
 check_health "http://localhost:3002/auth/collectclock/health" "CollectClock OAuth Handler"
+if [ -d "tiltcheck-server/api" ]; then
+    check_health "http://localhost:4001/api/health" "TiltCheck API (Verified Nodes)"
+fi
 
 echo ""
 echo "🎯 TrapHouse Discord Bot Ecosystem Status:"
