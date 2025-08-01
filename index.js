@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
+const BotRoleManager = require('./botRoleManager');
 const roleManager = require('./roleManager');
 const { addRespectPoints, handleRespectCommand, handleShowoffPost, handleFireReaction } = require('./respectManager');
 const DegensCardGame = require('./degensCardGame');
@@ -19,6 +20,13 @@ const SupportIntegration = require('./supportIntegration');
 const EnhancedSystemIntegration = require('./enhancedSystemIntegration');
 const PersonalizedTiltProtection = require('./personalizedTiltProtection');
 const EnhancedTiltSetup = require('./enhancedTiltSetup');
+
+// Initialize Bot Role Manager
+const botRoleManager = new BotRoleManager();
+const currentBotConfig = botRoleManager.getCurrentBotConfig();
+
+console.log(`🤖 Starting ${currentBotConfig.name} - ${currentBotConfig.description}`);
+console.log(`🔗 Landing Page: ${currentBotConfig.landingPage}`);
 
 // Initialize all systems
 const cardGame = new DegensCardGame();
@@ -285,8 +293,21 @@ const client = new Client({
 const githubIntegration = new GitHubIntegration(client);
 
 client.once('ready', async () => {
-    const botName = process.env.CURRENT_BOT === 'JUSTTHETIP' ? 'JustTheTip' : 'TrapHouse';
-    console.log(`🏠 ${botName} bot is online! Welcome to the streets! 💯`);
+    const botConfig = botRoleManager.getCurrentBotConfig();
+    console.log(`🏠 ${botConfig.name} is online! ${botConfig.description} 💯`);
+    console.log(`🔗 Landing Page: ${botConfig.landingPage}`);
+    console.log(`📋 Features: ${botConfig.features.join(', ')}`);
+    console.log(`� Dashboards: ${botConfig.dashboards.join(', ')}`);
+    
+    // Set bot activity based on role
+    if (botRoleManager.currentBot === 'TRAPHOUSE') {
+        client.user.setActivity('Enterprise Operations | !street !front', { type: 'WATCHING' });
+    } else if (botRoleManager.currentBot === 'JUSTTHETIP') {
+        client.user.setActivity('Financial Operations | !tip !tiltcheck', { type: 'WATCHING' });
+    } else if (botRoleManager.currentBot === 'DEGENS') {
+        client.user.setActivity('Gaming Hub | !cards !degens', { type: 'PLAYING' });
+    }
+    
     console.log('🐙 GitHub Integration initialized!');
     console.log('💧 CollectClock Integration ready!');
     console.log('🎰 TiltCheck Mischief Manager loaded!');
@@ -394,7 +415,31 @@ client.on('messageCreate', async (message) => {
     const args = message.content.split(' ');
     const command = args.shift().toLowerCase();
 
-    // Handle all commands
+    // Bot Role Management - Restrict commands based on bot type
+    if (botRoleManager.currentBot === 'TRAPHOUSE') {
+        // TrapHouse Bot: Only handle !street and !front commands
+        const allowedCommands = ['!street', '!streetname', '!setup_ranks', '!front', '!admin_front', '!respect'];
+        
+        if (!allowedCommands.includes(command)) {
+            return message.reply(botRoleManager.getUnauthorizedMessage(command));
+        }
+    } else if (botRoleManager.currentBot === 'JUSTTHETIP') {
+        // JustTheTip Bot: Handle financial operations and monitoring
+        const allowedCommands = ['!tip', '!balance', '!withdraw', '!deposit', '!tiltcheck', '!collectclock', '!jtt', '!justthetip'];
+        
+        if (!allowedCommands.includes(command)) {
+            return message.reply(botRoleManager.getUnauthorizedMessage(command));
+        }
+    } else if (botRoleManager.currentBot === 'DEGENS') {
+        // Degens Bot: Handle gaming and card commands  
+        const allowedCommands = ['!degens', '!cards', '!play', '!leaderboard', '!tournament', '!stats'];
+        
+        if (!allowedCommands.includes(command)) {
+            return message.reply(botRoleManager.getUnauthorizedMessage(command));
+        }
+    }
+
+    // Handle all commands (only if authorized by role manager above)
     if (command === '!street' || command === '!streetname') {
         await roleManager.assignRole(message);
     } else if (command === '!setup_ranks') {
@@ -413,6 +458,46 @@ client.on('messageCreate', async (message) => {
         await addRespectPoints(message);
     } else if (command === '!respect') {
         await handleRespectCommand(message, args);
+    } else if (command === '!dashboard' || command === '!landing') {
+        // Display bot-specific landing page and dashboard info
+        const botConfig = botRoleManager.getCurrentBotConfig();
+        const landingInfo = botRoleManager.getLandingPageRedirect();
+        
+        const embed = {
+            color: 0x00ff00,
+            title: `🏠 ${botConfig.name} Dashboard`,
+            description: botConfig.description,
+            fields: [
+                {
+                    name: '🔗 Landing Page',
+                    value: `[${landingInfo.url}](${landingInfo.url})`,
+                    inline: true
+                },
+                {
+                    name: '🎯 Available Dashboards',
+                    value: landingInfo.dashboards.map(d => `• ${d.replace(/-/g, ' ')}`).join('\n'),
+                    inline: true
+                },
+                {
+                    name: '📋 Bot Features',
+                    value: botConfig.features.map(f => `• ${f.replace(/_/g, ' ')}`).join('\n'),
+                    inline: false
+                },
+                {
+                    name: '⚡ Available Commands',
+                    value: botConfig.allowedCommands.slice(0, 8).map(c => `\`${c}\``).join(' '),
+                    inline: false
+                }
+            ],
+            footer: {
+                text: `${botConfig.name} - Specialized Bot for Optimal Performance`
+            }
+        };
+        
+        await message.reply({ embeds: [embed] });
+    } else if (command === '!botroles') {
+        // Display information about all bots in the ecosystem
+        await message.reply(botRoleManager.getBotRolesList());
     } else if (command === '!front') {
         const frontArgs = args;
         await handleFrontCommand(message, frontArgs);
@@ -1062,8 +1147,97 @@ async function handleLoanPayment(paymentData, client) {
     }
 }
 
-// Handle button interactions for payment system
+// Handle button interactions for payment system and slash commands
 client.on('interactionCreate', async (interaction) => {
+    // Handle slash commands
+    if (interaction.isChatInputCommand()) {
+        const { commandName } = interaction;
+
+        // Bot Role Management for Slash Commands
+        if (botRoleManager.currentBot === 'TRAPHOUSE') {
+            // TrapHouse Bot: Only casino trust system commands
+            const allowedSlashCommands = [
+                'casino-verify', 'casino-profile', 'casino-ranking', 
+                'trust-score', 'enhanced-loan'
+            ];
+            
+            if (!allowedSlashCommands.includes(commandName)) {
+                return await interaction.reply({
+                    content: botRoleManager.getUnauthorizedMessage(`/${commandName}`),
+                    ephemeral: true
+                });
+            }
+        } else if (botRoleManager.currentBot === 'JUSTTHETIP') {
+            // JustTheTip Bot: Financial and monitoring commands
+            const allowedSlashCommands = [
+                'payment', 'tilt-check', 'help'
+            ];
+            
+            if (!allowedSlashCommands.includes(commandName)) {
+                return await interaction.reply({
+                    content: botRoleManager.getUnauthorizedMessage(`/${commandName}`),
+                    ephemeral: true
+                });
+            }
+        }
+
+        // Load and execute commands (only if authorized)
+        try {
+            let command;
+            switch (commandName) {
+                case 'casino-verify':
+                    command = require('./commands/casino-verify.js');
+                    break;
+                case 'casino-profile':
+                    command = require('./commands/casino-profile.js');
+                    break;
+                case 'casino-ranking':
+                    command = require('./commands/casino-ranking.js');
+                    break;
+                case 'trust-score':
+                    command = require('./commands/trust-score.js');
+                    break;
+                case 'enhanced-loan':
+                    command = require('./commands/enhanced-loan.js');
+                    break;
+                case 'payment':
+                    command = require('./commands/payment.js');
+                    break;
+                case 'help':
+                    command = require('./commands/help_fixed.js');
+                    break;
+                case 'tilt-check':
+                    command = require('./commands/enhancedTiltCheck.js');
+                    break;
+                default:
+                    return await interaction.reply({ 
+                        content: `❌ Command \`/${commandName}\` not found.`, 
+                        ephemeral: true 
+                    });
+            }
+
+            if (command && command.execute) {
+                await command.execute(interaction);
+            } else {
+                await interaction.reply({ 
+                    content: `❌ Command \`/${commandName}\` is not properly configured.`, 
+                    ephemeral: true 
+                });
+            }
+        } catch (error) {
+            console.error(`Error executing slash command ${commandName}:`, error);
+            const errorMessage = '❌ There was an error while executing this command!';
+            
+            if (interaction.replied || interaction.deferred) {
+                await interaction.editReply({ content: errorMessage, ephemeral: true });
+            } else {
+                await interaction.reply({ content: errorMessage, ephemeral: true });
+            }
+        }
+        return;
+    }
+
+    // Handle button interactions
     if (!interaction.isButton()) return;
 
     const customId = interaction.customId;

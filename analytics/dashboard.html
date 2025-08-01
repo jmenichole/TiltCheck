@@ -281,6 +281,14 @@
                 <h3>❌ Total Errors</h3>
                 <div class="stat-value" id="totalErrors">-</div>
             </div>
+            <div class="stat-card">
+                <h3>💬 Feedback Score</h3>
+                <div class="stat-value" id="feedbackScore">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>📈 UX Rating</h3>
+                <div class="stat-value" id="uxRating">-</div>
+            </div>
         </div>
 
         <div class="charts-container">
@@ -291,9 +299,24 @@
                 </ul>
             </div>
             <div class="chart-card">
+                <h3>💬 Feedback Overview</h3>
+                <div id="feedbackChart">
+                    <div class="loading">Loading feedback data...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-card">
                 <h3>🎯 Performance Metrics</h3>
                 <div id="performanceChart">
                     <div class="loading">Loading performance data...</div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>👥 User Experience</h3>
+                <div id="uxChart">
+                    <div class="loading">Loading UX data...</div>
                 </div>
             </div>
         </div>
@@ -382,6 +405,14 @@
                 if (commandsResponse.ok) {
                     const commandsData = await commandsResponse.json();
                     updateCommandList(commandsData);
+                }
+
+                // Fetch feedback data
+                const feedbackResponse = await fetch(`/api/analytics/feedback?userId=${currentUserId}`);
+                if (feedbackResponse.ok) {
+                    const feedbackData = await feedbackResponse.json();
+                    updateFeedbackChart(feedbackData);
+                    updateUXMetrics(feedbackData);
                 }
 
                 // Update activity
@@ -518,6 +549,114 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        function updateFeedbackChart(feedbackData) {
+            const feedbackChart = document.getElementById('feedbackChart');
+            feedbackChart.innerHTML = '';
+
+            if (!feedbackData.metrics || !feedbackData.metrics.feedbackMetrics) {
+                feedbackChart.innerHTML = '<div class="loading">No feedback data available</div>';
+                return;
+            }
+
+            const breakdown = feedbackData.metrics.feedbackMetrics.breakdown;
+            const total = Object.values(breakdown).reduce((a, b) => a + b, 0);
+
+            if (total === 0) {
+                feedbackChart.innerHTML = '<div class="loading">No feedback received yet</div>';
+                return;
+            }
+
+            const experienceEmojis = {
+                'excellent': '😍',
+                'good': '😊',
+                'neutral': '😐',
+                'poor': '😕',
+                'broken': '💥'
+            };
+
+            Object.entries(breakdown).forEach(([experience, count]) => {
+                const percentage = Math.round((count / total) * 100);
+                const item = document.createElement('div');
+                item.className = 'feedback-item';
+                item.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 0;
+                    border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+                `;
+                item.innerHTML = `
+                    <span style="color: #00ff00;">${experienceEmojis[experience]} ${experience}</span>
+                    <span style="color: #ffffff; background: rgba(0, 255, 0, 0.2); padding: 2px 8px; border-radius: 10px;">
+                        ${count} (${percentage}%)
+                    </span>
+                `;
+                feedbackChart.appendChild(item);
+            });
+        }
+
+        function updateUXMetrics(feedbackData) {
+            if (!feedbackData.metrics) return;
+
+            const metrics = feedbackData.metrics;
+            
+            // Calculate feedback score (0-100)
+            const breakdown = metrics.feedbackMetrics.breakdown || {};
+            const weights = { excellent: 5, good: 4, neutral: 3, poor: 2, broken: 1 };
+            const totalWeighted = Object.entries(breakdown)
+                .reduce((sum, [exp, count]) => sum + (weights[exp] * count), 0);
+            const totalCount = Object.values(breakdown).reduce((a, b) => a + b, 0);
+            const feedbackScore = totalCount > 0 ? Math.round((totalWeighted / (totalCount * 5)) * 100) : 0;
+
+            // Calculate UX rating
+            const responseRate = metrics.feedbackMetrics.responseRate || 0;
+            const avgCommands = metrics.userMetrics.avgCommandsPerUser || 0;
+            const uxRating = Math.min(100, Math.round((feedbackScore * 0.7) + (responseRate * 0.2) + (Math.min(avgCommands / 10, 1) * 10)));
+
+            document.getElementById('feedbackScore').textContent = `${feedbackScore}%`;
+            document.getElementById('uxRating').textContent = `${uxRating}/100`;
+
+            // Update UX chart
+            updateUXChart(metrics);
+        }
+
+        function updateUXChart(metrics) {
+            const uxChart = document.getElementById('uxChart');
+            uxChart.innerHTML = '';
+
+            const uxMetrics = [
+                { label: 'User Engagement', value: Math.min(100, metrics.userMetrics.avgCommandsPerUser * 10) },
+                { label: 'Feedback Rate', value: Math.round(metrics.feedbackMetrics.responseRate) },
+                { label: 'Active Users', value: Math.round((metrics.userMetrics.activeUsers / Math.max(metrics.userMetrics.totalUsers, 1)) * 100) },
+                { label: 'Command Success', value: 95 } // Placeholder - would calculate from error rates
+            ];
+
+            uxMetrics.forEach(metric => {
+                const item = document.createElement('div');
+                item.className = 'ux-metric-item';
+                item.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px 0;
+                    border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+                `;
+                
+                const barColor = metric.value >= 80 ? '#4CAF50' : metric.value >= 60 ? '#FF9800' : '#F44336';
+                
+                item.innerHTML = `
+                    <div style="flex-grow: 1;">
+                        <div style="color: #00ff00; font-weight: bold; margin-bottom: 4px;">${metric.label}</div>
+                        <div style="background: rgba(0,0,0,0.3); height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: ${barColor}; height: 100%; width: ${metric.value}%; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+                    <span style="color: #ffffff; margin-left: 15px; font-weight: bold;">${Math.round(metric.value)}%</span>
+                `;
+                uxChart.appendChild(item);
+            });
+        }
     </script>
 </body>
 </html>

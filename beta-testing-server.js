@@ -10,6 +10,7 @@ require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const express = require('express');
 const path = require('path');
+const { BetaFeedbackManager, BetaMetricsCollector } = require('./beta-feedback-system');
 
 // Import core systems for testing
 const CryptoTipManager = require('./cryptoTipManager');
@@ -62,6 +63,9 @@ class BetaTestingServer {
         // Track beta testers
         this.betaTesters = new Map();
         this.activeSessions = new Map();
+        
+        // Initialize feedback and UX system
+        this.feedbackManager = new BetaFeedbackManager(this.client);
         
         // Analytics and logging system
         this.analyticsData = {
@@ -285,6 +289,23 @@ class BetaTestingServer {
             res.json({
                 errors: this.analyticsData.errors.slice(-100),
                 errorCount: this.analyticsData.errors.length
+            });
+        });
+
+        this.analyticsApp.get('/api/analytics/feedback', (req, res) => {
+            const { userId } = req.query;
+            
+            if (!this.ownerAdminUsers.includes(userId)) {
+                return res.status(403).json({ error: 'Admin access required' });
+            }
+
+            const feedbackMetrics = this.feedbackManager.generateMetricsReport();
+            const allFeedback = Array.from(this.feedbackManager.feedbackData.values());
+
+            res.json({
+                metrics: feedbackMetrics,
+                recentFeedback: allFeedback.slice(-50),
+                totalFeedback: allFeedback.length
             });
         });
 
@@ -621,8 +642,12 @@ class BetaTestingServer {
         const content = message.content.toLowerCase().trim();
         const args = content.slice(1).split(' ');
         const command = args[0];
+        const startTime = Date.now();
 
         try {
+            // Track user interaction
+            this.feedbackManager.trackUserInteraction(message.author.id, command);
+            
             switch (command) {
                 case 'beta-help':
                     await this.showBetaHelp(message);
@@ -632,8 +657,17 @@ class BetaTestingServer {
                     await this.showBetaStatus(message, betaSession);
                     break;
 
+                case 'beta-feedback':
+                    await this.handleFeedbackCommand(message, args.slice(1));
+                    break;
+
                 case 'crypto-wallet':
                 case 'wallet':
+                    // Show helper for first-time crypto users
+                    const isFirstCrypto = !this.hasUsedCryptoBefore(message.author.id);
+                    if (isFirstCrypto) {
+                        await this.feedbackManager.showHelpPopup(message, 'crypto-first-time');
+                    }
                     await this.cryptoWalletManager.handleCreateWallet(message, args.slice(1));
                     break;
 
@@ -643,6 +677,11 @@ class BetaTestingServer {
                     break;
 
                 case 'tiltcheck':
+                    // Show helper for first-time TiltCheck users
+                    const isFirstTiltCheck = !this.hasUsedTiltCheckBefore(message.author.id);
+                    if (isFirstTiltCheck) {
+                        await this.feedbackManager.showHelpPopup(message, 'tiltcheck-intro');
+                    }
                     await this.enhancedTiltCheck.handleTiltCheckCommand(message, args.slice(1));
                     break;
 
@@ -659,12 +698,32 @@ class BetaTestingServer {
                     break;
 
                 default:
-                    // Forward any other commands to appropriate handlers with beta bypass
+                    // Show contextual help for unknown commands
+                    await this.feedbackManager.provideContextualHelp(message, 'command-not-found');
                     await this.forwardCommandWithBypass(message, command, args.slice(1));
             }
+
+            // Track command completion time
+            const duration = Date.now() - startTime;
+            this.feedbackManager.trackUserInteraction(message.author.id, command, duration);
+            
+            // Show feedback prompt if appropriate
+            await this.feedbackManager.showFeedbackPrompt(message, { command, duration });
+            
         } catch (error) {
             console.error('❌ Beta command error:', error);
+            
+            // Provide contextual help based on error type
+            if (error.message.includes('wallet')) {
+                await this.feedbackManager.provideContextualHelp(message, 'wallet-not-found');
+            } else if (error.message.includes('balance')) {
+                await this.feedbackManager.provideContextualHelp(message, 'insufficient-balance');
+            }
+            
             message.reply('❌ Command failed in beta mode. Please try again or contact support.');
+            
+            // Track error for metrics
+            this.logError(error, { command, userId: message.author.id });
         }
     }
 
@@ -676,7 +735,7 @@ class BetaTestingServer {
             .addFields(
                 {
                     name: '🧪 Beta Commands',
-                    value: '`!beta-help` - This help message\n`!beta-status` - Your beta session info\n`!beta-register` - Register for beta (if not already)\n`!beta-degens` - Degens bot integration info',
+                    value: '`!beta-help` - This help message\n`!beta-status` - Your beta session info\n`!beta-register` - Register for beta (if not already)\n`!beta-degens` - Degens bot integration info\n`!beta-feedback` - Submit feedback and ratings',
                     inline: false
                 },
                 {
@@ -838,6 +897,262 @@ class BetaTestingServer {
             .setFooter({ text: 'Both bots can run simultaneously on different ports' });
 
         await message.reply({ embeds: [embed] });
+    }
+
+    async handleFeedbackCommand(message, args) {
+        if (args.length === 0) {
+            const embed = new EmbedBuilder()
+                .setColor('#4CAF50')
+                .setTitle('💬 Beta Feedback System')
+                .setDescription('Help us improve the beta experience!')
+                .addFields(
+                    {
+                        name: '📝 Quick Feedback',
+                        value: '`!beta-feedback rate [command] [1-5]` - Rate a specific command\n`!beta-feedback suggest [your suggestion]` - Submit a suggestion',
+                        inline: false
+                    },
+                    {
+                        name: '🔍 Feedback Options',
+                        value: '`!beta-feedback report [issue]` - Report a bug or issue\n`!beta-feedback experience` - Share your overall experience',
+                        inline: false
+                    },
+                    {
+                        name: '📊 Your Stats',
+                        value: 'React with 📊 to see your beta testing statistics',
+                        inline: false
+                    }
+                )
+                .setFooter({ text: 'Your feedback helps shape the final release!' });
+
+            const feedbackMsg = await message.reply({ embeds: [embed] });
+            await feedbackMsg.react('📊');
+
+            // Setup stats reaction collector
+            const filter = (reaction, user) => reaction.emoji.name === '📊' && user.id === message.author.id;
+            const collector = feedbackMsg.createReactionCollector({ filter, time: 60000 });
+            
+            collector.on('collect', async () => {
+                await this.showUserBetaStats(message);
+            });
+
+            return;
+        }
+
+        const subCommand = args[0];
+        const content = args.slice(1).join(' ');
+
+        switch (subCommand) {
+            case 'rate':
+                await this.handleRatingFeedback(message, content);
+                break;
+            case 'suggest':
+                await this.handleSuggestionFeedback(message, content);
+                break;
+            case 'report':
+                await this.handleBugReport(message, content);
+                break;
+            case 'experience':
+                await this.handleExperienceFeedback(message);
+                break;
+            default:
+                message.reply('❓ Unknown feedback command. Use `!beta-feedback` to see options.');
+        }
+    }
+
+    async handleRatingFeedback(message, content) {
+        const parts = content.split(' ');
+        if (parts.length < 2) {
+            return message.reply('📝 Usage: `!beta-feedback rate [command] [1-5]`\nExample: `!beta-feedback rate crypto-wallet 4`');
+        }
+
+        const command = parts[0];
+        const rating = parseInt(parts[1]);
+
+        if (rating < 1 || rating > 5 || isNaN(rating)) {
+            return message.reply('⚠️ Rating must be between 1-5');
+        }
+
+        const experienceMap = {
+            5: 'excellent',
+            4: 'good',
+            3: 'neutral', 
+            2: 'poor',
+            1: 'broken'
+        };
+
+        await this.feedbackManager.collectFeedback(
+            message.author.id,
+            command,
+            experienceMap[rating],
+            { type: 'rating', rating, manual: true }
+        );
+
+        const embed = new EmbedBuilder()
+            .setColor('#4CAF50')
+            .setTitle('⭐ Rating Submitted!')
+            .setDescription(`Thank you for rating **${command}** with ${rating}/5 stars!`)
+            .setFooter({ text: 'Your feedback helps us prioritize improvements' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    async handleSuggestionFeedback(message, suggestion) {
+        if (!suggestion) {
+            return message.reply('💡 Usage: `!beta-feedback suggest [your suggestion]`\nExample: `!beta-feedback suggest Add more crypto chains`');
+        }
+
+        await this.feedbackManager.collectFeedback(
+            message.author.id,
+            'suggestion',
+            'neutral',
+            { type: 'suggestion', content: suggestion, manual: true }
+        );
+
+        const embed = new EmbedBuilder()
+            .setColor('#2196F3')
+            .setTitle('💡 Suggestion Received!')
+            .setDescription('Thank you for your suggestion!')
+            .addFields({
+                name: '📝 Your Suggestion',
+                value: suggestion.length > 200 ? suggestion.substring(0, 200) + '...' : suggestion,
+                inline: false
+            })
+            .setFooter({ text: 'We review all suggestions for the final release' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    async handleBugReport(message, issue) {
+        if (!issue) {
+            return message.reply('🐛 Usage: `!beta-feedback report [issue description]`\nExample: `!beta-feedback report Wallet creation fails on Polygon`');
+        }
+
+        await this.feedbackManager.collectFeedback(
+            message.author.id,
+            'bug-report',
+            'poor',
+            { type: 'bug', content: issue, priority: 'high', manual: true }
+        );
+
+        const embed = new EmbedBuilder()
+            .setColor('#FF5722')
+            .setTitle('🐛 Bug Report Submitted!')
+            .setDescription('Thank you for reporting this issue!')
+            .addFields({
+                name: '🔍 Issue Description',
+                value: issue.length > 200 ? issue.substring(0, 200) + '...' : issue,
+                inline: false
+            })
+            .setFooter({ text: 'Our team will investigate this issue promptly' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    async handleExperienceFeedback(message) {
+        const embed = new EmbedBuilder()
+            .setColor('#9C27B0')
+            .setTitle('🌟 Share Your Experience')
+            .setDescription('How has your overall beta testing experience been?')
+            .addFields({
+                name: '😍 Amazing Experience',
+                value: 'React with 😍 if you\'re loving the beta!',
+                inline: true
+            }, {
+                name: '😊 Good Experience', 
+                value: 'React with 😊 if it\'s been mostly positive',
+                inline: true
+            }, {
+                name: '😐 Mixed Experience',
+                value: 'React with 😐 if it\'s been okay',
+                inline: true
+            }, {
+                name: '😕 Poor Experience',
+                value: 'React with 😕 if you\'ve had issues',
+                inline: true
+            }, {
+                name: '💬 Additional Feedback',
+                value: 'Reply to this message with any additional thoughts!',
+                inline: false
+            })
+            .setFooter({ text: 'Your overall experience feedback is valuable to us!' });
+
+        const expMsg = await message.reply({ embeds: [embed] });
+        
+        const reactions = ['😍', '😊', '😐', '😕'];
+        for (const reaction of reactions) {
+            await expMsg.react(reaction);
+        }
+
+        this.feedbackManager.setupReactionCollector(expMsg, message.author, { command: 'overall-experience' });
+    }
+
+    async showUserBetaStats(message) {
+        const userId = message.author.id;
+        const userStats = this.feedbackManager.userInteractions.get(userId);
+        const userFeedback = Array.from(this.feedbackManager.feedbackData.values())
+            .filter(f => f.userId === userId);
+
+        if (!userStats) {
+            return message.reply('📊 No beta testing data found for your account.');
+        }
+
+        const sessionDuration = Date.now() - userStats.sessionStart;
+        const hours = Math.floor(sessionDuration / (1000 * 60 * 60));
+        const minutes = Math.floor((sessionDuration % (1000 * 60 * 60)) / (1000 * 60));
+
+        const topCommands = userStats.commandHistory
+            .reduce((acc, cmd) => {
+                acc[cmd.command] = (acc[cmd.command] || 0) + 1;
+                return acc;
+            }, {});
+
+        const sortedCommands = Object.entries(topCommands)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 5);
+
+        const embed = new EmbedBuilder()
+            .setColor('#FF9800')
+            .setTitle('📊 Your Beta Testing Stats')
+            .addFields(
+                {
+                    name: '⏱️ Session Info',
+                    value: `**Duration:** ${hours}h ${minutes}m\n**Commands Used:** ${userStats.commands}\n**Feedback Given:** ${userFeedback.length}`,
+                    inline: true
+                },
+                {
+                    name: '⚡ Performance',
+                    value: `**Avg Response:** ${Math.round(userStats.averageCommandTime)}ms\n**Most Active:** ${sortedCommands[0]?.[0] || 'None'}\n**Success Rate:** ${Math.round((1 - (userFeedback.filter(f => f.experience === 'broken').length / Math.max(userStats.commands, 1))) * 100)}%`,
+                    inline: true
+                },
+                {
+                    name: '🏆 Top Commands',
+                    value: sortedCommands.length > 0 
+                        ? sortedCommands.map(([cmd, count]) => `**${cmd}:** ${count}x`).join('\n')
+                        : 'No commands used yet',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'Thank you for being a beta tester!' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    hasUsedCryptoBefore(userId) {
+        const userStats = this.feedbackManager.userInteractions.get(userId);
+        if (!userStats) return false;
+        
+        return userStats.commandHistory.some(cmd => 
+            cmd.command.includes('crypto') || cmd.command.includes('wallet')
+        );
+    }
+
+    hasUsedTiltCheckBefore(userId) {
+        const userStats = this.feedbackManager.userInteractions.get(userId);
+        if (!userStats) return false;
+        
+        return userStats.commandHistory.some(cmd => 
+            cmd.command.includes('tiltcheck')
+        );
     }
 
     async forwardCommandWithBypass(message, command, args) {

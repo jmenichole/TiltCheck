@@ -85,16 +85,16 @@ module.exports = {
 
 **🏆 COLLECTCLOCK INTEGRATION:**
 
-**Supported Casinos:**
-• Stake.us, TrustDice, Rollbit, MetaWin, DuelBits
-• BC.Game, Roobet, Cloudbet, BitCasino, FortuneJack
-• SportsBot.io, FairSpin, BitSlot, CasinoFair, Nitrogen
+**Supported Platforms:**
+• TrustDice, Stake US, MetaWin, SpinBlitz, Hello Millions
+• Mega Bonanza, Real Prize, LuckyBird, WowVegas, Pulsz
+• Modo, McLuck, Crown Coins, Chanced, Sportzino
 
 **Bonus Tracking Features:**
 • Daily bonus availability monitoring
 • Collection pattern analysis (obsessive detection)
 • Missed bonus risk assessment
-• Cross-casino bonus hunting detection
+• Cross-platform bonus hunting detection
 • Optimal collection time suggestions
 
 **Risk Indicators:**

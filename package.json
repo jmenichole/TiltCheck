@@ -1,65 +1,63 @@
 {
-  "name": "traphouse_discordbot",
-  "version": "2.0.0",
+  "name": "traphouse-discordbot",
+  "version": "1.0.0",
+  "description": "TrapHouse Discord Bot with TiltCheck.it.com integration - Degen-Mindful Balance Platform",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "watch": "nodemon --watch . --ext js,json --ignore node_modules/ --ignore .git/ --delay 2 index.js",
-    "auto-restart": "nodemon --watch . --ext js,json --ignore node_modules/ --ignore .git/ --ignore test-*.js --delay 2 --exec 'echo \"🔄 Restarting bot due to file changes...\" && node index.js'",
-    "forever": "forever start -l forever.log -o out.log -e err.log --minUptime 1000 --spin 5 index.js",
-    "forever-stop": "forever stop index.js",
-    "pm2": "pm2 start ecosystem.config.js",
-    "pm2-stop": "pm2 stop traphouse-bot",
-    "pm2-restart": "pm2 restart traphouse-bot",
-    "pm2-logs": "pm2 logs traphouse-bot",
-    "docker:build": "docker build -t traphouse-bot .",
-    "docker:run": "docker-compose up -d",
-    "docker:stop": "docker-compose down",
-    "test": "bash test-payments.sh",
-    "deploy": "bash deploy.sh",
-    "start:overlay": "electron dashboard/TrapHouseDashboardOverlay.js",
-    "dev:overlay": "electron dashboard/TrapHouseDashboardOverlay.js --enable-logging",
-    "build:overlay": "electron-builder",
-    "build-mac": "electron-builder --mac",
-    "build-win": "electron-builder --win",
-    "build-linux": "electron-builder --linux"
+    "start": "node railway-start.js",
+    "dev": "node index.js",
+    "railway": "node railway-start.js",
+    "test": "node check-syntax.js",
+    "webhook": "node github-webhook-server.js",
+    "dashboard": "node dashboard/TrapHouseDashboardOverlay.js",
+    "lint": "echo 'Linting...' && node -c index.js",
+    "deploy": "railway up",
+    "health": "node health-check.js"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.4",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.15.0",
+    "express": "^4.18.2",
+    "fs-extra": "^11.2.0",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "node-cron": "^3.0.3",
+    "stripe": "^18.4.0",
+    "web3": "^4.16.0",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   },
   "keywords": [
     "discord",
     "bot",
-    "lending",
-    "tipcc",
-    "stripe",
-    "payments"
+    "tiltcheck",
+    "traphouse",
+    "degen",
+    "mindful",
+    "gambling",
+    "collectclock",
+    "justthetip",
+    "railway"
   ],
-  "author": "TrapHouse Development",
+  "author": "jmenichole",
   "license": "MIT",
-  "type": "commonjs",
-  "description": "TrapHouse Discord Bot with integrated payment processing via tip.cc and Stripe - Unicode Resistant",
-  "dependencies": {
-    "@solana/spl-token": "^0.4.13",
-    "@solana/web3.js": "^1.98.2",
-    "axios": "^1.11.0",
-    "bs58": "^6.0.0",
-    "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "discord.js": "^14.21.0",
-    "dotenv": "^16.6.1",
-    "ethers": "^6.15.0",
-    "express": "^4.21.2",
-    "express-session": "^1.18.2",
-    "iconv-lite": "^0.6.3",
-    "jsonwebtoken": "^9.0.2",
-    "stripe": "^14.25.0",
-    "web3": "^4.16.0",
-    "ws": "^8.18.3"
+  "homepage": "https://tiltcheck.it.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmenichole/traphouse_discordbot.git"
   },
-  "devDependencies": {
-    "electron": "^37.2.5",
-    "electron-builder": "^26.0.12",
-    "forever": "^4.0.3",
-    "nodemon": "^3.0.0",
-    "pm2": "^5.3.0"
+  "bugs": {
+    "url": "https://github.com/jmenichole/traphouse_discordbot/issues"
   }
 }

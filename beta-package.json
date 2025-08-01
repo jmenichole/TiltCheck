@@ -1,0 +1,24 @@
+{
+  "name": "traphouse-beta-testing",
+  "version": "1.0.0",
+  "description": "TrapHouse Discord Bot Beta Testing Environment",
+  "scripts": {
+    "beta": "node beta-testing-server.js",
+    "beta-deploy": "./deploy-beta-testing.sh",
+    "beta-restart": "./start-beta-server.sh"
+  },
+  "beta": {
+    "port": 3333,
+    "features": {
+      "paymentBypass": true,
+      "roleBypass": true,
+      "cryptoWallets": true,
+      "tiltCheck": true,
+      "aimOverlay": true
+    },
+    "requirements": {
+      "cryptoWalletFunding": true,
+      "discordAccount": true
+    }
+  }
+}
