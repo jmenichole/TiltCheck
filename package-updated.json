@@ -1,0 +1,68 @@
+{
+  "name": "traphouse-discord-bot",
+  "version": "2.0.0",
+  "description": "TrapHouse Discord Bot Ecosystem with NFT Trust System, Crypto Integration, and Gaming Features",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "start:all": "concurrently \"npm run start\" \"npm run start:beta\" \"npm run start:github\" \"npm run start:collectclock\" \"npm run start:degens\"",
+    "start:beta": "node beta-testing-server.js",
+    "start:github": "node github-webhook-server.js",
+    "start:collectclock": "node collectClockOAuthHandler.js",
+    "start:degens": "node degens_bot.js",
+    "dev": "nodemon bot.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:beta\" \"npm run dev:github\" \"npm run dev:collectclock\" \"npm run dev:degens\"",
+    "dev:beta": "nodemon beta-testing-server.js",
+    "dev:github": "nodemon github-webhook-server.js",
+    "dev:collectclock": "nodemon collectClockOAuthHandler.js",
+    "dev:degens": "nodemon degens_bot.js",
+    "test": "node crypto_test_summary.js",
+    "test:crypto": "node demo_crypto_payment.js",
+    "test:webhook": "node check_wallet_link.js",
+    "status": "node bot_status_check.js",
+    "deploy": "node deploy-server.js",
+    "logs": "tail -f logs/*.log",
+    "clean": "rm -rf logs/*.log node_modules package-lock.json",
+    "install:fresh": "npm run clean && npm install",
+    "health": "curl -s http://localhost:3333/health && curl -s http://localhost:3001/health && curl -s http://localhost:3002/auth/collectclock/health"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "crypto",
+    "nft",
+    "gaming",
+    "blockchain",
+    "tiltcheck",
+    "collectclock",
+    "trust-system"
+  ],
+  "author": "jmenichole",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "express": "^4.18.2",
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "crypto": "^1.0.1",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmenichole/trap-house-discord-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jmenichole/trap-house-discord-bot/issues"
+  },
+  "homepage": "https://github.com/jmenichole/trap-house-discord-bot#readme"
+}
