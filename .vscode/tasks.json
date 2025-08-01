@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start TiltCheck Ecosystem",
+			"type": "shell",
+			"command": "./start-ecosystem.sh",
+			"args": [
+				"start"
+			],
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
