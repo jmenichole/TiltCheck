@@ -1,0 +1,27 @@
+{
+  "name": "traphouse-discord-bot",
+  "version": "2.0.0",
+  "description": "TrapHouse Discord Bot with TiltCheck Integration",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "start:all": "./start_bot.sh",
+    "start:routing": "node routing.js",
+    "start:tiltcheck": "./start_tiltcheck_main.sh",
+    "start:beta": "node beta-testing-server.js",
+    "start:github": "node github-webhook-server.js",
+    "start:collectclock": "node collectClockOAuthHandler.js",
+    "start:degens": "node degens_bot.js",
+    "test": "node crypto-test.js",
+    "test:kofi": "node test-kofi-webhook.js",
+    "test:endpoints": "./test_tiltcheck_endpoints.sh",
+    "test:support": "node test-support-page.js",
+    "health": "curl http://localhost:4001/health && curl http://localhost:3333/health",
+    "status": "ps aux | grep node",
+    "stop": "pkill -f 'node.*\\.js'",
+    "dev": "nodemon bot.js",
+    "dev:routing": "nodemon routing.js",
+    "logs": "tail -f *.log",
+    "clean": "rm -rf node_modules package-lock.json && npm install"
+  }
+}
