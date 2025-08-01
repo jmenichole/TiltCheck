@@ -322,7 +322,7 @@ app.get('/beta-access', async (req, res) => {
     }
 });
 
-// Contract signing endpoint
+// Contract signing endpoint with NFT minting
 app.post('/sign-contract', async (req, res) => {
     try {
         const { contractId, discordId, userSignature } = req.body;
@@ -331,16 +331,238 @@ app.post('/sign-contract', async (req, res) => {
             return res.json({ success: false, message: 'Missing required fields' });
         }
         
-        const success = await betaContract.signContract(contractId, userSignature);
+        const result = await betaContract.signContract(contractId, userSignature);
         
-        if (success) {
-            res.json({ success: true, message: 'Contract signed successfully' });
+        if (result.success) {
+            res.json({ 
+                success: true, 
+                message: 'Contract signed and NFT minted successfully',
+                nft: {
+                    tokenId: result.nft.tokenId,
+                    verificationUrl: result.nft.verificationUrl
+                }
+            });
         } else {
-            res.json({ success: false, message: 'Contract signing failed' });
+            res.json({ success: false, message: result.error || 'Contract signing failed' });
         }
     } catch (error) {
         console.error('Contract signing error:', error);
         res.json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// NFT verification endpoint
+app.get('/verify-nft/:tokenId', async (req, res) => {
+    try {
+        const { tokenId } = req.params;
+        const nftDetails = await betaContract.getNFTDetails(tokenId);
+        
+        if (!nftDetails.isValid) {
+            return res.status(404).send(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>NFT Verification Failed</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 50px; text-align: center; }
+                        .container { max-width: 600px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #ff6b00; }
+                        h1 { color: #ff6b00; font-size: 2.5rem; margin-bottom: 30px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>❌ NFT Verification Failed</h1>
+                        <p>The requested NFT could not be verified or does not exist.</p>
+                        <a href="/portfolio" style="color:#00ff00;">Return to Portfolio</a>
+                    </div>
+                </body>
+                </html>
+            `);
+        }
+
+        const metadata = nftDetails.metadata;
+        const discordId = metadata.attributes.find(attr => attr.trait_type === 'Discord ID')?.value;
+        const contractId = metadata.attributes.find(attr => attr.trait_type === 'Contract ID')?.value;
+        const mintDate = metadata.attributes.find(attr => attr.trait_type === 'Mint Date')?.value;
+        
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>TiltCheck Beta NFT Verification</title>
+                <style>
+                    body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 30px; }
+                    .container { max-width: 800px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #00ff00; }
+                    h1 { color: #00ff00; text-align: center; margin-bottom: 30px; }
+                    .nft-display { display: flex; gap: 30px; margin: 30px 0; }
+                    .nft-image { flex: 1; }
+                    .nft-details { flex: 2; }
+                    .nft-image img { width: 100%; max-width: 300px; border-radius: 15px; border: 2px solid #00ff00; }
+                    .attribute { background: rgba(0,255,0,0.1); padding: 10px; border-radius: 5px; margin: 10px 0; border: 1px solid rgba(0,255,0,0.3); }
+                    .verification-badge { background: rgba(0,255,0,0.2); padding: 15px; border-radius: 10px; text-align: center; border: 2px solid #00ff00; margin: 20px 0; }
+                    .contract-link { color: #00ff00; text-decoration: none; font-weight: bold; }
+                    .contract-link:hover { text-decoration: underline; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🎮 TiltCheck Beta NFT Verification</h1>
+                    
+                    <div class="verification-badge">
+                        <h2>✅ NFT VERIFIED</h2>
+                        <p>This NFT represents a valid, legally binding beta testing contract</p>
+                    </div>
+                    
+                    <div class="nft-display">
+                        <div class="nft-image">
+                            <img src="${metadata.image}" alt="${metadata.name}" />
+                            ${metadata.animation_url ? `<p><a href="${metadata.animation_url}" target="_blank" class="contract-link">View Animated Version</a></p>` : ''}
+                        </div>
+                        
+                        <div class="nft-details">
+                            <h3>NFT Details</h3>
+                            <div class="attribute">
+                                <strong>Name:</strong> ${metadata.name}
+                            </div>
+                            <div class="attribute">
+                                <strong>Token ID:</strong> ${tokenId}
+                            </div>
+                            <div class="attribute">
+                                <strong>Owner (Discord ID):</strong> ${discordId}
+                            </div>
+                            <div class="attribute">
+                                <strong>Contract ID:</strong> ${contractId}
+                            </div>
+                            <div class="attribute">
+                                <strong>Minted:</strong> ${mintDate}
+                            </div>
+                            <div class="attribute">
+                                <strong>Status:</strong> <span style="color: #00ff00;">Active & Verified</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Contract Attributes</h3>
+                    ${metadata.attributes.map(attr => `
+                        <div class="attribute">
+                            <strong>${attr.trait_type}:</strong> ${attr.value}
+                        </div>
+                    `).join('')}
+                    
+                    <h3>NFT Properties</h3>
+                    <div class="attribute">
+                        <strong>Transferable:</strong> ${metadata.properties.transferable ? 'Yes' : 'No (Security Locked)'}
+                    </div>
+                    <div class="attribute">
+                        <strong>Utility:</strong> ${metadata.properties.utility.join(', ')}
+                    </div>
+                    <div class="attribute">
+                        <strong>Rarity:</strong> ${metadata.properties.rarity}
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a href="/beta-access?discord_id=${encodeURIComponent(discordId)}" class="contract-link">Verify Beta Access</a> |
+                        <a href="/portfolio" class="contract-link">Return to Portfolio</a>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
+        
+    } catch (error) {
+        console.error('NFT verification error:', error);
+        res.status(500).send('NFT verification failed');
+    }
+});
+
+// NFT metadata endpoint (OpenSea compatible)
+app.get('/api/nft/:tokenId', async (req, res) => {
+    try {
+        const { tokenId } = req.params;
+        const metadata = await betaContract.nftContract.getNFTMetadata(tokenId);
+        
+        if (!metadata) {
+            return res.status(404).json({ error: 'NFT not found' });
+        }
+        
+        res.json(metadata);
+    } catch (error) {
+        console.error('NFT metadata error:', error);
+        res.status(500).json({ error: 'Failed to get NFT metadata' });
+    }
+});
+
+// User NFT dashboard
+app.get('/my-nfts', async (req, res) => {
+    const discordId = req.query.discord_id;
+    
+    if (!discordId) {
+        return res.redirect('/beta-access');
+    }
+    
+    try {
+        const nftVerification = await betaContract.verifyNFTOwnership(discordId);
+        
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>My TiltCheck Beta NFTs</title>
+                <style>
+                    body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 30px; }
+                    .container { max-width: 1000px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #00ff00; }
+                    h1 { color: #00ff00; text-align: center; margin-bottom: 30px; }
+                    .nft-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+                    .nft-card { background: rgba(0,255,0,0.1); border: 1px solid #00ff00; border-radius: 15px; padding: 20px; text-align: center; }
+                    .nft-id { font-family: monospace; color: #00ff00; font-size: 0.9rem; }
+                    .verify-btn { background: linear-gradient(45deg, #00ff00, #0080ff); color: #000; padding: 10px 20px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin: 10px; text-decoration: none; display: inline-block; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🎮 My TiltCheck Beta NFTs</h1>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <strong>Discord ID:</strong> ${discordId}<br>
+                        <strong>Total NFTs:</strong> ${nftVerification.totalNFTs}<br>
+                        <strong>Status:</strong> ${nftVerification.hasValidNFT ? '<span style="color: #00ff00;">✅ Verified Beta Access</span>' : '<span style="color: #ff6b00;">❌ No Valid NFTs</span>'}
+                    </div>
+                    
+                    ${nftVerification.totalNFTs > 0 ? `
+                        <div class="nft-grid">
+                            ${nftVerification.nfts.map(nft => `
+                                <div class="nft-card">
+                                    <h3>${nft.name || 'TiltCheck Beta NFT'}</h3>
+                                    <div class="nft-id">Token: ${nft.tokenId?.slice(-8) || 'Unknown'}</div>
+                                    <p><strong>Contract:</strong> ${nft.contractId?.slice(-8) || 'Unknown'}</p>
+                                    <p><strong>Minted:</strong> ${new Date(nft.mintedAt).toLocaleDateString()}</p>
+                                    <a href="/verify-nft/${nft.tokenId}" class="verify-btn">View NFT</a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div style="text-align: center; padding: 50px; color: #ff6b00;">
+                            <h2>🔍 No NFTs Found</h2>
+                            <p>You don't have any TiltCheck Beta NFTs yet.</p>
+                            <a href="/beta-access?discord_id=${encodeURIComponent(discordId)}" class="verify-btn">Get Beta Access</a>
+                        </div>
+                    `}
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a href="/beta-access?discord_id=${encodeURIComponent(discordId)}" class="verify-btn">Check Beta Access</a>
+                        <a href="/portfolio" class="verify-btn" style="background: #666;">Return to Portfolio</a>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
+        
+    } catch (error) {
+        console.error('My NFTs error:', error);
+        res.status(500).send('Failed to load NFT dashboard');
     }
 });
 
