@@ -12,16 +12,24 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-BETA_PORT=3333
+BETA_PORT=3335
+ANALYTICS_PORT=3336
 BETA_USER_ID="115681066538237953"
 BETA_SECRET_ROLE="TRAPHOUSE_BETA_VERIFIED_2025"
 BETA_INVITE_CODE="traphouse-beta-exclusive"
 
 echo -e "${BLUE}🎯 Configuration:${NC}"
 echo "   Beta Port: $BETA_PORT"
+echo "   Analytics Port: $ANALYTICS_PORT"
 echo "   Verified Beta User: $BETA_USER_ID"
 echo "   Secret Role: $BETA_SECRET_ROLE"
 echo "   Invite Code: $BETA_INVITE_CODE"
+echo ""
+
+echo -e "${YELLOW}🎮 Bot Separation:${NC}"
+echo "   🃏 Degens Bot (port 3333): Card game functionality"
+echo "   🧪 Beta Testing (port $BETA_PORT): All TrapHouse features with bypasses"
+echo "   📊 Analytics (port $ANALYTICS_PORT): Monitoring and dev tools"
 echo ""
 
 # Check if required files exist
@@ -161,6 +169,8 @@ echo "   📱 Download Page: http://localhost:$BETA_PORT/beta/download"
 echo "   📚 Documentation: http://localhost:$BETA_PORT/beta/docs"
 echo "   🎯 AIM Overlay: http://localhost:$BETA_PORT/aim-overlay"
 echo "   ❤️  Health Check: http://localhost:$BETA_PORT/health"
+echo "   📈 Analytics Dashboard: http://localhost:$ANALYTICS_PORT/analytics"
+echo "   🔧 Dev Tools: http://localhost:$ANALYTICS_PORT/dev-tools"
 echo ""
 echo -e "${BLUE}🔐 Verified Beta User:${NC}"
 echo "   Discord ID: $BETA_USER_ID"

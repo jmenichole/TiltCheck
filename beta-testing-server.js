@@ -19,8 +19,9 @@ const EnhancedTiltCheckIntegration = require('./enhancedTiltCheckIntegration');
 
 class BetaTestingServer {
     constructor() {
-        this.port = 3333; // Dedicated beta testing port
-        this.analyticsPort = 3334; // Analytics dashboard port
+        // Server configuration
+        this.port = process.env.BETA_PORT || 3335;
+        this.analyticsPort = process.env.ANALYTICS_PORT || 3336;
         this.client = new Client({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -91,6 +92,11 @@ class BetaTestingServer {
         console.log(`⏰ Session Duration: 7 days`);
         console.log(`👥 Verified Beta Users: ${this.verifiedBetaUsers.length}`);
         console.log(`🔧 Owner/Admin Users: ${this.ownerAdminUsers.length}`);
+        console.log('');
+        console.log('🎮 Bot Ecosystem:');
+        console.log('   🃏 Degens Bot (port 3333): Card game functionality');
+        console.log(`   🧪 Beta Testing (port ${this.port}): All TrapHouse features with bypasses`);
+        console.log(`   📊 Analytics (port ${this.analyticsPort}): Monitoring and dev tools`);
         console.log('');
 
         // Initialize core systems with beta overrides
@@ -502,10 +508,6 @@ class BetaTestingServer {
     }
 
     async setupDiscordBot() {
-    }
-    }
-
-    async setupDiscordBot() {
         this.client.on('ready', () => {
             console.log(`🤖 Beta testing bot logged in as ${this.client.user.tag}`);
             this.client.user.setActivity('Beta Testing Mode | All Features Unlocked', { type: 'WATCHING' });
@@ -652,6 +654,10 @@ class BetaTestingServer {
                     await this.showCryptoChains(message);
                     break;
 
+                case 'beta-degens':
+                    await this.showDegensIntegration(message);
+                    break;
+
                 default:
                     // Forward any other commands to appropriate handlers with beta bypass
                     await this.forwardCommandWithBypass(message, command, args.slice(1));
@@ -670,7 +676,7 @@ class BetaTestingServer {
             .addFields(
                 {
                     name: '🧪 Beta Commands',
-                    value: '`!beta-help` - This help message\n`!beta-status` - Your beta session info\n`!beta-register` - Register for beta (if not already)',
+                    value: '`!beta-help` - This help message\n`!beta-status` - Your beta session info\n`!beta-register` - Register for beta (if not already)\n`!beta-degens` - Degens bot integration info',
                     inline: false
                 },
                 {
@@ -798,6 +804,38 @@ class BetaTestingServer {
                 }
             )
             .setFooter({ text: 'Beta Mode: Enhanced crypto features unlocked' });
+
+        await message.reply({ embeds: [embed] });
+    }
+
+    async showDegensIntegration(message) {
+        const embed = new EmbedBuilder()
+            .setColor('#ff6b6b')
+            .setTitle('🎮 Degens Bot Integration')
+            .setDescription('Card game functionality running on separate port for ecosystem separation')
+            .addFields(
+                {
+                    name: '🃏 Degens Bot (Port 3333)',
+                    value: '• Card game functionality\n• Separate from TrapHouse features\n• Independent operation\n• Gaming-focused commands',
+                    inline: false
+                },
+                {
+                    name: '🧪 Beta Testing (Port 3335)',
+                    value: '• Full TrapHouse features\n• Payment/role bypasses\n• All crypto integrations\n• 7-day testing sessions',
+                    inline: false
+                },
+                {
+                    name: '📊 Analytics (Port 3336)',
+                    value: '• Real-time monitoring\n• Performance metrics\n• Session management\n• Admin dev tools',
+                    inline: false
+                },
+                {
+                    name: '🔗 Integration Notes',
+                    value: '• Bots can communicate if needed\n• Shared Discord guild access\n• Separate command spaces\n• Independent user management',
+                    inline: false
+                }
+            )
+            .setFooter({ text: 'Both bots can run simultaneously on different ports' });
 
         await message.reply({ embeds: [embed] });
     }
