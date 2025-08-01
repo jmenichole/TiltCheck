@@ -1,13 +1,29 @@
 /**
- * User Trust & Suspicious Activity Scoring System
- * NFT Contract-Based Trust Scoring with Scam Reporting
+ * NFT Contract-Based User Trust System
  * Trust scores begin when NFT contract is signed and grow through verified actions
+ * Users can report verified scam events to affect sus scores
  * Built for degens by degens who learned the hard way
  */
 
 const fs = require('fs');
 const path = require('path');
-const BetaVerificationContract = require('./beta-verification-contract');
+
+// Beta testing approved user IDs
+const BETA_APPROVED_USERS = [
+    '528700741779718144',
+    '109492431082266624', 
+    '1148139976278691860',
+    '1062363876903100447',
+    '1179959306733506630',
+    '888170729999319070',
+    '425057711898624000',
+    '1246977794844659795',
+    '634450042626768897',
+    '741731523958407211',
+    '975734136104964106',
+    '554845002002595881',
+    '356617927803404299'
+];
 
 class UserTrustSystem {
     constructor() {

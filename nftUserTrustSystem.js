@@ -7,6 +7,23 @@
 const fs = require('fs');
 const path = require('path');
 
+// Beta testing approved user IDs
+const BETA_APPROVED_USERS = [
+    '528700741779718144',
+    '109492431082266624', 
+    '1148139976278691860',
+    '1062363876903100447',
+    '1179959306733506630',
+    '888170729999319070',
+    '425057711898624000',
+    '1246977794844659795',
+    '634450042626768897',
+    '741731523958407211',
+    '975734136104964106',
+    '554845002002595881',
+    '356617927803404299'
+];
+
 class NFTUserTrustSystem {
     constructor() {
         this.dataPath = './data/nft_user_trust.json';
@@ -51,12 +68,26 @@ class NFTUserTrustSystem {
         });
     }
 
+    // Check if user is beta approved
+    isBetaApproved(userId) {
+        return BETA_APPROVED_USERS.includes(userId);
+    }
+
     // Initialize trust score when NFT contract is signed
     async initializeTrustScore(userId, nftTokenId) {
         try {
+            // Check if user is beta approved
+            if (!this.isBetaApproved(userId)) {
+                return {
+                    success: false,
+                    message: 'Beta testing access required. Contact admin for approval.',
+                    trustScore: 0
+                };
+            }
+
             const userData = {
                 userId,
-                nftTokenId,
+                nftTokenId: nftTokenId || `beta_token_${userId}`,
                 nftContractSigned: true,
                 baseScore: this.NFT_BASE_SCORE,
                 verifiedLinks: [],

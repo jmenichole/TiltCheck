@@ -25,7 +25,9 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         try {
-            const trustSystem = new UserTrustSystem();
+            const NFTUserTrustSystem = require('../nftUserTrustSystem');
+
+const trustSystem = new NFTUserTrustSystem();
             
             // Calculate scores
             const userTrustScore = await trustSystem.calculateUserTrustScore(targetUser.id);
