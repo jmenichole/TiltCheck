@@ -566,14 +566,24 @@ app.get('/my-nfts', async (req, res) => {
     }
 });
 
-// Terms of Service with contract verification
-app.get('/tos', (req, res) => {
+// Terms of Service with contract verification and NFT display
+app.get('/tos', async (req, res) => {
     const contractSigned = req.query.contract_signed === 'true';
     const contractVerified = req.query.contract_verified === 'true';
     const discordId = req.query.discord_id;
     
     if (!contractSigned && !contractVerified) {
         return res.redirect('/beta-access');
+    }
+    
+    // Get user's NFT information
+    let nftInfo = { hasValidNFT: false, nfts: [] };
+    if (discordId) {
+        try {
+            nftInfo = await betaContract.verifyNFTOwnership(discordId);
+        } catch (error) {
+            console.error('Failed to get NFT info:', error);
+        }
     }
     
     res.send(`
@@ -587,9 +597,12 @@ app.get('/tos', (req, res) => {
                 .container { max-width: 900px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #00ff00; }
                 h1 { color: #00ff00; text-align: center; margin-bottom: 30px; }
                 .status { background: rgba(0,255,0,0.1); padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(0,255,0,0.3); text-align: center; }
+                .nft-status { background: rgba(255,107,0,0.1); padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(255,107,0,0.3); text-align: center; }
                 .tos-content { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin: 20px 0; }
                 button { background: linear-gradient(45deg, #00ff00, #0080ff); color: #000; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; margin: 10px; }
                 .warning { background: rgba(255,107,0,0.1); border: 1px solid #ff6b00; padding: 15px; border-radius: 10px; margin: 20px 0; }
+                .nft-link { color: #ff6b00; text-decoration: none; font-weight: bold; }
+                .nft-link:hover { text-decoration: underline; }
             </style>
         </head>
         <body>
@@ -601,9 +614,22 @@ app.get('/tos', (req, res) => {
                     <strong>Discord ID:</strong> ${discordId || 'Not provided'}
                 </div>
                 
+                ${nftInfo.hasValidNFT ? `
+                    <div class="nft-status">
+                        <strong>🎮 NFT Contract Verification:</strong> ✅ Valid Beta NFT Found<br>
+                        <strong>Total NFTs:</strong> ${nftInfo.totalNFTs}<br>
+                        <a href="/my-nfts?discord_id=${encodeURIComponent(discordId)}" class="nft-link">View My Beta NFTs</a>
+                    </div>
+                ` : `
+                    <div class="nft-status">
+                        <strong>🎮 NFT Contract Verification:</strong> ⏳ NFT Being Minted<br>
+                        <em>Your Beta Access NFT is being created as proof of this signed contract</em>
+                    </div>
+                `}
+                
                 <div class="warning">
                     <strong>⚠️ Beta Testing Agreement</strong><br>
-                    By proceeding, you acknowledge that you have signed a legally binding contract with crypto signature verification and device fingerprinting for legal protection.
+                    By proceeding, you acknowledge that you have signed a legally binding contract with crypto signature verification, device fingerprinting, and NFT-based proof of agreement for legal protection.
                 </div>
                 
                 <div class="tos-content">
@@ -612,6 +638,8 @@ app.get('/tos', (req, res) => {
                         <li><strong>Desktop-Only Access:</strong> Beta testing is restricted to desktop/laptop computers only</li>
                         <li><strong>Crypto Wallet Required:</strong> JustTheTip features require funded crypto wallet for betting</li>
                         <li><strong>Legal Protection:</strong> Device fingerprinting and crypto signatures provide legal tracking</li>
+                        <li><strong>NFT Contract Verification:</strong> Your signed contract generates a unique NFT as proof of agreement</li>
+                        <li><strong>Discord ID Linking:</strong> NFT ownership is permanently linked to your Discord account</li>
                         <li><strong>Session Limits:</strong> 7-day maximum session duration with re-verification required</li>
                         <li><strong>Feedback Required:</strong> Beta testers must provide feedback and report bugs</li>
                         <li><strong>No Guarantees:</strong> No guarantees on gambling outcomes or profits</li>
@@ -619,11 +647,13 @@ app.get('/tos', (req, res) => {
                         <li><strong>Data Collection:</strong> Monitoring and data collection for testing purposes</li>
                         <li><strong>Risk Awareness:</strong> Gambling involves risk of financial loss</li>
                         <li><strong>Legal Compliance:</strong> Users must comply with local gambling laws</li>
+                        <li><strong>NFT Ownership:</strong> Beta NFTs are non-transferable and tied to Discord verification</li>
                     </ol>
                 </div>
                 
                 <div style="text-align: center; margin-top: 30px;">
                     <button onclick="proceedToBeta()">✅ Accept & Access Beta Dashboard</button>
+                    ${nftInfo.hasValidNFT ? `<button onclick="window.location.href='/my-nfts?discord_id=${encodeURIComponent(discordId)}'" style="background: #ff6b00;">View My NFTs</button>` : ''}
                     <button onclick="window.location.href='/portfolio'" style="background: #666;">View Portfolio Instead</button>
                 </div>
             </div>
@@ -634,6 +664,7 @@ app.get('/tos', (req, res) => {
                     localStorage.setItem('tos_accepted', 'true');
                     localStorage.setItem('discord_id', '${discordId || ''}');
                     localStorage.setItem('contract_verified', 'true');
+                    localStorage.setItem('nft_verified', '${nftInfo.hasValidNFT}');
                     
                     // Redirect to beta access with dashboard overlay
                     window.location.href = '/dashboard';
@@ -780,7 +811,7 @@ app.get('/health', (req, res) => {
 app.get('/health/detailed', (req, res) => {
     res.json({
         status: 'healthy',
-        version: '2.0.0',
+        version: '2.1.0',
         domain: DOMAIN,
         ports: PORTS,
         features: [
@@ -789,8 +820,19 @@ app.get('/health/detailed', (req, res) => {
             'Crypto signature verification',
             'Device fingerprinting',
             'Waitlist system',
-            'Social media integration'
+            'Social media integration',
+            'NFT contract signatures',
+            'Discord ID ownership verification',
+            'Non-transferable beta access NFTs',
+            'OpenSea-compatible metadata'
         ],
+        nftContract: {
+            name: 'TiltCheck Beta Access NFT',
+            symbol: 'TCBETA',
+            maxSupply: 1000,
+            transferable: false,
+            verificationRequired: true
+        },
         timestamp: new Date().toISOString(),
         environment: IS_DEVELOPMENT ? 'development' : 'production'
     });
