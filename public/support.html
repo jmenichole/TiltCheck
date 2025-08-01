@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Support TrapHouse Discord Bot - Tools for responsible gambling, accountability, and community support">
+    <meta name="keywords" content="discord bot, gambling accountability, tiltcheck, crypto guidance, responsible gaming">
+    <meta name="author" content="jmenichole">
+    <meta property="og:title" content="TrapHouse Discord Bot - Support Page">
+    <meta property="og:description" content="Made for degens by degens who learned the hard way. Supporting responsible gambling & community accountability.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/public/support.html">
+    <title>TrapHouse Discord Bot - Support Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin: 0;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+        
+        .support-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .support-section h2 {
+            color: #4ecdc4;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .support-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .support-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .support-card a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .support-card a:hover {
+            color: #4ecdc4;
+        }
+        
+        .support-card a:focus {
+            outline: 2px solid #4ecdc4;
+            outline-offset: 2px;
+        }
+        
+        .support-card .emoji {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .features {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .features h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features li {
+            margin: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .features li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+        
+        .mining-section {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .mining-section h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .mining-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .mining-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .mining-btn:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .support-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .mining-btn {
+                padding: 12px 24px;
+                font-size: 1.1em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1em;
+            }
+            
+            .support-section, .features, .mining-section {
+                padding: 20px;
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 TrapHouse Bot</h1>
+            <p>"Made for degens by degens who learned the hard way"</p>
+            <p>Supporting responsible gambling & community accountability</p>
+        </div>
+        
+        <div class="support-section">
+            <h2>☕ Support the Project</h2>
+            <p>Help us continue developing tools for gambling accountability and community support!</p>
+            
+            <div class="support-links">
+                <div class="support-card">
+                    <span class="emoji">☕</span>
+                    <a href="https://ko-fi.com/jmenichole" target="_blank">Ko-fi Donations</a>
+                    <p>One-time or monthly support</p>
+                </div>
+                
+                <div class="support-card">
+                    <span class="emoji">⭐</span>
+                    <a href="https://github.com/sponsors/jmenichole" target="_blank">GitHub Sponsors</a>
+                    <p>Developer sponsorship</p>
+                </div>
+                
+                <div class="support-card">
+                    <span class="emoji">💼</span>
+                    <a href="https://linkedin.com/in/jmenichole0" target="_blank">LinkedIn</a>
+                    <p>Professional networking</p>
+                </div>
+                
+                <div class="support-card">
+                    <span class="emoji">🐙</span>
+                    <a href="https://github.com/jmenichole" target="_blank">GitHub</a>
+                    <p>Open source projects</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mining-section">
+            <h2>⛏️ Passive Income Opportunity</h2>
+            <p>Support the project while earning crypto through cloud mining!</p>
+            <a href="https://gomining.com/?ref=vbk5r" target="_blank" class="mining-btn">
+                🚀 Start Mining with GoMining
+            </a>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                Use our referral link to get started with GoMining cloud mining platform
+            </p>
+        </div>
+        
+        <div class="features">
+            <h3>🎯 Bot Features</h3>
+            <ul>
+                <li>Real-time gambling accountability with TiltCheck</li>
+                <li>Daily bonus tracking across 15+ platforms</li>
+                <li>Crypto investment guidance based on discipline</li>
+                <li>Community respect system and marketplace</li>
+                <li>Ko-fi integration for donation notifications</li>
+                <li>GitHub webhook integration for development tracking</li>
+                <li>Comprehensive addiction support resources</li>
+            </ul>
+        </div>
+        
+        <div class="features">
+            <h3>🔗 Add Bots to Your Server</h3>
+            <ul>
+                <li><a href="https://discord.com/oauth2/authorize?client_id=1354450590813655142" target="_blank" style="color: #4ecdc4;">TrapHouse Bot - Core community management</a></li>
+                <li><a href="https://discord.com/oauth2/authorize?client_id=1336968746450812928" target="_blank" style="color: #4ecdc4;">CollectClock Bot - Daily bonus tracking</a></li>
+                <li><a href="https://discord.com/oauth2/authorize?client_id=1376113587025739807" target="_blank" style="color: #4ecdc4;">Degens Bot - TiltCheck accountability</a></li>
+                <li><a href="https://discord.com/oauth2/authorize?client_id=1373784722718720090" target="_blank" style="color: #4ecdc4;">JustTheTip Bot - Crypto guidance</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>💜 Thank you for supporting responsible gambling and community accountability!</p>
+            <p>Every donation helps us continue developing tools that genuinely help people.</p>
+        </div>
+    </div>
+
+    <!-- Ko-fi Overlay Widget -->
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <script>
+        // Initialize Ko-fi widget when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                kofiWidgetOverlay.draw('jmenichole0', {
+                    'type': 'floating-chat',
+                    'floating-chat.donateButton.text': 'Tip Me',
+                    'floating-chat.donateButton.background-color': '#00bfa5',
+                    'floating-chat.donateButton.text-color': '#fff'
+                });
+                console.log('Ko-fi widget loaded successfully');
+            } catch (error) {
+                console.error('Ko-fi widget failed to load:', error);
+            }
+        });
+    </script>
+    
+    <!-- Analytics and Error Handling -->
+    <script>
+        // Track external link clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.hostname !== window.location.hostname) {
+                console.log('External link clicked:', e.target.href);
+            }
+        });
+        
+        // Handle any JavaScript errors gracefully
+        window.addEventListener('error', function(e) {
+            console.error('Page error:', e.error);
+        });
+    </script>
+</body>
+</html>

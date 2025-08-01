@@ -70,11 +70,22 @@ This ecosystem exists because the creator has been through gambling addiction, f
 ### Developer Support
 - **GitHub**: [@jmenichole](https://github.com/jmenichole) | **[Sponsor](https://github.com/sponsors/jmenichole)**
 - **LinkedIn**: [jmenichole0](https://linkedin.com/in/jmenichole0) | **[Ko-fi](https://ko-fi.com/jmenichole)**
+- **Ko-fi Integration**: Real-time Discord notifications for donations and support
+
+### ☕ Ko-fi Support System
+The bot ecosystem includes integrated Ko-fi webhook support for community funding:
+- **Real-time Notifications**: Automatic Discord alerts for donations
+- **Support Tracking**: Complete donation history and analytics  
+- **Multiple Payment Types**: Donations, subscriptions, commissions, shop orders
+- **Secure Integration**: Webhook verification and data protection
+
+**Support the Project**: [Ko-fi.com/jmenichole](https://ko-fi.com/jmenichole)
 
 ## 📚 Documentation
 
 - **[Complete Ecosystem Guide](ECOSYSTEM_COMPLETE.md)** - Full feature overview
 - **[TiltCheck Integration](TILTCHECK_INTEGRATION.md)** - Detailed accountability system
+- **[Ko-fi Integration Guide](KOFI_INTEGRATION_GUIDE.md)** - Donation webhook setup
 - **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Bot setup and configuration
 
 ---

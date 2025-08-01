@@ -132,6 +132,9 @@ class WebhookServer {
         // JustTheTip webhook endpoint
         this.app.post('/webhook/justthetip', this.handleJustTheTipWebhook.bind(this));
         
+        // Ko-fi webhook endpoint
+        this.app.post('/webhook/kofi', this.handleKofiWebhook.bind(this));
+        
         // Stripe webhook endpoint
         this.app.post('/webhook/stripe', this.handleStripeWebhook.bind(this));
         
@@ -172,6 +175,7 @@ class WebhookServer {
                 endpoints: [
                     '/webhook/github',
                     '/webhook/justthetip',
+                    '/webhook/kofi',
                     '/webhook/stripe',
                     // '/webhook/collectclock',
                     // '/auth/collectclock/callback',
@@ -267,6 +271,62 @@ class WebhookServer {
             res.status(500).json({ 
                 success: false, 
                 error: 'Webhook processing failed'
+            });
+        }
+    }
+
+    /**
+     * Handle Ko-fi webhook events
+     */
+    async handleKofiWebhook(req, res) {
+        try {
+            const payload = req.body;
+            const verificationToken = process.env.KOFI_VERIFICATION_TOKEN || '02740ccf-8e39-4dce-b095-995f8d94bdbb';
+            
+            console.log('☕ Ko-fi webhook received');
+            
+            // Parse Ko-fi data (Ko-fi sends data as form-encoded)
+            let kofiData;
+            if (typeof payload === 'string') {
+                // If it's form-encoded, parse it
+                const urlParams = new URLSearchParams(payload);
+                kofiData = JSON.parse(urlParams.get('data') || '{}');
+            } else if (payload.data) {
+                // If it's already parsed JSON
+                kofiData = typeof payload.data === 'string' ? JSON.parse(payload.data) : payload.data;
+            } else {
+                kofiData = payload;
+            }
+            
+            // Verify the verification token
+            if (kofiData.verification_token !== verificationToken) {
+                console.error('Ko-fi webhook verification failed - invalid token');
+                return res.status(401).json({ 
+                    success: false, 
+                    error: 'Invalid verification token'
+                });
+            }
+            
+            // Process the Ko-fi donation
+            const result = await this.processKofiDonation(kofiData);
+            
+            if (result.success) {
+                res.status(200).json({ 
+                    success: true, 
+                    message: 'Ko-fi donation processed successfully'
+                });
+            } else {
+                res.status(400).json({ 
+                    success: false, 
+                    error: result.error
+                });
+            }
+            
+        } catch (error) {
+            console.error('Ko-fi webhook error:', error);
+            res.status(500).json({ 
+                success: false, 
+                error: 'Ko-fi webhook processing failed'
             });
         }
     }
@@ -454,6 +514,7 @@ class WebhookServer {
                 webhooks: {
                     github: process.env.GITHUB_WEBHOOK_URL ? 'configured' : 'not configured',
                     justTheTip: process.env.JUSTTHETIP_WEBHOOK_URL ? 'configured' : 'not configured',
+                    kofi: process.env.KOFI_VERIFICATION_TOKEN ? 'configured' : 'not configured',
                     stripe: process.env.STRIPE_WEBHOOK_SECRET ? 'configured' : 'not configured'
                 }
             };
@@ -601,6 +662,154 @@ class WebhookServer {
             console.error('Error sending to Discord:', error);
         }
     }
+
+    /**
+     * Process Ko-fi donation
+     */
+    async processKofiDonation(kofiData) {
+        try {
+            console.log('☕ Processing Ko-fi donation:', {
+                type: kofiData.type,
+                amount: kofiData.amount,
+                currency: kofiData.currency,
+                from_name: kofiData.from_name,
+                message: kofiData.message?.substring(0, 100)
+            });
+
+            // Store donation data
+            const donationData = await this.storage.loadData('kofi_donations', { donations: [] });
+            
+            const donation = {
+                id: kofiData.kofi_transaction_id || crypto.randomUUID(),
+                timestamp: new Date().toISOString(),
+                type: kofiData.type, // 'Donation', 'Subscription', 'Commission', 'Shop Order'
+                amount: kofiData.amount,
+                currency: kofiData.currency,
+                from_name: kofiData.from_name,
+                message: kofiData.message,
+                email: kofiData.email,
+                url: kofiData.url,
+                is_public: kofiData.is_public,
+                is_subscription_payment: kofiData.is_subscription_payment,
+                is_first_subscription_payment: kofiData.is_first_subscription_payment,
+                tier_name: kofiData.tier_name,
+                shop_items: kofiData.shop_items,
+                shipping: kofiData.shipping,
+                raw_data: kofiData
+            };
+
+            donationData.donations.push(donation);
+            
+            // Keep only last 1000 donations
+            if (donationData.donations.length > 1000) {
+                donationData.donations = donationData.donations.slice(-1000);
+            }
+
+            await this.storage.saveData('kofi_donations', donationData);
+
+            // Create Discord notification
+            const embed = {
+                color: 0x13C3FF, // Ko-fi blue color
+                title: '☕ Ko-fi Support Received!',
+                description: this.formatKofiMessage(donation),
+                thumbnail: {
+                    url: 'https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/5cbed8a4ae2b88347c862f77_kofi_s_logo_nolabel.png'
+                },
+                fields: [
+                    {
+                        name: '💰 Amount',
+                        value: `${donation.currency} ${donation.amount}`,
+                        inline: true
+                    },
+                    {
+                        name: '👤 From',
+                        value: donation.from_name || 'Anonymous',
+                        inline: true
+                    },
+                    {
+                        name: '📝 Type',
+                        value: donation.type,
+                        inline: true
+                    }
+                ],
+                footer: {
+                    text: 'Thank you for supporting TrapHouse Bot! ☕',
+                    icon_url: 'https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/5cbed8a4ae2b88347c862f77_kofi_s_logo_nolabel.png'
+                },
+                timestamp: donation.timestamp
+            };
+
+            // Add message field if provided
+            if (donation.message && donation.message.trim()) {
+                embed.fields.push({
+                    name: '💬 Message',
+                    value: donation.message.substring(0, 1024), // Discord field limit
+                    inline: false
+                });
+            }
+
+            // Add subscription info if applicable
+            if (donation.is_subscription_payment) {
+                embed.fields.push({
+                    name: '🔄 Subscription',
+                    value: donation.is_first_subscription_payment ? 'First payment' : 'Recurring payment',
+                    inline: true
+                });
+                
+                if (donation.tier_name) {
+                    embed.fields.push({
+                        name: '🎯 Tier',
+                        value: donation.tier_name,
+                        inline: true
+                    });
+                }
+            }
+
+            // Send to Discord
+            await this.sendToDiscord(embed);
+
+            // Log the successful processing
+            await this.logWebhook('kofi', { 'Ko-fi-Type': donation.type }, donation);
+
+            return {
+                success: true,
+                donation: donation,
+                message: 'Ko-fi donation processed and logged successfully'
+            };
+
+        } catch (error) {
+            console.error('Error processing Ko-fi donation:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * Format Ko-fi message for Discord
+     */
+    formatKofiMessage(donation) {
+        let message = '';
+        
+        if (donation.type === 'Donation') {
+            message = `🎉 **${donation.from_name || 'Anonymous'}** bought you a coffee!`;
+        } else if (donation.type === 'Subscription') {
+            if (donation.is_first_subscription_payment) {
+                message = `🌟 **${donation.from_name || 'Anonymous'}** started a monthly subscription!`;
+            } else {
+                message = `🔄 **${donation.from_name || 'Anonymous'}** renewed their monthly subscription!`;
+            }
+        } else if (donation.type === 'Commission') {
+            message = `🎨 **${donation.from_name || 'Anonymous'}** commissioned work!`;
+        } else if (donation.type === 'Shop Order') {
+            message = `🛒 **${donation.from_name || 'Anonymous'}** placed a shop order!`;
+        } else {
+            message = `☕ **${donation.from_name || 'Anonymous'}** sent support via Ko-fi!`;
+        }
+
+        return message;
+    }
     
     /**
      * Initialize integrations
@@ -632,6 +841,7 @@ class WebhookServer {
             console.log(`🌐 Webhook Server running on port ${port}`);
             console.log(`🔗 GitHub webhook: http://localhost:${port}/webhook/github`);
             console.log(`💰 JustTheTip webhook: http://localhost:${port}/webhook/justthetip`);
+            console.log(`☕ Ko-fi webhook: http://localhost:${port}/webhook/kofi`);
             console.log(`💳 Stripe webhook: http://localhost:${port}/webhook/stripe`);
             console.log(`🕒 CollectClock OAuth: http://localhost:${port}/auth/collectclock/callback`);
             console.log(`🕒 CollectClock webhook: http://localhost:${port}/webhook/collectclock`);

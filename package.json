@@ -8,6 +8,7 @@
     "dev": "node index.js",
     "railway": "node railway-start.js",
     "test": "node check-syntax.js",
+    "test:kofi": "node test-kofi-webhook.js",
     "webhook": "node github-webhook-server.js",
     "dashboard": "node dashboard/TrapHouseDashboardOverlay.js",
     "lint": "echo 'Linting...' && node -c index.js",
