@@ -1,0 +1,282 @@
+{
+  "name": "TrapHouse Discord Bot - Copilot Access Allowlist",
+  "description": "Enables Copilot coding agent to access TiltCheck and bot ecosystem domains",
+  "version": "1.0.0",
+  "allowlist": {
+    "domains": [
+      "tiltcheck.it.com",
+      "dashboard.tiltcheck.it.com",
+      "vault.tiltcheck.it.com",
+      "collectclock.tiltcheck.it.com",
+      "tilt.tiltcheck.it.com",
+      "api.tiltcheck.it.com",
+      "portal.tiltcheck.it.com",
+      "api.justthetip.bot",
+      "justthetip.bot",
+      "jmenichole.github.io",
+      "discord.com",
+      "github.com",
+      "stripe.com",
+      "ko-fi.com",
+      "solscan.io",
+      "infura.io",
+      "mainnet.infura.io",
+      "polygon-mainnet.infura.io",
+      "arbitrum-mainnet.infura.io",
+      "optimism-mainnet.infura.io",
+      "api.mainnet-beta.solana.com",
+      "pro-api.solscan.io"
+    ],
+    "urls": [
+      "https://tiltcheck.it.com/*",
+      "https://dashboard.tiltcheck.it.com/*",
+      "https://vault.tiltcheck.it.com/*",
+      "https://collectclock.tiltcheck.it.com/*",
+      "https://tilt.tiltcheck.it.com/*",
+      "https://api.tiltcheck.it.com/*",
+      "https://portal.tiltcheck.it.com/*",
+      "https://api.justthetip.bot/*",
+      "https://jmenichole.github.io/CollectClock/*",
+      "https://jmenichole.github.io/Portfolio/*",
+      "https://discord.com/api/*",
+      "https://discord.com/developers/*",
+      "https://github.com/jmenichole/trap-house-discord-bot/*",
+      "https://pro-api.solscan.io/*",
+      "https://mainnet.infura.io/*",
+      "https://polygon-mainnet.infura.io/*",
+      "https://arbitrum-mainnet.infura.io/*",
+      "https://optimism-mainnet.infura.io/*",
+      "https://api.mainnet-beta.solana.com/*"
+    ],
+    "localhost_addresses": [
+      "127.0.0.1",
+      "localhost",
+      "0.0.0.0"
+    ],
+    "development_ports": [
+      3000,
+      3001,
+      3002,
+      3333,
+      4001,
+      4002,
+      4003,
+      4004,
+      8080,
+      8000,
+      5000
+    ],
+    "api_endpoints": [
+      "/api/health",
+      "/api/verify",
+      "/api/metrics",
+      "/webhook/kofi",
+      "/webhook/stripe",
+      "/webhook/github",
+      "/webhook/collectclock",
+      "/auth/callback",
+      "/auth/discord",
+      "/auth/collectclock/callback",
+      "/github/webhook",
+      "/github/callback"
+    ]
+  },
+  "verification_requirements": {
+    "node_verification": {
+      "enabled": true,
+      "required_headers": [
+        "X-TiltCheck-Verified",
+        "X-TiltCheck-Node-ID",
+        "X-TiltCheck-Connection-ID",
+        "X-TiltCheck-Timestamp"
+      ],
+      "verification_methods": [
+        "cryptographic_signature",
+        "timestamp_validation",
+        "connection_tracking",
+        "health_monitoring"
+      ]
+    },
+    "security": {
+      "ssl_required": true,
+      "tls_version": "1.3",
+      "certificate_validation": true,
+      "cors_enabled": true,
+      "rate_limiting": true,
+      "ddos_protection": true
+    }
+  },
+  "performance_optimization": {
+    "caching": {
+      "enabled": true,
+      "ttl": 300,
+      "compression": "gzip",
+      "cache_headers": true
+    },
+    "connection_pooling": {
+      "enabled": true,
+      "max_connections": 100,
+      "keep_alive": true,
+      "timeout": 30000
+    },
+    "load_balancing": {
+      "enabled": true,
+      "algorithm": "round_robin",
+      "health_checks": true,
+      "failover": true
+    }
+  },
+  "monitoring": {
+    "health_checks": {
+      "interval": 30,
+      "timeout": 5000,
+      "retries": 3,
+      "endpoints": [
+        "http://localhost:3333/health",
+        "http://localhost:3001/health",
+        "http://localhost:3002/auth/collectclock/health",
+        "http://localhost:4001/api/health"
+      ]
+    },
+    "metrics": {
+      "response_time": true,
+      "error_rate": true,
+      "throughput": true,
+      "availability": true,
+      "node_verification_rate": true
+    },
+    "alerting": {
+      "enabled": true,
+      "thresholds": {
+        "response_time": 1000,
+        "error_rate": 0.01,
+        "availability": 0.999
+      }
+    }
+  },
+  "discord_integration": {
+    "bot_clients": [
+      {
+        "name": "TrapHouse Main Bot",
+        "client_id": "1354450590813655142",
+        "permissions": "274881367104",
+        "scopes": ["bot", "applications.commands"]
+      },
+      {
+        "name": "Beta Testing Bot", 
+        "client_id": "1373784722718720090",
+        "permissions": "274881367104",
+        "scopes": ["bot", "applications.commands"]
+      },
+      {
+        "name": "Degens Card Game Bot",
+        "client_id": "1376113587025739807", 
+        "permissions": "274881367104",
+        "scopes": ["bot", "applications.commands"]
+      },
+      {
+        "name": "CollectClock Bot",
+        "client_id": "1336968746450812928",
+        "permissions": "8",
+        "scopes": ["bot", "identify"]
+      }
+    ],
+    "oauth_redirects": [
+      "http://localhost:3001/auth/callback",
+      "http://localhost:3002/auth/collectclock/callback",
+      "https://tiltcheck.it.com/auth/callback",
+      "https://dashboard.tiltcheck.it.com/auth/callback",
+      "https://vault.tiltcheck.it.com/auth/callback",
+      "https://collectclock.tiltcheck.it.com/auth/callback",
+      "https://api.justthetip.bot/auth/callback"
+    ]
+  },
+  "blockchain_integrations": {
+    "rpc_endpoints": [
+      "https://mainnet.infura.io/v3/",
+      "https://polygon-mainnet.infura.io/v3/",
+      "https://arbitrum-mainnet.infura.io/v3/",
+      "https://optimism-mainnet.infura.io/v3/",
+      "https://api.mainnet-beta.solana.com"
+    ],
+    "api_services": [
+      "https://pro-api.solscan.io/v2.0/",
+      "https://api.etherscan.io/api",
+      "https://api.polygonscan.com/api",
+      "https://api.arbiscan.io/api"
+    ]
+  },
+  "payment_integrations": {
+    "processors": [
+      {
+        "name": "Ko-fi",
+        "webhook_url": "/webhook/kofi",
+        "verification_token": "02740ccf-8e39-4dce-b095-995f8d94bdbb"
+      },
+      {
+        "name": "Stripe",
+        "webhook_url": "/webhook/stripe",
+        "dashboard": "https://dashboard.stripe.com"
+      },
+      {
+        "name": "tip.cc",
+        "webhook_url": "/webhook/tipcc"
+      }
+    ]
+  },
+  "copilot_specific": {
+    "ai_assistance": {
+      "code_completion": true,
+      "error_detection": true,
+      "performance_suggestions": true,
+      "security_recommendations": true
+    },
+    "development_features": {
+      "auto_import": true,
+      "refactoring_suggestions": true,
+      "test_generation": true,
+      "documentation_generation": true
+    }
+  },
+  "environment_configs": {
+    "development": {
+      "base_url": "http://localhost",
+      "ports": [3000, 3001, 3002, 3333, 4001, 4002, 4003, 4004],
+      "ssl": false,
+      "debug": true
+    },
+    "staging": {
+      "base_url": "https://staging.tiltcheck.it.com",
+      "ssl": true,
+      "debug": false,
+      "rate_limiting": "relaxed"
+    },
+    "production": {
+      "base_url": "https://tiltcheck.it.com",
+      "ssl": true,
+      "debug": false,
+      "rate_limiting": "strict",
+      "monitoring": "full"
+    }
+  },
+  "usage_instructions": {
+    "setup": [
+      "1. Add this allowlist to your Copilot configuration",
+      "2. Run ./setup-tiltcheck-domain.sh to create TiltCheck infrastructure", 
+      "3. Run ./start_bot.sh to start all services",
+      "4. Verify node confirmations at http://localhost:4001/api/verify"
+    ],
+    "verification": [
+      "Check health endpoints return verified node confirmations",
+      "Ensure X-TiltCheck-Verified headers are present",
+      "Monitor connection tracking in logs",
+      "Validate SSL certificates for production domains"
+    ],
+    "troubleshooting": [
+      "If TiltCheck domain fails: Check DNS configuration",
+      "If verification fails: Regenerate node certificates",
+      "If performance is slow: Enable compression and caching",
+      "If connections drop: Check firewall and port settings"
+    ]
+  }
+}
