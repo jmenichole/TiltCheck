@@ -1,0 +1,51 @@
+{
+  "contractId": "88dc5d3b-e618-455c-b9db-a2f9979462af",
+  "discordId": "1155164907680043059",
+  "deviceFingerprint": {
+    "fingerprint": "48e2468a71388b05f74bd1e7d46a7c80fb61b4b44783804a99a6366eab91d910",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.102.2 Chrome/134.0.6998.205 Electron/35.6.0 Safari/537.36",
+    "acceptLanguage": "en-US",
+    "acceptEncoding": "gzip, deflate, br, zstd",
+    "ipHint": "unknown",
+    "timestamp": 1754015995289,
+    "sessionId": "82d6dc32-a6ff-4017-95b7-f4736c046c60"
+  },
+  "timestamp": "2025-08-01T02:39:55.290Z",
+  "version": "1.0.0",
+  "terms": {
+    "betaTesting": {
+      "agreed": false,
+      "desktopOnly": true,
+      "feedbackRequired": true,
+      "cryptoFundingRequired": true,
+      "sessionDuration": "7 days",
+      "testingEnvironment": true
+    },
+    "legalProtection": {
+      "gamblingAccountability": true,
+      "noGuarantees": true,
+      "personalResponsibility": true,
+      "dataCollection": true,
+      "deviceTracking": true
+    },
+    "technicalRequirements": {
+      "desktopAccess": true,
+      "discordAccount": true,
+      "cryptoWallet": true,
+      "stableInternet": true
+    }
+  },
+  "signature": {
+    "server": "1b37832c5e6cec565ca194c4a6c1f2e99c1991f0266828457646eec735fd9c99",
+    "user": "jamie vargas",
+    "combined": "a0b0b37c597162f51d0ccfab78ce269a52697405c427fab7300c715fd845b074",
+    "signedAt": "2025-08-01T02:40:04.556Z"
+  },
+  "status": "signed",
+  "nft": {
+    "tokenId": "a91c5dc0cffb01ec1eb29f9c07be35d57948454559019db437c9d87b53536aa0",
+    "contractSignature": "411ded88df1ddc8b8f1f76f1d302ab0716db86b6035d8134ffce2ad4daadcfbc",
+    "verificationUrl": "http://localhost:4002/verify-nft/a91c5dc0cffb01ec1eb29f9c07be35d57948454559019db437c9d87b53536aa0",
+    "mintedAt": 1754016004559
+  }
+}
