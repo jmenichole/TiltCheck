@@ -484,7 +484,7 @@ class TiltCheckNFTLegalServer {
             res.json(complianceData);
         });
 
-        // Casino Trust Score API
+                // Casino Trust Score API
         this.app.post('/casino-trust-score', (req, res) => {
             const { casinoId, casinoUrl, licensingJurisdiction } = req.body;
             
@@ -533,6 +533,9 @@ class TiltCheckNFTLegalServer {
 
             res.json(trustScore);
         });
+
+        // Main Ecosystem Hub
+        this.app.get('/ecosystem', (req, res) => {
             res.json({
                 title: "TiltCheck Live Ecosystem",
                 status: "🟢 Live Production",
@@ -700,6 +703,7 @@ class TiltCheckNFTLegalServer {
     <url><loc>https://tiltcheck.it.com/ecosystem</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/nftmint</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/suslink</loc><priority>0.9</priority></url>
+    <url><loc>https://tiltcheck.it.com/gamblingcompliance</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/degens-live</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheckecosystem.created.app/suslink</loc><priority>0.9</priority></url>
     <url><loc>https://tiltcheck.it.com/justthetip-live</loc><priority>0.9</priority></url>
@@ -712,6 +716,48 @@ class TiltCheckNFTLegalServer {
     <url><loc>https://tiltcheck.it.com/privacy</loc><priority>0.6</priority></url>
 </urlset>`);
         });
+    }
+
+    // Helper methods for state compliance
+    getStateGamblingStatus(state) {
+        const statuses = {
+            'NV': 'Fully Legal',
+            'NJ': 'Legal with Restrictions', 
+            'PA': 'Legal with Licensing',
+            'CA': 'Limited Legal Framework',
+            'TX': 'Restricted',
+            'UT': 'Prohibited'
+        };
+        return statuses[state.toUpperCase()] || 'Unknown - Check Local Laws';
+    }
+
+    getStateRegulations(state) {
+        return {
+            onlineGambling: state.toUpperCase() === 'NV' ? 'Fully Regulated' : 'Check State Gaming Commission',
+            cryptoGambling: 'Federal Guidelines Apply',
+            licensing: 'State-Specific Requirements',
+            taxImplications: 'Consult Tax Professional'
+        };
+    }
+
+    getCryptoStatus(state) {
+        return {
+            legal: true,
+            exchanges: 'Regulated',
+            gambling: 'Varies by State',
+            reporting: 'IRS Guidelines Apply'
+        };
+    }
+
+    getComplianceRecommendations(state) {
+        return [
+            'Verify current state regulations',
+            'Ensure proper licensing if required',
+            'Implement age verification systems',
+            'Set up responsible gambling tools',
+            'Maintain transaction records',
+            'Consider TiltCheck API integration'
+        ];
     }
 
     start() {
