@@ -1,5 +1,326 @@
-// Desktop Installer Server for TrapHouse Beta with Portfolio Integration
-// Only allows desktop clients, forwards ports, and launches dashboard overlay after TOS/agreements
+// Desktop Installer Server for TrapHouse Beta
+// Portfolio integration, contract-based beta verification, and waitlist system
+
+const express = require('express');
+const httpProxy = require('http-proxy');
+const path = require('path');
+const BetaVerificationContract = require('./beta-verification-contract');
+
+const app = express();
+const proxy = httpProxy.createProxyServer({});
+const betaContract = new BetaVerificationContract();
+
+// Domain configuration
+const DOMAIN = process.env.DOMAIN || 'tiltcheck.it.com';
+const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
+const BASE_URL = IS_DEVELOPMENT ? 'http://localhost' : `https://${DOMAIN}`;
+
+// Port configuration
+const PORTS = {
+    BETA: process.env.BETA_PORT || 3335,
+    ANALYTICS: process.env.ANALYTICS_PORT || 3336,
+    INSTALLER: process.env.INSTALLER_PORT || 4001  // Changed to 4001 as per deployment status
+};
+
+// Enhanced mobile detection middleware
+app.use((req, res, next) => {
+    const userAgent = req.headers['user-agent'] || '';
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    
+    if (isMobile) {
+        return res.status(403).send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Desktop Only - TiltCheck Portfolio</title>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #654321 100%);
+                        color: #ffffff;
+                        text-align: center;
+                        padding: 50px 20px;
+                        margin: 0;
+                    }
+                    .container {
+                        max-width: 500px;
+                        margin: 0 auto;
+                        background: rgba(0, 0, 0, 0.8);
+                        padding: 40px;
+                        border-radius: 15px;
+                        border: 1px solid #ff6b00;
+                    }
+                    h1 { color: #ff6b00; font-size: 2rem; margin-bottom: 20px; }
+                    p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; }
+                    .portfolio-links { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
+                    .portfolio-link {
+                        background: linear-gradient(45deg, #ff6b00, #ff4444);
+                        color: #fff;
+                        padding: 12px 20px;
+                        border-radius: 25px;
+                        text-decoration: none;
+                        font-weight: bold;
+                        transition: transform 0.3s;
+                    }
+                    .portfolio-link:hover { transform: translateY(-2px); }
+                    .note { 
+                        background: rgba(255, 107, 0, 0.1); 
+                        padding: 15px; 
+                        border-radius: 10px; 
+                        margin: 20px 0; 
+                        border: 1px solid rgba(255, 107, 0, 0.3);
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🖥️ Desktop Access Required</h1>
+                    <p>TiltCheck beta testing requires desktop/laptop access for optimal performance and proper testing.</p>
+                    
+                    <div class="note">
+                        <strong>📱 Mobile Portfolio Access:</strong><br>
+                        While beta testing is desktop-only, you can still explore my portfolio projects on mobile:
+                    </div>
+                    
+                    <div class="portfolio-links">
+                        <a href="https://linkedin.com/in/jmenichole0" class="portfolio-link">💼 LinkedIn Profile</a>
+                        <a href="https://ko-fi.com/jmenichole" class="portfolio-link">☕ Support on Ko-fi</a>
+                        <a href="https://github.com/jmenichole" class="portfolio-link">🐙 GitHub Projects</a>
+                        <a href="https://jmenichole.github.io/CollectClock/" class="portfolio-link">⏰ CollectClock App</a>
+                        <a href="https://traphousediscordbot.created.app" class="portfolio-link">🎮 TrapHouse Demo</a>
+                    </div>
+                    
+                    <p><strong>For beta testing:</strong> Please visit from a desktop browser</p>
+                </div>
+            </body>
+            </html>
+        `);
+    }
+    next();
+});
+
+// JSON parsing middleware
+app.use(express.json());
+
+// Serve static landing pages
+app.use('/static', express.static(path.join(__dirname, 'landing-pages')));
+
+// Portfolio and main landing page routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'index.html'));
+});
+
+app.get('/portfolio', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'portfolio.html'));
+});
+
+app.get('/justthetip', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'justthetip.html'));
+});
+
+app.get('/beta', (req, res) => {
+  res.sendFile(path.join(__dirname, 'landing-pages', 'beta.html'));
+});
+
+// Enhanced beta access with contract verification
+app.get('/beta-access', async (req, res) => {
+    const discordId = req.query.discord_id;
+    const deviceFingerprint = betaContract.generateDeviceFingerprint(req);
+    
+    if (!discordId) {
+        return res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>TiltCheck Beta Access</title>
+                <style>
+                    body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 50px; text-align: center; }
+                    .container { max-width: 600px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #00ff00; }
+                    h1 { color: #00ff00; font-size: 2.5rem; margin-bottom: 30px; }
+                    input { background: rgba(255,255,255,0.1); border: 1px solid #00ff00; color: #fff; padding: 15px; border-radius: 5px; width: 100%; margin: 10px 0; }
+                    button { background: linear-gradient(45deg, #00ff00, #0080ff); color: #000; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; margin: 20px 0; }
+                    .warning { background: rgba(255,107,0,0.1); border: 1px solid #ff6b00; padding: 15px; border-radius: 10px; margin: 20px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🧪 TiltCheck Beta Access</h1>
+                    <div class="warning">
+                        <strong>⚠️ Legal Agreement Required</strong><br>
+                        Beta access requires crypto signature verification and device fingerprinting for legal protection.
+                    </div>
+                    <p>Enter your Discord ID to check beta eligibility:</p>
+                    <form onsubmit="checkAccess(event)">
+                        <input type="text" id="discordId" placeholder="Your Discord ID (e.g., 1155164907680043059)" required />
+                        <button type="submit">Check Beta Access</button>
+                    </form>
+                    <div id="result"></div>
+                </div>
+                <script>
+                    async function checkAccess(event) {
+                        event.preventDefault();
+                        const discordId = document.getElementById('discordId').value;
+                        window.location.href = '/beta-access?discord_id=' + encodeURIComponent(discordId);
+                    }
+                </script>
+            </body>
+            </html>
+        `);
+    }
+
+    // Check if user is approved for beta
+    const isApproved = betaContract.isApprovedBetaUser(discordId);
+    
+    if (isApproved) {
+        // Check for existing valid contract
+        const existingContract = await betaContract.hasValidContract(discordId);
+        
+        if (existingContract) {
+            return res.redirect('/tos?contract_verified=true&discord_id=' + encodeURIComponent(discordId));
+        }
+
+        // Generate new contract for approved user
+        const contract = betaContract.generateBetaContract(discordId, deviceFingerprint);
+        
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Beta Contract Signing</title>
+                <style>
+                    body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 30px; }
+                    .container { max-width: 800px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #00ff00; }
+                    h1 { color: #00ff00; text-align: center; margin-bottom: 30px; }
+                    .contract-details { background: rgba(0,255,0,0.1); padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(0,255,0,0.3); }
+                    .fingerprint { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9rem; margin: 15px 0; }
+                    button { background: linear-gradient(45deg, #00ff00, #0080ff); color: #000; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; margin: 10px; }
+                    .signature-input { background: rgba(255,255,255,0.1); border: 1px solid #00ff00; color: #fff; padding: 15px; border-radius: 5px; width: 100%; margin: 10px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🔒 Beta Testing Contract</h1>
+                    <div class="contract-details">
+                        <h3>Contract Details:</h3>
+                        <p><strong>Contract ID:</strong> ${contract.contractId}</p>
+                        <p><strong>Discord ID:</strong> ${contract.discordId}</p>
+                        <p><strong>Timestamp:</strong> ${contract.timestamp}</p>
+                        <p><strong>Device Fingerprint:</strong></p>
+                        <div class="fingerprint">
+                            Fingerprint: ${contract.deviceFingerprint.fingerprint}<br>
+                            Session ID: ${contract.deviceFingerprint.sessionId}<br>
+                            User Agent: ${contract.deviceFingerprint.userAgent.substring(0, 50)}...<br>
+                            Timestamp: ${contract.deviceFingerprint.timestamp}
+                        </div>
+                    </div>
+                    
+                    <h3>Legal Agreement:</h3>
+                    <ul style="text-align: left; max-width: 600px; margin: 20px auto;">
+                        <li>Desktop-only beta testing access</li>
+                        <li>Crypto wallet funding required for JustTheTip features</li>
+                        <li>Device fingerprinting for legal tracking</li>
+                        <li>7-day session duration limits</li>
+                        <li>Feedback and bug reporting required</li>
+                        <li>No guarantees on gambling outcomes</li>
+                        <li>Personal responsibility for gambling decisions</li>
+                        <li>Data collection and monitoring consent</li>
+                    </ul>
+                    
+                    <p><strong>Digital Signature Required:</strong></p>
+                    <input type="text" id="userSignature" class="signature-input" placeholder="Type your full name as digital signature" required />
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="signContract()">Sign Contract & Access Beta</button>
+                        <button onclick="window.location.href='/'" style="background: #666;">Cancel</button>
+                    </div>
+                </div>
+                
+                <script>
+                    async function signContract() {
+                        const signature = document.getElementById('userSignature').value;
+                        if (!signature.trim()) {
+                            alert('Please provide your digital signature');
+                            return;
+                        }
+                        
+                        const response = await fetch('/sign-contract', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contractId: '${contract.contractId}',
+                                discordId: '${contract.discordId}',
+                                userSignature: signature
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                            window.location.href = '/tos?contract_signed=true&discord_id=${encodeURIComponent(discordId)}';
+                        } else {
+                            alert('Contract signing failed: ' + result.message);
+                        }
+                    }
+                </script>
+            </body>
+            </html>
+        `);
+    } else {
+        // Generate waitlist ticket for non-approved users
+        const waitlistTicket = betaContract.generateWaitlistTicket(discordId, deviceFingerprint);
+        
+        res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Beta Waitlist</title>
+                <style>
+                    body { font-family: Arial, sans-serif; background: #0a0a0a; color: #fff; padding: 50px; text-align: center; }
+                    .container { max-width: 600px; margin: auto; background: rgba(0,0,0,0.8); padding: 40px; border-radius: 15px; border: 1px solid #ff6b00; }
+                    h1 { color: #ff6b00; font-size: 2.5rem; margin-bottom: 30px; }
+                    .waitlist-info { background: rgba(255,107,0,0.1); padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid rgba(255,107,0,0.3); }
+                    .ticket-details { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 5px; font-family: monospace; margin: 15px 0; }
+                    button { background: linear-gradient(45deg, #ff6b00, #ff4444); color: #fff; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; margin: 10px; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>📋 Beta Waitlist</h1>
+                    <div class="waitlist-info">
+                        <h3>⏳ Added to Waitlist</h3>
+                        <p>Your Discord ID <strong>${discordId}</strong> is not currently approved for beta testing.</p>
+                        <p>You have been added to the waitlist and a ticket has been created in the Bet Collective Discord.</p>
+                    </div>
+                    
+                    <div class="ticket-details">
+                        <strong>Waitlist Ticket:</strong><br>
+                        Ticket ID: ${waitlistTicket.ticketId}<br>
+                        Discord ID: ${waitlistTicket.discordId}<br>
+                        Status: ${waitlistTicket.status}<br>
+                        Requested: ${waitlistTicket.requestedAt}<br>
+                        Channel: ${waitlistTicket.waitlistChannel}
+                    </div>
+                    
+                    <p><strong>Next Steps:</strong></p>
+                    <ol style="text-align: left; max-width: 400px; margin: 20px auto;">
+                        <li>Join the Bet Collective Discord</li>
+                        <li>Check tickets channel for updates</li>
+                        <li>Wait for manual approval</li>
+                        <li>You'll be notified when approved</li>
+                    </ol>
+                    
+                    <button onclick="window.open('https://discord.gg/betcollective', '_blank')">Join Bet Collective Discord</button>
+                    <button onclick="window.location.href='/portfolio'" style="background: #666;">View Portfolio</button>
+                </div>
+            </body>
+            </html>
+        `);
+    }
+});
 // Author: jmenichole - LinkedIn: linkedin.com/in/jmenichole0 - GitHub: github.com/jmenichole
 
 const express = require('express');
