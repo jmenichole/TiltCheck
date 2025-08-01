@@ -98,13 +98,38 @@ class BetaVerificationContract {
     // Create crypto signature for contract and mint NFT
     async signContract(contractId, userSignature) {
         try {
-            // Load the contract
-            const contracts = await this.getAllContracts();
-            const contract = contracts.find(c => c.contractId === contractId);
+            // First try to find contract in memory/cache, then load from file
+            let contract = null;
+            
+            // Try to load contract directly by contractId
+            try {
+                const files = await fs.readdir(this.contractsPath);
+                const contractFile = files.find(file => file.includes(contractId));
+                
+                if (contractFile) {
+                    const data = await fs.readFile(path.join(this.contractsPath, contractFile), 'utf8');
+                    contract = JSON.parse(data);
+                    console.log(`📋 Found contract file: ${contractFile}`);
+                } else {
+                    console.log(`❌ No contract file found for ID: ${contractId}`);
+                    // Try to find by searching all contracts
+                    const contracts = await this.getAllContracts();
+                    contract = contracts.find(c => c.contractId === contractId);
+                }
+            } catch (fileError) {
+                console.error('File search error:', fileError);
+                // Fallback to getAllContracts
+                const contracts = await this.getAllContracts();
+                contract = contracts.find(c => c.contractId === contractId);
+            }
             
             if (!contract) {
-                throw new Error('Contract not found');
+                console.error(`❌ Contract not found: ${contractId}`);
+                console.log('Available contract files:', await fs.readdir(this.contractsPath).catch(() => []));
+                throw new Error(`Contract not found: ${contractId}`);
             }
+
+            console.log(`✅ Found contract: ${contract.contractId} for Discord ID: ${contract.discordId}`);
 
             const contractData = JSON.stringify({
                 contractId: contract.contractId,
