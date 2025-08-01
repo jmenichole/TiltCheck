@@ -1,0 +1,17 @@
+{
+  "tokenId": "2542d530bb80e38c3836b8c48a8ca54a33165e252d69f83dcf2f3f0ab652949f",
+  "owner": "1155164907680043059",
+  "contractId": "88dc5d3b-e618-455c-b9db-a2f9979462af",
+  "mintedAt": 1754016024515,
+  "deviceFingerprint": "48e2468a71388b05f74bd1e7d46a7c80fb61b4b44783804a99a6366eab91d910",
+  "contractSignature": "feaa44d25df8e4406440c209ff24aac168d445ed97a00c61a951c637f64e84a2",
+  "status": "active",
+  "verificationHash": "a86e072a6376f17760afcd85faf0603e622a38ade82462ed02668af8d7384a4c",
+  "accessRights": {
+    "betaTesting": true,
+    "desktopAccess": true,
+    "analyticsAccess": true,
+    "feedbackSubmission": true,
+    "contractualProtection": true
+  }
+}

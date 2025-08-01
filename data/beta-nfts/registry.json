@@ -7,8 +7,16 @@
       "name": "TiltCheck Beta Access #536aa0",
       "contractId": "88dc5d3b-e618-455c-b9db-a2f9979462af",
       "verificationHash": "043e0eef4786e28721534ea4115d466bf0f572a38773c5ed4f415612c6e71762"
+    },
+    {
+      "tokenId": "2542d530bb80e38c3836b8c48a8ca54a33165e252d69f83dcf2f3f0ab652949f",
+      "owner": "1155164907680043059",
+      "mintedAt": 1754016024515,
+      "name": "TiltCheck Beta Access #52949f",
+      "contractId": "88dc5d3b-e618-455c-b9db-a2f9979462af",
+      "verificationHash": "a86e072a6376f17760afcd85faf0603e622a38ade82462ed02668af8d7384a4c"
     }
   ],
-  "totalSupply": 1,
-  "lastUpdated": 1754016004558
+  "totalSupply": 2,
+  "lastUpdated": 1754016024516
 }

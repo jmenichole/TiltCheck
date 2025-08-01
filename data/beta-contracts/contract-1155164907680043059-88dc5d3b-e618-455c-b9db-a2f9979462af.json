@@ -37,15 +37,15 @@
   },
   "signature": {
     "server": "1b37832c5e6cec565ca194c4a6c1f2e99c1991f0266828457646eec735fd9c99",
-    "user": "jamie vargas",
-    "combined": "a0b0b37c597162f51d0ccfab78ce269a52697405c427fab7300c715fd845b074",
-    "signedAt": "2025-08-01T02:40:04.556Z"
+    "user": "Test User Digital Signature",
+    "combined": "8f4af3f702b0db3dc624fe3b74459acb051692074a779117571e7d630d306afe",
+    "signedAt": "2025-08-01T02:40:24.515Z"
   },
   "status": "signed",
   "nft": {
-    "tokenId": "a91c5dc0cffb01ec1eb29f9c07be35d57948454559019db437c9d87b53536aa0",
-    "contractSignature": "411ded88df1ddc8b8f1f76f1d302ab0716db86b6035d8134ffce2ad4daadcfbc",
-    "verificationUrl": "http://localhost:4002/verify-nft/a91c5dc0cffb01ec1eb29f9c07be35d57948454559019db437c9d87b53536aa0",
-    "mintedAt": 1754016004559
+    "tokenId": "2542d530bb80e38c3836b8c48a8ca54a33165e252d69f83dcf2f3f0ab652949f",
+    "contractSignature": "feaa44d25df8e4406440c209ff24aac168d445ed97a00c61a951c637f64e84a2",
+    "verificationUrl": "http://localhost:4002/verify-nft/2542d530bb80e38c3836b8c48a8ca54a33165e252d69f83dcf2f3f0ab652949f",
+    "mintedAt": 1754016024516
   }
 }
