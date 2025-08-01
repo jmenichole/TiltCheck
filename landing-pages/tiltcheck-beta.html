@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck Beta - Advanced Gambling Accountability</title>
+    <link rel="canonical" href="https://tiltcheck.it.com/beta">
+    <meta name="description" content="TiltCheck Beta - Advanced gambling accountability and addiction prevention system. Built by degens, for degens who learned the hard way.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff; 
+            line-height: 1.6; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .header { 
+            background: rgba(0, 0, 0, 0.8); 
+            padding: 20px 0; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: #00ff00; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { color: #ffffff; text-decoration: none; transition: color 0.3s; }
+        .nav-links a:hover { color: #00ff00; }
+        .hero { 
+            padding: 120px 0 80px; 
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23333" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 20px; 
+            background: linear-gradient(45deg, #00ff00, #0080ff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; color: #cccccc; }
+        .cta-button { 
+            background: linear-gradient(45deg, #00ff00, #0080ff); 
+            color: #000; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 30px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: transform 0.3s; 
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-button:hover { transform: translateY(-3px); }
+        .features { padding: 80px 0; background: rgba(0, 0, 0, 0.3); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .feature-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 30px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(0, 255, 0, 0.2); 
+            backdrop-filter: blur(10px);
+        }
+        .feature-card h3 { color: #00ff00; margin-bottom: 15px; font-size: 1.3rem; }
+        .stats { padding: 60px 0; text-align: center; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .stat { background: rgba(0, 255, 0, 0.1); padding: 30px; border-radius: 10px; }
+        .stat-number { font-size: 2.5rem; font-weight: bold; color: #00ff00; }
+        .beta-warning { 
+            background: linear-gradient(45deg, #ff6b00, #ff8800); 
+            color: #000; 
+            padding: 15px; 
+            text-align: center; 
+            font-weight: bold; 
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .footer { background: #000; padding: 40px 0; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-links a { color: #cccccc; text-decoration: none; }
+        .footer-links a:hover { color: #00ff00; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">TiltCheck β</div>
+                <ul class="nav-links">
+                    <li><a href="https://tiltcheck.it.com">Home</a></li>
+                    <li><a href="https://tiltcheck.it.com/justthetip">JustTheTip</a></li>
+                    <li><a href="https://github.com/jmenichole/trap-house-discord-bot">GitHub</a></li>
+                    <li><a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/TERMS_OF_SERVICE.md">ToS</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>TiltCheck Beta</h1>
+            <p>Advanced Gambling Accountability System</p>
+            <p>Built by degens, for degens who learned the hard way</p>
+            <div class="beta-warning">
+                🧪 BETA ACCESS - Desktop Only | Comprehensive Testing Environment
+            </div>
+            <a href="#join-beta" class="cta-button">Join Beta Testing</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">Beta Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🎯 Real-Time Monitoring</h3>
+                    <p>Live session tracking across all major gambling platforms with instant tilt detection and intervention alerts.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🚨 Advanced Tilt Detection</h3>
+                    <p>Monitors stake escalation, loss sequences, betting velocity, and balance depletion with personality-driven responses.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💰 Crypto Integration</h3>
+                    <p>Full JustTheTip crypto payment system with multi-chain support (Polygon, Arbitrum, BSC, Ethereum, Avalanche, Solana, Tron).</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎰 Casino Trust Scoring</h3>
+                    <p>Real-time casino compliance analysis with trust metrics for Stake, Roobet, BC.Game, Shuffle, Rollbit, and DuelBits.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Analytics Dashboard</h3>
+                    <p>Comprehensive analytics with feedback systems, UX metrics, and real-time performance monitoring.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Payment Bypasses</h3>
+                    <p>Beta testing environment with payment and role bypasses for full feature access during testing period.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <h2 style="margin-bottom: 40px; font-size: 2.5rem;">Beta Testing Progress</h2>
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">7</div>
+                    <div>Supported Chains</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">6</div>
+                    <div>Casino Integrations</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">3</div>
+                    <div>Bot Ecosystem</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">24/7</div>
+                    <div>Monitoring</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="join-beta" style="padding: 80px 0; text-align: center; background: rgba(0, 255, 0, 0.05);">
+        <div class="container">
+            <h2 style="margin-bottom: 30px; font-size: 2.5rem;">Join Beta Testing</h2>
+            <p style="margin-bottom: 30px; font-size: 1.2rem;">Desktop-only access with comprehensive testing environment</p>
+            <div style="margin-bottom: 30px;">
+                <strong>Requirements:</strong><br>
+                • Desktop/laptop computer<br>
+                • Discord account<br>
+                • Crypto wallet for JustTheTip features<br>
+                • Accept Terms of Service and Beta Agreement
+            </div>
+            <a href="http://localhost:4000/tos" class="cta-button">Start Beta Access</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/jmenichole/trap-house-discord-bot">GitHub Repository</a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/TERMS_OF_SERVICE.md">Terms of Service</a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/PRIVACY_POLICY.md">Privacy Policy</a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/TILTCHECK_INTEGRATION.md">Documentation</a>
+            </div>
+            <p>&copy; 2025 TiltCheck - Built 4 Degens By Degens</p>
+        </div>
+    </footer>
+</body>
+</html>

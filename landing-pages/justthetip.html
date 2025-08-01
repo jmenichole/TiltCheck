@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustTheTip - Crypto Payments & Tips</title>
+    <link rel="canonical" href="https://tiltcheck.it.com/justthetip">
+    <meta name="description" content="JustTheTip - Advanced crypto payment and tipping system integrated with TrapHouse Discord bot. Multi-chain support with real-time transactions.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff; 
+            line-height: 1.6; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .header { 
+            background: rgba(0, 0, 0, 0.8); 
+            padding: 20px 0; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: #4CAF50; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { color: #ffffff; text-decoration: none; transition: color 0.3s; }
+        .nav-links a:hover { color: #4CAF50; }
+        .hero { 
+            padding: 120px 0 80px; 
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="crypto" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="%234CAF50" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23crypto)"/></svg>');
+        }
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 20px; 
+            background: linear-gradient(45deg, #4CAF50, #2196F3); 
+            -webkit-background-clip: text; 
+            background-clip: text;
+            -webkit-text-fill-color: transparent; 
+        }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; color: #cccccc; }
+        .cta-button { 
+            background: linear-gradient(45deg, #4CAF50, #2196F3); 
+            color: #000; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 30px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: transform 0.3s; 
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-button:hover { transform: translateY(-3px); }
+        .features { padding: 80px 0; background: rgba(0, 0, 0, 0.3); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .feature-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 30px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(76, 175, 80, 0.2); 
+            backdrop-filter: blur(10px);
+        }
+        .feature-card h3 { color: #4CAF50; margin-bottom: 15px; font-size: 1.3rem; }
+        .chains { padding: 60px 0; text-align: center; }
+        .chains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .chain { 
+            background: rgba(76, 175, 80, 0.1); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        .chain-name { font-weight: bold; color: #4CAF50; margin-bottom: 5px; }
+        .tech-specs { padding: 80px 0; background: rgba(0, 0, 0, 0.2); }
+        .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .spec-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 25px; 
+            border-radius: 10px; 
+            border-left: 4px solid #4CAF50;
+        }
+        .footer { background: #000; padding: 40px 0; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-links a { color: #cccccc; text-decoration: none; }
+        .footer-links a:hover { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">JustTheTip 💰</div>
+                <ul class="nav-links">
+                    <li><a href="https://tiltcheck.it.com">TiltCheck</a></li>
+                    <li><a href="https://tiltcheck.it.com/beta">Beta</a></li>
+                    <li><a href="https://github.com/jmenichole/trap-house-discord-bot">GitHub</a></li>
+                    <li><a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/TERMS_OF_SERVICE.md">ToS</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>JustTheTip</h1>
+            <p>Advanced Crypto Payment & Tipping System</p>
+            <p>Seamless multi-chain transactions for the TrapHouse ecosystem</p>
+            <a href="#get-started" class="cta-button">Start Using JustTheTip</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>💰 Multi-Chain Support</h3>
+                    <p>Send and receive payments across 7 major blockchain networks with automatic wallet creation and management.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Instant Transactions</h3>
+                    <p>Real-time payment processing with sub-second confirmation times and automatic network optimization.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Secure Wallets</h3>
+                    <p>Enterprise-grade wallet generation with unicode protection, regulatory compliance, and multi-signature support.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Payment Analytics</h3>
+                    <p>Comprehensive transaction tracking, portfolio management, and detailed analytics dashboard.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎮 Discord Integration</h3>
+                    <p>Seamless Discord bot commands for payments, tips, and wallet management directly in your server.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌐 Cross-Chain Bridge</h3>
+                    <p>Automatic token bridging and chain optimization for the lowest fees and fastest transactions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chains">
+        <div class="container">
+            <h2 style="margin-bottom: 40px; font-size: 2.5rem;">Supported Blockchains</h2>
+            <div class="chains-grid">
+                <div class="chain">
+                    <div class="chain-name">Polygon</div>
+                    <div>Low fees, fast transactions</div>
+                </div>
+                <div class="chain">
+                    <div class="chain-name">Arbitrum</div>
+                    <div>Ethereum L2 scaling</div>
+                </div>
+                <div class="chain">
+                    <div class="chain-name">BSC</div>
+                    <div>Binance Smart Chain</div>
+                </div>
+                <div class="chain">
+                    <div class="chain-name">Ethereum</div>
+                    <div>Original smart contracts</div>
+                </div>
+                <div class="chain">
+                    <div class="chain-name">Avalanche</div>
+                    <div>High throughput network</div>
+                </div>
+                <div class="chain">
+                    <div class="chain-name">Solana</div>
+                    <div>Ultra-fast transactions</div>
+                </div>
+                <div class="chain">
+                    <div class="chain-name">Tron</div>
+                    <div>Energy-efficient DeFi</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-specs">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">Technical Specifications</h2>
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h3>🔧 Commands</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>• <code>!crypto-wallet create [chain]</code></li>
+                        <li>• <code>!crypto-balance [chain]</code></li>
+                        <li>• <code>!crypto-send [amount] [chain] [@user]</code></li>
+                        <li>• <code>!crypto-tip [amount] [chain] [@user]</code></li>
+                        <li>• <code>!crypto-chains</code></li>
+                    </ul>
+                </div>
+                <div class="spec-card">
+                    <h3>⚙️ Network Optimization</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>• Automatic gas fee optimization</li>
+                        <li>• Dynamic chain selection</li>
+                        <li>• Real-time network monitoring</li>
+                        <li>• Cross-chain arbitrage detection</li>
+                    </ul>
+                </div>
+                <div class="spec-card">
+                    <h3>🛡️ Security Features</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>• HD wallet generation</li>
+                        <li>• Unicode character protection</li>
+                        <li>• Regulatory compliance checks</li>
+                        <li>• Multi-signature support</li>
+                    </ul>
+                </div>
+                <div class="spec-card">
+                    <h3>📈 Analytics Integration</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>• Real-time portfolio tracking</li>
+                        <li>• Transaction history export</li>
+                        <li>• Performance metrics</li>
+                        <li>• Custom reporting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="get-started" style="padding: 80px 0; text-align: center; background: rgba(76, 175, 80, 0.05);">
+        <div class="container">
+            <h2 style="margin-bottom: 30px; font-size: 2.5rem;">Get Started with JustTheTip</h2>
+            <p style="margin-bottom: 30px; font-size: 1.2rem;">Start using crypto payments in Discord today</p>
+            <div style="margin-bottom: 30px;">
+                <strong>Quick Start:</strong><br>
+                1. Join the TrapHouse Discord server<br>
+                2. Use <code>!crypto-wallet create polygon</code><br>
+                3. Fund your wallet with real crypto<br>
+                4. Start sending tips and payments!
+            </div>
+            <a href="https://tiltcheck.it.com/beta" class="cta-button">Try in Beta</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/jmenichole/trap-house-discord-bot">GitHub Repository</a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/TERMS_OF_SERVICE.md">Terms of Service</a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/PRIVACY_POLICY.md">Privacy Policy</a>
+                <a href="https://github.com/jmenichole/trap-house-discord-bot/blob/main/TILTCHECK_INTEGRATION.md">Documentation</a>
+            </div>
+            <p>&copy; 2025 JustTheTip - Part of the TrapHouse Ecosystem</p>
+        </div>
+    </footer>
+</body>
+</html>

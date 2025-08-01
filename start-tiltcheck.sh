@@ -18,30 +18,47 @@ DOMAIN="tiltcheck.it.com"
 ENV=${NODE_ENV:-development}
 
 # Port configuration
-declare -A PORTS=(
-    ["main"]="3000"
-    ["justthetip"]="3001" 
-    ["oauth"]="3002"
-    ["degens"]="3003"
-    ["collectclock"]="3004"
-    ["beta"]="3335"
-    ["analytics"]="3336"
-    ["installer"]="4000"
-    ["proxy"]="8080"
-)
+MAIN_PORT=3000
+JUSTTHETIP_PORT=3001
+OAUTH_PORT=3002
+DEGENS_PORT=3003
+COLLECTCLOCK_PORT=3004
+BETA_PORT=3335
+ANALYTICS_PORT=3336
+INSTALLER_PORT=4000
+# Service configuration
+get_port() {
+    case $1 in
+        "main") echo $MAIN_PORT ;;
+        "justthetip") echo $JUSTTHETIP_PORT ;;
+        "oauth") echo $OAUTH_PORT ;;
+        "degens") echo $DEGENS_PORT ;;
+        "collectclock") echo $COLLECTCLOCK_PORT ;;
+        "beta") echo $BETA_PORT ;;
+        "analytics") echo $ANALYTICS_PORT ;;
+        "installer") echo $INSTALLER_PORT ;;
+        "proxy") echo $PROXY_PORT ;;
+        *) echo "0" ;;
+    esac
+}
 
-# Service commands
-declare -A SERVICES=(
-    ["main"]="node index.js"
-    ["justthetip"]="node cryptoTipManager.js"
-    ["oauth"]="node oauth-server.js"
-    ["degens"]="node degens-server.js"
-    ["collectclock"]="node collectclock-server.js"
-    ["beta"]="node beta-testing-server.js"
-    ["analytics"]="node analytics-server.js"
-    ["installer"]="node desktop-installer-server.js"
-    ["proxy"]="node tiltcheck-domain-integration.js"
-)
+get_service_command() {
+    case $1 in
+        "main") echo "node index.js" ;;
+        "justthetip") echo "node cryptoTipManager.js" ;;
+        "oauth") echo "node oauth-server.js" ;;
+        "degens") echo "node degens-server.js" ;;
+        "collectclock") echo "node collectclock-server.js" ;;
+        "beta") echo "node beta-testing-server.js" ;;
+        "analytics") echo "node analytics-server.js" ;;
+        "installer") echo "node desktop-installer-server.js" ;;
+        "proxy") echo "node tiltcheck-domain-integration.js" ;;
+        *) echo "" ;;
+    esac
+}
+
+# List of all services
+ALL_SERVICES="main justthetip oauth degens collectclock beta analytics installer proxy"
 
 echo -e "${BLUE}"
 echo "████████╗██╗██╗  ████████╗ ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗"
@@ -81,8 +98,13 @@ kill_port() {
 # Function to start service
 start_service() {
     local service_name=$1
-    local port=${PORTS[$service_name]}
-    local command=${SERVICES[$service_name]}
+    local port=$(get_port $service_name)
+    local command=$(get_service_command $service_name)
+    
+    if [ "$command" = "" ]; then
+        echo -e "${RED}❌ Unknown service: $service_name${NC}"
+        return 1
+    fi
     
     echo -e "${YELLOW}🚀 Starting ${service_name} service (port ${port})...${NC}"
     
@@ -109,6 +131,7 @@ start_service() {
 stop_service() {
     local service_name=$1
     local pid_file="pids/${service_name}.pid"
+    local port=$(get_port $service_name)
     
     if [ -f "$pid_file" ]; then
         local pid=$(cat $pid_file)
@@ -125,13 +148,13 @@ stop_service() {
     fi
     
     # Also kill by port as backup
-    kill_port ${PORTS[$service_name]}
+    kill_port $port
 }
 
 # Function to check service status
 check_service() {
     local service_name=$1
-    local port=${PORTS[$service_name]}
+    local port=$(get_port $service_name)
     
     if check_port $port; then
         echo -e "${GREEN}✅ ${service_name}${NC} - Port ${port} - ${GREEN}Running${NC}"

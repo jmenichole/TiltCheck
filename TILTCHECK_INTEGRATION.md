@@ -11,6 +11,7 @@ The TiltCheck Mischief Manager is a comprehensive gambling accountability system
 ## Philosophy
 
 > "Built by someone who understands the struggle. Your mental health and financial well-being matter more than any gambling session."
+Built 4degensbydegens
 
 The Mischief Manager approach combines:
 - **Data-driven insights** with **emotional intelligence**
