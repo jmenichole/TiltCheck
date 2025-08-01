@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Support TrapHouse Discord Bot - Tools for responsible gambling, accountability, and community support">
-    <meta name="keywords" content="discord bot, gambling accountability, tiltcheck, crypto guidance, responsible gaming">
+    <meta name="keywords" content="discord bot, gambling accountability, tiltcheck, crypto g                <a href="https://discord.com/oauth2/authorize?client_id=1354450590813655142" target="_blank" class="beta-btn">
+                    💬 Join Discord Community
+                </a>ance, responsible gaming">
     <meta name="author" content="jmenichole">
     <meta property="og:title" content="TrapHouse Discord Bot - Support Page">
     <meta property="og:description" content="Made for degens by degens who learned the hard way. Supporting responsible gambling & community accountability.">
@@ -144,6 +146,22 @@
             text-align: center;
         }
         
+        .beta-section {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            animation: pulse-glow 2s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); }
+        }
+        
         .mining-section h2 {
             color: white;
             margin-bottom: 20px;
@@ -172,6 +190,49 @@
             outline-offset: 2px;
         }
         
+        .beta-btn {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            border: 2px solid #00ff88;
+            margin: 10px;
+        }
+        
+        .beta-btn:hover {
+            background: rgba(0, 255, 136, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+        
+        .beta-btn:focus {
+            outline: 2px solid #00ff88;
+            outline-offset: 2px;
+        }
+        
+        .beta-signup {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .beta-warning {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -186,9 +247,17 @@
                 grid-template-columns: 1fr;
             }
             
-            .mining-btn {
+            .mining-btn, .beta-btn {
                 padding: 12px 24px;
                 font-size: 1.1em;
+                display: block;
+                margin: 10px auto;
+                text-align: center;
+                max-width: 280px;
+            }
+            
+            .beta-section {
+                animation: none; /* Reduce motion on mobile */
             }
         }
         
@@ -247,13 +316,16 @@
             <h2>☕ Support the Project</h2>
             <p>Help us continue developing tools for gambling accountability and community support!</p>
             
+            <div class="primary-support" style="text-align: center; margin: 30px 0;">
+                <a href="https://ko-fi.com/jmenichole" target="_blank" class="mining-btn" style="font-size: 1.3em; padding: 20px 40px;">
+                    ☕ Support on Ko-fi
+                </a>
+                <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                    One-time or monthly donations
+                </p>
+            </div>
+            
             <div class="support-links">
-                <div class="support-card">
-                    <span class="emoji">☕</span>
-                    <a href="https://ko-fi.com/jmenichole" target="_blank">Ko-fi Donations</a>
-                    <p>One-time or monthly support</p>
-                </div>
-                
                 <div class="support-card">
                     <span class="emoji">⭐</span>
                     <a href="https://github.com/sponsors/jmenichole" target="_blank">GitHub Sponsors</a>
@@ -277,11 +349,45 @@
         <div class="mining-section">
             <h2>⛏️ Passive Income Opportunity</h2>
             <p>Support the project while earning crypto through cloud mining!</p>
+            
+            <div class="investment-warning" style="background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; padding: 15px; border-radius: 10px; margin: 20px 0; font-size: 0.9em;">
+                <strong>⚠️ Investment Risk Disclaimer:</strong>
+                This is a referral link for GoMining, a cryptocurrency mining platform. 
+                All crypto investments carry significant risk. Only invest what you can afford to lose.
+                DYOR (Do Your Own Research) before investing.
+            </div>
+            
             <a href="https://gomining.com/?ref=vbk5r" target="_blank" class="mining-btn">
                 🚀 Start Mining with GoMining
             </a>
             <p style="margin-top: 15px; font-size: 0.9em;">
                 Use our referral link to get started with GoMining cloud mining platform
+            </p>
+        </div>
+        
+        <div class="beta-section">
+            <h2>🧪 Beta Testing Program</h2>
+            <p>Get early access to cutting-edge features and help shape the future of TrapHouse Bot!</p>
+            
+            <div class="beta-signup">
+                <p style="margin: 20px 0; font-size: 1.1em;">
+                    🔥 <strong>Beta testing currently in development!</strong>
+                </p>
+                <p style="margin: 15px 0; color: #00ff88;">
+                    Join our Discord community to be notified when beta access becomes available.
+                </p>
+                <a href="https://discord.gg/traphouse" target="_blank" class="beta-btn">
+                    � Join Discord for Beta Updates
+                </a>
+            </div>
+            
+            <div class="beta-warning">
+                <strong>🚀 Coming Soon:</strong> Advanced TiltCheck, NFT contracts, Desktop overlay, 
+                Enhanced crypto integration, Real-time accountability features
+            </div>
+            
+            <p style="margin-top: 15px; font-size: 0.9em; color: rgba(255,255,255,0.8);">
+                <em>Beta program will require desktop installation and real crypto wallets for full functionality.</em>
             </p>
         </div>
         
@@ -295,6 +401,7 @@
                 <li>Ko-fi integration for donation notifications</li>
                 <li>GitHub webhook integration for development tracking</li>
                 <li>Comprehensive addiction support resources</li>
+                <li><strong style="color: #00ff88;">🧪 Beta: Desktop overlay & NFT contracts</strong></li>
             </ul>
         </div>
         
@@ -321,7 +428,7 @@
     
     <!-- Error Message -->
     <div class="error-message" id="errorMessage">
-        ⚠️ Ko-fi widget failed to load. You can still visit <a href="https://ko-fi.com/jmenichole" target="_blank" style="color: #ff6b6b;">ko-fi.com/jmenichole</a> directly.
+        ☕ Ko-fi widget unavailable. <a href="https://ko-fi.com/jmenichole" target="_blank" style="color: #4ecdc4; text-decoration: underline;">Visit our Ko-fi page directly →</a>
     </div>
 
     <!-- Ko-fi Overlay Widget -->
@@ -329,7 +436,23 @@
     <script>
         // Initialize Ko-fi widget when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading indicator
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'block';
+            }
+            
+            // Set timeout for widget loading (reduced to 3 seconds)
+            const widgetTimeout = setTimeout(() => {
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                if (errorMessage) errorMessage.style.display = 'block';
+                console.warn('Ko-fi widget loading timeout');
+            }, 3000);
+            
             try {
+                if (typeof kofiWidgetOverlay !== 'undefined') {
                     kofiWidgetOverlay.draw('jmenichole0', {
                         'type': 'floating-chat',
                         'floating-chat.donateButton.text': 'Tip Me',
@@ -339,15 +462,15 @@
                     
                     // Hide loading indicator on success
                     clearTimeout(widgetTimeout);
-                    loadingIndicator.style.display = 'none';
+                    if (loadingIndicator) loadingIndicator.style.display = 'none';
                     console.log('Ko-fi widget loaded successfully');
                 } else {
                     throw new Error('Ko-fi widget script not loaded');
                 }
             } catch (error) {
                 clearTimeout(widgetTimeout);
-                loadingIndicator.style.display = 'none';
-                errorMessage.style.display = 'block';
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                if (errorMessage) errorMessage.style.display = 'block';
                 console.error('Ko-fi widget failed to load:', error);
             }
         });
