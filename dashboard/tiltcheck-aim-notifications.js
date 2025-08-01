@@ -333,13 +333,79 @@ class TiltCheckAIMNotifications {
         return titleMap[type] || '📢 Notification';
     }
 
+    // 🚨 Special tilt betting alert with intense .wav sounds
+    playTiltBettingAlert(intensity = 3) {
+        console.log(`🔊 Playing tilt betting alert with intensity ${intensity}`);
+        
+        for (let i = 0; i < intensity; i++) {
+            setTimeout(() => {
+                try {
+                    // Clone the audio to allow overlapping plays
+                    const alertSound = this.sounds.tiltAlert.cloneNode();
+                    alertSound.volume = Math.min(0.8 + (i * 0.1), 1.0); // Increasing volume
+                    alertSound.play().catch(e => console.warn('Audio play failed:', e));
+                    
+                    console.log(`🔊 Tilt alert sound ${i + 1}/${intensity} played`);
+                } catch (error) {
+                    console.error('Error playing tilt alert:', error);
+                }
+            }, i * 400); // 400ms delay between sounds for urgency
+        }
+    }
+
+    // Flash overlay for visual alert
+    flashOverlay(isEmergency = false) {
+        const overlay = document.querySelector('.aim-messenger-container') || document.body;
+        const flashColor = isEmergency ? '#ff0000' : '#ff6600'; // Red for emergency, orange for warning
+        
+        // Create flash effect
+        const originalBackground = overlay.style.backgroundColor;
+        const flashCount = isEmergency ? 6 : 3;
+        
+        for (let i = 0; i < flashCount; i++) {
+            setTimeout(() => {
+                overlay.style.backgroundColor = flashColor;
+                overlay.style.transition = 'background-color 0.1s';
+                
+                setTimeout(() => {
+                    overlay.style.backgroundColor = originalBackground;
+                }, 150);
+            }, i * 300);
+        }
+        
+        // Reset after flashing
+        setTimeout(() => {
+            overlay.style.backgroundColor = originalBackground;
+            overlay.style.transition = '';
+        }, flashCount * 300 + 200);
+    }
+
     // Simulate some events for testing
     simulateEvents() {
-        // Simulate tilt alert
+        // Simulate normal tilt alert first
         setTimeout(() => {
-            this.handleTiltAlert({ level: 'medium' });
-        }, 5000);
-        
+            this.handleTiltAlert({ 
+                level: 'medium',
+                reason: 'Increased betting frequency detected',
+                suggestion: 'Consider taking a 10-minute break'
+            });
+        }, 3000);
+
+        // 🚨 Simulate TILT BETTING after warning (this will trigger the .wav file)
+        setTimeout(() => {
+            this.handleTiltAlert({ 
+                level: 'critical',
+                reason: 'Continued betting despite tilt warning',
+                suggestion: 'IMMEDIATE BREAK REQUIRED',
+                continueBetting: {
+                    afterWarning: true,
+                    pattern: 'chase-losses',
+                    frequency: 5,
+                    riskAmount: 250
+                }
+            });
+        }, 8000);
+
         // Simulate betting event
         setTimeout(() => {
             this.handleBettingEvent({

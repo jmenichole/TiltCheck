@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck .wav Sound Test</title>
+    <style>
+        body {
+            font-family: 'MS Sans Serif', sans-serif;
+            background: #c0c0c0;
+            margin: 20px;
+            padding: 20px;
+        }
+        
+        .test-panel {
+            background: #f0f0f0;
+            border: 2px inset #c0c0c0;
+            padding: 20px;
+            margin: 10px 0;
+        }
+        
+        .button {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: 'MS Sans Serif', sans-serif;
+            font-size: 11px;
+        }
+        
+        .button:active {
+            border: 2px inset #c0c0c0;
+        }
+        
+        .critical {
+            background: #ff6060;
+        }
+        
+        .warning {
+            background: #ffff60;
+        }
+        
+        .log {
+            background: #ffffff;
+            border: 1px solid #808080;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 TiltCheck .wav Sound Alert System Test</h1>
+    
+    <div class="test-panel">
+        <h3>🔊 Tilt Betting Alert Tests</h3>
+        <p>These buttons will trigger the .wav file when tilt betting is detected:</p>
+        
+        <button class="button warning" onclick="testNormalTilt()">
+            🟡 Normal Tilt Warning
+        </button>
+        
+        <button class="button critical" onclick="testTiltBetting()">
+            🚨 TILT BETTING DETECTED (.wav x3)
+        </button>
+        
+        <button class="button" onclick="testCriticalTilt()">
+            🔴 Critical Tilt Alert (.wav x2)
+        </button>
+        
+        <button class="button" onclick="testAudioDirect()">
+            🎵 Test .wav File Direct
+        </button>
+    </div>
+    
+    <div class="test-panel">
+        <h3>📋 Test Log</h3>
+        <div id="log" class="log"></div>
+        <button class="button" onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="test-panel">
+        <h3>📄 What This Tests:</h3>
+        <ul>
+            <li><strong>.wav Sound Trigger:</strong> When user continues betting after tilt warning</li>
+            <li><strong>Pattern Recognition:</strong> Multiple sounds for chase-loss behavior</li>
+            <li><strong>Visual Flash:</strong> Red overlay flash for critical tilt betting</li>
+            <li><strong>Audio Intensity:</strong> Different sound counts based on severity</li>
+        </ul>
+    </div>
+
+    <!-- Load AIM system -->
+    <script src="aim-messenger.js"></script>
+    <script src="tiltcheck-aim-notifications.js"></script>
+    
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function testNormalTilt() {
+            log('🟡 Testing normal tilt warning...');
+            if (window.tiltCheckNotifications) {
+                window.tiltCheckNotifications.handleTiltAlert({
+                    level: 'medium',
+                    reason: 'Increased betting frequency detected',
+                    suggestion: 'Consider taking a 10-minute break',
+                    userStats: { sessionTime: 45, variance: 'high' }
+                });
+                log('✅ Normal tilt alert sent (.wav x1)');
+            } else {
+                log('❌ TiltCheck notifications not loaded');
+            }
+        }
+        
+        function testTiltBetting() {
+            log('🚨 Testing TILT BETTING detection...');
+            if (window.tiltCheckNotifications) {
+                window.tiltCheckNotifications.handleTiltAlert({
+                    level: 'critical',
+                    reason: 'Continued betting despite tilt warning',
+                    suggestion: 'IMMEDIATE BREAK REQUIRED',
+                    continueBetting: {
+                        afterWarning: true,
+                        pattern: 'chase-losses',
+                        frequency: 7,
+                        riskAmount: 350
+                    },
+                    userStats: { sessionTime: 120, variance: 'extreme' }
+                });
+                log('🔊 TILT BETTING alert sent (.wav x3 + red flash)');
+            } else {
+                log('❌ TiltCheck notifications not loaded');
+            }
+        }
+        
+        function testCriticalTilt() {
+            log('🔴 Testing critical tilt alert...');
+            if (window.tiltCheckNotifications) {
+                window.tiltCheckNotifications.handleTiltAlert({
+                    level: 'critical',
+                    reason: 'Dangerous betting pattern detected',
+                    suggestion: 'Account protection may be activated'
+                });
+                log('✅ Critical tilt alert sent (.wav x2)');
+            } else {
+                log('❌ TiltCheck notifications not loaded');
+            }
+        }
+        
+        function testAudioDirect() {
+            log('🎵 Testing .wav file directly...');
+            try {
+                const audio = new Audio('55817__sergenious__bloop2.wav');
+                audio.volume = 0.8;
+                audio.play().then(() => {
+                    log('✅ .wav file played successfully');
+                }).catch(error => {
+                    log('❌ .wav file failed to play: ' + error.message);
+                });
+            } catch (error) {
+                log('❌ Error creating audio: ' + error.message);
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🚀 TiltCheck .wav Sound Test initialized');
+            log('📁 Looking for: 55817__sergenious__bloop2.wav');
+            
+            // Check if audio file exists
+            fetch('55817__sergenious__bloop2.wav')
+                .then(response => {
+                    if (response.ok) {
+                        log('✅ .wav file found and accessible');
+                    } else {
+                        log('❌ .wav file not found (404)');
+                    }
+                })
+                .catch(error => {
+                    log('❌ Error checking .wav file: ' + error.message);
+                });
+            
+            // Wait for TiltCheck notifications to load
+            setTimeout(() => {
+                if (window.tiltCheckNotifications) {
+                    log('✅ TiltCheck notification system loaded');
+                    log('🎯 Ready to test tilt betting alerts!');
+                } else {
+                    log('⏳ TiltCheck notification system still loading...');
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
