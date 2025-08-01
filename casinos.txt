@@ -1,0 +1,35 @@
+# Social Casino Affiliate Links & Platform Data
+# Format: Platform Name | Affiliate Link | Type | Features
+
+# Major Crypto Casinos
+Stake | https://stake.com/?c=jmenichole | Crypto | Sports, Casino, Original Games
+Rollbit | https://rollbit.com/r/jmenichole | Crypto | NFT Integration, Sports
+Shuffle | https://shuffle.com/r/jmenichole | Crypto | Streaming Focus
+BC.Game | https://bc.game/i-jmenichole | Crypto | Multi-chain Support
+MetaWin | https://metawin.com/r/jmenichole | Crypto/NFT | NFT Prizes
+DuelBits | https://duelbits.com/r/jmenichole | Crypto | Esports Focus
+
+# US Social Casinos (Legal Sweepstakes)
+Stake.us | https://stake.us/?c=jmenichole | Social | Sweepstakes Legal
+TrustDice | https://trustdice.win/?ref=jmenichole | Crypto | Dice Focus
+WowVegas | https://wowvegas.com/r/jmenichole | Social | Vegas Style
+Pulsz | https://pulsz.com/r/jmenichole | Social | Bingo & Slots
+McLuck | https://mcluck.com/r/jmenichole | Social | Classic Slots
+Crown Coins | https://crowncoins.com/r/jmenichole | Social | Premium Experience
+Modo | https://modo.us/r/jmenichole | Social | Modern Interface
+Chanced | https://chanced.com/r/jmenichole | Social | Daily Rewards
+Sportzino | https://sportzino.com/r/jmenichole | Social | Sports Focus
+LuckyBird | https://luckybird.io/r/jmenichole | Social | Bird Theme
+Hello Millions | https://hellomillions.com/r/jmenichole | Social | Jackpot Focus
+SpinBlitz | https://spinblitz.com/r/jmenichole | Social | Fast Spins
+Real Prize | https://realprize.com/r/jmenichole | Social | Real Prizes
+Mega Bonanza | https://megabonanza.com/r/jmenichole | Social | Mega Wins
+
+# Emerging Platforms
+FunFair | https://funfair.io/r/jmenichole | Blockchain | Fair Gaming
+CoinPoker | https://coinpoker.com/r/jmenichole | Crypto | Poker Focus
+BetFury | https://betfury.io/r/jmenichole | Crypto | Mining Rewards
+Chips.gg | https://chips.gg/r/jmenichole | Crypto | Community Focus
+CSGORoll | https://csgoroll.com/r/jmenichole | Crypto | CS:GO Skins
+Roobet | https://roobet.com/r/jmenichole | Crypto | Exclusive Games
+Thunderpick | https://thunderpick.com/r/jmenichole | Crypto | Esports Betting
