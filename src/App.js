@@ -28,10 +28,10 @@ const App = () => {
   };
 
   const tabs = [
-    { id: 'dashboard', name: '🎮 Player Dashboard', icon: FaUsers },
-    { id: 'alerts', name: '🚨 Real-Time Alerts', icon: FaBell, badge: alertCount },
-    { id: 'configuration', name: '⚙️ Configuration', icon: FaCog },
-    { id: 'fairness', name: '✅ Fairness Verifier', icon: FaCheckCircle }
+    { id: 'dashboard', name: 'Player Dashboard', icon: FaUsers },
+    { id: 'alerts', name: 'Real-Time Alerts', icon: FaBell, badge: alertCount },
+    { id: 'configuration', name: 'Configuration', icon: FaCog },
+    { id: 'fairness', name: 'Fairness Verifier', icon: FaCheckCircle }
   ];
 
   const renderActiveComponent = () => {
@@ -51,12 +51,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen" style={{
-      background: `
-        radial-gradient(ellipse at top left, rgba(255, 0, 255, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at top right, rgba(0, 255, 255, 0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom left, rgba(255, 0, 128, 0.3) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(128, 0, 255, 0.3) 0%, transparent 50%),
-        linear-gradient(135deg, #0a0a0a, #1a0a1a, #0a1a1a)`
+      background: `linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)`
     }}>
       {/* Header */}
       <header className="bg-dark-light shadow-lg border-b border-gray-600">
@@ -69,22 +64,22 @@ const App = () => {
               >
                 {sidebarOpen ? <FaTimes /> : <FaBars />}
               </button>
-              <FaShieldAlt className="text-primary text-2xl animate-pulse" />
+              <FaShieldAlt className="text-primary text-2xl" />
               <div>
-                <h1 className="text-xl font-bold text-white">🌈 TiltCheck 🚀</h1>
-                <p className="text-xs text-gray-400">Degen Neon Gaming Monitor</p>
+                <h1 className="text-xl font-bold text-white">TiltCheck</h1>
+                <p className="text-xs text-gray-400">Professional Gaming Monitor</p>
               </div>
             </div>
             
             <div className="flex items-center gap-4">
               <div className="hidden sm:flex items-center gap-2 text-green-400 text-sm">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span>🔥 Live Monitoring Active 🔥</span>
+                <span>Live Monitoring Active</span>
               </div>
               
               <div className="text-right">
-                <p className="text-white text-sm font-semibold">💎 Demo Version 💎</p>
-                <p className="text-xs text-gray-400">For Degen Investors</p>
+                <p className="text-white text-sm font-semibold">Demo Version</p>
+                <p className="text-xs text-gray-400">For Investor Presentation</p>
               </div>
             </div>
           </div>
@@ -148,17 +143,17 @@ const App = () => {
               </div>
 
               {/* Quick Info */}
-              <div className="mt-6 p-4 bg-primary/10 border border-primary/30 rounded-lg animate-pulse">
+              <div className="mt-6 p-4 bg-primary/10 border border-primary/30 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <FaInfoCircle className="text-primary" />
-                  <h4 className="text-white font-semibold text-sm">💎 Degen Features 💎</h4>
+                  <h4 className="text-white font-semibold text-sm">Demo Features</h4>
                 </div>
                 <ul className="text-xs text-gray-300 space-y-1">
-                  <li>🔥 Real-time tilt monitoring</li>
-                  <li>🧠 Behavioral pattern analysis</li>
-                  <li>🚨 Predictive alerts system</li>
-                  <li>🛡️ Intervention recommendations</li>
-                  <li>✅ Fairness verification</li>
+                  <li>• Real-time tilt monitoring</li>
+                  <li>• Behavioral pattern analysis</li>
+                  <li>• Predictive alerts system</li>
+                  <li>• Intervention recommendations</li>
+                  <li>• Fairness verification</li>
                 </ul>
               </div>
             </motion.div>
@@ -184,39 +179,39 @@ const App = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <FaShieldAlt className="text-primary text-xl animate-pulse" />
-                <h3 className="text-lg font-bold text-white">🌈 TiltCheck 🚀</h3>
+                <FaShieldAlt className="text-primary text-xl" />
+                <h3 className="text-lg font-bold text-white">TiltCheck</h3>
               </div>
               <p className="text-gray-400 text-sm">
-                🔥 Advanced degen behavior monitoring system designed to keep the degens safe 
-                while they chase the bag through real-time tilt detection and intervention. 💎
+                Advanced player behavior monitoring system designed to promote responsible gaming 
+                through real-time tilt detection and intervention.
               </p>
             </div>
             
             <div>
-              <h4 className="text-white font-semibold mb-4">🎮 Key Features</h4>
+              <h4 className="text-white font-semibold mb-4">Key Features</h4>
               <ul className="text-gray-400 text-sm space-y-2">
-                <li>📈 Betting pattern analysis</li>
-                <li>⏰ Session time tracking</li>
-                <li>😤 Emotional indicator monitoring</li>
-                <li>🚨 Real-time alert system</li>
-                <li>🛡️ Intervention recommendations</li>
+                <li>• Betting pattern analysis</li>
+                <li>• Session time tracking</li>
+                <li>• Emotional indicator monitoring</li>
+                <li>• Real-time alert system</li>
+                <li>• Intervention recommendations</li>
               </ul>
             </div>
             
             <div>
-              <h4 className="text-white font-semibold mb-4">💬 Contact & Support</h4>
+              <h4 className="text-white font-semibold mb-4">Contact & Support</h4>
               <div className="text-gray-400 text-sm space-y-2">
-                <p>📧 Email: j.chapman7@yahoo.com</p>
-                <p>🆘 Support: 24/7 Degen Support</p>
-                <p>🔧 Integration: API & Custom Solutions</p>
+                <p>Email: j.chapman7@yahoo.com</p>
+                <p>Support: 24/7 Technical Support</p>
+                <p>Integration: API & Custom Solutions</p>
               </div>
             </div>
           </div>
           
           <div className="border-t border-gray-600 mt-8 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              © 2024 TiltCheck. 💎🙌 Promoting degen gaming through intelligent monitoring. To the moon! 🚀
+              © 2024 TiltCheck. Promoting responsible gaming through intelligent monitoring.
             </p>
           </div>
         </div>
