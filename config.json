@@ -1,8 +1,37 @@
 {
   "alertThresholds": {
     "stakeIncrease": 200,
-    "timeAtTable": 180,
-    "lossSequence": 5
+    "timeAtSlots": 180,
+    "timeAtOriginals": 120,
+    "lossSequence": 5,
+    "emotionalIndicatorScore": 7,
+    "vaultReminderBalance": 1000,
+    "rapidBettingThreshold": 10,
+    "maxSessionTime": 300
+  },
+  "notifications": {
+    "popup": {
+      "enabled": true,
+      "position": "top-right"
+    },
+    "browserNotification": {
+      "enabled": true,
+      "icon": "/tilt-warning.png"
+    },
+    "messenger": {
+      "enabled": true,
+      "style": "aol",
+      "position": "bottom-right"
+    }
+  },
+  "monitoring": {
+    "slotsVsOriginalsRatio": 0.7,
+    "emotionalIndicators": {
+      "rapidClicking": 3,
+      "increasingBetSize": 5,
+      "timeSpentIncreasing": 4,
+      "lossChasing": 8
+    }
   },
   "integrations": {
     "casinoManagementApi": "https://api.example.com/casino",
