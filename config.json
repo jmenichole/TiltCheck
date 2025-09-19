@@ -1,0 +1,11 @@
+{
+  "alertThresholds": {
+    "stakeIncrease": 200,
+    "timeAtTable": 180,
+    "lossSequence": 5
+  },
+  "integrations": {
+    "casinoManagementApi": "https://api.example.com/casino",
+    "notificationEndpoint": "https://alerts.example.com/notify"
+  }
+}

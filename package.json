@@ -1,0 +1,34 @@
+{
+  "name": "tiltcheck",
+  "version": "1.0.0",
+  "description": "TiltCheck is designed to help identify, track, and mitigate player tilt behaviors. The system analyzes betting patterns, time spent at tables, and emotional indicators to provide real-time alerts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "echo \"Development server not configured\"",
+    "build": "echo \"Build not configured\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmenichole/TiltCheck.git"
+  },
+  "keywords": [
+    "casino",
+    "gambling",
+    "tilt",
+    "monitoring",
+    "fairness",
+    "verification"
+  ],
+  "author": "j.chapman7@yahoo.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmenichole/TiltCheck/issues"
+  },
+  "homepage": "https://github.com/jmenichole/TiltCheck#readme",
+  "dependencies": {
+    "react": "^18.0.0",
+    "framer-motion": "^10.0.0",
+    "react-icons": "^4.0.0"
+  }
+}
