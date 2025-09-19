@@ -9,7 +9,6 @@ TiltCheck is a comprehensive casino monitoring system that combines multiple key
 
 ## Features
 
-### Tilt Detection
 - **🎯 Betting Pattern Analysis**: Real-time monitoring of bet sizes, frequency, and rapid betting detection
 - **⏱️ Time Tracking**: Monitors time spent on slots vs originals with balance recommendations
 - **🧠 Emotional Indicators**: Detects signs of emotional gambling through behavioral patterns
@@ -99,6 +98,98 @@ monitor.updatePlayerActivity('player123', {
 // Get player statistics
 const stats = monitor.getPlayerStats('player123');
 console.log(stats.recommendation); // { action: 'holdEm', message: '...', confidence: 'high' }
+```
+
+### React Integration
+
+```jsx
+import TiltCheckDashboard from './TiltCheckDashboard.jsx';
+import TiltCheckUI from './TiltCheckUI.jsx';
+
+function App() {
+  return (
+    <div>
+      <TiltCheckDashboard />
+      {/* TiltCheckUI provides overlay alerts automatically */}
+    </div>
+  );
+}
+```
+
+## Activity Types
+
+Track different player activities to trigger appropriate alerts:
+
+```javascript
+// Betting activity
+monitor.updatePlayerActivity(playerId, {
+  type: 'bet',
+  amount: 100,
+  gameType: 'slots', // or 'originals'
+  newStake: 1400
+});
+
+// Game switching
+monitor.updatePlayerActivity(playerId, {
+  type: 'gameSwitch',
+  fromGame: 'slots',
+  toGame: 'originals'
+});
+
+// Wins and losses
+monitor.updatePlayerActivity(playerId, {
+  type: 'win', // or 'loss'
+  amount: 150,
+  newStake: 1550
+});
+```
+
+## Alert Types
+
+TiltCheck generates various alert types:
+
+- **stakeIncrease**: When stake increases beyond threshold
+- **lossSequence**: Multiple consecutive losses detected
+- **rapidBetting**: Too many bets in a short timeframe
+- **gameBalance**: Spending too much time on slots vs originals
+- **emotional**: High emotional stress indicators
+- **vault**: Reminder to save winnings
+- **sessionTime**: Extended session duration
+
+## API Reference
+
+### TiltCheck Class
+
+#### Methods
+
+- `trackPlayer(playerId, options)` - Start monitoring a player
+- `updatePlayerActivity(playerId, activity)` - Record player activity
+- `getPlayerStats(playerId)` - Get current player statistics and recommendations
+- `stopTracking(playerId)` - Stop monitoring a player
+- `getAllActivePlayers()` - Get all currently monitored players
+
+#### Options
+
+- `initialStake` (number): Player's starting balance
+- `riskProfile` ('low'|'medium'|'high'): Player's risk tolerance
+
+### Player Statistics
+
+```javascript
+{
+  averageBetSize: 75,
+  bettingFrequency: 2.5, // bets per minute  
+  slotsVsOriginalsRatio: 0.8,
+  sessionDuration: 1800, // seconds
+  lossSequence: 2,
+  stakeChange: 15.5, // percentage
+  emotionalScore: 4,
+  recommendation: {
+    action: 'holdEm', // 'foldEm', 'holdEm', 'vault', 'diversify'
+    message: 'You are doing well...',
+    confidence: 'high'
+  }
+}
 ```
 
 ### React Integration
