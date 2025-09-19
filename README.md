@@ -1,47 +1,185 @@
 
+# TiltCheck
 
-TiltCheck is designed to help identify, track, and mitigate player tilt behaviors. The system analyzes betting patterns, time spent at tables, and emotional indicators to provide real-time alerts.
+TiltCheck is designed to help identify, track, and mitigate player tilt behaviors. The system analyzes betting patterns, time spent on slots vs originals, and emotional indicators to provide real-time alerts via pop-up messages, browser notifications, and an AOL-style instant messenger overlay. It also reminds users to vault winnings when balance is high and helps recognize when it's time to hold 'em and when it's time to fold 'em.
 
+## Features
 
-Installation
+- **🎯 Betting Pattern Analysis**: Real-time monitoring of bet sizes, frequency, and rapid betting detection
+- **⏱️ Time Tracking**: Monitors time spent on slots vs originals with balance recommendations
+- **🧠 Emotional Indicators**: Detects signs of emotional gambling through behavioral patterns
+- **🚨 Multi-Channel Alerts**: 
+  - Browser pop-up messages
+  - Native browser notifications  
+  - AOL-style instant messenger overlay
+- **🏦 Vault Reminders**: Suggests saving winnings when balance exceeds thresholds
+- **🤝 Hold 'em vs Fold 'em**: Smart recommendations for when to continue or take a break
+- **📊 Real-time Dashboard**: Live monitoring interface with player statistics
+
+## Quick Demo
+
+Open `demo.html` in your browser to see TiltCheck in action with simulated player behavior.
+
+## Installation
 
 ```bash
-git clone https://github.com/jmenichole/TiltCheck-audit-stakeus.git
-cd TiltCheck-audit-stakeus
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 npm install
 ```
 
-Configuration
+## Configuration
 
-Edit the `config.json` file to set your casino-specific parameters:
+The `config.json` file contains all customizable parameters:
 
 ```json
 {
   "alertThresholds": {
     "stakeIncrease": 200,
-    "timeAtTable": 180,
-    "lossSequence": 5
+    "timeAtSlots": 180,
+    "timeAtOriginals": 120,
+    "lossSequence": 5,
+    "emotionalIndicatorScore": 7,
+    "vaultReminderBalance": 1000,
+    "rapidBettingThreshold": 10,
+    "maxSessionTime": 300
   },
-  "integrations": {
-    "casinoManagementApi": "https://api.example.com/casino",
-    "notificationEndpoint": "https://alerts.example.com/notify"
+  "notifications": {
+    "popup": { "enabled": true, "position": "top-right" },
+    "browserNotification": { "enabled": true, "icon": "/tilt-warning.png" },
+    "messenger": { "enabled": true, "style": "aol", "position": "bottom-right" }
+  },
+  "monitoring": {
+    "slotsVsOriginalsRatio": 0.7,
+    "emotionalIndicators": {
+      "rapidClicking": 3,
+      "increasingBetSize": 5,
+      "timeSpentIncreasing": 4,
+      "lossChasing": 8
+    }
   }
 }
 ```
 
-Usage
+## Usage
+
+### Basic Usage
 
 ```javascript
-const tiltCheck = require('./tiltCheck');
+const TiltCheck = require('./tiltCheck');
 
-// Initialize with your API key
-const monitor = tiltCheck.initialize('YOUR_API_KEY');
+// Initialize TiltCheck
+const monitor = new TiltCheck('YOUR_API_KEY');
 
 // Start monitoring a player
-monitor.trackPlayer('player123', {
+const player = monitor.trackPlayer('player123', {
   initialStake: 500,
   riskProfile: 'medium'
 });
+
+// Update player activity
+monitor.updatePlayerActivity('player123', {
+  type: 'bet',
+  amount: 50,
+  gameType: 'slots',
+  newStake: 450
+});
+
+// Get player statistics
+const stats = monitor.getPlayerStats('player123');
+console.log(stats.recommendation); // { action: 'holdEm', message: '...', confidence: 'high' }
+```
+
+### React Integration
+
+```jsx
+import TiltCheckDashboard from './TiltCheckDashboard.jsx';
+import TiltCheckUI from './TiltCheckUI.jsx';
+
+function App() {
+  return (
+    <div>
+      <TiltCheckDashboard />
+      {/* TiltCheckUI provides overlay alerts automatically */}
+    </div>
+  );
+}
+```
+
+## Activity Types
+
+Track different player activities to trigger appropriate alerts:
+
+```javascript
+// Betting activity
+monitor.updatePlayerActivity(playerId, {
+  type: 'bet',
+  amount: 100,
+  gameType: 'slots', // or 'originals'
+  newStake: 1400
+});
+
+// Game switching
+monitor.updatePlayerActivity(playerId, {
+  type: 'gameSwitch',
+  fromGame: 'slots',
+  toGame: 'originals'
+});
+
+// Wins and losses
+monitor.updatePlayerActivity(playerId, {
+  type: 'win', // or 'loss'
+  amount: 150,
+  newStake: 1550
+});
+```
+
+## Alert Types
+
+TiltCheck generates various alert types:
+
+- **stakeIncrease**: When stake increases beyond threshold
+- **lossSequence**: Multiple consecutive losses detected
+- **rapidBetting**: Too many bets in a short timeframe
+- **gameBalance**: Spending too much time on slots vs originals
+- **emotional**: High emotional stress indicators
+- **vault**: Reminder to save winnings
+- **sessionTime**: Extended session duration
+
+## API Reference
+
+### TiltCheck Class
+
+#### Methods
+
+- `trackPlayer(playerId, options)` - Start monitoring a player
+- `updatePlayerActivity(playerId, activity)` - Record player activity
+- `getPlayerStats(playerId)` - Get current player statistics and recommendations
+- `stopTracking(playerId)` - Stop monitoring a player
+- `getAllActivePlayers()` - Get all currently monitored players
+
+#### Options
+
+- `initialStake` (number): Player's starting balance
+- `riskProfile` ('low'|'medium'|'high'): Player's risk tolerance
+
+### Player Statistics
+
+```javascript
+{
+  averageBetSize: 75,
+  bettingFrequency: 2.5, // bets per minute  
+  slotsVsOriginalsRatio: 0.8,
+  sessionDuration: 1800, // seconds
+  lossSequence: 2,
+  stakeChange: 15.5, // percentage
+  emotionalScore: 4,
+  recommendation: {
+    action: 'holdEm', // 'foldEm', 'holdEm', 'vault', 'diversify'
+    message: 'You are doing well...',
+    confidence: 'high'
+  }
+}
 ```
 
 License
