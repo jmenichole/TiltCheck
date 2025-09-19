@@ -24,7 +24,7 @@ TiltCheck is a comprehensive casino monitoring system that combines two key func
 ## Installation
 
 ```bash
-git clone https://github.com/jmenichole/TiltCheck.git
+git clone https://github.com/mischief-manager/TiltCheck.git
 cd TiltCheck
 npm install
 ```

@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jmenichole/TiltCheck.git"
+    "url": "git+https://github.com/mischief-manager/TiltCheck.git"
   },
   "keywords": [
     "casino",
@@ -23,9 +23,9 @@
   "author": "j.chapman7@yahoo.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jmenichole/TiltCheck/issues"
+    "url": "https://github.com/mischief-manager/TiltCheck/issues"
   },
-  "homepage": "https://github.com/jmenichole/TiltCheck#readme",
+  "homepage": "https://github.com/mischief-manager/TiltCheck#readme",
   "dependencies": {
     "react": "^18.0.0",
     "framer-motion": "^10.0.0",
