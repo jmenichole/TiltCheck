@@ -18,15 +18,23 @@ TiltCheck is designed to help identify, track, and mitigate player tilt behavior
 
 ## Quick Demo
 
-Open `demo.html` in your browser to see TiltCheck in action with simulated player behavior.
+Open `demo.html` for the React-based demo, or `overlay-demo.html` for the vanilla JavaScript overlay demo to see TiltCheck in action with simulated player behavior.
 
 ## Installation
 
 ```bash
 git clone https://github.com/jmenichole/TiltCheck.git
 cd TiltCheck
-npm install
-```
+## Files
+
+- `tiltCheck.js` - Core monitoring and analysis engine
+- `TiltCheckUI.jsx` - React-based overlay components  
+- `TiltCheckDashboard.jsx` - React monitoring dashboard
+- `tiltcheck_overlay.js` - Vanilla JavaScript overlay (framework-independent)
+- `demo.html` - React-based interactive demo
+- `overlay-demo.html` - Vanilla JavaScript overlay demo
+- `config.json` - Configuration parameters
+- `server.js` - Optional Node.js server for API integration
 
 ## Configuration
 
@@ -105,6 +113,44 @@ function App() {
   );
 }
 ```
+
+### Vanilla JavaScript Integration
+
+For websites without React, use the standalone overlay:
+
+```html
+<!-- Include TiltCheck core and overlay -->
+<script src="./tiltCheck.js"></script>
+<script src="./tiltcheck_overlay.js"></script>
+
+<script>
+// Initialize TiltCheck
+const monitor = new TiltCheck('YOUR_API_KEY');
+
+// Start monitoring a player
+monitor.trackPlayer('player123', {
+  initialStake: 500,
+  riskProfile: 'medium'
+});
+
+// Initialize the overlay UI
+const overlay = initTiltCheckOverlay(monitor, 'player123');
+
+// The overlay will automatically show alerts when triggered
+monitor.updatePlayerActivity('player123', {
+  type: 'bet',
+  amount: 100,
+  gameType: 'slots',
+  newStake: 400
+});
+</script>
+```
+
+The vanilla JavaScript overlay provides:
+- **Popup Alerts**: Top-right notifications with auto-hide
+- **AOL-Style Messenger**: Bottom-right chat window for alert history
+- **Stats Dashboard**: Top-left real-time monitoring display
+- **Browser Notifications**: Native browser notification support
 
 ## Activity Types
 
