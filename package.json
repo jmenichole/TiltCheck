@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "A comprehensive system to identify, track, and mitigate player tilt behaviors in gaming environments",
   "main": "src/index.js",
+  "homepage": "https://tiltcheck.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmenichole/TiltCheck.git"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -16,7 +21,10 @@
     "monitoring",
     "behavior",
     "casino",
-    "responsible-gaming"
+    "responsible-gaming",
+    "react",
+    "dashboard",
+    "alerts"
   ],
   "author": "TiltCheck Team <j.chapman7@yahoo.com>",
   "license": "MIT",

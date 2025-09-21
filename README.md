@@ -1,10 +1,10 @@
 
-# TiltCheck - Responsible Gaming Monitor
+# TiltCheck - Professional Gaming Monitor
 
 ![TiltCheck Logo](https://img.shields.io/badge/TiltCheck-v1.0.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![React](https://img.shields.io/badge/React-18.2.0-blue)
-![Status](https://img.shields.io/badge/Status-Demo-yellow)
+![Status](https://img.shields.io/badge/Status-Professional-green)
 
 **TiltCheck** is a comprehensive system designed to identify, track, and mitigate player tilt behaviors in gaming environments. The system analyzes betting patterns, time spent at tables, emotional indicators, and playing speed to provide real-time alerts and intervention recommendations.
 
