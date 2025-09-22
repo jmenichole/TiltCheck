@@ -10,22 +10,43 @@ import {
   FaExclamationTriangle,
   FaInfoCircle,
   FaBars,
-  FaTimes
+  FaTimes,
+  FaHome,
+  FaDesktop
 } from 'react-icons/fa';
 
 import PlayerDashboard from './components/PlayerDashboard';
 import AlertPanel from './components/AlertPanel';
 import ConfigurationPanel from './components/ConfigurationPanel';
 import FairnessVerifier from './components/FairnessVerifier';
+import LandingPage from './components/LandingPage';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [alertCount, setAlertCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showLandingPage, setShowLandingPage] = useState(true); // Toggle for landing page
 
   const handleNewAlert = (alert) => {
     setAlertCount(prev => prev + 1);
   };
+
+  // If landing page is active, show it instead of dashboard
+  if (showLandingPage) {
+    return (
+      <div>
+        <LandingPage />
+        {/* Demo button to switch to dashboard */}
+        <button
+          onClick={() => setShowLandingPage(false)}
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 z-50"
+        >
+          <FaDesktop />
+          View Dashboard Demo
+        </button>
+      </div>
+    );
+  }
 
   const tabs = [
     { id: 'dashboard', name: 'Player Dashboard', icon: FaUsers },
@@ -76,6 +97,14 @@ const App = () => {
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>Live Monitoring Active</span>
               </div>
+              
+              <button
+                onClick={() => setShowLandingPage(true)}
+                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition-colors text-sm"
+              >
+                <FaHome />
+                <span className="hidden sm:inline">Landing</span>
+              </button>
               
               <div className="text-right">
                 <p className="text-white text-sm font-semibold">Demo Version</p>
