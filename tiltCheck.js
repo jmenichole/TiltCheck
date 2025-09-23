@@ -317,6 +317,11 @@ class TiltCheck {
       if (this.config.notifications.messenger.enabled) {
         this.showMessengerAlert(alert);
       }
+
+      // Send Discord webhook if configured
+      if (window.TiltCheckDiscordWebhook) {
+        window.TiltCheckDiscordWebhook.sendTiltAlert(alert);
+      }
     }
   }
 
