@@ -12,7 +12,9 @@ import {
   FaBars,
   FaTimes,
   FaHome,
-  FaDesktop
+  FaDesktop,
+  FaEye,
+  FaRocket
 } from 'react-icons/fa';
 
 import PlayerDashboard from './components/PlayerDashboard';
@@ -20,12 +22,17 @@ import AlertPanel from './components/AlertPanel';
 import ConfigurationPanel from './components/ConfigurationPanel';
 import FairnessVerifier from './components/FairnessVerifier';
 import LandingPage from './components/LandingPage';
+import OverlayDashboard from './components/OverlayDashboard';
+import FundingDemo from './components/FundingDemo';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [alertCount, setAlertCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLandingPage, setShowLandingPage] = useState(true); // Toggle for landing page
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayMinimized, setOverlayMinimized] = useState(false);
+  const [fundingDemoVisible, setFundingDemoVisible] = useState(false);
 
   const handleNewAlert = (alert) => {
     setAlertCount(prev => prev + 1);
@@ -36,14 +43,29 @@ const App = () => {
     return (
       <div>
         <LandingPage />
-        {/* Demo button to switch to dashboard */}
-        <button
-          onClick={() => setShowLandingPage(false)}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 z-50"
-        >
-          <FaDesktop />
-          View Dashboard Demo
-        </button>
+        {/* Demo buttons */}
+        <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+          <button
+            onClick={() => setFundingDemoVisible(true)}
+            className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-4 py-2 rounded-full shadow-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-300 flex items-center gap-2"
+          >
+            <FaRocket />
+            Investor Presentation
+          </button>
+          <button
+            onClick={() => setShowLandingPage(false)}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2"
+          >
+            <FaDesktop />
+            Dashboard Demo
+          </button>
+        </div>
+        
+        {/* Funding Demo */}
+        <FundingDemo 
+          isVisible={fundingDemoVisible}
+          onClose={() => setFundingDemoVisible(false)}
+        />
       </div>
     );
   }
@@ -97,6 +119,28 @@ const App = () => {
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>Live Monitoring Active</span>
               </div>
+              
+              <button
+                onClick={() => setFundingDemoVisible(true)}
+                className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-colors text-sm font-semibold"
+              >
+                <FaRocket />
+                <span className="hidden sm:inline">Investor Demo</span>
+              </button>
+              
+              <button
+                onClick={() => setOverlayVisible(!overlayVisible)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
+                  overlayVisible 
+                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    : 'bg-gray-700 hover:bg-gray-600 text-white'
+                }`}
+              >
+                <FaEye />
+                <span className="hidden sm:inline">
+                  {overlayVisible ? 'Hide Overlay' : 'Show Overlay'}
+                </span>
+              </button>
               
               <button
                 onClick={() => setShowLandingPage(true)}
@@ -245,6 +289,21 @@ const App = () => {
           </div>
         </div>
       </footer>
+
+      {/* Overlay Dashboard */}
+      <OverlayDashboard 
+        isVisible={overlayVisible}
+        onClose={() => setOverlayVisible(false)}
+        isMinimized={overlayMinimized}
+        onMinimize={() => setOverlayMinimized(!overlayMinimized)}
+        position="right"
+      />
+
+      {/* Funding Demo */}
+      <FundingDemo 
+        isVisible={fundingDemoVisible}
+        onClose={() => setFundingDemoVisible(false)}
+      />
     </div>
   );
 };
