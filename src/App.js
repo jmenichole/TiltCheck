@@ -12,7 +12,8 @@ import {
   FaBars,
   FaTimes,
   FaHome,
-  FaDesktop
+  FaDesktop,
+  FaEye
 } from 'react-icons/fa';
 
 import PlayerDashboard from './components/PlayerDashboard';
@@ -20,12 +21,15 @@ import AlertPanel from './components/AlertPanel';
 import ConfigurationPanel from './components/ConfigurationPanel';
 import FairnessVerifier from './components/FairnessVerifier';
 import LandingPage from './components/LandingPage';
+import OverlayDashboard from './components/OverlayDashboard';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [alertCount, setAlertCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLandingPage, setShowLandingPage] = useState(true); // Toggle for landing page
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayMinimized, setOverlayMinimized] = useState(false);
 
   const handleNewAlert = (alert) => {
     setAlertCount(prev => prev + 1);
@@ -97,6 +101,20 @@ const App = () => {
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>Live Monitoring Active</span>
               </div>
+              
+              <button
+                onClick={() => setOverlayVisible(!overlayVisible)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
+                  overlayVisible 
+                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    : 'bg-gray-700 hover:bg-gray-600 text-white'
+                }`}
+              >
+                <FaEye />
+                <span className="hidden sm:inline">
+                  {overlayVisible ? 'Hide Overlay' : 'Show Overlay'}
+                </span>
+              </button>
               
               <button
                 onClick={() => setShowLandingPage(true)}
@@ -245,6 +263,15 @@ const App = () => {
           </div>
         </div>
       </footer>
+
+      {/* Overlay Dashboard */}
+      <OverlayDashboard 
+        isVisible={overlayVisible}
+        onClose={() => setOverlayVisible(false)}
+        isMinimized={overlayMinimized}
+        onMinimize={() => setOverlayMinimized(!overlayMinimized)}
+        position="right"
+      />
     </div>
   );
 };
