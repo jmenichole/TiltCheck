@@ -8,6 +8,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     // Set default settings
     chrome.storage.local.set({
         overlayActive: false,
+        autoShowOverlay: true, // Auto-show on gambling sites
         apiKey: '',
         discordWebhook: '',
         monitoringEnabled: true,
@@ -59,6 +60,9 @@ function checkGamblingSite(tab) {
             if (result.autoShowOverlay) {
                 chrome.tabs.sendMessage(tab.id, {
                     action: 'showOverlay'
+                }).catch(err => {
+                    // Ignore errors for tabs that don't have content script
+                    console.log('Could not send message to tab:', err.message);
                 });
             }
         });

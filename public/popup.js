@@ -25,8 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
         );
         
         if (isGamblingSite) {
-            monitoringStatus.innerHTML = '<span class="indicator green"></span>Active';
+            monitoringStatus.innerHTML = '<span class="indicator green"></span>Casino Detected';
             monitoringStatus.className = 'status-value active';
+            
+            // Auto-enable overlay for gambling sites
+            chrome.storage.local.get(['autoShowOverlay'], function(result) {
+                if (result.autoShowOverlay !== false) { // Default to true
+                    overlayActive = true;
+                    updateOverlayButton();
+                }
+            });
+        } else {
+            monitoringStatus.innerHTML = '<span class="indicator yellow"></span>Standby';
+            monitoringStatus.className = 'status-value warning';
         }
     });
 
