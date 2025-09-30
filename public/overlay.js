@@ -372,7 +372,14 @@ class TiltCheckRightSideOverlay {
 
         if (riskLevelElement) {
             riskLevelElement.textContent = level;
-            riskLevelElement.style.color = level === 'HIGH' ? '#ef4444' : level === 'MEDIUM' ? '#f59e0b' : '#10b981';
+            // Cyberpunk color scheme
+            const colors = {
+                'HIGH': '#ff00ff',
+                'MEDIUM': '#ffff00', 
+                'LOW': '#00ff41'
+            };
+            riskLevelElement.style.color = colors[level] || '#00ff41';
+            riskLevelElement.style.textShadow = `0 0 10px ${colors[level] || '#00ff41'}80`;
         }
 
         if (riskMessageElement) {
