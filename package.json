@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A comprehensive system to identify, track, and mitigate player tilt behaviors in gaming environments",
   "main": "src/index.js",
-  "homepage": "https://tiltcheck.io",
+  "homepage": "https://jmenichole.github.io/TiltCheck/",
   "repository": {
     "type": "git",
     "url": "https://github.com/jmenichole/TiltCheck.git"
