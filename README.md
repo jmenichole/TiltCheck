@@ -341,6 +341,31 @@ npm test -- --coverage
 npm run lint
 ```
 
+### Deployment to GitHub Pages
+
+The project is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+
+**Live Demo**: [https://jmenichole.github.io/TiltCheck/](https://jmenichole.github.io/TiltCheck/)
+
+#### Manual Deployment
+
+To deploy manually:
+
+```bash
+# Build the project
+npm run build
+
+# The build folder is ready to be deployed
+# GitHub Actions will automatically deploy to GitHub Pages
+```
+
+The deployment workflow:
+1. Builds the React application on every push to main
+2. Uploads the build artifacts
+3. Deploys to GitHub Pages automatically
+
+**Note**: Make sure GitHub Pages is configured in repository settings to use GitHub Actions as the source.
+
 ## 📊 Performance
 
 - **Response Time**: <500ms average
