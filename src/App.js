@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   FaShieldAlt, 
@@ -14,7 +14,8 @@ import {
   FaHome,
   FaDesktop,
   FaEye,
-  FaRocket
+  FaRocket,
+  FaUser
 } from 'react-icons/fa';
 
 import PlayerDashboard from './components/PlayerDashboard';
@@ -24,6 +25,9 @@ import FairnessVerifier from './components/FairnessVerifier';
 import LandingPage from './components/LandingPage';
 import OverlayDashboard from './components/OverlayDashboard';
 import FundingDemo from './components/FundingDemo';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
+import UserProfile from './components/UserProfile';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -33,10 +37,64 @@ const App = () => {
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [overlayMinimized, setOverlayMinimized] = useState(false);
   const [fundingDemoVisible, setFundingDemoVisible] = useState(false);
+  
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [authView, setAuthView] = useState('login'); // 'login' or 'signup'
+
+  // Check for saved user session on mount
+  useEffect(() => {
+    const savedUser = localStorage.getItem('tiltcheck_user');
+    if (savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        setIsAuthenticated(true);
+      } catch (e) {
+        console.error('Failed to parse saved user data');
+      }
+    }
+  }, []);
 
   const handleNewAlert = (alert) => {
     setAlertCount(prev => prev + 1);
   };
+
+  // Authentication handlers
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+    localStorage.setItem('tiltcheck_user', JSON.stringify(userData));
+  };
+
+  const handleSignup = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+    localStorage.setItem('tiltcheck_user', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem('tiltcheck_user');
+    setActiveTab('dashboard');
+  };
+
+  const handleUpdateProfile = (updatedData) => {
+    const updatedUser = { ...user, ...updatedData };
+    setUser(updatedUser);
+    localStorage.setItem('tiltcheck_user', JSON.stringify(updatedUser));
+  };
+
+  // If not authenticated and not on landing page, show login/signup
+  if (!isAuthenticated && !showLandingPage) {
+    if (authView === 'login') {
+      return <Login onLogin={handleLogin} onSwitchToSignup={() => setAuthView('signup')} />;
+    } else {
+      return <SignUp onSignup={handleSignup} onSwitchToLogin={() => setAuthView('login')} />;
+    }
+  }
 
   // If landing page is active, show it instead of dashboard
   if (showLandingPage) {
@@ -74,7 +132,8 @@ const App = () => {
     { id: 'dashboard', name: 'Player Dashboard', icon: FaUsers },
     { id: 'alerts', name: 'Real-Time Alerts', icon: FaBell, badge: alertCount },
     { id: 'configuration', name: 'Configuration', icon: FaCog },
-    { id: 'fairness', name: 'Fairness Verifier', icon: FaCheckCircle }
+    { id: 'fairness', name: 'Fairness Verifier', icon: FaCheckCircle },
+    { id: 'profile', name: 'User Profile', icon: FaUser }
   ];
 
   const renderActiveComponent = () => {
@@ -87,6 +146,8 @@ const App = () => {
         return <ConfigurationPanel />;
       case 'fairness':
         return <FairnessVerifier />;
+      case 'profile':
+        return <UserProfile user={user} onUpdateProfile={handleUpdateProfile} onLogout={handleLogout} />;
       default:
         return <PlayerDashboard />;
     }
@@ -150,10 +211,20 @@ const App = () => {
                 <span className="hidden sm:inline">Landing</span>
               </button>
               
-              <div className="text-right">
-                <p className="text-white text-sm font-semibold">Demo Version</p>
-                <p className="text-xs text-gray-400">For Investor Presentation</p>
-              </div>
+              {user && (
+                <button
+                  onClick={() => setActiveTab('profile')}
+                  className="flex items-center gap-2 text-right"
+                >
+                  <div>
+                    <p className="text-white text-sm font-semibold">{user.name}</p>
+                    <p className="text-xs text-gray-400">{user.email}</p>
+                  </div>
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>
