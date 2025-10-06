@@ -1,81 +1,50 @@
-# 🚨 IMMEDIATE SETUP REQUIRED
+# Quick Start - Enable GitHub Pages
 
-## Your Bot Cannot Start Without:
+## 🚀 3 Steps to Deploy
 
-### 1. Discord Bot Token
-```bash
-# Edit .env file and add:
-DISCORD_BOT_TOKEN=OTxxxxxxxxxxxxxxxxxxxxxxxxx.Gxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxx
+### Step 1: Enable GitHub Pages
+```
+Repository Settings → Pages → Source: "GitHub Actions"
 ```
 
-**Get your token:**
-1. Go to https://discord.com/developers/applications
-2. Select your application (or create new one)
-3. Go to "Bot" section
-4. Click "Reset Token" if needed
-5. Copy the token
-6. Paste into .env file
+### Step 2: Merge This PR
+The deployment will start automatically when merged to main.
 
-### 2. Quick Start Commands
-```bash
-# Check configuration
-./start-bot.sh
-
-# Or manually:
-node validate-config.js
-node index.js
+### Step 3: Visit Your Site
+```
+https://jmenichole.github.io/TiltCheck/
 ```
 
-## 🔗 Custom Install Links
+## ✅ What's Included
 
-### TrapHouse Bot Install URLs:
-```
-# Basic Install (Recommended)
-https://discord.com/oauth2/authorize?client_id=1354450590813655142&permissions=414539926592&scope=bot
+This PR adds:
+- ✨ Automated deployment workflow
+- 🔄 Auto-deploy on every push to main
+- 📝 Complete setup documentation
+- 🛠️ GitHub Actions configuration
 
-# Admin Install (Use with caution)
-https://discord.com/oauth2/authorize?client_id=1354450590813655142&permissions=8&integration_type=0&scope=bot
+## 📋 Checklist
 
-# Custom Redirect Install (Your own landing page)
-https://discord.com/oauth2/authorize?client_id=1354450590813655142&permissions=414539926592&scope=bot&redirect_uri=https://your-domain.com/install/success
-```
+Before merging:
+- [ ] Review the workflow file: `.github/workflows/deploy.yml`
+- [ ] Verify package.json has correct homepage URL
 
-### Custom Install Landing Page Setup:
-1. **Set up OAuth redirect in Discord Developer Portal:**
-   - Go to OAuth2 → General
-   - Add redirect URI: `https://your-domain.com/install/success`
-   
-2. **Configure your custom install flow:**
-   ```env
-   # Add to .env
-   DISCORD_CLIENT_ID=1354450590813655142
-   DISCORD_CLIENT_SECRET=your_client_secret_here
-   OAUTH_REDIRECT_URI=https://your-domain.com/install/success
-   ```
+After merging:
+- [ ] Go to Settings → Pages
+- [ ] Set Source to "GitHub Actions"  
+- [ ] Wait 2-3 minutes for first deployment
+- [ ] Visit https://jmenichole.github.io/TiltCheck/
 
-3. **Use the OAuth handler already in your codebase:**
-   - File: `oauthRedirect.js` handles custom install flows
-   - Webhook server supports custom redirects
-   - Landing pages ready at `/auth/success`
+## 🆘 Need Help?
 
-## ✅ Optional Enhancements
+See detailed instructions in `GITHUB_PAGES_SETUP.md`
 
-### Solana USDC Deposits
-```env
-SOLANA_USDC_DESTINATION_ADDRESS=9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM
-```
+## 🎯 What You'll See
 
-### TiltCheck Integration
-```env
-TILTCHECK_API_KEY=your_tiltcheck_api_key
-```
-
-### Stake API Integration
-```env
-STAKE_API_KEY=your_stake_api_key
-STAKE_SESSION_TOKEN=your_session_token
-```
-
----
-
-**🎯 Priority: Get Discord token first, then customize your install experience!**
+The TiltCheck landing page featuring:
+- Professional hero section
+- Feature showcase
+- Stats and metrics
+- Email subscription form
+- Investor presentation button
+- Dashboard demo button

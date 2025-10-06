@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck - Player Behavior Monitoring Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a, #1e40af, #1d4ed8);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .demo-controls {
+            text-align: center;
+        }
+        
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .alerts-section {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .alert {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .alert.warning {
+            background: rgba(245, 158, 11, 0.2);
+            border-left-color: #f59e0b;
+        }
+        
+        .alert.info {
+            background: rgba(59, 130, 246, 0.2);
+            border-left-color: #3b82f6;
+        }
+        
+        .alert-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .alert-type {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        
+        .alert-time {
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+        
+        .alert-message {
+            margin-top: 5px;
+        }
+        
+        .alert-advice {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .monitoring-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TiltCheck Demo</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9;">Advanced Player Behavior Monitoring & Tilt Detection System</p>
+        </div>
+
+        <div class="card demo-controls">
+            <div id="startDemo">
+                <h2 style="margin-bottom: 20px;">Ready to see TiltCheck in action?</h2>
+                <p style="margin-bottom: 30px; opacity: 0.9;">This demo simulates player behavior and shows real-time tilt detection alerts.</p>
+                <button class="btn" onclick="startDemo()">Start Live Demo</button>
+            </div>
+            
+            <div id="monitoringActive" class="hidden">
+                <div class="monitoring-indicator">
+                    <div class="pulse"></div>
+                    TiltCheck Monitoring Active
+                </div>
+                <button class="btn" onclick="stopDemo()" style="background: #ef4444;">Stop Monitoring</button>
+            </div>
+        </div>
+
+        <div id="statsSection" class="hidden">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; text-align: center;">Live Player Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Session Time</div>
+                        <div class="stat-value" id="sessionTime">0m</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Emotional Score</div>
+                        <div class="stat-value" id="emotionalScore">0/10</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Loss Streak</div>
+                        <div class="stat-value" id="lossStreak">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Current Recommendation</div>
+                        <div class="stat-value" id="recommendation" style="font-size: 1rem;">Continue Playing</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Live TiltCheck Alerts</h2>
+                <div class="alerts-section">
+                    <div id="alertsList">
+                        <p style="opacity: 0.7; text-align: center; padding: 40px;">Monitoring active... Alerts will appear here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 30px;">TiltCheck Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Betting Pattern Analysis</h3>
+                    <p>Real-time monitoring of bet sizes and frequency</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">⏱️</span>
+                    <h3>Time Tracking</h3>
+                    <p>Monitors time spent on slots vs originals</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🧠</span>
+                    <h3>Emotional Indicators</h3>
+                    <p>Detects signs of emotional gambling</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🚨</span>
+                    <h3>Real-time Alerts</h3>
+                    <p>Multiple notification methods including pop-ups and messenger</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🏦</span>
+                    <h3>Vault Reminders</h3>
+                    <p>Suggests saving winnings when balance is high</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🤝</span>
+                    <h3>Hold 'em vs Fold 'em</h3>
+                    <p>Smart recommendations for when to stop</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./tiltCheck.js"></script>
+    <script>
+        let tiltChecker = null;
+        let demoInterval = null;
+        let startTime = null;
+        let alerts = [];
+
+        function startDemo() {
+            // Initialize TiltCheck
+            tiltChecker = new TiltCheck('demo-key');
+            startTime = Date.now();
+            
+            // Track demo player
+            const player = tiltChecker.trackPlayer('demo-player', {
+                initialStake: 1000,
+                riskProfile: 'medium'
+            });
+            
+            // Set up UI callbacks
+            window.TiltCheckUI = {
+                showPopup: (alert) => addAlert(alert),
+                showMessenger: (alert) => addAlert(alert)
+            };
+            
+            // Show monitoring interface
+            document.getElementById('startDemo').classList.add('hidden');
+            document.getElementById('monitoringActive').classList.remove('hidden');
+            document.getElementById('statsSection').classList.remove('hidden');
+            
+            // Start demo simulation
+            simulatePlayerBehavior();
+            
+            // Update stats every 2 seconds
+            demoInterval = setInterval(updateStats, 2000);
+            
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        function stopDemo() {
+            if (tiltChecker) {
+                tiltChecker.stopTracking('demo-player');
+                tiltChecker = null;
+            }
+            
+            if (demoInterval) {
+                clearInterval(demoInterval);
+                demoInterval = null;
+            }
+            
+            // Hide monitoring interface
+            document.getElementById('startDemo').classList.remove('hidden');
+            document.getElementById('monitoringActive').classList.add('hidden');
+            document.getElementById('statsSection').classList.add('hidden');
+            
+            // Reset alerts
+            alerts = [];
+            document.getElementById('alertsList').innerHTML = 
+                '<p style="opacity: 0.7; text-align: center; padding: 40px;">Monitoring stopped.</p>';
+        }
+
+        function updateStats() {
+            if (!tiltChecker || !startTime) return;
+            
+            const stats = tiltChecker.getPlayerStats('demo-player');
+            if (!stats) return;
+            
+            // Update stat displays
+            document.getElementById('sessionTime').textContent = Math.round(stats.sessionDuration / 60) + 'm';
+            
+            const emotionalElement = document.getElementById('emotionalScore');
+            emotionalElement.textContent = stats.emotionalScore + '/10';
+            emotionalElement.style.color = stats.emotionalScore > 5 ? '#ef4444' : '#22c55e';
+            
+            const lossElement = document.getElementById('lossStreak');
+            lossElement.textContent = stats.lossSequence;
+            lossElement.style.color = stats.lossSequence > 3 ? '#ef4444' : '#ffffff';
+            
+            const recElement = document.getElementById('recommendation');
+            if (stats.recommendation) {
+                const actionText = stats.recommendation.action.replace(/([A-Z])/g, ' $1')
+                    .replace(/^./, str => str.toUpperCase());
+                recElement.textContent = actionText;
+                
+                // Color code recommendations
+                if (stats.recommendation.action === 'foldEm') {
+                    recElement.style.color = '#ef4444';
+                } else if (stats.recommendation.action === 'holdEm') {
+                    recElement.style.color = '#22c55e';
+                } else if (stats.recommendation.action === 'vault') {
+                    recElement.style.color = '#f59e0b';
+                } else {
+                    recElement.style.color = '#3b82f6';
+                }
+            }
+        }
+
+        function addAlert(alert) {
+            alerts.unshift(alert);
+            
+            // Keep only last 10 alerts
+            if (alerts.length > 10) {
+                alerts = alerts.slice(0, 10);
+            }
+            
+            renderAlerts();
+            
+            // Show browser notification if permission granted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('TiltCheck Alert', {
+                    body: alert.message,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+                });
+            }
+        }
+
+        function renderAlerts() {
+            const alertsList = document.getElementById('alertsList');
+            
+            if (alerts.length === 0) {
+                alertsList.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 40px;">Monitoring active... Alerts will appear here.</p>';
+                return;
+            }
+            
+            const alertsHtml = alerts.map(alert => {
+                const severityClass = alert.severity === 'high' ? '' : 
+                                    alert.severity === 'warning' ? 'warning' : 'info';
+                
+                const adviceText = alert.advice === 'foldEm' ? "🃏 Time to Fold 'Em!" :
+                                 alert.advice === 'holdEm' ? "🤝 Hold 'Em Strong!" :
+                                 alert.advice === 'vault' ? "🏦 Vault Those Winnings!" : '';
+                
+                return `
+                    <div class="alert ${severityClass}">
+                        <div class="alert-header">
+                            <span class="alert-type">${alert.type}</span>
+                            <span class="alert-time">${new Date(alert.timestamp).toLocaleTimeString()}</span>
+                        </div>
+                        <div class="alert-message">${alert.message}</div>
+                        ${adviceText ? `<div class="alert-advice">${adviceText}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            alertsList.innerHTML = alertsHtml;
+        }
+
+        function simulatePlayerBehavior() {
+            if (!tiltChecker) return;
+            
+            // Simulate rapid betting after 3 seconds
+            setTimeout(() => {
+                if (!tiltChecker) return;
+                for (let i = 0; i < 12; i++) {
+                    setTimeout(() => {
+                        if (tiltChecker) {
+                            tiltChecker.updatePlayerActivity('demo-player', {
+                                type: 'bet',
+                                amount: 50,
+                                gameType: 'slots',
+                                newStake: 1000 - (i * 50)
+                            });
+                        }
+                    }, i * 300);
+                }
+            }, 3000);
+            
+            // Simulate loss streak after 8 seconds
+            setTimeout(() => {
+                if (!tiltChecker) return;
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(() => {
+                        if (tiltChecker) {
+                            tiltChecker.updatePlayerActivity('demo-player', {
+                                type: 'loss',
+                                amount: 100,
+                                newStake: 400 - (i * 100)
+                            });
+                        }
+                    }, i * 1200);
+                }
+            }, 8000);
+            
+            // Simulate high stake activity after 15 seconds
+            setTimeout(() => {
+                if (tiltChecker) {
+                    tiltChecker.updatePlayerActivity('demo-player', {
+                        type: 'bet',
+                        amount: 500,
+                        gameType: 'slots',
+                        newStake: 2000
+                    });
+                }
+            }, 15000);
+            
+            // Simulate vault reminder after 18 seconds
+            setTimeout(() => {
+                if (tiltChecker) {
+                    tiltChecker.updatePlayerActivity('demo-player', {
+                        type: 'win',
+                        amount: 800,
+                        newStake: 2800
+                    });
+                }
+            }, 18000);
+        }
+    </script>
+</body>
+</html>
