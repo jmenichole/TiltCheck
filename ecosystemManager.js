@@ -298,7 +298,7 @@ class EcosystemManager {
                 },
                 {
                     name: '🎰 TiltCheck Audit',
-                    value: '[Gambling Analysis](https://github.com/jmenichole/TiltCheck-audit-stakeus)\nBehavior monitoring system',
+                    value: '[Gambling Analysis](https://github.com/jmenichole/TiltCheck)\nBehavior monitoring system',
                     inline: true
                 }
             )
