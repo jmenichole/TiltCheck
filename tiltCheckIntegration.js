@@ -42,27 +42,8 @@ class TiltCheckIntegration {
             ]
         };
         
-        // Load TiltCheck module from cloned repo
-        this.loadTiltCheckModule();
-        
         // Load existing data on startup
         this.loadTiltData();
-    }
-
-    loadTiltCheckModule() {
-        try {
-            const tiltCheckPath = path.join(__dirname, 'TiltCheck-audit-stakeus');
-            if (fs.existsSync(tiltCheckPath)) {
-                console.log('✅ TiltCheck module found and loaded');
-                this.tiltCheckAvailable = true;
-            } else {
-                console.log('⚠️ TiltCheck module not found - using basic implementation');
-                this.tiltCheckAvailable = false;
-            }
-        } catch (error) {
-            console.error('Error loading TiltCheck module:', error);
-            this.tiltCheckAvailable = false;
-        }
     }
 
     // Load existing tilt data from file

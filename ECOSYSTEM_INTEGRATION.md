@@ -109,7 +109,7 @@ async showTermsCommand(message) {
 
 ## 🎰 TiltCheck Audit Integration
 
-### Repository: [TiltCheck-audit-stakeus](https://github.com/jmenichole/TiltCheck-audit-stakeus)
+### Repository: [TiltCheck](https://github.com/jmenichole/TiltCheck)
 
 **Purpose**: Casino gaming behavior analysis and tilt detection
 
@@ -221,8 +221,8 @@ async function handleTiltCheck(message, args) {
 ### Quick Setup Commands:
 ```bash
 # Clone TiltCheck for analysis integration
-git clone https://github.com/jmenichole/TiltCheck-audit-stakeus.git
-cd TiltCheck-audit-stakeus
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 npm install
 
 # Add to your TrapHouse bot
@@ -277,7 +277,7 @@ Daily Habits → Tilt Risk → Vault Choice → Community Rank
 ### 1. TiltCheck Setup (Immediate)
 ```bash
 cd /Users/fullsail/Desktop/traphouse_discordbot
-git clone https://github.com/jmenichole/TiltCheck-audit-stakeus.git tiltcheck-module
+git clone https://github.com/jmenichole/TiltCheck.git tiltcheck-module
 cd tiltcheck-module
 npm install
 ```
