@@ -29,6 +29,7 @@
     "npm": ">=9.0.0"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
     "@solana/spl-token": "^0.1.8",
     "@solana/web3.js": "^1.98.4",
     "axios": "^1.6.2",
@@ -37,7 +38,7 @@
     "cors": "^2.8.5",
     "discord.js": "^14.14.1",
     "dotenv": "^16.6.1",
-    "ethers": "^6.15.0",
+    "ethers": "^5.8.0",
     "express": "^4.21.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.1.0",
@@ -66,6 +67,9 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "hardhat": "^3.0.7",
     "nodemon": "^3.0.2"
   },
   "keywords": [
