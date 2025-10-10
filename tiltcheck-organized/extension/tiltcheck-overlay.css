@@ -1,0 +1,220 @@
+/* TiltCheck Overlay Styles */
+.tiltcheck-overlay {
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  z-index: 999999 !important;
+  background: linear-gradient(135deg, #fc8181, #f56565) !important;
+  color: white !important;
+  padding: 20px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(252, 129, 129, 0.4) !important;
+  max-width: 350px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  animation: tiltCheckSlideIn 0.5s ease-out !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+@keyframes tiltCheckSlideIn {
+  from {
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+  }
+  to {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+.tiltcheck-overlay.tiltcheck-hiding {
+  animation: tiltCheckSlideOut 0.3s ease-in !important;
+}
+
+@keyframes tiltCheckSlideOut {
+  from {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+  }
+  to {
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+  }
+}
+
+.tiltcheck-overlay-header {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 15px !important;
+}
+
+.tiltcheck-overlay-icon {
+  font-size: 24px !important;
+  margin-right: 10px !important;
+}
+
+.tiltcheck-overlay-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  flex: 1 !important;
+}
+
+.tiltcheck-overlay-close {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  color: white !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.2s !important;
+}
+
+.tiltcheck-overlay-close:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tiltcheck-overlay-message {
+  margin-bottom: 15px !important;
+  font-size: 15px !important;
+}
+
+.tiltcheck-overlay-stats {
+  background: rgba(255, 255, 255, 0.1) !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  margin-bottom: 15px !important;
+  font-size: 13px !important;
+}
+
+.tiltcheck-overlay-stat {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin-bottom: 5px !important;
+}
+
+.tiltcheck-overlay-stat:last-child {
+  margin-bottom: 0 !important;
+}
+
+.tiltcheck-overlay-stat-value {
+  font-weight: 600 !important;
+  color: #ffd700 !important;
+}
+
+.tiltcheck-overlay-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.tiltcheck-overlay-btn {
+  padding: 12px 20px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: all 0.2s !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+.tiltcheck-overlay-btn-primary {
+  background: white !important;
+  color: #c53030 !important;
+}
+
+.tiltcheck-overlay-btn-primary:hover {
+  background: #f7fafc !important;
+  transform: translateY(-1px) !important;
+}
+
+.tiltcheck-overlay-btn-secondary {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.tiltcheck-overlay-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.tiltcheck-overlay-earnings {
+  background: linear-gradient(135deg, #48bb78, #38a169) !important;
+  color: white !important;
+  text-align: center !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+  margin-bottom: 10px !important;
+  font-weight: 600 !important;
+}
+
+.tiltcheck-overlay-pulse {
+  animation: tiltCheckPulse 2s infinite !important;
+}
+
+@keyframes tiltCheckPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(252, 129, 129, 0.7) !important;
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(252, 129, 129, 0) !important;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(252, 129, 129, 0) !important;
+  }
+}
+
+/* High contrast mode for accessibility */
+@media (prefers-contrast: high) {
+  .tiltcheck-overlay {
+    background: #c53030 !important;
+    border: 3px solid white !important;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .tiltcheck-overlay {
+    animation: none !important;
+  }
+  
+  .tiltcheck-overlay-pulse {
+    animation: none !important;
+  }
+  
+  .tiltcheck-overlay-btn:hover {
+    transform: none !important;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .tiltcheck-overlay {
+    top: 10px !important;
+    right: 10px !important;
+    left: 10px !important;
+    max-width: none !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .tiltcheck-overlay-btn-primary {
+    background: #2d3748 !important;
+    color: white !important;
+  }
+  
+  .tiltcheck-overlay-btn-primary:hover {
+    background: #4a5568 !important;
+  }
+}

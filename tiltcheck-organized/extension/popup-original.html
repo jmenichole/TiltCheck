@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 350px;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .header {
+      padding: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    
+    .title {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .subtitle {
+      font-size: 0.9em;
+      opacity: 0.8;
+      margin: 5px 0 0 0;
+    }
+    
+    .content {
+      padding: 20px;
+    }
+    
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+    
+    .status-text {
+      font-weight: 500;
+    }
+    
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #48bb78;
+    }
+    
+    .stats {
+      margin-bottom: 20px;
+    }
+    
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.9em;
+    }
+    
+    .stat-value {
+      font-weight: 600;
+      color: #ffd700;
+    }
+    
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .btn {
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    
+    .btn-primary {
+      background: white;
+      color: #667eea;
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+    
+    .settings-toggle {
+      margin-top: 15px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      font-size: 0.8em;
+    }
+    
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle.active {
+      background: #48bb78;
+    }
+    
+    .toggle-handle {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    
+    .toggle.active .toggle-handle {
+      transform: translateX(20px);
+    }
+    
+    .footer {
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 0.8em;
+      opacity: 0.7;
+      background: rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛡️</div>
+    <h1 class="title">TiltCheck</h1>
+    <p class="subtitle">Gambling Protection Active</p>
+  </div>
+  
+  <div class="content">
+    <div class="status">
+      <span class="status-text">Protection Status</span>
+      <div class="status-indicator" id="statusIndicator"></div>
+    </div>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span>Sessions Monitored:</span>
+        <span class="stat-value" id="sessionsMonitored">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Interventions Triggered:</span>
+        <span class="stat-value" id="interventionsCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Estimated Losses Prevented:</span>
+        <span class="stat-value" id="lossesPrevented">$0</span>
+      </div>
+      <div class="stat-item">
+        <span>Survey Earnings:</span>
+        <span class="stat-value" id="surveyEarnings">$0</span>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button class="btn btn-primary" id="viewDashboard">
+        📊 View Full Dashboard
+      </button>
+      <button class="btn btn-secondary" id="earnSurveys">
+        💰 Earn Money with Surveys
+      </button>
+    </div>
+    
+    <div class="settings-toggle">
+      <div class="toggle-row">
+        <span>Real-time Protection</span>
+        <div class="toggle active" id="protectionToggle">
+          <div class="toggle-handle"></div>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <span>Survey Redirection</span>
+        <div class="toggle active" id="surveyToggle">
+          <div class="toggle-handle"></div>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <span>Sound Alerts</span>
+        <div class="toggle active" id="soundToggle">
+          <div class="toggle-handle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    TiltCheck v1.0.0 • Protecting Your Wellbeing
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

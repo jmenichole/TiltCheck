@@ -1,0 +1,95 @@
+{
+  "manifest_version": 3,
+  "name": "TiltCheck Demo - AI Intervention + JustTheTip",
+  "version": "2.1.0",
+  "description": "Investor Demo: AI gambling addiction intervention with JustTheTip integration, real-time earning redirection, and comprehensive analytics dashboard",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "scripting",
+    "alarms",
+    "notifications"
+  ],
+  
+  "host_permissions": [
+    "https://*.stake.us/*",
+    "https://*.stake.com/*",
+    "https://*.draftkings.com/*",
+    "https://*.fanduel.com/*",
+    "https://*.betmgm.com/*",
+    "https://*.caesars.com/*",
+    "https://*.pointsbet.com/*",
+    "https://*.barstool.com/*",
+    "https://*.bovada.lv/*",
+    "https://*.ignition.eu/*",
+    "https://*.pokerstars.com/*",
+    "https://*.888poker.com/*",
+    "https://*.tiltcheck.it.com/*",
+    "http://localhost:3000/*",
+    "http://localhost:3001/*",
+    "http://localhost:3002/*",
+    "https://*.justthetip.app/*",
+    "http://*/*",
+    "https://*/*"
+  ],  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.stake.us/*",
+        "https://*.stake.com/*",
+        "https://*.draftkings.com/*",
+        "https://*.fanduel.com/*",
+        "https://*.betmgm.com/*",
+        "https://*.caesars.com/*",
+        "https://*.pointsbet.com/*",
+        "https://*.barstool.com/*",
+        "https://*.bovada.lv/*",
+        "https://*.ignition.eu/*",
+        "https://*.pokerstars.com/*",
+        "https://*.888poker.com/*",
+        "http://localhost:3000/*",
+        "http://localhost:3001/*",
+        "https://*.justthetip.app/*",
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["content-script-advanced.js"],
+      "css": ["tiltcheck-overlay.css"],
+      "run_at": "document_start"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TiltCheck - Gambling Protection",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png", 
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png", 
+    "128": "icons/icon128.png"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "tiltcheck-overlay.css",
+        "icons/*.png",
+        "sounds/*.mp3"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

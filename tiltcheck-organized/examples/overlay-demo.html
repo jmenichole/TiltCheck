@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck Overlay Demo - Vanilla JavaScript</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a, #1e40af, #1d4ed8);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 100px; /* Space for stats overlay */
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-group h3 {
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+        
+        .demo-button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px 0;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .demo-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .demo-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .demo-button.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .status {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .monitoring-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        .online-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TiltCheck Overlay Demo</h1>
+            <p style="font-size: 1.2rem; opacity: 0.8;">Vanilla JavaScript UI Testing</p>
+        </div>
+
+        <div class="card">
+            <div class="status">
+                <div class="monitoring-indicator">
+                    <div class="online-dot"></div>
+                    <span>TiltCheck Monitoring Active</span>
+                </div>
+                <p style="margin-top: 10px; opacity: 0.8;">Player: demo-player-js</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Test Overlay Components</h2>
+            <div class="demo-controls">
+                <div class="control-group">
+                    <h3>📢 Popup Alerts</h3>
+                    <button class="demo-button danger" onclick="testHighAlert()">High Severity Alert</button>
+                    <button class="demo-button warning" onclick="testWarningAlert()">Warning Alert</button>
+                    <button class="demo-button" onclick="testInfoAlert()">Info Alert</button>
+                </div>
+                
+                <div class="control-group">
+                    <h3>💬 Messenger Alerts</h3>
+                    <button class="demo-button" onclick="testMessengerAlert()">Add Messenger Alert</button>
+                    <button class="demo-button success" onclick="testPositiveAlert()">Positive Feedback</button>
+                    <button class="demo-button warning" onclick="testVaultAlert()">Vault Reminder</button>
+                </div>
+                
+                <div class="control-group">
+                    <h3>🎮 Simulate Activity</h3>
+                    <button class="demo-button" onclick="simulateBigBet()">Big Bet ($500)</button>
+                    <button class="demo-button warning" onclick="simulateLossStreak()">Loss Streak</button>
+                    <button class="demo-button danger" onclick="simulateEmotionalPlay()">Emotional Play</button>
+                </div>
+                
+                <div class="control-group">
+                    <h3>⚙️ Controls</h3>
+                    <button class="demo-button success" onclick="toggleStats()">Toggle Stats</button>
+                    <button class="demo-button" onclick="clearAllAlerts()">Clear Alerts</button>
+                    <button class="demo-button warning" onclick="resetDemo()">Reset Demo</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>About This Demo</h3>
+            <p style="line-height: 1.6; opacity: 0.9;">
+                This demo showcases the vanilla JavaScript version of TiltCheck's overlay system. 
+                Unlike the React version, this implementation works with any website without 
+                framework dependencies. The overlay provides:
+            </p>
+            <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                <li><strong>Popup Alerts:</strong> Top-right notifications for immediate attention</li>
+                <li><strong>AOL-Style Messenger:</strong> Bottom-right chat window for ongoing monitoring</li>
+                <li><strong>Stats Dashboard:</strong> Top-left real-time statistics display</li>
+                <li><strong>Browser Notifications:</strong> Native browser notification support</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Load TiltCheck core and overlay -->
+    <script src="./tiltCheck.js"></script>
+    <script src="./tiltcheck_overlay.js"></script>
+    
+    <script>
+        // Initialize TiltCheck and overlay
+        let tiltChecker;
+        let overlay;
+        let statsVisible = true;
+
+        function initDemo() {
+            tiltChecker = new TiltCheck('demo-vanilla-key');
+            
+            // Start tracking a demo player
+            tiltChecker.trackPlayer('demo-player-js', {
+                initialStake: 1000,
+                riskProfile: 'medium'
+            });
+            
+            // Initialize the vanilla JS overlay
+            overlay = initTiltCheckOverlay(tiltChecker, 'demo-player-js');
+            
+            console.log('TiltCheck Overlay Demo initialized');
+        }
+
+        // Alert testing functions
+        function testHighAlert() {
+            const alert = {
+                severity: 'high',
+                message: 'High emotional stress detected! Take a deep breath and consider stepping away.',
+                advice: 'foldEm',
+                timestamp: Date.now()
+            };
+            overlay.showPopup(alert);
+        }
+
+        function testWarningAlert() {
+            const alert = {
+                severity: 'warning',
+                message: 'Loss streak detected. Consider taking a short break.',
+                advice: 'holdEm',
+                timestamp: Date.now()
+            };
+            overlay.showPopup(alert);
+        }
+
+        function testInfoAlert() {
+            const alert = {
+                severity: 'info',
+                message: 'Session time: 45 minutes. Remember to stay hydrated!',
+                timestamp: Date.now()
+            };
+            overlay.showPopup(alert);
+        }
+
+        function testMessengerAlert() {
+            const alert = {
+                severity: 'warning',
+                message: 'Rapid betting pattern detected in the last 5 minutes.',
+                advice: 'holdEm',
+                timestamp: Date.now()
+            };
+            overlay.showMessenger(alert);
+        }
+
+        function testPositiveAlert() {
+            const alert = {
+                severity: 'info',
+                message: 'Great session! Your betting patterns look healthy.',
+                advice: 'holdEm',
+                timestamp: Date.now()
+            };
+            overlay.showMessenger(alert);
+        }
+
+        function testVaultAlert() {
+            const alert = {
+                severity: 'warning',
+                message: 'Balance is high! Consider vaulting some winnings.',
+                advice: 'vault',
+                timestamp: Date.now()
+            };
+            overlay.showMessenger(alert);
+        }
+
+        // Activity simulation functions
+        function simulateBigBet() {
+            if (tiltChecker) {
+                tiltChecker.updatePlayerActivity('demo-player-js', {
+                    type: 'bet',
+                    amount: 500,
+                    gameType: 'slots',
+                    newStake: 1500
+                });
+            }
+        }
+
+        function simulateLossStreak() {
+            if (tiltChecker) {
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => {
+                        tiltChecker.updatePlayerActivity('demo-player-js', {
+                            type: 'loss',
+                            amount: 50,
+                            gameType: 'slots',
+                            newStake: 1000 - (i * 50)
+                        });
+                    }, i * 200);
+                }
+            }
+        }
+
+        function simulateEmotionalPlay() {
+            if (tiltChecker) {
+                // Simulate rapid clicking and increasing bet sizes
+                tiltChecker.updatePlayerActivity('demo-player-js', {
+                    type: 'emotional_indicator',
+                    indicator: 'rapidClicking',
+                    intensity: 8
+                });
+            }
+        }
+
+        // Control functions
+        function toggleStats() {
+            if (statsVisible) {
+                overlay.hideStats();
+                statsVisible = false;
+            } else {
+                overlay.updateStatsDisplay();
+                statsVisible = true;
+            }
+        }
+
+        function clearAllAlerts() {
+            overlay.alerts = [];
+            overlay.hideMessenger();
+            overlay.hidePopup();
+            overlay.updateToggleButton();
+        }
+
+        function resetDemo() {
+            if (overlay) {
+                overlay.destroy();
+            }
+            initDemo();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initDemo);
+    </script>
+</body>
+</html>

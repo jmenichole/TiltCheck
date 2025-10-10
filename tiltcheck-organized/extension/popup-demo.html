@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TiltCheck Demo - AI Intervention Dashboard</title>
+  <style>
+    body {
+      width: 420px;
+      min-height: 600px;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px 20px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+
+    .logo-icon {
+      font-size: 24px;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .demo-badge {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-section {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 10px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4ade80;
+      margin-bottom: 5px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .tilt-detector {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 10px;
+    }
+
+    .tilt-level {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .tilt-meter {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      margin: 0 15px;
+      overflow: hidden;
+    }
+
+    .tilt-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4ade80, #f59e0b, #ef4444);
+      width: 15%;
+      transition: width 0.5s ease;
+      border-radius: 4px;
+    }
+
+    .ai-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .ai-icon {
+      font-size: 16px;
+    }
+
+    .controls-section {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      margin: 10px;
+      border-radius: 15px;
+    }
+
+    .control-button {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .control-button.primary {
+      background: linear-gradient(45deg, #4ade80, #22c55e);
+      color: white;
+    }
+
+    .control-button.secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .control-button.danger {
+      background: linear-gradient(45deg, #ef4444, #dc2626);
+      color: white;
+    }
+
+    .control-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .justthetip-section {
+      background: linear-gradient(45deg, #8b5cf6, #a855f7);
+      padding: 20px;
+      margin: 10px;
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .justthetip-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .justthetip-logo {
+      font-size: 20px;
+    }
+
+    .integration-status {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-check {
+      color: #4ade80;
+      font-weight: bold;
+    }
+
+    .earnings-preview {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    .earnings-amount {
+      font-size: 20px;
+      font-weight: bold;
+      color: #fde047;
+      text-align: center;
+    }
+
+    .earnings-label {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    .demo-actions {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      margin: 10px;
+      border-radius: 15px;
+    }
+
+    .demo-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .footer {
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 11px;
+      opacity: 0.8;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .version-info {
+      margin-top: 5px;
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <span class="logo-icon">🛡️</span>
+      <span class="logo-text">TiltCheck Demo</span>
+      <span class="demo-badge">Investor Demo</span>
+    </div>
+  </div>
+
+  <div class="status-section">
+    <div class="status-header">
+      <h3>AI Protection Status</h3>
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        Active
+      </div>
+    </div>
+    
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value" id="interventions">47</div>
+        <div class="metric-label">Interventions</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="moneySaved">$2,340</div>
+        <div class="metric-label">Money Saved</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="earningsGenerated">$890</div>
+        <div class="metric-label">Earnings Generated</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="successRate">95%</div>
+        <div class="metric-label">Success Rate</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tilt-detector">
+    <h3>Real-Time Tilt Detection</h3>
+    <div class="tilt-level">
+      <span>LOW</span>
+      <div class="tilt-meter">
+        <div class="tilt-fill" id="tiltFill"></div>
+      </div>
+      <span>HIGH</span>
+    </div>
+    <div class="ai-status">
+      <span class="ai-icon">🧠</span>
+      <span>AI Confidence: <strong id="aiConfidence">97%</strong></span>
+    </div>
+  </div>
+
+  <div class="justthetip-section">
+    <div class="justthetip-header">
+      <span class="justthetip-logo">💎</span>
+      <h3>JustTheTip Integration</h3>
+    </div>
+    
+    <div class="integration-status">
+      <div class="status-item">
+        <span class="status-check">✓</span>
+        <span>API Connected</span>
+      </div>
+      <div class="status-item">
+        <span class="status-check">✓</span>
+        <span>Revenue Sharing</span>
+      </div>
+    </div>
+    
+    <div class="earnings-preview">
+      <div class="earnings-amount">$127.50</div>
+      <div class="earnings-label">Available Earning Potential</div>
+    </div>
+  </div>
+
+  <div class="controls-section">
+    <h3>Demo Controls</h3>
+    
+    <button class="control-button primary" id="triggerDemo">
+      🎯 Trigger Demo Intervention
+    </button>
+    
+    <button class="control-button secondary" id="openEarnings">
+      💰 Open Earnings Platform
+    </button>
+    
+    <button class="control-button secondary" id="viewAnalytics">
+      📊 View Analytics Dashboard
+    </button>
+    
+    <button class="control-button danger" id="simulateTilt">
+      ⚠️ Simulate Tilt Detection
+    </button>
+  </div>
+
+  <div class="demo-actions">
+    <h3 class="demo-title">Investor Demo Actions</h3>
+    
+    <button class="control-button primary" id="showIntegration">
+      🔗 Show JustTheTip Integration
+    </button>
+    
+    <button class="control-button secondary" id="viewMetrics">
+      📈 Real-Time Metrics
+    </button>
+    
+    <button class="control-button secondary" id="testWorkflow">
+      🚀 Test Complete Workflow
+    </button>
+  </div>
+
+  <div class="footer">
+    <div>TiltCheck AI Intervention System</div>
+    <div class="version-info">Demo v2.1.0 | JustTheTip Integration | Investor Preview</div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

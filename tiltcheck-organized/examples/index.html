@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck - Professional Gaming Behavior Monitor</title>
+    <meta name="description" content="Advanced Discord bot for gambling accountability with Solana crypto tipping integration">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; 
+            background: linear-gradient(135deg, #1e3a8a, #1e40af, #1d4ed8); 
+            color: white; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #60a5fa, #a78bfa);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+        
+        .feature-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .demo-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .demo-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        .mode-badge { display: inline-block; background: #667eea; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; margin-bottom: 1rem; }
+        
+        /* Footer */
+        footer { background: #1a202c; color: white; padding: 3rem 0; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
+        .footer-links a { color: #a0aec0; text-decoration: none; }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ TiltCheck</h1>
+            <p>Professional Gaming Behavior Monitor with Crypto Integration</p>
+            <p>Discord bot for gambling accountability • Solana tipping • Base L2 blockchain</p>
+        </div>
+
+        <div class="demo-section">
+            <div class="card">
+                <h2>🚀 Live Demo & Features</h2>
+                <p>Experience TiltCheck's comprehensive monitoring and crypto tipping capabilities</p>
+                <div class="demo-buttons">
+                    <a href="simple-demo.html" class="btn">🎮 Player Behavior Demo</a>
+                    <a href="overlay-demo.html" class="btn">📊 Overlay Demo</a>
+                    <a href="test-casino-site.html" class="btn">🎰 Casino Integration</a>
+                </div>
+            </div>
+        </div>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>3</h3>
+                    <p>Deployment Modes</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2</h3>
+                    <p>Blockchain Networks</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100%</h3>
+                    <p>Open Source</p>
+                </div>
+                <div class="stat-item">
+                    <h3>🎯</h3>
+                    <p>Base Grant Eligible</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+            <div class="card">
+            <h2>✨ Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🎯 Behavior Monitoring</h3>
+                    <p>Advanced real-time tracking of gaming patterns, loss streaks, and intervention triggers</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💰 Crypto Tipping</h3>
+                    <p>Solana integration with SOL and USDC support, rain commands, and wallet management</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Multi-Platform</h3>
+                    <p>Discord bot, browser extension, and web interface with seamless data sync</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔗 Base L2 Integration</h3>
+                    <p>Built for Base blockchain with smart contract accountability and developer grants</p>
+                </div>
+            </div>
+        </div>
+
+            <div class="card">
+            <h2>🚀 Quick Setup</h2>
+            <p>Choose your deployment method and get started in minutes</p>
+            
+            <h3>🤖 Discord Bot Setup</h3>
+            <p>1. Clone the repository: <code>git clone https://github.com/jmenichole/TiltCheck</code></p>
+            <p>2. Install dependencies: <code>npm install</code></p>
+            <p>3. Configure environment variables in <code>config.json</code></p>
+            <p>4. Start the bot: <code>npm start</code></p>
+            
+            <h3>🌐 Browser Extension</h3>
+            <p>1. Download the extension files</p>
+            <p>2. Open Chrome Extensions (chrome://extensions/)</p>
+            <p>3. Enable Developer Mode</p>
+            <p>4. Load unpacked extension from <code>public/</code> folder</p>
+        </div>
+
+    <section class="features" id="setup" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">🚀 Quick Setup</h2>
+            <div style="max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                <h3 style="margin-bottom: 1rem;">One-Command Setup:</h3>
+                <pre style="background: #1a202c; color: #00ff88; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 2rem;"><code>git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
+npm install
+npm run setup-solana  # Generate Solana wallet
+npm run validate      # Check configuration
+npm start             # Start integrated mode</code></pre>
+                
+                <h3 style="margin-bottom: 1rem;">Key Environment Variables:</h3>
+                <pre style="background: #f1f5f9; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code>        </div>
+
+        <div class="card">
+            <h2>📚 Resources</h2>
+            <div class="demo-buttons">
+                <a href="https://github.com/jmenichole/TiltCheck" class="btn">📖 Documentation</a>
+                <a href="https://github.com/jmenichole/TiltCheck/blob/main/README.md" class="btn">🚀 Getting Started</a>
+                <a href="https://docs.base.org/base-camp/docs/welcome" class="btn">🏗️ Base Grants</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🛡️ TiltCheck - Professional Gaming Behavior Monitor</p>
+            <p>Built for Base L2 Developer Grants • Solana Integration • Commercial Business Solution</p>
+            <p><a href="https://github.com/jmenichole/TiltCheck" style="color: #60a5fa;">View on GitHub</a> • <strong>Proprietary License</strong></p>
+        </div>
+    </div></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/jmenichole/TiltCheck">GitHub Repository</a>
+                <a href="https://docs.base.org/base-camp/docs/welcome">Base Developer Grants</a>
+                <a href="https://github.com/jmenichole/TiltCheck/blob/main/QUICK_SETUP.md">Documentation</a>
+                <a href="https://github.com/jmenichole/TiltCheck/blob/main/DEPLOYMENT_GUIDE.md">Deployment Guide</a>
+            </div>
+            <p>&copy; 2025 TiltCheck + JustTheTip Unified System | Built on Solana + Base L2 | Open Source MIT License</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">🎯 Base Developer Grant Eligible | 💰 Solana Integration | ��️ Gambling Accountability</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add some interactive stats
+        const stats = document.querySelectorAll('.stat-item h3');
+        stats.forEach(stat => {
+            if (stat.textContent.includes('%')) {
+                stat.style.color = '#00ff88';
+            }
+        });
+    </script>
+</body>
+</html>

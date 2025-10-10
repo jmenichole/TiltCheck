@@ -1,0 +1,43 @@
+import React from 'react';
+import './index.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>🛡️ TiltCheck</h1>
+        <h2>Responsible Gaming Dashboard</h2>
+        <p>AI-powered gambling addiction prevention platform</p>
+        
+        <div className="feature-grid">
+          <div className="feature-card">
+            <h3>🎯 Real-time Monitoring</h3>
+            <p>AI-powered tilt detection and behavioral analysis</p>
+          </div>
+          
+          <div className="feature-card">
+            <h3>🚨 Instant Interventions</h3>
+            <p>Immediate support when risky behavior is detected</p>
+          </div>
+          
+          <div className="feature-card">
+            <h3>💰 Alternative Earning</h3>
+            <p>QualifyFirst survey integration for healthy income</p>
+          </div>
+          
+          <div className="feature-card">
+            <h3>🤝 Community Support</h3>
+            <p>Social accountability and peer support system</p>
+          </div>
+        </div>
+        
+        <div className="cta-section">
+          <button className="cta-button">Get Chrome Extension</button>
+          <button className="cta-button secondary">Join Community</button>
+        </div>
+      </header>
+    </div>
+  );
+}
+
+export default App;

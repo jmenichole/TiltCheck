@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck - Player Behavior Monitoring</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react-icons@4/index.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        .bg-dark { background-color: #1f2937; }
+        .bg-dark-light { background-color: #374151; }
+        .bg-primary { background-color: #3b82f6; }
+        .bg-primary-dark { background-color: #2563eb; }
+        .text-primary { color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <div id="root"></div>
+    
+    <!-- Load TiltCheck core -->
+    <script type="text/babel" src="./tiltCheck.js"></script>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = Motion;
+        
+        // Simple demo app that shows TiltCheck functionality
+        const TiltCheckDemo = () => {
+            const [tiltChecker, setTiltChecker] = useState(null);
+            const [player, setPlayer] = useState(null);
+            const [alerts, setAlerts] = useState([]);
+            const [stats, setStats] = useState(null);
+            const [isMonitoring, setIsMonitoring] = useState(false);
+
+            useEffect(() => {
+                const checker = new TiltCheck('demo-key');
+                setTiltChecker(checker);
+            }, []);
+
+            const startDemo = () => {
+                if (!tiltChecker) return;
+                
+                const demoPlayer = tiltChecker.trackPlayer('demo-player', {
+                    initialStake: 1000,
+                    riskProfile: 'medium'
+                });
+                
+                setPlayer(demoPlayer);
+                setIsMonitoring(true);
+                
+                // Set up UI callbacks
+                window.TiltCheckUI = {
+                    showPopup: (alert) => {
+                        setAlerts(prev => [...prev, { ...alert, type: 'popup' }]);
+                    },
+                    showMessenger: (alert) => {
+                        setAlerts(prev => [...prev, { ...alert, type: 'messenger' }]);
+                    }
+                };
+
+                // Update stats periodically
+                const statsInterval = setInterval(() => {
+                    const playerStats = tiltChecker.getPlayerStats('demo-player');
+                    setStats(playerStats);
+                }, 2000);
+
+                // Auto-generate some activity for demo
+                setTimeout(() => simulateRapidBetting(), 3000);
+                setTimeout(() => simulateLossStreak(), 8000);
+                setTimeout(() => simulateHighStake(), 12000);
+
+                return () => clearInterval(statsInterval);
+            };
+
+            const simulateRapidBetting = () => {
+                if (!tiltChecker) return;
+                for (let i = 0; i < 12; i++) {
+                    setTimeout(() => {
+                        tiltChecker.updatePlayerActivity('demo-player', {
+                            type: 'bet',
+                            amount: 50,
+                            gameType: 'slots',
+                            newStake: 1000 - (i * 50)
+                        });
+                    }, i * 200);
+                }
+            };
+
+            const simulateLossStreak = () => {
+                if (!tiltChecker) return;
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(() => {
+                        tiltChecker.updatePlayerActivity('demo-player', {
+                            type: 'loss',
+                            amount: 100,
+                            newStake: 400 - (i * 100)
+                        });
+                    }, i * 1000);
+                }
+            };
+
+            const simulateHighStake = () => {
+                if (!tiltChecker) return;
+                tiltChecker.updatePlayerActivity('demo-player', {
+                    type: 'bet',
+                    amount: 500,
+                    gameType: 'slots',
+                    newStake: 2000
+                });
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-8">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="text-center mb-8">
+                            <h1 className="text-5xl font-bold text-white mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                                TiltCheck Demo
+                            </h1>
+                            <p className="text-gray-300 text-lg">
+                                Advanced Player Behavior Monitoring & Tilt Detection
+                            </p>
+                        </div>
+
+                        {!isMonitoring ? (
+                            <div className="text-center">
+                                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 mb-8">
+                                    <h2 className="text-2xl font-bold text-white mb-4">
+                                        Ready to see TiltCheck in action?
+                                    </h2>
+                                    <p className="text-gray-300 mb-6">
+                                        This demo will simulate player behavior and show real-time tilt detection alerts.
+                                    </p>
+                                    <button
+                                        onClick={startDemo}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
+                                    >
+                                        Start Demo
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="space-y-6">
+                                {/* Stats Display */}
+                                {stats && (
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4">
+                                            <h3 className="text-gray-300 text-sm font-medium mb-1">Session Time</h3>
+                                            <p className="text-white text-2xl font-bold">{Math.round(stats.sessionDuration / 60)}m</p>
+                                        </div>
+                                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4">
+                                            <h3 className="text-gray-300 text-sm font-medium mb-1">Emotional Score</h3>
+                                            <p className={`text-2xl font-bold ${stats.emotionalScore > 5 ? 'text-red-400' : 'text-green-400'}`}>
+                                                {stats.emotionalScore}/10
+                                            </p>
+                                        </div>
+                                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4">
+                                            <h3 className="text-gray-300 text-sm font-medium mb-1">Loss Streak</h3>
+                                            <p className={`text-2xl font-bold ${stats.lossSequence > 3 ? 'text-red-400' : 'text-white'}`}>
+                                                {stats.lossSequence}
+                                            </p>
+                                        </div>
+                                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4">
+                                            <h3 className="text-gray-300 text-sm font-medium mb-1">Recommendation</h3>
+                                            <p className="text-white text-sm font-semibold">
+                                                {stats.recommendation?.action.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Alerts Display */}
+                                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6">
+                                    <h2 className="text-xl font-bold text-white mb-4">Live Alerts</h2>
+                                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                                        {alerts.map((alert, index) => (
+                                            <div key={index} className={`p-4 rounded-lg ${
+                                                alert.severity === 'high' ? 'bg-red-900/30 border border-red-500/50' :
+                                                alert.severity === 'warning' ? 'bg-yellow-900/30 border border-yellow-500/50' :
+                                                'bg-blue-900/30 border border-blue-500/50'
+                                            }`}>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-white font-medium">{alert.type.toUpperCase()}</span>
+                                                    <span className="text-gray-400 text-sm">
+                                                        {new Date(alert.timestamp).toLocaleTimeString()}
+                                                    </span>
+                                                </div>
+                                                <p className="text-gray-100 mt-1">{alert.message}</p>
+                                                {alert.advice && (
+                                                    <p className="text-sm font-semibold mt-2 text-yellow-300">
+                                                        💡 {alert.advice === 'foldEm' ? "Time to fold 'em!" : 
+                                                             alert.advice === 'holdEm' ? "Hold 'em strong!" :
+                                                             alert.advice === 'vault' ? "Consider vaulting!" : "Stay alert!"}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ))}
+                                        {alerts.length === 0 && (
+                                            <p className="text-gray-400 text-center py-8">
+                                                Monitoring active... Alerts will appear here.
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Features List */}
+                        <div className="mt-12 bg-gray-800/30 backdrop-blur-sm rounded-xl p-8">
+                            <h2 className="text-2xl font-bold text-white mb-6 text-center">TiltCheck Features</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="text-center">
+                                    <div className="text-blue-400 text-3xl mb-3">🎯</div>
+                                    <h3 className="text-white font-semibold mb-2">Betting Pattern Analysis</h3>
+                                    <p className="text-gray-300 text-sm">Real-time monitoring of bet sizes and frequency</p>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-green-400 text-3xl mb-3">⏱️</div>
+                                    <h3 className="text-white font-semibold mb-2">Time Tracking</h3>
+                                    <p className="text-gray-300 text-sm">Monitors time spent on slots vs originals</p>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-purple-400 text-3xl mb-3">🧠</div>
+                                    <h3 className="text-white font-semibold mb-2">Emotional Indicators</h3>
+                                    <p className="text-gray-300 text-sm">Detects signs of emotional gambling</p>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-red-400 text-3xl mb-3">🚨</div>
+                                    <h3 className="text-white font-semibold mb-2">Real-time Alerts</h3>
+                                    <p className="text-gray-300 text-sm">Multiple notification methods</p>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-yellow-400 text-3xl mb-3">🏦</div>
+                                    <h3 className="text-white font-semibold mb-2">Vault Reminders</h3>
+                                    <p className="text-gray-300 text-sm">Suggests saving winnings when balance is high</p>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-cyan-400 text-3xl mb-3">🤝</div>
+                                    <h3 className="text-white font-semibold mb-2">Hold 'em vs Fold 'em</h3>
+                                    <p className="text-gray-300 text-sm">Smart recommendations for when to stop</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<TiltCheckDemo />, document.getElementById('root'));
+    </script>
+</body>
+</html>
