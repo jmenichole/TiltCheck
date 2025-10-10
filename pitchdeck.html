@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck - Investor Pitch Deck | Empowering Responsible Gaming</title>
+    <meta name="description" content="TiltCheck pitch deck - AI-powered platform for proactive gambling addiction prevention. Seeking $2.5M seed funding for responsible gaming technology.">
+    
+    <!-- TiltCheck Brand CSS -->
+    <link rel="stylesheet" href="./tiltcheck-brand.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/tiltcheck-favicon.svg">
+    
+    <!-- Pitch Deck Specific Styles -->
+    <style>
+        /* Pitch Deck Layout */
+        .pitch-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+            background: var(--dark-surface);
+        }
+        
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--dark-surface) 0%, var(--darker-surface) 100%);
+            border-bottom: 1px solid var(--border-primary);
+        }
+        
+        .slide-content {
+            max-width: 900px;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Hero Slide */
+        .hero-slide {
+            background: linear-gradient(135deg, var(--dark-indigo) 0%, var(--primary-blue) 50%, var(--dynamic-blue) 100%);
+            color: white;
+        }
+        
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, white, var(--soft-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+        
+        .nav-icon {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-cta {
+            background: linear-gradient(45deg, var(--primary-blue), var(--dynamic-blue));
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        /* Content Styling */
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--primary-blue);
+        }
+        
+        .slide-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .problem-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .problem-card {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .solution-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            text-align: left;
+        }
+        
+        .solution-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        /* Market Stats */
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(96, 165, 250, 0.05));
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-primary);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* CTA Buttons */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-blue), var(--dynamic-blue));
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(96, 165, 250, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(96, 165, 250, 0.4);
+        }
+        
+        .cta-secondary {
+            background: linear-gradient(45df, var(--success-green), var(--soft-cyan));
+        }
+
+        /* Simple dark theme variables for compatibility */
+        :root {
+            --dark-surface: #1a1a2e;
+            --darker-surface: #16213e;
+            --primary-blue: #60a5fa;
+            --dynamic-blue: #3b82f6;
+            --dark-indigo: #1e1b4b;
+            --soft-cyan: #06d6a0;
+            --success-green: #22c55e;
+            --text-secondary: #9ca3af;
+            --border-primary: #374151;
+            --card-background: #1f2937;
+            --warning-orange: #f59e0b;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 2rem 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <div class="nav-icon">🛡️</div>
+                <span class="nav-brand">TiltCheck</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="/" class="nav-link">🏠 Home</a>
+                <a href="justthetip-landing.html" class="nav-link">⚖️ JustTheTip</a>
+                <a href="qualifyfirst-landing.html" class="nav-link">📊 QualifyFirst</a>
+                <a href="mailto:support@tiltcheck.io?subject=Investment%20Inquiry" class="nav-link nav-cta">💼 Contact Investors</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pitch-container">
+        
+        <!-- Slide 1: Hero / Title -->
+        <section class="slide hero-slide" id="slide-1">
+            <div class="slide-number">1 / 9</div>
+            <div class="slide-content">
+                <h1 class="hero-title">TiltCheck</h1>
+                <div class="hero-subtitle">Empowering Responsible Gaming</div>
+                <div style="margin: 3rem 0;">
+                    <div style="font-size: 1.2rem; margin-bottom: 1rem; opacity: 0.9;">
+                        A pioneering platform for proactive gambling addiction prevention
+                    </div>
+                    <div style="font-size: 1.1rem; margin-bottom: 1rem; opacity: 0.8;">
+                        Leveraging cutting-edge academic research and technology
+                    </div>
+                    <div style="font-size: 1.1rem; opacity: 0.8;">
+                        Fostering a safer, more responsible global gaming environment
+                    </div>
+                </div>
+                
+                <div style="margin-top: 3rem;">
+                    <a href="#slide-9" class="cta-button" onclick="scrollToSlide(9)">💰 View Investment Opportunity</a>
+                    <a href="mailto:support@tiltcheck.io?subject=Investor%20Inquiry" class="cta-button cta-secondary">📧 Contact Team</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Problem -->
+        <section class="slide" id="slide-2" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+            <div class="slide-number">2 / 9</div>
+            <div class="slide-content">
+                <h2 class="slide-title">The Problem</h2>
+                <p class="slide-subtitle">A global crisis requiring immediate technological intervention</p>
+                
+                <div class="problem-points">
+                    <div class="problem-card">
+                        <div style="color: #ef4444; font-size: 2rem; margin-bottom: 1rem;">🌍</div>
+                        <h3 style="margin-bottom: 1rem; color: #ef4444;">Global Impact</h3>
+                        <p>Global gambling addiction affects millions, costing economies billions annually</p>
+                    </div>
+                    
+                    <div class="problem-card">
+                        <div style="color: #ef4444; font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
+                        <h3 style="margin-bottom: 1rem; color: #ef4444;">Reactive Solutions</h3>
+                        <p>Current responsible gaming tools are often reactive, not preventive</p>
+                    </div>
+                    
+                    <div class="problem-card">
+                        <div style="color: #ef4444; font-size: 2rem; margin-bottom: 1rem;">🔍</div>
+                        <h3 style="margin-bottom: 1rem; color: #ef4444;">Lack of Integration</h3>
+                        <p>Lack of integrated, real-time behavioral monitoring and intervention systems</p>
+                    </div>
+                    
+                    <div class="problem-card">
+                        <div style="color: #ef4444; font-size: 2rem; margin-bottom: 1rem;">📜</div>
+                        <h3 style="margin-bottom: 1rem; color: #ef4444;">Regulatory Pressure</h3>
+                        <p>Growing regulatory pressure for operators to enhance player protection</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Market Size & Financial Projections -->
+        <section class="slide" id="slide-3" style="background: linear-gradient(135def, #43e97b 0%, #38f9d7 100%);">
+            <div class="slide-number">3 / 9</div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="color: white;">Market Size & Financial Projections</h2>
+                <p class="slide-subtitle" style="color: rgba(255,255,255,0.9);">Massive untapped opportunity with strong growth trajectory</p>
+                
+                <div class="market-stats">
+                    <div class="stat-item" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div class="stat-number" style="color: white;">$150B+</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Global Online Gaming Market by 2027</div>
+                    </div>
+                    
+                    <div class="stat-item" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div class="stat-number" style="color: white;">$1.2M</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Year 1 Projected Revenue</div>
+                    </div>
+                    
+                    <div class="stat-item" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div class="stat-number" style="color: white;">$8.5M</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Year 3 Projected Revenue</div>
+                    </div>
+                    
+                    <div class="stat-item" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div class="stat-number" style="color: white;">$25M+</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Year 5 Projected Revenue</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 3rem; color: white;">
+                    <h3 style="margin-bottom: 2rem; font-size: 2rem;">Projected EBITDA positive by Q4 Year 2</h3>
+                    <p style="font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">
+                        Strong margins with multiple revenue streams: SaaS subscriptions, premium features, 
+                        strategic partnerships, and white-label solutions targeting 10,000+ operators worldwide.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: The Ask -->
+        <section class="slide" id="slide-4" style="background: linear-gradient(135deg, var(--success-green) 0%, var(--primary-blue) 100%); color: white;">
+            <div class="slide-number">4 / 9</div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="color: white;">The Ask</h2>
+                <p class="slide-subtitle" style="color: rgba(255,255,255,0.9);">Seeking strategic investment for market-ready technology</p>
+                
+                <div style="margin: 3rem 0 2rem 0;">
+                    <h3 style="font-size: 3rem; margin-bottom: 1rem; color: white;">$2.5 Million Seed Funding</h3>
+                </div>
+                
+                <div class="solution-grid">
+                    <div class="solution-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="color: white; font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">70%</div>
+                        <h3 style="color: white; margin-bottom: 1rem;">Product Development</h3>
+                        <p style="color: rgba(255,255,255,0.9);">AI enhancement, platform scaling, and feature expansion</p>
+                    </div>
+                    
+                    <div class="solution-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="color: white; font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">20%</div>
+                        <h3 style="color: white; margin-bottom: 1rem;">Sales & Marketing</h3>
+                        <p style="color: rgba(255,255,255,0.9);">Partnership expansion and market penetration</p>
+                    </div>
+                    
+                    <div class="solution-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="color: white; font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">10%</div>
+                        <h3 style="color: white; margin-bottom: 1rem;">Operations</h3>
+                        <p style="color: rgba(255,255,255,0.9);">Infrastructure and key team expansion</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 3rem;">
+                    <a href="mailto:support@tiltcheck.io?subject=Investment%20Opportunity%20-%20TiltCheck%20Seed%20Funding" 
+                       class="cta-button" style="background: linear-gradient(45deg, white, #f0f0f0); color: #1a1a1a; font-size: 1.2rem;">
+                        💰 Discuss Investment Opportunity
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Navigation and smooth scrolling
+        function scrollToSlide(slideNumber) {
+            const slide = document.getElementById(`slide-${slideNumber}`);
+            if (slide) {
+                slide.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                // Add navigation logic here
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                // Add navigation logic here
+            }
+        });
+    </script>
+</body>
+</html>

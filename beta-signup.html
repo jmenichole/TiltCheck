@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck Beta Signup - Join the Waitlist | Early Access Program</title>
+    <meta name="description" content="Get early access to TiltCheck's AI-powered behavioral monitoring platform. Join our beta testing program and help shape the future of responsible gaming.">
+    
+    <!-- Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Brand CSS -->
+    <link rel="stylesheet" href="./tiltcheck-brand.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .signup-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            margin: 2rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #60A5FA, #4DD0E1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-top: 0.5rem;
+        }
+        
+        .beta-badge {
+            background: linear-gradient(45deg, #F59E0B, #60A5FA);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+        
+        .signup-form {
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(96, 165, 250, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #60A5FA;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-input {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .checkbox-label {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #60A5FA, #4DD0E1);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(96, 165, 250, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: linear-gradient(45deg, #10B981, #4DD0E1);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .error-message {
+            background: linear-gradient(45deg, #EF4444, #F59E0B);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            color: #4DD0E1;
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .back-link a {
+            color: #60A5FA;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="logo">
+            <div class="logo-icon">✓</div>
+            <div class="logo-text">
+                TiltCheck
+                <span class="beta-badge">BETA</span>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; color: white; margin-bottom: 1rem; font-size: 1.5rem;">Join the Beta Waitlist</h2>
+        <p style="text-align: center; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; line-height: 1.6;">
+            Get early access to the most advanced behavioral monitoring platform for responsible gaming.
+        </p>
+        
+        <ul class="feature-list">
+            <li>Priority access to TiltCheck platform</li>
+            <li>Free beta testing period</li>
+            <li>Direct feedback to development team</li>
+            <li>Exclusive beta tester perks</li>
+            <li>Early access to new features</li>
+        </ul>
+        
+        <form class="signup-form" id="betaSignupForm">
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address *</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="your@email.com" 
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name *</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    class="form-input" 
+                    placeholder="John Doe" 
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="company" class="form-label">Company/Organization</label>
+                <input 
+                    type="text" 
+                    id="company" 
+                    name="company" 
+                    class="form-input" 
+                    placeholder="Gaming Company Inc."
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="role" class="form-label">Role/Position</label>
+                <select id="role" name="role" class="form-input">
+                    <option value="">Select your role...</option>
+                    <option value="casino-operator">Casino Operator</option>
+                    <option value="gaming-executive">Gaming Executive</option>
+                    <option value="compliance-officer">Compliance Officer</option>
+                    <option value="developer">Developer/Integrator</option>
+                    <option value="researcher">Academic/Researcher</option>
+                    <option value="investor">Investor</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="use-case" class="form-label">Primary Use Case</label>
+                <select id="use-case" name="useCase" class="form-input">
+                    <option value="">What interests you most?</option>
+                    <option value="tilt-monitoring">Behavioral/Tilt Monitoring</option>
+                    <option value="fairness-verification">Fairness Verification</option>
+                    <option value="earning-platform">Earning Platform Integration</option>
+                    <option value="compliance">Regulatory Compliance</option>
+                    <option value="analytics">Player Analytics</option>
+                    <option value="research">Research/Academic Use</option>
+                </select>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="updates" name="updates" class="checkbox-input" checked>
+                <label for="updates" class="checkbox-label">
+                    Send me updates about TiltCheck development, new features, and beta testing opportunities
+                </label>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" name="terms" class="checkbox-input" required>
+                <label for="terms" class="checkbox-label">
+                    I agree to the <a href="#" style="color: #60A5FA;">Terms of Service</a> and <a href="#" style="color: #60A5FA;">Privacy Policy</a> *
+                </label>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                🚀 Join Beta Waitlist
+            </button>
+            
+            <div id="successMessage" class="success-message">
+                ✅ Success! You've been added to the beta waitlist. We'll notify you when TiltCheck is ready for testing!
+            </div>
+            
+            <div id="errorMessage" class="error-message">
+                ❌ Something went wrong. Please try again or contact support@tiltcheck.io
+            </div>
+        </form>
+        
+        <div class="back-link">
+            <a href="/">← Back to TiltCheck</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('betaSignupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Joining Waitlist...';
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                // Send to backend
+                const response = await fetch('/api/beta-signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    this.reset();
+                    
+                    // Track signup event
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'beta_signup', {
+                            'event_category': 'engagement',
+                            'event_label': 'beta_waitlist'
+                        });
+                    }
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.style.display = 'block';
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Join Beta Waitlist';
+            }
+        });
+        
+        // Form validation enhancements
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.required && !this.value) {
+                    this.style.borderColor = '#EF4444';
+                } else {
+                    this.style.borderColor = 'rgba(96, 165, 250, 0.2)';
+                }
+            });
+        });
+        
+        // Email validation
+        document.getElementById('email').addEventListener('input', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailRegex.test(this.value)) {
+                this.style.borderColor = '#EF4444';
+            } else {
+                this.style.borderColor = 'rgba(96, 165, 250, 0.2)';
+            }
+        });
+    </script>
+</body>
+</html>
