@@ -64,46 +64,46 @@ function TiltCheckLanding() {
 
         <div className="hero-content">
           <div className="hero-badge">
-            🛡️ AI-Powered Addiction Prevention
+            🛡️ Made for degens, by degens 💜
           </div>
           <h1 className="hero-title">
-            Transform Gambling Addiction into <span className="gradient-text">Earning Opportunities</span>
+            Keep Your Tilt in Check, <span className="gradient-text">Your Wins in Your Wallet</span>
           </h1>
           <p className="hero-subtitle">
-            TiltCheck's breakthrough AI technology detects gambling tilt in real-time and redirects users to legitimate earning platforms. Turn destructive gambling urges into productive income generation.
+            TiltCheck helps fellow degens stay disciplined. AI detects when you're tilting and redirects you to actual earning opportunities. Keep your balance unrinsed and your mental untilted.
           </p>
           <div className="hero-stats">
             <div className="stat">
-              <span className="stat-number">95%</span>
-              <span className="stat-label">Intervention Success Rate</span>
+              <span className="stat-number">🎯</span>
+              <span className="stat-label">Tilt Detection</span>
             </div>
             <div className="stat">
-              <span className="stat-number">$2.3M</span>
-              <span className="stat-label">Gambling Losses Prevented</span>
+              <span className="stat-number">💎</span>
+              <span className="stat-label">Alt Income Sources</span>
             </div>
             <div className="stat">
-              <span className="stat-number">15K+</span>
-              <span className="stat-label">Lives Changed</span>
+              <span className="stat-number">🛡️</span>
+              <span className="stat-label">Balance Protection</span>
             </div>
             <div className="stat">
-              <span className="stat-number">$847K</span>
-              <span className="stat-label">Alternative Income Generated</span>
+              <span className="stat-number">🧠</span>
+              <span className="stat-label">Mental Management</span>
             </div>
           </div>
           <div className="hero-actions">
             <button className="hero-cta primary" onClick={(e) => handleNavClick(e, 'extension')}>
-              🚀 Get Started Free
+              �️ Install Extension
             </button>
             <button className="hero-cta secondary" onClick={(e) => handleNavClick(e, 'demo')}>
-              🎯 View Live Demo
+              🎯 Try Demo
             </button>
           </div>
           <div className="hero-trust">
-            <span className="trust-text">Trusted by addiction specialists and featured in:</span>
+            <span className="trust-text">Built by degens who've been there 💜</span>
             <div className="trust-logos">
-              <span>🏥 Mayo Clinic Research</span>
-              <span>📰 TechCrunch</span>
-              <span>🎓 Stanford Psychology Dept</span>
+              <span>� Real experience</span>
+              <span>� Actual solutions</span>
+              <span>🤝 Community driven</span>
             </div>
           </div>
         </div>
@@ -113,8 +113,8 @@ function TiltCheckLanding() {
       <section id="features" className="features-section">
         <div className="container">
           <div className="section-header">
-            <h2>Revolutionary AI-Powered Intervention Technology</h2>
-            <p className="section-subtitle">TiltCheck uses advanced machine learning algorithms to detect gambling addiction patterns and redirect users to productive earning opportunities in real-time.</p>
+            <h2>How We Keep Your Tilt in Check</h2>
+            <p className="section-subtitle">Real degen tech for real degens. AI that actually understands when you're about to get your account rinsed and gives you better plays.</p>
           </div>
           <div className="features-grid">
             <div className="feature-card premium">
@@ -128,29 +128,29 @@ function TiltCheckLanding() {
             </div>
             <div className="feature-card premium">
               <div className="feature-icon">🛡️</div>
-              <h3>Gentle Intervention System</h3>
-              <p>Evidence-based psychological techniques combined with calming visuals and breathing exercises to break the gambling cycle without shame or judgment.</p>
+              <h3>Tilt Detection System</h3>
+              <p>AI that knows when you're about to chase losses and make stupid bets. No judgment, just real talk and better options when you need them most.</p>
               <div className="feature-stats">
-                <span className="stat">🧘 Meditation-based UX</span>
-                <span className="stat">💚 Trauma-informed design</span>
+                <span className="stat">🎯 Smart intervention</span>
+                <span className="stat">� Degen-friendly alerts</span>
               </div>
             </div>
             <div className="feature-card premium">
               <div className="feature-icon">💰</div>
-              <h3>Earning Platform Integration</h3>
-              <p>Seamless redirection to QualifyFirst earning platform where users complete surveys and tasks, earning $15-45/hour instead of losing money gambling.</p>
+              <h3>Actually Make Money Instead</h3>
+              <p>When you're about to tilt, we redirect you to legitimate earning opportunities. Surveys, tasks, real income instead of getting your balance rinsed.</p>
               <div className="feature-stats">
-                <span className="stat">💵 $15-45/hour earning potential</span>
-                <span className="stat">🎯 87% user preference</span>
+                <span className="stat">💵 Real income opportunities</span>
+                <span className="stat">🎯 Better than losing money</span>
               </div>
             </div>
             <div className="feature-card premium">
               <div className="feature-icon">📊</div>
-              <h3>Comprehensive Analytics</h3>
-              <p>Detailed progress tracking, intervention analytics, money saved calculations, and alternative income generation reports with privacy-first design.</p>
+              <h3>Track Your Wins</h3>
+              <p>See how much you didn't lose, how much you actually made, and keep your mental in check. No fake promises, just real progress.</p>
               <div className="feature-stats">
-                <span className="stat">📈 Real-time analytics</span>
-                <span className="stat">🔒 Privacy-protected data</span>
+                <span className="stat">📈 Real progress tracking</span>
+                <span className="stat">🔒 Your data stays yours</span>
               </div>
             </div>
           </div>
@@ -161,8 +161,8 @@ function TiltCheckLanding() {
       <section id="demo" className="demo-section">
         <div className="container">
           <div className="section-header">
-            <h2>Experience TiltCheck in Action</h2>
-            <p className="section-subtitle">See how our AI intervention system works with live demonstrations and interactive previews.</p>
+            <h2>See How We Keep You From Getting Rinsed</h2>
+            <p className="section-subtitle">Real demos, real protection. See how TiltCheck catches you before you blow your bankroll and gives you actual ways to make money instead.</p>
           </div>
           <div className="demo-grid">
             <div className="demo-card">
@@ -489,12 +489,12 @@ function TiltCheckLanding() {
             </div>
 
             <div className="resources">
-              <h3>Gambling Addiction Resources</h3>
+              <h3>Degen Community Resources</h3>
               <ul className="resource-list">
-                <li><a href="https://www.ncpgambling.org/" target="_blank" rel="noopener noreferrer">National Council on Problem Gambling</a></li>
-                <li><a href="https://www.gamblersanonymous.org/" target="_blank" rel="noopener noreferrer">Gamblers Anonymous</a></li>
-                <li><a href="https://www.samhsa.gov/" target="_blank" rel="noopener noreferrer">SAMHSA National Helpline</a></li>
-                <li><a href="tel:1-800-522-4700">Crisis Hotline: 1-800-522-4700</a></li>
+                <li><a href="https://github.com/jmenichole" target="_blank" rel="noopener noreferrer">Developer Portfolio</a></li>
+                <li><a href="http://localhost:3001" target="_blank" rel="noopener noreferrer">QualifyFirst Earning Platform</a></li>
+                <li><a href="#demo" onClick={(e) => handleNavClick(e, 'demo')}>Try the Demo</a></li>
+                <li><a href="chrome://extensions/" target="_blank">Install Extension</a></li>
               </ul>
             </div>
           </div>
@@ -535,17 +535,28 @@ function TiltCheckLanding() {
           </div>
           <div className="footer-bottom">
             <div className="footer-stats">
-              <span>✅ 15,000+ Users Protected</span>
-              <span>💰 $2.3M+ Losses Prevented</span>
-              <span>🚀 $847K+ Alternative Income Generated</span>
-              <span>🛡️ 95% Intervention Success Rate</span>
+              <span>🛡️ Keeping degens' tilt in check</span>
+              <span>� Real tools for real problems</span>
+              <span>🤝 Built by the community</span>
+              <span>� Made with love and experience</span>
             </div>
-            <p>&copy; 2024 TiltCheck. Professional AI-powered gambling addiction intervention system. Transforming destructive gambling into productive earning opportunities.</p>
+            <p>
+              <a 
+                href="https://github.com/jmenichole" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ color: '#8b5cf6', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'border-color 0.3s' }}
+                onMouseOver={(e) => e.target.style.borderBottomColor = '#8b5cf6'}
+                onMouseOut={(e) => e.target.style.borderBottomColor = 'transparent'}
+              >
+                Made for degens, by degens 💜
+              </a> - Keep your balance unrinsed, your tilt managed, and your wins in your wallet.
+            </p>
             <div className="footer-badges">
-              <span className="badge">🏥 Clinically Validated</span>
-              <span className="badge">🔒 Privacy Protected</span>
-              <span className="badge">⚡ Real-Time AI</span>
-              <span className="badge">💎 Premium Technology</span>
+              <span className="badge">� No BS promises</span>
+              <span className="badge">🔒 Your data is yours</span>
+              <span className="badge">⚡ Real-time protection</span>
+              <span className="badge">💎 Actual solutions</span>
             </div>
           </div>
         </div>
