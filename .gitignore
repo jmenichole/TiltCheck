@@ -35,3 +35,13 @@ bot-logs/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Sensitive environment files
+.env.personal
+.env.production
+.env.deployment
+.env.justthetip
+*.key
+*.pem
+auth.json
+credentials.json
