@@ -1,1 +1,515 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="TiltCheck - AI-powered responsible gambling prevention platform"/><link rel="apple-touch-icon" href="/logo192.png"/><link rel="manifest" href="/manifest.json"/><title>TiltCheck - Responsible Gaming Dashboard</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><script defer="defer" src="/static/js/main.1a96f2be.js"></script><link href="/static/css/main.ad53971a.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck - Enterprise Behavioral Monitoring Platform</title>
+    <meta name="description" content="Professional behavioral monitoring for responsible gaming. AI-powered tilt detection, smart interventions, and comprehensive analytics for operators and researchers.">
+    
+    <!-- Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Brand CSS -->
+    <link rel="stylesheet" href="./tiltcheck-brand.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/tiltcheck-favicon.svg">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--deep-night) 0%, var(--deep-night-light) 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            padding: 2rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .main-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 2rem;
+        }
+        
+        .tiltcheck-icon {
+            margin-right: 0.75rem;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--primary-blue), var(--intervention-teal));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tiltcheck-name {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            background: rgba(96, 165, 250, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+            font-weight: 300;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 20px 40px rgba(96, 165, 250, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .feature-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--cloud-grey);
+        }
+        
+        .platforms-section {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 4rem 0;
+            margin: 4rem 0;
+            border-radius: 20px;
+            border: 1px solid rgba(96, 165, 250, 0.1);
+        }
+        
+        .platform-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .platform-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .card-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .stats-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--cloud-grey);
+        }
+        
+        .status-indicator {
+            background: linear-gradient(45deg, var(--success-green), var(--intervention-teal));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(139, 92, 246, 0.1));
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            margin: 4rem 0;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary-blue), var(--dynamic-blue));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(96, 165, 250, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(96, 165, 250, 0.4);
+        }
+        
+        .cta-secondary {
+            background: linear-gradient(45deg, var(--intervention-teal), var(--soft-cyan));
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(96, 165, 250, 0.2);
+            margin-top: 4rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="main-logo">
+                    <span class="tiltcheck-icon">✓</span>
+                    <span class="tiltcheck-name">TiltCheck</span>
+                </a>
+                <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+                    <a href="demo.html" class="nav-link" style="color: var(--cloud-grey); text-decoration: none; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">Analytics Demo</a>
+                    <a href="justthetip-landing.html" class="nav-link" style="color: #8E24AA; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">⚖️ JustTheTip</a>
+                    <a href="qualifyfirst-landing.html" class="nav-link" style="color: #4FD1C5; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">📊 QualifyFirst</a>
+                    <a href="pitchdeck.html" class="nav-link" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1.5rem; border-radius: 6px; transition: all 0.2s;">💼 Investor Pitch</a>
+                    <div class="status-indicator">Live Platform</div>
+                </div>
+            </nav>
+            
+            <div class="hero">
+                <h1 style="color: white; margin-bottom: 1.5rem;">
+                    <span style="color: var(--intervention-teal);">Behavioral Monitoring</span><br>
+                    for Responsible Gaming
+                </h1>
+                <p style="color: var(--cloud-grey); font-size: 1.25rem; margin-bottom: 2.5rem;">
+                    Enterprise-grade AI-powered platform to detect, prevent, and intervene in problematic gambling behaviors. 
+                    Transform your platform with intelligent behavioral insights and proactive player protection.
+                </p>
+                
+                <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <div style="background: rgba(96, 165, 250, 0.1); border: 1px solid var(--sky-blue); border-radius: 12px; padding: 1.5rem; max-width: 220px; backdrop-filter: blur(10px);">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--sky-blue);">🎯</div>
+                        <div style="font-weight: 600; color: var(--sky-blue); margin-bottom: 0.5rem;">Real-Time Detection</div>
+                        <div style="font-size: 0.875rem; color: var(--cloud-grey);">Advanced AI algorithms monitor behavior patterns</div>
+                    </div>
+                    
+                    <div style="background: rgba(77, 208, 225, 0.1); border: 1px solid var(--intervention-teal); border-radius: 12px; padding: 1.5rem; max-width: 220px; backdrop-filter: blur(10px);">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--intervention-teal);">🛡️</div>
+                        <div style="font-weight: 600; color: var(--intervention-teal); margin-bottom: 0.5rem;">Smart Interventions</div>
+                        <div style="font-size: 0.875rem; color: var(--cloud-grey);">Personalized interventions before problems escalate</div>
+                    </div>
+                    
+                    <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid var(--deep-purple); border-radius: 12px; padding: 1.5rem; max-width: 220px; backdrop-filter: blur(10px);">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--deep-purple);">📊</div>
+                        <div style="font-weight: 600; color: var(--deep-purple); margin-bottom: 0.5rem;">Enterprise Analytics</div>
+                        <div style="font-size: 0.875rem; color: var(--cloud-grey);">Comprehensive dashboards and reporting</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Integrated Platform Ecosystem -->
+        <section class="platforms-section">
+            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Complete Ecosystem</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--cloud-grey); max-width: 600px; margin: 0 auto;">
+                Three integrated platforms working together to create the most comprehensive responsible gaming solution available.
+            </p>
+            
+            <div class="platform-cards">
+                <a href="/" class="platform-card" style="background: linear-gradient(135deg, #1A2E47 0%, #60A5FA 50%, #8B5CF6 100%); border-color: var(--primary-blue);">
+                    <span class="card-icon" style="color: white;">🛡️</span>
+                    <div style="color: white;">
+                        <div class="card-title" style="color: white;">TiltCheck - Monitoring Core</div>
+                        <div class="card-description">AI-powered behavioral analysis with real-time tilt detection and personalized intervention strategies for responsible gaming.</div>
+                    </div>
+                </a>
+                
+                <a href="justthetip-landing.html" class="platform-card" style="background: linear-gradient(135deg, #1A2E47 0%, #8E24AA 50%, #6A1B9A 100%); border-color: #8E24AA;">
+                    <span class="card-icon" style="color: white;">⚖️</span>
+                    <div style="color: white;">
+                        <div class="card-title" style="color: white;">JustTheTip - Fairness Verification</div>
+                        <div class="card-description">Blockchain-powered transparency and fairness verification system ensuring provably fair gaming experiences.</div>
+                    </div>
+                </a>
+                
+                <a href="qualifyfirst-landing.html" class="platform-card" style="background: linear-gradient(135deg, #1A2E47 0%, #4FD1C5 50%, #6B9BCB 100%); border-color: #4FD1C5;">
+                    <span class="card-icon" style="color: white;">📊</span>
+                    <div style="color: white;">
+                        <div class="card-title" style="color: white;">QualifyFirst - Earning Platform</div>
+                        <div class="card-description">Redirect problematic behavior to positive earning opportunities through surveys and skill-based activities.</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Core Features -->
+        <section class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--primary-blue);">🎯</div>
+                <h3 class="feature-title">Advanced Tilt Detection</h3>
+                <p class="feature-description">
+                    Machine learning algorithms analyze betting patterns, timing, and behavioral indicators to identify problematic gambling behaviors in real-time.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--intervention-teal);">🛡️</div>
+                <h3 class="feature-title">Smart Interventions</h3>
+                <p class="feature-description">
+                    Personalized intervention strategies including break suggestions, vault reminders, and positive activity redirects tailored to individual players.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--deep-purple);">📊</div>
+                <h3 class="feature-title">Enterprise Analytics</h3>
+                <p class="feature-description">
+                    Comprehensive dashboards providing operators with actionable insights on player behavior, intervention effectiveness, and platform health.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--success-green);">🔧</div>
+                <h3 class="feature-title">API Integration</h3>
+                <p class="feature-description">
+                    RESTful API and webhook support for seamless integration with existing casino platforms and gaming operators.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--warning-orange);">⚖️</div>
+                <h3 class="feature-title">Fairness Verification</h3>
+                <p class="feature-description">
+                    Blockchain-powered verification system ensuring transparency and building player trust through provably fair gaming.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--soft-cyan);">🎮</div>
+                <h3 class="feature-title">Multi-Game Support</h3>
+                <p class="feature-description">
+                    Compatible with slots, table games, originals, and custom gaming formats with configurable monitoring parameters.
+                </p>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats-section">
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Platform Impact</h2>
+            <p style="font-size: 1.2rem; color: var(--cloud-grey);">Proven results in responsible gaming intervention</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Tilt Detection Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">67%</div>
+                    <div class="stat-label">Intervention Success Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Continuous Monitoring</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Integrated Platforms</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Ready to Transform Responsible Gaming?</h2>
+            <p style="font-size: 1.2rem; color: var(--cloud-grey); max-width: 600px; margin: 0 auto;">
+                Join the next generation of responsible gaming platforms with AI-powered behavioral monitoring and intervention.
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="pitchdeck.html" class="cta-button">💼 View Investor Pitch</a>
+                <a href="demo.html" class="cta-button cta-secondary">🚀 Live Demo</a>
+                <a href="mailto:support@tiltcheck.io" class="cta-button" style="background: linear-gradient(45deg, var(--success-green), var(--intervention-teal));">📧 Contact Us</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="https://github.com/jmenichole/TiltCheck">GitHub</a>
+                <a href="https://github.com/jmenichole/TiltCheck/blob/main/README.md">Documentation</a>
+                <a href="https://github.com/jmenichole/TiltCheck/blob/main/DEPLOYMENT_GUIDE.md">Deployment Guide</a>
+            </div>
+            <p>&copy; 2025 TiltCheck + JustTheTip + QualifyFirst Unified System | Built for Responsible Gaming | Open Source MIT License</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">🎯 Enterprise-Ready Platform | 💰 Multi-Revenue Streams | 🛡️ Comprehensive Player Protection</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Animate feature cards on scroll
+        document.querySelectorAll('.feature-card, .platform-card, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
