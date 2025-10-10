@@ -4,9 +4,22 @@ import './TiltCheckLanding.css';
 function TiltCheckLanding() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState('features');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
+  }, []);
+
+  // Close mobile menu on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Smooth scroll function for anchor links
@@ -22,6 +35,12 @@ function TiltCheckLanding() {
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
     scrollToSection(sectionId);
+    setIsMobileMenuOpen(false); // Close mobile menu after navigation
+  };
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   // Handle demo link clicks
@@ -51,7 +70,22 @@ function TiltCheckLanding() {
               <span className="logo">🛡️</span>
               <span className="brand-name">TiltCheck</span>
             </div>
-            <div className="nav-links">
+            
+            {/* Mobile Menu Button */}
+            <button 
+              className="mobile-menu-button"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle navigation menu"
+            >
+              <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+            
+            {/* Desktop & Mobile Navigation */}
+            <div className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
               <a href="#features" onClick={(e) => handleNavClick(e, 'features')}>How It Works</a>
               <a href="#demo" onClick={(e) => handleNavClick(e, 'demo')}>Live Demo</a>
               <a href="#extension" onClick={(e) => handleNavClick(e, 'extension')}>Get Extension</a>
