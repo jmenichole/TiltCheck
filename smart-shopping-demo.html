@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck Smart Shopping Assistant Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 { font-size: 2.5rem; color: #10b981; margin-bottom: 1rem; }
+        .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .panel { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; }
+        .balance-display { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 8px; padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; }
+        .balance-amount { font-size: 2rem; font-weight: bold; color: white; margin-bottom: 0.5rem; }
+        .shopping-item { background: #0f172a; border: 1px solid #475569; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .notification { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: #10b981; color: white; }
+        @media (max-width: 768px) { .demo-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Smart Shopping Assistant Demo</h1>
+            <p>See how TiltCheck helps you convert gambling wins into real-life improvements</p>
+        </div>
+        
+        <div class="demo-grid">
+            <div class="panel">
+                <h2 style="margin-bottom: 1rem;">💰 Your Current Balance</h2>
+                <div class="balance-display">
+                    <div class="balance-amount" id="balance">$743.50</div>
+                    <div style="color: #d1fae5;">Up $247 this session! 🎉</div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2 style="margin-bottom: 1rem;">🗒️ Your Shopping List</h2>
+                <div class="shopping-item">
+                    <div>
+                        <div style="font-weight: 600;">Trash Bags (Hefty 30-gal)</div>
+                        <div style="color: #10b981; font-size: 0.9rem;">$24.99 - Amazon</div>
+                    </div>
+                    <div style="background: #dc2626; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">High</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notification">
+            <h3 style="color: white; margin-bottom: 0.5rem;">🎉 Smart Shopping Alert!</h3>
+            <p style="color: #dbeafe; margin-bottom: 1rem;">Great session! Your balance ($743.50) is above your threshold ($500). You can afford these essential items:</p>
+            <button class="btn btn-primary" onclick="alert('🛒 Auto-Purchase Complete! Trash Bags ordered from Amazon. Appointment scheduled for car service.')">Auto-Purchase Essentials ($105)</button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" class="btn" style="background: #374151; color: #e2e8f0; text-decoration: none;">← Back to TiltCheck Platform</a>
+        </div>
+    </div>
+</body>
+</html>
