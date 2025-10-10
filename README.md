@@ -1,6 +1,6 @@
 # TiltCheck 🎯
 
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![React Version](https://img.shields.io/badge/react-%5E18.2.0-blue.svg)](https://reactjs.org/)
 [![Status](https://img.shields.io/badge/status-commercial-blue.svg)](https://tiltcheck.io)
 
@@ -11,6 +11,12 @@ TiltCheck is a comprehensive real-time monitoring system designed to identify, t
 **Now available as a commercial service with enterprise-grade support and premium Discord bot integration.**
 
 ![TiltCheck Dashboard](https://via.placeholder.com/800x400/0f172a/60a5fa?text=TiltCheck+Dashboard)
+
+## 📂 Repository Organization
+
+This repository has been reorganized for better maintainability. See:
+- **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** - Complete directory structure
+- **[NAVIGATION.md](NAVIGATION.md)** - Quick navigation guide to find files
 
 ## 🚀 Features
 

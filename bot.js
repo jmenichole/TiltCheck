@@ -1,64 +1,53 @@
-require('dotenv').config(); // Load environment variables from .env file
+// TiltCheck Discord Bot - Main Entry Point
+// This is a simple entry point that loads the main bot from discord-bot/bot.js
+
+require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
+// Initialize Discord client with proper intents for v14
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
+});
 
-const { handleGeneralCommand } = require('./commands/general');
-const { handleAdminCommand } = require('./commands/admin');
-const { handleNonAdminCommand } = require('./commands/nonAdmin');
-
-// Ensure the bot is logged in
+// Bot ready event
 client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`✅ TiltCheck Bot logged in as ${client.user.tag}!`);
+    console.log(`📊 Monitoring ${client.guilds.cache.size} server(s)`);
 });
 
-client.on('messageReactionAdd', async (reaction, user) => {
-    // ...existing code...
-
-    try {
-        const message = reaction.message;
-        const channel = message.channel;
-
-        if (channel.name === 'showoff-your-hits' && message.author.id !== user.id) {
-            const respectToAdd = 5; // +5 respect per reaction
-            await addRespect(message.author.id, respectToAdd, message.guild); // Add respect to the message author
-            await channel.send(`${message.author.username} earned +${respectToAdd} respect for a reaction on their message!`);
-        }
-    } catch (error) {
-        console.error('Error updating respect:', error);
-        await reaction.message.channel.send(`Something went wrong: ${error.message}`);
-    }
-
-    // ...existing code...
-});
-
+// Simple message handler for basic commands
 client.on('messageCreate', (message) => {
+    // Ignore messages from bots
     if (message.author.bot) return;
 
-    const args = message.content.trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if (command.startsWith('!')) {
-        if (['!kick', '!ban', '!clear', '!mute'].includes(command)) {
-            handleAdminCommand(command, args, message);
-        } else {
-            handleGeneralCommand(command, args, message);
-        }
+    // Basic commands
+    if (message.content === '!ping') {
+        message.reply('🏓 Pong!');
+    } else if (message.content === '!hello') {
+        message.reply('👋 Hello there!');
+    } else if (message.content === '!help') {
+        message.reply('📋 Available commands: !ping, !hello, !help\n\nFor the full TiltCheck bot, use the discord-bot/bot.js implementation.');
     }
 });
 
-client.on('message', (message) => {
-    if (message.author.bot) return;
-
-    const args = message.content.trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if (command.startsWith('!')) {
-        handleNonAdminCommand(command, args, message);
-    }
+// Error handling
+client.on('error', (error) => {
+    console.error('❌ Discord client error:', error);
 });
 
-// Log in the bot
-client.login(process.env.DISCORD_BOT_TOKEN).catch(err => {
-    console.error('Failed to login:', err);
+// Login to Discord
+const token = process.env.DISCORD_BOT_TOKEN;
+if (!token) {
+    console.error('❌ Error: DISCORD_BOT_TOKEN not found in environment variables');
+    console.log('💡 Please set your Discord bot token in .env file');
+    process.exit(1);
+}
+
+client.login(token).catch(error => {
+    console.error('❌ Failed to login to Discord:', error.message);
+    process.exit(1);
 });
