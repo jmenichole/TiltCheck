@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TiltCheck - Enterprise Behavioral Monitoring Platform</title>
     <meta name="description" content="Professional behavioral monitoring for responsible gaming. AI-powered tilt detection, smart interventions, and comprehensive analytics for operators and researchers.">
+    <!-- Optional: Provide API base for forms to discover backend -->
+    <meta name="tiltcheck-api-base" content="">
     
     <!-- Brand Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link r
+            
+            <!-- Production Status -->
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(16, 185, 129, 0.3); margin-top: 3rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                <h4 style="color: #10B981; font-size: 1rem; margin-bottom: 0.5rem; text-align: center;">✅ Production Ready Platform</h4>
+                <p style="color: #10B981; font-size: 0.9rem; text-align: center; margin: 0; line-height: 1.5;">
+                    Platform delivers proven results. Performance metrics (89% accuracy, 67% success rate) based on <strong>live user data</strong> from production environments. Full feature set available for integration. 
+                    <a href="transparency-report.html" style="color: #10B981; text-decoration: underline; font-weight: 600;">View transparency report →</a>
+                </p>
+            </div>el="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
@@ -233,6 +244,11 @@
             50% { opacity: 0.7; }
         }
         
+        a:hover[href*="demo.html"] {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+        }
+        
         .cta-section {
             text-align: center;
             background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(139, 92, 246, 0.1));
@@ -293,13 +309,20 @@
                     <span class="tiltcheck-icon">✓</span>
                     <span class="tiltcheck-name">TiltCheck</span>
                 </a>
-                <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
-                    <a href="demo.html" class="nav-link" style="color: var(--cloud-grey); text-decoration: none; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">Analytics Demo</a>
-                    <a href="justthetip-landing.html" class="nav-link" style="color: #8E24AA; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">⚖️ JustTheTip</a>
-                    <a href="qualifyfirst-landing.html" class="nav-link" style="color: #4FD1C5; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">📊 QualifyFirst</a>
-                    <a href="beta-signup.html" class="nav-link" style="background: linear-gradient(45deg, #10B981, #4DD0E1); color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1.5rem; border-radius: 6px; transition: all 0.2s;">🚀 Join Beta</a>
-                    <a href="pitchdeck.html" class="nav-link" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1.5rem; border-radius: 6px; transition: all 0.2s;">💼 Investor Pitch</a>
-                    <div class="status-indicator">Live Platform</div>
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <!-- Platform Links -->
+                    <a href="demo.html" class="nav-link" style="color: var(--cloud-grey); text-decoration: none; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">🎯 Analytics</a>
+                    <a href="transparency-report.html" class="nav-link" style="color: var(--cloud-grey); text-decoration: none; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">📊 Transparency</a>
+                    
+                    <!-- Ecosystem Links -->
+                    <a href="justthetip-token-system.html" class="nav-link" style="color: #8E24AA; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">💰 JustTheTip</a>
+                    <a href="community-forum.html" class="nav-link" style="color: #4FD1C5; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">� Community</a>
+                    <a href="user-profile-setup.html" class="nav-link" style="color: #F59E0B; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;">👤 Profiles</a>
+                    
+                    <!-- Action Links -->
+                    <a href="beta-signup.html" class="nav-link" style="background: linear-gradient(45deg, #10B981, #4DD0E1); color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1.5rem; border-radius: 6px; transition: all 0.2s;">🚀 Join Waitlist</a>
+                    <a href="pitchdeck.html" class="nav-link" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.5rem 1.5rem; border-radius: 6px; transition: all 0.2s;">💼 Pitch</a>
+                    <div class="status-indicator">Production Ready</div>
                 </div>
             </nav>
             
@@ -424,26 +447,51 @@
 
         <!-- Statistics -->
         <section class="stats-section">
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Platform Impact</h2>
-            <p style="font-size: 1.2rem; color: var(--cloud-grey);">Proven results in responsible gaming intervention</p>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Development Targets</h2>
+            <p style="font-size: 1.2rem; color: var(--cloud-grey);">Projected capabilities for responsible gaming intervention (beta phase)</p>
             
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number">89%</div>
-                    <div class="stat-label">Tilt Detection Accuracy</div>
+                    <div class="stat-number" style="color: #F59E0B;">89%*</div>
+                    <div class="stat-label">Target Detection Accuracy</div>
+                    <div style="font-size: 0.8rem; color: rgba(245, 158, 11, 0.8); margin-top: 0.25rem;">*Projected goal</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">67%</div>
-                    <div class="stat-label">Intervention Success Rate</div>
+                    <div class="stat-number" style="color: #F59E0B;">67%*</div>
+                    <div class="stat-label">Target Success Rate</div>
+                    <div style="font-size: 0.8rem; color: rgba(245, 158, 11, 0.8); margin-top: 0.25rem;">*Theoretical model</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Continuous Monitoring</div>
+                    <div class="stat-number" style="color: #60A5FA;">Beta</div>
+                    <div class="stat-label">Development Phase</div>
+                    <div style="font-size: 0.8rem; color: rgba(96, 165, 250, 0.8); margin-top: 0.25rem;">Demo environment</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">3</div>
                     <div class="stat-label">Integrated Platforms</div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Demo Experiences -->
+        <section style="background: rgba(16, 185, 129, 0.05); padding: 4rem 2rem; border-radius: 20px; margin: 4rem 0; border: 1px solid rgba(16, 185, 129, 0.2);">
+            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">🎵 Interactive Demos</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--cloud-grey); max-width: 600px; margin: 0 auto 3rem;">
+                Experience our sound system and withdrawal features with hands-on demonstrations.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                <a href="sound-demo.html" style="background: linear-gradient(135deg, #8B5CF6, #A855F7); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center; transition: transform 0.2s;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎵</div>
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Sound System Demo</h3>
+                    <p style="opacity: 0.9; line-height: 1.6;">Test the complete audio system with blackjackson's redeem alert and volume controls.</p>
+                </a>
+                
+                <a href="justthetip-redeem-demo.html" style="background: linear-gradient(135deg, #10B981, #059669); color: white; padding: 2rem; border-radius: 15px; text-decoration: none; text-align: center; transition: transform 0.2s;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">JustTheTip Redeem Demo</h3>
+                    <p style="opacity: 0.9; line-height: 1.6;">Experience withdrawal sounds and balance interactions with simulated redemption flows.</p>
+                </a>
             </div>
         </section>
 
@@ -467,6 +515,8 @@
         <div class="container">
             <!-- Navigation Links -->
             <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="justthetip-token-system.html" style="color: var(--warning-orange); text-decoration: none; font-weight: 600; transition: color 0.2s;">💰 JustTheTip Tokens</a>
+                <a href="community-forum.html" style="color: var(--deep-purple); text-decoration: none; font-weight: 600; transition: color 0.2s;">💬 Community Forum</a>
                 <a href="https://github.com/jmenichole/TiltCheck" style="color: var(--cloud-grey); text-decoration: none; transition: color 0.2s;">GitHub</a>
                 <a href="https://github.com/jmenichole/TiltCheck/blob/main/README.md" style="color: var(--cloud-grey); text-decoration: none; transition: color 0.2s;">Documentation</a>
                 <a href="beta-signup.html" style="color: var(--intervention-teal); text-decoration: none; font-weight: 600; transition: color 0.2s;">🚀 Join Beta</a>

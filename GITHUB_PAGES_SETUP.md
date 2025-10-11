@@ -54,7 +54,7 @@ After merging this PR, the deployment will automatically trigger. You can also:
 
 Your TiltCheck landing page will be available at:
 
-**https://jmenichole.github.io/TiltCheck/**
+**https://tiltcheck.it.com/**
 
 ## Troubleshooting
 
@@ -74,7 +74,7 @@ Your TiltCheck landing page will be available at:
 
 - Open browser console (F12) to check for JavaScript errors
 - Verify the build completed successfully in the workflow logs
-- Check that the `homepage` field in `package.json` matches: `"homepage": "https://jmenichole.github.io/TiltCheck/"`
+- Check that the `homepage` field in `package.json` matches: `"homepage": "https://tiltcheck.it.com/"`
 
 ### Need to Redeploy
 

@@ -1,0 +1,65 @@
+<!-- TiltCheck Universal Navigation Component -->
+<nav class="tiltcheck-universal-nav">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="index.html">
+                <span class="nav-icon">✓</span>
+                <span>TiltCheck</span>
+            </a>
+        </div>
+        
+        <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+        
+        <div class="nav-links" id="navLinks">
+            <div class="nav-group">
+                <span class="nav-group-title">Platform</span>
+                <a href="index.html">Dashboard</a>
+                <a href="transparency-report.html">Transparency</a>
+                <a href="pitchdeck.html">Investor Pitch</a>
+                <a href="demo.html">Analytics Demo</a>
+            </div>
+            
+            <div class="nav-group">
+                <span class="nav-group-title">Community</span>
+                <a href="community-forum.html">Forum</a>
+                <a href="user-profile-setup.html">User Profiles</a>
+                <a href="degentrust-score.html">Trust System</a>
+            </div>
+            
+            <div class="nav-group">
+                <span class="nav-group-title">JustTheTip</span>
+                <a href="justthetip-token-system.html">Token System</a>
+                <a href="justthetip-redeem-demo.html">Redeem Demo</a>
+                <a href="sound-demo.html">Sound Integration</a>
+            </div>
+            
+            <div class="nav-group">
+                <span class="nav-group-title">Demos</span>
+                <a href="simple-demo.html">Casino Demo</a>
+                <a href="overlay-demo.html">Overlay Demo</a>
+                <a href="discord-integration-demo.html">Discord Demo</a>
+            </div>
+        </div>
+        
+        <div class="nav-cta">
+            <a href="beta-signup.html" class="nav-cta-button">Join Waitlist</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+function toggleMobileNav() {
+    const navLinks = document.getElementById('navLinks');
+    navLinks.classList.toggle('show');
+}
+
+// Close mobile nav when clicking outside
+document.addEventListener('click', function(event) {
+    const nav = document.querySelector('.tiltcheck-universal-nav');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (!nav.contains(event.target)) {
+        navLinks.classList.remove('show');
+    }
+});
+</script>

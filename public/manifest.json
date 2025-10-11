@@ -15,7 +15,13 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "TiltCheck Dashboard"
+    "default_title": "TiltCheck Dashboard",
+    "default_icon": {
+      "16": "tiltchecklogo.png",
+      "32": "tiltchecklogo.png",
+      "48": "tiltchecklogo.png",
+      "128": "tiltchecklogo.png"
+    }
   },
   "content_scripts": [
     {
@@ -33,5 +39,11 @@
       "resources": ["overlay.html", "overlay.js", "overlay.css"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "icons": {
+    "16": "tiltchecklogo.png",
+    "32": "tiltchecklogo.png",
+    "48": "tiltchecklogo.png",
+    "128": "tiltchecklogo.png"
+  }
 }

@@ -309,10 +309,14 @@
             
             <div id="successMessage" class="success-message">
                 ✅ Success! You've been added to the beta waitlist. We'll notify you when TiltCheck is ready for testing!
+                <br><br>
+                <a href="user-profile-setup.html" style="color: white; text-decoration: underline;">
+                    👤 Create your community profile to join discussions →
+                </a>
             </div>
             
             <div id="errorMessage" class="error-message">
-                ❌ Something went wrong. Please try again or contact support@tiltcheck.io
+                ❌ Something went wrong. Please try again. If the problem persists, please try again later.
             </div>
         </form>
         
@@ -342,8 +346,19 @@
             const data = Object.fromEntries(formData);
             
             try {
+                // Determine API base
+                const metaApiBase = (document.querySelector('meta[name="tiltcheck-api-base"]')?.content || '').trim();
+                let apiBase = window.TILTCHECK_API_BASE || metaApiBase || '';
+                if (!apiBase) {
+                    // If opened as a file or different origin, default to local dev server
+                    if (location.origin.startsWith('file:')) {
+                        apiBase = 'http://localhost:3000';
+                    }
+                }
+                const endpoint = (apiBase ? apiBase.replace(/\/$/, '') : '') + '/api/beta-signup';
+
                 // Send to backend
-                const response = await fetch('/api/beta-signup', {
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -363,10 +378,16 @@
                         });
                     }
                 } else {
-                    throw new Error('Network response was not ok');
+                    let errorText = 'Network response was not ok';
+                    try {
+                        const errJson = await response.json();
+                        if (errJson && errJson.message) errorText = errJson.message;
+                    } catch {}
+                    throw new Error(errorText);
                 }
             } catch (error) {
                 console.error('Error:', error);
+                errorMessage.textContent = `❌ ${error.message || 'Something went wrong.'} Please try again later.`;
                 errorMessage.style.display = 'block';
             } finally {
                 // Re-enable button

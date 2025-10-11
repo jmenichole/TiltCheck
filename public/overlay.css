@@ -21,8 +21,6 @@
 
 /* Header with logo and controls */
 .tiltcheck-overlay-header {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
   padding: 16px 12px;
   background: rgba(26, 26, 46, 0.95);
@@ -32,29 +30,25 @@
 }
 
 .tiltcheck-overlay-logo {
-  display: flex;
-  align-items: center;
   gap: 8px;
   white-space: nowrap;
 }
 
+
 .tiltcheck-overlay-logo-icon {
   width: 32px;
   height: 32px;
-  background: linear-gradient(45deg, #ff00ff, #8000ff);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
+  border-radius: 6px;
   flex-shrink: 0;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .tiltcheck-overlay-logo-text {
   color: white;
   font-weight: bold;
-  font-size: 16px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -81,9 +75,7 @@
 
 /* Minimized state - only show activity indicator */
 .tiltcheck-overlay-minimized {
-  display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 20px 0;
   height: 100%;
 }
@@ -92,9 +84,6 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-bottom: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -143,8 +132,6 @@
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 12px;
-  display: flex;
-  align-items: center;
   gap: 8px;
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
@@ -215,7 +202,6 @@
 .tiltcheck-action-button {
   width: 100%;
   padding: 12px;
-  background: linear-gradient(45deg, #ff00ff, #8000ff);
   color: white;
   border: none;
   border-radius: 8px;
@@ -302,7 +288,12 @@
     width: 48px;
   }
   
-  .tiltcheck-overlay-logo-icon {
+  
+.tiltcheck-overlay-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  flex-shrink: 0;
     width: 24px;
     height: 24px;
     font-size: 12px;

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiltCheck Sound System Demo - Featuring blackjackson's Redeem Alert</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F172A, #1E293B);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #60A5FA, #A855F7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #94A3B8;
+            margin-bottom: 30px;
+        }
+        
+        .sound-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .sound-button {
+            background: linear-gradient(45deg, #6366F1, #8B5CF6);
+            border: none;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .sound-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .sound-button:active {
+            transform: translateY(0);
+        }
+        
+        .sound-button:disabled {
+            background: #374151;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .redeem-button {
+            background: linear-gradient(45deg, #10B981, #059669);
+            grid-column: span 2;
+        }
+        
+        .redeem-button:hover {
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .toggle-button {
+            background: #374151;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-button.active {
+            background: #7C3AED;
+        }
+        
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 4px solid #10B981;
+        }
+        
+        .credits {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .credits h3 {
+            margin-bottom: 10px;
+            color: #10B981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 TiltCheck Sound System</h1>
+        <p class="subtitle">Test the epic audio system featuring blackjackson's legendary redeem alert!</p>
+        
+        <div class="controls">
+            <button id="toggleSound" class="toggle-button active" onclick="toggleSounds()">
+                🔊 Sounds Enabled
+            </button>
+            <button class="toggle-button" onclick="testAllSounds()">
+                🎵 Test All Sounds
+            </button>
+        </div>
+        
+        <div class="status" id="status">
+            🎉 Ready to play! Click any button below to test the sounds.
+        </div>
+        
+        <div class="sound-grid">
+            <button class="sound-button redeem-button" onclick="playRedeemAlert()">
+                🎉 REDEEM ALERT<br>
+                <small>by blackjackson</small>
+            </button>
+            
+            <button class="sound-button" onclick="playTiltWarning()">
+                ⚠️ Tilt Warning
+            </button>
+            
+            <button class="sound-button" onclick="playInterventionSuccess()">
+                ✅ Success Sound
+            </button>
+            
+            <button class="sound-button" onclick="playNotification()">
+                🔔 Notification
+            </button>
+        </div>
+        
+        <div class="credits">
+            <h3>🎉 Special Thanks</h3>
+            <p>The <strong>redeem alert sound</strong> was created by Discord user <strong style="color: #A855F7;">blackjackson</strong> as a degen contribution to the TiltCheck project!</p>
+            <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">
+                Made for degens by degens with a heart ❤️
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let soundEnabled = true;
+        let audioContext = null;
+        let audioBuffers = new Map();
+        
+        const sounds = {
+            redeemAlert: '/audio/redeem-alert.wav',
+            tiltWarning: '/audio/tilt-warning.wav',
+            interventionSuccess: '/audio/intervention-success.wav',
+            notification: '/audio/notification.wav'
+        };
+        
+        // Initialize audio context on first user interaction
+        function initializeAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                preloadSounds();
+                updateStatus('🔊 Audio system initialized!');
+            }
+        }
+        
+        async function preloadSounds() {
+            try {
+                for (const [name, path] of Object.entries(sounds)) {
+                    await loadSound(name, path);
+                }
+                updateStatus('✅ All sounds loaded successfully!');
+                console.log('🎉 Special thanks to blackjackson for the redeem alert sound!');
+            } catch (error) {
+                console.warn('Failed to preload some sounds:', error);
+                updateStatus('⚠️ Some sounds may not be available');
+            }
+        }
+        
+        async function loadSound(name, path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) {
+                    throw new Error(`Failed to load sound: ${path}`);
+                }
+                
+                const arrayBuffer = await response.arrayBuffer();
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                audioBuffers.set(name, audioBuffer);
+                
+                console.log(`✅ Loaded sound: ${name}`);
+            } catch (error) {
+                console.warn(`Failed to load sound ${name}:`, error);
+                // Store path for HTML5 Audio fallback
+                audioBuffers.set(name, path);
+            }
+        }
+        
+        function playSound(soundName, volume = 0.7) {
+            if (!soundEnabled) {
+                updateStatus('🔇 Sounds are disabled');
+                return;
+            }
+            
+            initializeAudio();
+            
+            const buffer = audioBuffers.get(soundName);
+            if (!buffer) {
+                updateStatus(`❌ Sound not loaded: ${soundName}`);
+                return;
+            }
+            
+            try {
+                if (typeof buffer === 'string') {
+                    // Fallback to HTML5 Audio
+                    const audio = new Audio(buffer);
+                    audio.volume = volume;
+                    audio.play().catch(e => console.warn('HTML5 audio play failed:', e));
+                } else {
+                    // Use Web Audio API
+                    const source = audioContext.createBufferSource();
+                    const gainNode = audioContext.createGain();
+                    
+                    source.buffer = buffer;
+                    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                    
+                    source.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    source.start(0);
+                }
+            } catch (error) {
+                console.warn('Error playing sound:', error);
+            }
+        }
+        
+        function playRedeemAlert() {
+            updateStatus('🎉 HECK YEAH! Playing blackjackson\'s epic redeem alert!');
+            playSound('redeemAlert', 0.8);
+        }
+        
+        function playTiltWarning() {
+            updateStatus('⚠️ Playing tilt warning sound');
+            playSound('tiltWarning', 0.6);
+        }
+        
+        function playInterventionSuccess() {
+            updateStatus('✅ Playing intervention success sound');
+            playSound('interventionSuccess', 0.7);
+        }
+        
+        function playNotification() {
+            updateStatus('🔔 Playing notification sound');
+            playSound('notification', 0.5);
+        }
+        
+        function testAllSounds() {
+            if (!soundEnabled) {
+                updateStatus('🔇 Enable sounds first to test');
+                return;
+            }
+            
+            updateStatus('🎵 Testing all sounds...');
+            
+            setTimeout(() => playRedeemAlert(), 0);
+            setTimeout(() => playTiltWarning(), 1200);
+            setTimeout(() => playInterventionSuccess(), 2400);
+            setTimeout(() => playNotification(), 3600);
+            
+            setTimeout(() => {
+                updateStatus('🎉 Sound test complete! Thanks again to blackjackson!');
+            }, 5000);
+        }
+        
+        function toggleSounds() {
+            soundEnabled = !soundEnabled;
+            const button = document.getElementById('toggleSound');
+            
+            if (soundEnabled) {
+                button.textContent = '🔊 Sounds Enabled';
+                button.classList.add('active');
+                updateStatus('🔊 Sounds enabled');
+            } else {
+                button.textContent = '🔇 Sounds Disabled';
+                button.classList.remove('active');
+                updateStatus('🔇 Sounds disabled');
+            }
+            
+            // Update button states
+            const soundButtons = document.querySelectorAll('.sound-button');
+            soundButtons.forEach(btn => btn.disabled = !soundEnabled);
+        }
+        
+        function updateStatus(message) {
+            document.getElementById('status').innerHTML = message;
+        }
+        
+        // Initialize on page load
+        document.addEventListener('click', initializeAudio, { once: true });
+        document.addEventListener('keydown', initializeAudio, { once: true });
+    </script>
+</body>
+</html>
