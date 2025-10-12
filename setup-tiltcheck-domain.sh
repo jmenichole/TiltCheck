@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Copyright (c) 2024-2025 JME (jmenichole)
+# All Rights Reserved
+# 
+# PROPRIETARY AND CONFIDENTIAL
+# Unauthorized copying of this file, via any medium, is strictly prohibited.
+# 
+# This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+# For licensing information, see LICENSE file in the root directory.
+#
+
 
 # 🚀 TiltCheck.it.com - Domain Deployment & Node Verification Script
 # Fixes connection issues, adds verified node confirmations, and optimizes speed
