@@ -1,0 +1,587 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+  
+  PROPRIETARY AND CONFIDENTIAL
+  Unauthorized copying of this file, via any medium, is strictly prohibited.
+  
+  This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+  For licensing information, see LICENSE file in the root directory.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Guidelines | TiltCheck Forum</title>
+    <meta name="description" content="TiltCheck community guidelines for responsible participation in our forum discussions and water cooler conversations.">
+    
+    <!-- Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #60A5FA;
+            --secondary-cyan: #4DD0E1;
+            --deep-purple: #8B5CF6;
+            --intervention-teal: #4FD1C5;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --danger-red: #EF4444;
+            --cloud-grey: #B7C3D3;
+            --dark-slate: #1E293B;
+            --darker-slate: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker-slate) 0%, var(--dark-slate) 50%, #334155 100%);
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--cloud-grey);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guideline-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .guideline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .guideline-description {
+            color: var(--cloud-grey);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(77, 208, 225, 0.1));
+            border: 1px solid var(--success-green);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(45deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.1));
+            border: 1px solid var(--warning-orange);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .nft-benefits {
+            background: linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(96, 165, 250, 0.1));
+            border: 1px solid var(--deep-purple);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .benefit-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--deep-purple));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .toc {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .toc-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .content {
+                padding: 2rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📋</div>
+            <h1 class="title">Community Guidelines</h1>
+            <p class="subtitle">
+                Building a respectful, supportive community for responsible gaming discussions
+            </p>
+        </div>
+
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3 class="toc-title">📑 Quick Navigation</h3>
+                <ul class="toc-list">
+                    <li class="toc-item"><a href="#core-principles" class="toc-link">1. Core Principles</a></li>
+                    <li class="toc-item"><a href="#posting-guidelines" class="toc-link">2. Posting Guidelines</a></li>
+                    <li class="toc-item"><a href="#responsible-gaming" class="toc-link">3. Responsible Gaming Focus</a></li>
+                    <li class="toc-item"><a href="#verification-benefits" class="toc-link">4. NFT Verification Benefits</a></li>
+                    <li class="toc-item"><a href="#enforcement" class="toc-link">5. Enforcement & Moderation</a></li>
+                    <li class="toc-item"><a href="#support" class="toc-link">6. Support Resources</a></li>
+                </ul>
+            </div>
+
+            <!-- Core Principles -->
+            <section id="core-principles" class="section">
+                <h2 class="section-title">
+                    🛡️ Core Principles
+                </h2>
+                
+                <div class="guideline-item">
+                    <div class="guideline-title">Respect & Inclusivity</div>
+                    <div class="guideline-description">
+                        Treat all community members with respect, regardless of their gaming experience, background, or beliefs. 
+                        We celebrate diversity and welcome perspectives from all walks of life.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Responsible Gaming First</div>
+                    <div class="guideline-description">
+                        Our community prioritizes healthy gaming habits and responsible behavior. Share strategies, support others, 
+                        and promote awareness about gambling-related risks and interventions.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Constructive Dialogue</div>
+                    <div class="guideline-description">
+                        Engage in meaningful conversations that add value to the community. Provide helpful feedback, 
+                        share experiences thoughtfully, and contribute to solutions rather than just highlighting problems.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Transparency & Trust</div>
+                    <div class="guideline-description">
+                        Be honest about your experiences and affiliations. Support our mission of building trust through 
+                        transparency in gaming platforms and responsible behavior monitoring.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Posting Guidelines -->
+            <section id="posting-guidelines" class="section">
+                <h2 class="section-title">
+                    ✍️ Posting Guidelines
+                </h2>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Stay On Topic</div>
+                    <div class="guideline-description">
+                        Keep discussions relevant to the category you're posting in. Use appropriate tags to help others 
+                        find and engage with your content effectively.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">No Spam or Self-Promotion</div>
+                    <div class="guideline-description">
+                        Avoid repetitive posts, excessive self-promotion, or content that doesn't add value to discussions. 
+                        Share external links only when they're genuinely helpful to the conversation.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Quality Over Quantity</div>
+                    <div class="guideline-description">
+                        Focus on creating meaningful posts rather than frequent low-quality content. Take time to 
+                        articulate your thoughts clearly and provide context for your contributions.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Cite Sources & Give Credit</div>
+                    <div class="guideline-description">
+                        When sharing information, research, or media created by others, always provide proper attribution. 
+                        This includes crediting creators like blackjackson for audio content and other contributors.
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4 style="color: var(--warning-orange); margin-bottom: 1rem;">⚠️ Prohibited Content</h4>
+                    <ul style="color: var(--cloud-grey); padding-left: 1.5rem;">
+                        <li>Harassment, hate speech, or discriminatory language</li>
+                        <li>Promotion of problem gambling or addiction</li>
+                        <li>Sharing of personal financial information</li>
+                        <li>Solicitation of gambling activities outside our platform</li>
+                        <li>Copyright infringement or unauthorized content sharing</li>
+                        <li>Attempts to circumvent platform safety measures</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Responsible Gaming Focus -->
+            <section id="responsible-gaming" class="section">
+                <h2 class="section-title">
+                    🎯 Responsible Gaming Focus
+                </h2>
+
+                <div class="highlight-box">
+                    <h4 style="color: var(--success-green); margin-bottom: 1rem;">💚 Our Mission</h4>
+                    <p style="color: var(--cloud-grey);">
+                        TiltCheck exists to promote responsible gaming through behavioral monitoring, early intervention, 
+                        and community support. Every discussion should align with these values.
+                    </p>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Share Support Resources</div>
+                    <div class="guideline-description">
+                        When discussing challenges or concerning behaviors, always include links to support resources, 
+                        helplines, or professional assistance options. Help others find the support they need.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Celebrate Healthy Habits</div>
+                    <div class="guideline-description">
+                        Highlight positive gaming practices, successful use of intervention tools, and healthy 
+                        boundary-setting strategies. Share what works and inspire others.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Discuss Behavioral Insights</div>
+                    <div class="guideline-description">
+                        Share experiences with tilt detection, intervention effectiveness, and behavioral pattern 
+                        recognition in ways that help the community learn and improve.
+                    </div>
+                </div>
+            </section>
+
+            <!-- NFT Verification Benefits -->
+            <section id="verification-benefits" class="section">
+                <h2 class="section-title">
+                    🛡️ NFT Verification Benefits
+                </h2>
+
+                <div class="nft-benefits">
+                    <h4 style="color: var(--deep-purple); margin-bottom: 1rem;">🔗 DegenTrust Verified Members</h4>
+                    <p style="color: var(--cloud-grey); margin-bottom: 1rem;">
+                        Complete NFT verification to unlock premium community features and build trust with other members.
+                    </p>
+
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">✅</div>
+                            <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">Verified Badge</div>
+                            <div style="color: var(--cloud-grey); font-size: 0.85rem;">Show your trusted status</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🎯</div>
+                            <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">Priority Support</div>
+                            <div style="color: var(--cloud-grey); font-size: 0.85rem;">Faster response times</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🚀</div>
+                            <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">Beta Access</div>
+                            <div style="color: var(--cloud-grey); font-size: 0.85rem;">Early feature testing</div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">💬</div>
+                            <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">Enhanced Posting</div>
+                            <div style="color: var(--cloud-grey); font-size: 0.85rem;">Rich media & formatting</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Verification Requirements</div>
+                    <div class="guideline-description">
+                        NFT verification requires wallet connection, identity verification, and commitment to community standards. 
+                        Verified members are held to higher standards and serve as community role models.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enforcement & Moderation -->
+            <section id="enforcement" class="section">
+                <h2 class="section-title">
+                    ⚖️ Enforcement & Moderation
+                </h2>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Progressive Enforcement</div>
+                    <div class="guideline-description">
+                        We use a progressive system: first warning → temporary restrictions → account suspension → permanent ban. 
+                        Serious violations may result in immediate action.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Community Reporting</div>
+                    <div class="guideline-description">
+                        All members can report inappropriate content or behavior. Reports are reviewed promptly, 
+                        and appropriate action is taken to maintain community standards.
+                    </div>
+                </div>
+
+                <div class="guideline-item">
+                    <div class="guideline-title">Appeal Process</div>
+                    <div class="guideline-description">
+                        Moderation decisions can be appealed through our support system. We review all appeals 
+                        fairly and adjust actions when appropriate.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support Resources -->
+            <section id="support" class="section">
+                <h2 class="section-title">
+                    🆘 Support Resources
+                </h2>
+
+                <div class="highlight-box">
+                    <h4 style="color: var(--success-green); margin-bottom: 1rem;">🔗 Getting Help</h4>
+                    <ul style="color: var(--cloud-grey); padding-left: 1.5rem;">
+                        <li><strong>Technical Support:</strong> Contact our support team for platform issues</li>
+                        <li><strong>Gambling Support:</strong> <a href="https://ncpgambling.org" style="color: var(--primary-blue);">National Council on Problem Gambling</a></li>
+                        <li><strong>Crisis Support:</strong> <a href="https://suicidepreventionlifeline.org" style="color: var(--primary-blue);">988 Suicide & Crisis Lifeline</a></li>
+                        <li><strong>Community Guidelines Questions:</strong> Ask moderators in any forum category</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="user-profile-setup.html" class="btn btn-primary">
+                    ✅ I Accept - Create Profile
+                </a>
+                <a href="community-forum.html" class="btn btn-secondary">
+                    👀 View Forum
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    🏠 Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sound integration
+        function playInteractionSound() {
+            try {
+                if (window.soundManager) {
+                    window.soundManager.playRedeemAlert();
+                } else {
+                    const audio = new Audio('/public/audio/redeem-alert.wav');
+                    audio.volume = 0.3;
+                    audio.play().catch(console.log);
+                }
+            } catch (error) {
+                console.log('Sound playback not available');
+            }
+        }
+
+        // Add sound to button interactions
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-primary')) {
+                playInteractionSound();
+            }
+        });
+
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in TOC
+        function highlightCurrentSection() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom > 100) {
+                    currentSection = section.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.style.color = 'var(--secondary-cyan)';
+                    link.style.fontWeight = '600';
+                } else {
+                    link.style.color = 'var(--primary-blue)';
+                    link.style.fontWeight = 'normal';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightCurrentSection);
+        document.addEventListener('DOMContentLoaded', highlightCurrentSection);
+    </script>
+</body>
+</html>

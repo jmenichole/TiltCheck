@@ -1,4 +1,15 @@
 /**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
+/**
  * Script to add balances for new Discord users
  * Usage: node add_user_balance.js <discordId> <chain> <amount>
  * Example: node add_user_balance.js 123456789 SOLUSDC 100

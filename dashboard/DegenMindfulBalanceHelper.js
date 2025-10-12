@@ -1,4 +1,15 @@
 /**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
+/**
  * 🎯 Enhanced Balance Helper for Degen + Mindful Integration
  * 
  * This module helps users find the perfect balance between their degen nature

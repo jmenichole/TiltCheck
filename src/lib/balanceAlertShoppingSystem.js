@@ -1,4 +1,15 @@
 /**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
+/**
  * Balance Alert Shopping System
  * Reminds users of shopping goals when reaching target balances
  * Integrates with adult responsibility auto-vault system

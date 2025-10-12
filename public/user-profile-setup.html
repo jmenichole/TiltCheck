@@ -1,0 +1,748 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+  
+  PROPRIETARY AND CONFIDENTIAL
+  Unauthorized copying of this file, via any medium, is strictly prohibited.
+  
+  This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+  For licensing information, see LICENSE file in the root directory.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Profile | TiltCheck Community</title>
+    <meta name="description" content="Create your TiltCheck community profile to join discussions, share ideas, and connect with other users in our responsible gaming community.">
+    
+    <!-- Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #60A5FA;
+            --secondary-cyan: #4DD0E1;
+            --deep-purple: #8B5CF6;
+            --intervention-teal: #4FD1C5;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --cloud-grey: #B7C3D3;
+            --dark-slate: #1E293B;
+            --darker-slate: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker-slate) 0%, var(--dark-slate) 50%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .profile-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-top: 0.5rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-subtitle {
+            color: var(--cloud-grey);
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .avatar-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-blue), var(--deep-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-blue);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--success-green);
+            background: linear-gradient(45deg, var(--success-green), var(--intervention-teal));
+        }
+
+        .interest-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .interest-tag {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: var(--primary-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interest-tag:hover {
+            background: rgba(96, 165, 250, 0.2);
+        }
+
+        .interest-tag.selected {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .privacy-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox {
+            margin-top: 0.25rem;
+        }
+
+        .waitlist-integration {
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(77, 208, 225, 0.1));
+            border: 1px solid var(--success-green);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .waitlist-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .nft-verification {
+            background: linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(96, 165, 250, 0.1));
+            border: 1px solid var(--deep-purple);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .verification-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .verification-step {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .step-number {
+            background: var(--deep-purple);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 0.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--deep-purple));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--primary-blue);
+        }
+
+        .progress-step.completed {
+            background: var(--success-green);
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .avatar-selection {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-icon">👤</div>
+            <div class="logo-text">Create Your Profile</div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+            <div class="progress-step active" id="step1"></div>
+            <div class="progress-step" id="step2"></div>
+            <div class="progress-step" id="step3"></div>
+            <div class="progress-step" id="step4"></div>
+        </div>
+
+        <form id="profileForm">
+            <!-- Step 1: Basic Information -->
+            <div class="form-step active" id="formStep1">
+                <div class="profile-header">
+                    <h2 class="profile-title">Basic Information</h2>
+                    <p class="profile-subtitle">Let's get to know you better</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Display Name</label>
+                    <input type="text" class="form-input" id="displayName" placeholder="How should others know you?" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Bio (Optional)</label>
+                    <textarea class="form-input form-textarea" id="bio" placeholder="Tell the community a bit about yourself..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Choose Your Avatar</label>
+                    <div class="avatar-selection">
+                        <div class="avatar-option" data-avatar="🎮" onclick="selectAvatar(this)">🎮</div>
+                        <div class="avatar-option" data-avatar="🛡️" onclick="selectAvatar(this)">🛡️</div>
+                        <div class="avatar-option" data-avatar="🎯" onclick="selectAvatar(this)">🎯</div>
+                        <div class="avatar-option" data-avatar="⚡" onclick="selectAvatar(this)">⚡</div>
+                        <div class="avatar-option" data-avatar="🔥" onclick="selectAvatar(this)">🔥</div>
+                        <div class="avatar-option" data-avatar="💎" onclick="selectAvatar(this)">💎</div>
+                        <div class="avatar-option" data-avatar="🚀" onclick="selectAvatar(this)">🚀</div>
+                        <div class="avatar-option" data-avatar="🌟" onclick="selectAvatar(this)">🌟</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Interests -->
+            <div class="form-step" id="formStep2">
+                <div class="profile-header">
+                    <h2 class="profile-title">Your Interests</h2>
+                    <p class="profile-subtitle">Help us tailor your community experience</p>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">🎯 What interests you most?</div>
+                    <div class="interest-tags">
+                        <div class="interest-tag" onclick="toggleInterest(this)">Responsible Gaming</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Behavioral Analysis</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Fairness Verification</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Community Building</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Technical Discussion</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Transparency</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Feature Requests</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Sound Design</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">NFT Verification</div>
+                        <div class="interest-tag" onclick="toggleInterest(this)">Platform Integration</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">🎮 Gaming Experience Level</div>
+                    <div class="form-group">
+                        <select class="form-input" id="experienceLevel" required>
+                            <option value="">Select your experience level</option>
+                            <option value="beginner">New to Gaming</option>
+                            <option value="casual">Casual Gamer</option>
+                            <option value="experienced">Experienced Player</option>
+                            <option value="professional">Professional/Industry</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Waitlist Integration -->
+            <div class="form-step" id="formStep3">
+                <div class="profile-header">
+                    <h2 class="profile-title">Join Our Community</h2>
+                    <p class="profile-subtitle">Get beta access and community privileges</p>
+                </div>
+
+                <div class="waitlist-integration">
+                    <div class="waitlist-icon">🚀</div>
+                    <h3 style="color: white; margin-bottom: 1rem;">Beta Program Access</h3>
+                    <p style="color: var(--cloud-grey); margin-bottom: 1.5rem;">
+                        By creating your profile, you'll automatically join our beta waitlist and get early access 
+                        to new features, community events, and exclusive content.
+                    </p>
+                    
+                    <div class="checkbox-group" style="justify-content: center;">
+                        <input type="checkbox" id="joinWaitlist" class="checkbox" checked>
+                        <label for="joinWaitlist" style="color: var(--cloud-grey);">
+                            Join the beta waitlist for early access
+                        </label>
+                    </div>
+                </div>
+
+                <div class="privacy-section">
+                    <h4 style="color: white; margin-bottom: 1rem;">🔒 Privacy Preferences</h4>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="profilePublic" class="checkbox" checked>
+                        <label for="profilePublic" style="color: var(--cloud-grey);">
+                            Make my profile visible to other community members
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="emailNotifications" class="checkbox" checked>
+                        <label for="emailNotifications" style="color: var(--cloud-grey);">
+                            Send me email notifications for community updates
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="betaUpdates" class="checkbox" checked>
+                        <label for="betaUpdates" style="color: var(--cloud-grey);">
+                            Receive beta testing opportunities and feature previews
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="termsAccept" class="checkbox" required>
+                        <label for="termsAccept" style="color: var(--cloud-grey);">
+                            I agree to the <a href="community-guidelines.html" style="color: var(--primary-blue);">Community Guidelines</a> 
+                            and <a href="tos.html" style="color: var(--primary-blue);">Terms of Service</a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: NFT Verification (Optional) -->
+            <div class="form-step" id="formStep4">
+                <div class="profile-header">
+                    <h2 class="profile-title">Verification Options</h2>
+                    <p class="profile-subtitle">Enhance your profile with trust verification</p>
+                </div>
+
+                <div class="nft-verification">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                    <h3 style="color: white; margin-bottom: 1rem;">DegenTrust NFT Verification</h3>
+                    <p style="color: var(--cloud-grey); margin-bottom: 1.5rem;">
+                        Optional: Get verified status and unlock premium community features by minting your 
+                        DegenTrust NFT. This builds trust and enables advanced posting privileges.
+                    </p>
+
+                    <div class="verification-steps">
+                        <div class="verification-step">
+                            <div class="step-number">1</div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">Connect Wallet</h4>
+                            <p style="color: var(--cloud-grey); font-size: 0.9rem;">Link your crypto wallet</p>
+                        </div>
+                        <div class="verification-step">
+                            <div class="step-number">2</div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">Verify Identity</h4>
+                            <p style="color: var(--cloud-grey); font-size: 0.9rem;">Complete verification checks</p>
+                        </div>
+                        <div class="verification-step">
+                            <div class="step-number">3</div>
+                            <h4 style="color: white; margin-bottom: 0.5rem;">Mint NFT</h4>
+                            <p style="color: var(--cloud-grey); font-size: 0.9rem;">Generate trust certificate</p>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group" style="justify-content: center; margin-top: 1.5rem;">
+                        <input type="checkbox" id="nftVerification" class="checkbox">
+                        <label for="nftVerification" style="color: var(--cloud-grey);">
+                            I want to set up NFT verification now (optional)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">
+                    ← Previous
+                </button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                    Next →
+                </button>
+                <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">
+                    🚀 Create Profile
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedAvatar = '';
+        let selectedInterests = [];
+
+        function selectAvatar(element) {
+            // Remove previous selection
+            document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selection to clicked element
+            element.classList.add('selected');
+            selectedAvatar = element.dataset.avatar;
+        }
+
+        function toggleInterest(element) {
+            element.classList.toggle('selected');
+            const interest = element.textContent;
+            
+            if (selectedInterests.includes(interest)) {
+                selectedInterests = selectedInterests.filter(i => i !== interest);
+            } else {
+                selectedInterests.push(interest);
+            }
+        }
+
+        function updateProgress() {
+            // Update progress indicators
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`);
+                if (i < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (i === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            }
+
+            // Show/hide form steps
+            document.querySelectorAll('.form-step').forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            prevBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
+            
+            if (currentStep === 4) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-flex';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                currentStep++;
+                updateProgress();
+                playInteractionSound();
+            }
+        }
+
+        function previousStep() {
+            currentStep--;
+            updateProgress();
+        }
+
+        function validateCurrentStep() {
+            switch (currentStep) {
+                case 1:
+                    const name = document.getElementById('displayName').value;
+                    const email = document.getElementById('email').value;
+                    if (!name || !email) {
+                        alert('Please fill in your display name and email.');
+                        return false;
+                    }
+                    if (!selectedAvatar) {
+                        alert('Please choose an avatar.');
+                        return false;
+                    }
+                    break;
+                case 2:
+                    const experience = document.getElementById('experienceLevel').value;
+                    if (!experience) {
+                        alert('Please select your experience level.');
+                        return false;
+                    }
+                    break;
+                case 3:
+                    const termsAccepted = document.getElementById('termsAccept').checked;
+                    if (!termsAccepted) {
+                        alert('Please accept the Community Guidelines and Terms of Service to continue.');
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            // Collect all form data
+            const profileData = {
+                displayName: document.getElementById('displayName').value,
+                email: document.getElementById('email').value,
+                bio: document.getElementById('bio').value,
+                avatar: selectedAvatar,
+                interests: selectedInterests,
+                experienceLevel: document.getElementById('experienceLevel').value,
+                joinWaitlist: document.getElementById('joinWaitlist').checked,
+                profilePublic: document.getElementById('profilePublic').checked,
+                emailNotifications: document.getElementById('emailNotifications').checked,
+                betaUpdates: document.getElementById('betaUpdates').checked,
+                nftVerification: document.getElementById('nftVerification').checked,
+                createdAt: new Date().toISOString(),
+                id: Date.now()
+            };
+
+            // Save to localStorage (in real app, this would be API call)
+            localStorage.setItem('tiltcheck_user', JSON.stringify(profileData));
+
+            // Add to waitlist if requested
+            if (profileData.joinWaitlist) {
+                let waitlist = JSON.parse(localStorage.getItem('beta_waitlist') || '[]');
+                waitlist.push({
+                    email: profileData.email,
+                    name: profileData.displayName,
+                    source: 'community_profile',
+                    timestamp: profileData.createdAt
+                });
+                localStorage.setItem('beta_waitlist', JSON.stringify(waitlist));
+            }
+
+            // Play success sound
+            playInteractionSound();
+
+            // Show success and redirect
+            if (profileData.nftVerification) {
+                alert('🎉 Profile created! Redirecting to NFT verification...');
+                window.location.href = 'degentrust-score.html?source=profile_setup&return=' + encodeURIComponent('community-forum.html');
+            } else {
+                alert('🎉 Profile created successfully! Welcome to the TiltCheck community!');
+                window.location.href = 'community-forum.html';
+            }
+        }
+
+        // Sound integration
+        function playInteractionSound() {
+            try {
+                if (window.soundManager) {
+                    window.soundManager.playRedeemAlert();
+                } else {
+                    const audio = new Audio('/public/audio/redeem-alert.wav');
+                    audio.volume = 0.3;
+                    audio.play().catch(console.log);
+                }
+            } catch (error) {
+                console.log('Sound playback not available');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            document.getElementById('profileForm').addEventListener('submit', handleSubmit);
+        });
+    </script>
+</body>
+</html>

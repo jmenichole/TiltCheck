@@ -1,4 +1,15 @@
 /**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
+/**
  * Personal Wallet Configuration for Discord ID: 1153034319271559328
  * This file links your Discord account to crypto wallets and transaction signing
  */

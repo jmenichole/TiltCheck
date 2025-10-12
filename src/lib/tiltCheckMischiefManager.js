@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
@@ -62,24 +73,6 @@ class TiltCheckMischiefManager {
                 "🎬 **END CREDITS** 🎬\nAnother chapter in your story. The question is: are you the hero or the cautionary tale?"
             ]
         };
-        
-        this.loadTiltCheckModule();
-    }
-
-    loadTiltCheckModule() {
-        try {
-            const tiltCheckPath = path.join(__dirname, 'TiltCheck-audit-stakeus');
-            if (fs.existsSync(tiltCheckPath)) {
-                console.log('✅ TiltCheck module found and loaded');
-                this.tiltCheckAvailable = true;
-            } else {
-                console.log('⚠️ TiltCheck module not found - using integrated implementation');
-                this.tiltCheckAvailable = false;
-            }
-        } catch (error) {
-            console.error('Error loading TiltCheck module:', error);
-            this.tiltCheckAvailable = false;
-        }
     }
 
     // Main command handler
@@ -774,7 +767,7 @@ class TiltCheckMischiefManager {
                 },
                 {
                     name: '🔗 Ecosystem Integration',
-                    value: '[**Portfolio**](https://jmenichole.github.io/Portfolio/) • [**TiltCheck GitHub**](https://github.com/jmenichole/TiltCheck-audit-stakeus) • [**JustTheTip Terms**](https://github.com/jmenichole/JustTheTip-Terms)',
+                    value: '[**Portfolio**](https://jmenichole.github.io/Portfolio/) • [**TiltCheck GitHub**](https://github.com/jmenichole/TiltCheck) • [**JustTheTip Terms**](https://github.com/jmenichole/JustTheTip-Terms)',
                     inline: false
                 }
             )

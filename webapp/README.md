@@ -1,3 +1,9 @@
+---
+**Copyright (c) 2024-2025 JME (jmenichole). All Rights Reserved.**  
+*This software is proprietary. See [LICENSE](../LICENSE) and [COPYRIGHT](../COPYRIGHT) for details.*
+
+---
+
 # 🏠 TrapHouse Bot WebApp
 
 ## 🎯 **Reverse Link from Create.xyz**

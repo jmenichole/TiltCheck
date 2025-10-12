@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
 const express = require('express');
 const http = require('http');
 const path = require('path');
@@ -53,8 +64,17 @@ class TiltCheckServer {
     }
 
     setupMiddleware() {
-        // CORS for development
+        // Security headers
         this.app.use((req, res, next) => {
+            // Security headers
+            res.setHeader('X-Content-Type-Options', 'nosniff');
+            res.setHeader('X-Frame-Options', 'DENY');
+            res.setHeader('X-XSS-Protection', '1; mode=block');
+            res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+            res.setHeader('Content-Security-Policy', "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; img-src 'self' https: data:;");
+            res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+            
+            // CORS for development
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
             res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
@@ -65,11 +85,11 @@ class TiltCheckServer {
             next();
         });
         
-        // JSON parsing
+        // JSON parsing with limits for security
         this.app.use(express.json({ limit: '10mb' }));
         this.app.use(express.urlencoded({ extended: true }));
 
-        // Serve static files
+    // Serve static files
         this.app.use(express.static('.'));
         this.app.use('/public', express.static('public'));
 
@@ -200,6 +220,22 @@ class TiltCheckServer {
                 }
             });
         });
+
+        // Mount Beta Signup API (if available)
+        try {
+            const { createBetaSignupRouter } = require('./beta-signup-api');
+            // Basic CORS for API routes in dev/demo
+            this.app.use('/api', (req, res, next) => {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+                res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                if (req.method === 'OPTIONS') return res.sendStatus(204);
+                next();
+            }, createBetaSignupRouter());
+            console.log('✅ Beta signup API mounted');
+        } catch (err) {
+            console.log('⚠️  Beta signup API not mounted:', err.message);
+        }
 
         // API documentation
         this.app.get('/api-docs', (req, res) => {

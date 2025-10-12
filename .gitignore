@@ -78,5 +78,15 @@ Thumbs.db
 railway.json
 .railway/
 
+# Sensitive environment files
+.env.personal
+.env.production
+.env.deployment
+.env.justthetip
+*.key
+*.pem
+auth.json
+credentials.json
+
 # Other
 .vps-config
