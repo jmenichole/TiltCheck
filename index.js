@@ -988,7 +988,7 @@ async function handleEcosystemStatus(message) {
             },
             {
                 name: '🌐 Connected Projects',
-                value: '📋 [**JustTheTip Terms**](https://github.com/jmenichole/JustTheTip-Terms)\n🌟 [**Portfolio Website**](https://jmenichole.github.io/Portfolio/)\n🎰 [**TiltCheck Audit**](https://github.com/jmenichole/TiltCheck-audit-stakeus)\n💧 [**CollectClock**](https://jmenichole.github.io/CollectClock/)',
+                value: '📋 [**JustTheTip Terms**](https://github.com/jmenichole/JustTheTip-Terms)\n🌟 [**Portfolio Website**](https://jmenichole.github.io/Portfolio/)\n🎰 [**TiltCheck Audit**](https://github.com/jmenichole/TiltCheck)\n💧 [**CollectClock**](https://jmenichole.github.io/CollectClock/)',
                 inline: false
             },
             {
