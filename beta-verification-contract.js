@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
 // Beta Verification Contract System
 // Implements crypto signature verification and device fingerprinting for legal protection
 // Now includes NFT minting for verified contract signatures

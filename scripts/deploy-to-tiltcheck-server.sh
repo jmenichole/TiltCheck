@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Copyright (c) 2024-2025 JME (jmenichole)
+# All Rights Reserved
+# 
+# PROPRIETARY AND CONFIDENTIAL
+# Unauthorized copying of this file, via any medium, is strictly prohibited.
+# 
+# This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+# For licensing information, see LICENSE file in the root directory.
+#
+
 # Deploy TiltCheck Ecosystem to server1.tiltcheck.it.com
 # Server: kvmnode202, Port: 6467, Password: iVjgB6BM
 

@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Copyright (c) 2024-2025 JME (jmenichole)
+# All Rights Reserved
+# 
+# PROPRIETARY AND CONFIDENTIAL
+# Unauthorized copying of this file, via any medium, is strictly prohibited.
+# 
+# This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+# For licensing information, see LICENSE file in the root directory.
+#
+
 
 # 🎯 FINAL SETUP GUIDE: Discord OAuth + Balance Features for TiltCheck.it.com
 # Everything you need to help users find balance between degen and mindful

@@ -1,0 +1,86 @@
+COPYRIGHT NOTICE
+================================================================================
+
+Copyright (c) 2024-2025 JME (jmenichole)
+All Rights Reserved
+
+================================================================================
+PROPRIETARY SOFTWARE
+================================================================================
+
+This repository contains proprietary software owned by JME (jmenichole).
+
+Project Components:
+-------------------
+1. TiltCheck - Player behavior monitoring and responsible gaming system
+2. TrapHouse Discord Bot - Comprehensive Discord bot ecosystem
+3. JustTheTip Bot - Cryptocurrency tipping and accountability system
+4. CollectClock - Timer and notification management system
+5. Casino Trust Scoring - Casino compliance and trust analysis
+6. NFT Trust System - Blockchain-based verification system
+7. Beta Testing Framework - Legal contract and verification system
+
+All code, documentation, designs, algorithms, and associated intellectual 
+property are protected under copyright law.
+
+================================================================================
+USAGE RESTRICTIONS
+================================================================================
+
+This code is PROPRIETARY and CONFIDENTIAL. Unauthorized use, reproduction, or 
+distribution is strictly prohibited and may result in severe civil and criminal 
+penalties.
+
+You may NOT:
+- Copy, modify, or distribute this software
+- Use this software for commercial purposes without permission
+- Reverse engineer or attempt to extract source code
+- Create derivative works based on this software
+- Remove or modify copyright notices
+
+To request a license or permission for use:
+- Contact: https://github.com/jmenichole
+- Repository: https://github.com/jmenichole/TiltCheck
+
+================================================================================
+INTELLECTUAL PROPERTY
+================================================================================
+
+All trademarks, service marks, trade names, and logos are proprietary to 
+JME (jmenichole).
+
+- TiltCheck™
+- JustTheTip™  
+- TrapHouse Discord Bot™
+- CollectClock™
+
+================================================================================
+THIRD-PARTY DEPENDENCIES
+================================================================================
+
+This software uses various open-source libraries and frameworks, each governed 
+by their respective licenses. See package.json for the complete list of 
+dependencies. The proprietary code in this repository is separate from and 
+not covered by the licenses of these dependencies.
+
+================================================================================
+DISCLAIMER
+================================================================================
+
+This software is provided "AS IS" without warranty of any kind. The copyright 
+holder shall not be liable for any damages arising from the use of this 
+software.
+
+This software is not financial advice. It is provided for educational and 
+entertainment purposes only. Users are responsible for their own decisions and 
+actions.
+
+================================================================================
+QUESTIONS?
+================================================================================
+
+For licensing, partnership opportunities, or other inquiries:
+- GitHub: https://github.com/jmenichole
+- Repository: https://github.com/jmenichole/TiltCheck
+
+Last Updated: January 2025

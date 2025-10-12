@@ -1,3 +1,9 @@
+---
+**Copyright (c) 2024-2025 JME (jmenichole). All Rights Reserved.**  
+*This software is proprietary. See [LICENSE](../LICENSE) and [COPYRIGHT](../COPYRIGHT) for details.*
+
+---
+
 # 🃏 Degens Against Decency
 
 **A Discord bot adaptation of Cards Against Humanity for the most degenerate communities on the internet.**
