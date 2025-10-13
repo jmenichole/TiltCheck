@@ -486,13 +486,20 @@ class TiltCheckRightSideOverlay {
     }
 }
 
+// Safe initialization helper to avoid duplicate overlays
+function initTiltCheckOverlayOnce() {
+    if (window.tiltCheckOverlay and window.tiltCheckOverlay.overlayContainer) {
+        return window.tiltCheckOverlay;
+    }
+    window.tiltCheckOverlay = new TiltCheckRightSideOverlay();
+    return window.tiltCheckOverlay;
+}
+
 // Initialize overlay when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.tiltCheckOverlay = new TiltCheckRightSideOverlay();
-    });
+    document.addEventListener('DOMContentLoaded', initTiltCheckOverlayOnce);
 } else {
-    window.tiltCheckOverlay = new TiltCheckRightSideOverlay();
+    initTiltCheckOverlayOnce();
 }
 
 // Export for module usage
