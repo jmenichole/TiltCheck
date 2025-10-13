@@ -215,7 +215,7 @@
             };
 
             // Send to overlay if visible
-            if (isOverlayVisible && overlayContainer) {
+            if (window.tiltCheckOverlay isOverlayVisible && overlayContainerisOverlayVisible && overlayContainer typeof window.tiltCheckOverlay.addAlert === 'function') {
                 this.sendToOverlay('tiltDetected', tiltEvent);
             }
 
