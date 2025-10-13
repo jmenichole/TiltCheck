@@ -5,8 +5,10 @@
   "description": "Real-time gambling behavior monitoring and accountability dashboard",
   "permissions": [
     "activeTab",
-    "storage",
+    "alarms",
+    "notifications",
     "scripting",
+    "storage",
     "tabs"
   ],
   "host_permissions": [
@@ -25,9 +27,15 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content-script.js"],
-      "css": ["overlay.css"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content-script.js"
+      ],
+      "css": [
+        "overlay.css"
+      ],
       "run_at": "document_end"
     }
   ],
@@ -36,8 +44,14 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["overlay.html", "overlay.js", "overlay.css"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "overlay.html",
+        "overlay.js",
+        "overlay.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "icons": {
