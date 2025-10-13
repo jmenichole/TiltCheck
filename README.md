@@ -421,11 +421,25 @@ The deployment workflow:
 - [ ] Advanced reporting suite
 - [ ] Regulatory compliance tools
 
-## 📄 License & Terms
+## 📄 License & Copyright
 
-This software is proprietary and commercial. Usage requires a valid subscription to TiltCheck services.
+### Copyright Notice
+**Copyright (c) 2024-2025 JME (jmenichole). All Rights Reserved.**
+
+This software and associated documentation files (the "Software") are proprietary and confidential. Unauthorized copying, modification, distribution, or use of this Software, via any medium, is strictly prohibited without express written permission.
+
+### Software Components
+This repository includes:
+- **TiltCheck**: Player behavior monitoring system
+- **TrapHouse Discord Bot**: Discord bot ecosystem  
+- **JustTheTip Bot**: Cryptocurrency accountability bot
+- **CollectClock**: Timer and notification system
+- **Casino Trust Scoring**: Casino compliance analysis
+- **NFT Trust System**: Blockchain-based verification
 
 ### Commercial License
+This software is proprietary and commercial. Usage requires a valid subscription to TiltCheck services.
+
 - **Software**: Licensed per subscription plan
 - **API Access**: Governed by Terms of Service
 - **Discord Bot**: Additional licensing required for premium features
@@ -440,6 +454,13 @@ This software is proprietary and commercial. Usage requires a valid subscription
 - Demo version available for evaluation purposes
 - 30-day free trial available for Professional plan
 - No credit card required for demo access
+
+### Licensing Inquiries
+For licensing, partnerships, or commercial use inquiries:
+- **GitHub**: [https://github.com/jmenichole](https://github.com/jmenichole)
+- **Repository**: [https://github.com/jmenichole/TiltCheck](https://github.com/jmenichole/TiltCheck)
+
+**See [LICENSE](LICENSE) and [COPYRIGHT](COPYRIGHT) files for complete legal information.**
 
 ## 🙏 Acknowledgments
 

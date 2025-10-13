@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Copyright (c) 2024-2025 JME (jmenichole)
+# All Rights Reserved
+# 
+# PROPRIETARY AND CONFIDENTIAL
+# Unauthorized copying of this file, via any medium, is strictly prohibited.
+# 
+# This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+# For licensing information, see LICENSE file in the root directory.
+#
+
 # TiltCheck VPS Deployment with Password Change
 # Server: 203.161.58.173, User: root, Temp Password: VvKugq08S7o1z5J1ZE
 

@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
 const Discord = require('discord.js');
 const fs = require('fs').promises;
 const path = require('path');
@@ -298,7 +309,7 @@ class EcosystemManager {
                 },
                 {
                     name: '🎰 TiltCheck Audit',
-                    value: '[Gambling Analysis](https://github.com/jmenichole/TiltCheck-audit-stakeus)\nBehavior monitoring system',
+                    value: '[Gambling Analysis](https://github.com/jmenichole/TiltCheck)\nBehavior monitoring system',
                     inline: true
                 }
             )

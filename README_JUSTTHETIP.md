@@ -1,3 +1,9 @@
+---
+**Copyright (c) 2024-2025 JME (jmenichole). All Rights Reserved.**  
+*This software is proprietary. See [LICENSE](../LICENSE) and [COPYRIGHT](../COPYRIGHT) for details.*
+
+---
+
 # JustTheTip Bot
 
 Your smart crypto accountability bot built *by degens, for degens* — but with a soft spot for financial responsibility.

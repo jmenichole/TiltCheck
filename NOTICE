@@ -1,0 +1,71 @@
+NOTICE
+
+TiltCheck and Associated Software Components
+Copyright (c) 2024-2025 JME (jmenichole)
+All Rights Reserved
+
+================================================================================
+
+This repository contains proprietary software that is protected by copyright 
+law and international treaties. The software is owned by JME (jmenichole) and 
+is not open source.
+
+SOFTWARE COMPONENTS:
+--------------------
+1. TiltCheck - Player behavior monitoring and responsible gaming system
+2. TrapHouse Discord Bot - Comprehensive Discord bot ecosystem
+3. JustTheTip Bot - Cryptocurrency tipping and accountability system
+4. CollectClock - Timer and notification management system
+5. Casino Trust Scoring - Casino compliance and trust analysis system
+6. NFT Trust System - Blockchain-based user verification system
+7. Beta Testing Framework - Legal contract and NFT verification system
+8. Regulatory Compliance Helper - State gambling regulation compliance
+9. Crypto Payment Systems - Blockchain payment integration
+
+TRADEMARKS:
+-----------
+The following marks are proprietary to JME (jmenichole):
+- TiltCheck™
+- JustTheTip™
+- TrapHouse Discord Bot™
+- CollectClock™
+
+THIRD-PARTY COMPONENTS:
+-----------------------
+This software includes various open-source libraries and frameworks that are 
+governed by their respective licenses:
+
+- Discord.js (Apache-2.0)
+- React (MIT)
+- Next.js (MIT)
+- Express (MIT)
+- Solana Web3.js (MIT)
+- Ethers.js (MIT)
+- And other dependencies listed in package.json
+
+The use of these third-party components does not grant any rights to the 
+proprietary code in this repository. The proprietary portions of this software 
+remain the exclusive property of JME (jmenichole).
+
+USAGE:
+------
+This code is provided for viewing purposes only. Any use, reproduction, 
+modification, or distribution requires explicit written permission from the 
+copyright holder.
+
+For licensing inquiries:
+- GitHub: https://github.com/jmenichole
+- Repository: https://github.com/jmenichole/TiltCheck
+
+DISCLAIMER:
+-----------
+This software is not financial advice. It is provided for educational and 
+entertainment purposes. Users are responsible for their own decisions and 
+actions. The software is provided "AS IS" without warranty of any kind.
+
+For complete legal terms, see:
+- LICENSE file - Full license terms
+- COPYRIGHT file - Detailed copyright information
+- Terms of Service: https://tiltcheck.io/terms (when available)
+
+Last Updated: January 2025

@@ -353,7 +353,7 @@ Bot: 📊 Current Risk Level: MODERATE ⚠️
 ## Support & Community
 
 ### Resources
-- **GitHub Repository**: [TiltCheck Audit System](https://github.com/jmenichole/TiltCheck-audit-stakeus)
+- **GitHub Repository**: [TiltCheck Audit System](https://github.com/jmenichole/TiltCheck)
 - **TiltCheck Enterprise**: [github.com/enterprises/tiltcheck](https://github.com/enterprises/tiltcheck)
 - **Developer Portfolio**: [jmenichole.github.io](https://jmenichole.github.io/Portfolio/)
 - **Documentation**: [JustTheTip Terms](https://github.com/jmenichole/JustTheTip-Terms)

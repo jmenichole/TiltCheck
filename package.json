@@ -84,8 +84,12 @@
     "justthetip",
     "railway"
   ],
-  "author": "jmenichole",
+  "author": {
+    "name": "JME (jmenichole)",
+    "url": "https://github.com/jmenichole"
+  },
   "license": "PROPRIETARY",
+  "copyright": "Copyright (c) 2024-2025 JME (jmenichole). All Rights Reserved.",
   "homepage": "https://jmenichole.github.io/TiltCheck/",
   "repository": {
     "type": "git",

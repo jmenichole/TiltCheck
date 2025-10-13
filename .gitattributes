@@ -1,0 +1,21 @@
+# Git attributes for copyright enforcement
+# This helps track when files are modified
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for copyright tracking
+*.js text
+*.ts text
+*.tsx text
+*.html text
+*.sh text
+*.md text
+
+# Mark license and copyright files as important
+LICENSE text
+COPYRIGHT text
+NOTICE text
+
+# Documentation
+README*.md text
