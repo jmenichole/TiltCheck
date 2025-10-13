@@ -1,0 +1,32 @@
+services:
+  # TiltCheck Web Application  
+  - type: web
+    name: tiltcheck-web
+    runtime: node
+    plan: free
+    buildCommand: npm install --only=production --legacy-peer-deps --no-optional
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+  # TiltCheck Discord Bot with Non-Custodial Integration
+  - type: web
+    name: tiltcheck-discord-bot
+    runtime: node  
+    plan: free
+    buildCommand: npm install --only=production --legacy-peer-deps --no-optional
+    startCommand: node bot.js --mode integrated
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DISCORD_BOT_TOKEN
+        sync: false
+      - key: SOLANA_PRIVATE_KEY
+        sync: false
+      - key: SOLANA_RPC_URL
+        value: https://api.mainnet-beta.solana.com
+      - key: JWT_SECRET
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
