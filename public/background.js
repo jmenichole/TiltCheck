@@ -1,4 +1,10 @@
-// TiltCheck Extension Background Service Worker
+/**
+ * TiltCheck Extension Background Service Worker
+ *
+ * Copyright (c) 2025 TiltCheck Team. All Rights Reserved.
+ */
+
+console.log('TiltCheck background service worker started');
 console.log('TiltCheck background service worker started');
 
 // Install and setup
