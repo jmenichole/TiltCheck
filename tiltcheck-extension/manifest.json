@@ -1,0 +1,83 @@
+{
+  "manifest_version": 3,
+  "name": "TiltCheck - Responsible Gaming Monitor",
+  "version": "1.0.0",
+  "description": "Real-time gambling accountability with AI-powered tilt detection and personalized interventions for responsible gaming.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://stake.com/*",
+    "https://bovada.lv/*",
+    "https://draftkings.com/*",
+    "https://fanduel.com/*",
+    "https://betmgm.com/*",
+    "https://caesars.com/*",
+    "https://pointsbet.com/*",
+    "https://barstoolsportsbook.com/*",
+    "https://wynnbet.com/*",
+    "https://foxbet.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://stake.com/*",
+        "https://bovada.lv/*",
+        "https://draftkings.com/*",
+        "https://fanduel.com/*",
+        "https://betmgm.com/*",
+        "https://caesars.com/*",
+        "https://pointsbet.com/*",
+        "https://barstoolsportsbook.com/*",
+        "https://wynnbet.com/*",
+        "https://foxbet.com/*"
+      ],
+      "js": [
+        "content-script.js"
+      ],
+      "css": [
+        "content-styles.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TiltCheck - Monitor Your Gaming"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/*",
+        "popup.html",
+        "content-styles.css",
+        "overlay.html",
+        "overlay.js",
+        "overlay.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "homepage_url": "https://github.com/jmenichole/TiltCheck",
+  "author": "TiltCheck Team",
+  "minimum_chrome_version": "88",
+  "offline_enabled": false,
+  "options_page": "options.html",
+  "externally_connectable": {
+    "matches": [
+      "https://tiltcheck.com/*",
+      "https://support.tiltcheck.com/*"
+    ]
+  }
+}

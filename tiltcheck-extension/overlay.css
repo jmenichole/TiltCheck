@@ -1,0 +1,306 @@
+/* TiltCheck Right-Side Overlay - Cyberpunk Theme (DegensAgainstDecency Style) */
+
+.tiltcheck-overlay-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 64px; /* Minimized state */
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-left: 2px solid rgba(255, 0, 255, 0.3);
+  box-shadow: -4px 0 20px rgba(255, 0, 255, 0.2);
+  z-index: 2147483647; /* Maximum z-index */
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tiltcheck-overlay-container.expanded {
+  width: 380px;
+}
+
+/* Header with logo and controls */
+.tiltcheck-overlay-header {
+  justify-content: space-between;
+  padding: 16px 12px;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+  min-height: 64px;
+}
+
+.tiltcheck-overlay-logo {
+  gap: 8px;
+  white-space: nowrap;
+}
+
+
+.tiltcheck-overlay-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tiltcheck-overlay-logo-text {
+  color: white;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tiltcheck-overlay-container.expanded .tiltcheck-overlay-logo-text {
+  opacity: 1;
+}
+
+.tiltcheck-overlay-toggle {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.tiltcheck-overlay-toggle:hover {
+  background: rgba(255, 0, 255, 0.1);
+  color: #ff00ff;
+}
+
+/* Minimized state - only show activity indicator */
+.tiltcheck-overlay-minimized {
+  flex-direction: column;
+  padding: 20px 0;
+  height: 100%;
+}
+
+.tiltcheck-activity-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tiltcheck-activity-indicator.monitoring {
+  background: linear-gradient(135deg, #00ff41, #00ffff);
+  animation: pulse-monitoring 2s infinite;
+}
+
+.tiltcheck-activity-indicator.warning {
+  background: linear-gradient(135deg, #ffff00, #ff6600);
+  animation: pulse-warning 1.5s infinite;
+}
+
+.tiltcheck-activity-indicator.danger {
+  background: linear-gradient(135deg, #ff00ff, #ff0066);
+  animation: pulse-danger 1s infinite;
+}
+
+.tiltcheck-activity-indicator.idle {
+  background: linear-gradient(135deg, #8000ff, #2d2d4a);
+}
+
+/* Expanded content */
+.tiltcheck-overlay-content {
+  flex: 1;
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 0;
+}
+
+.tiltcheck-overlay-container.expanded .tiltcheck-overlay-content {
+  opacity: 1;
+}
+
+/* Dashboard sections */
+.tiltcheck-dashboard-section {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tiltcheck-dashboard-section h3 {
+  color: #00ffff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  gap: 8px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Stats display */
+.tiltcheck-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tiltcheck-stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 0, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.tiltcheck-stat-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff00ff;
+  margin-bottom: 4px;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.tiltcheck-stat-label {
+  font-size: 12px;
+  color: #b8b8b8;
+}
+
+/* Alerts section */
+.tiltcheck-alert {
+  background: rgba(255, 0, 255, 0.1);
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.tiltcheck-alert.warning {
+  background: rgba(255, 255, 0, 0.1);
+  border-color: rgba(255, 255, 0, 0.3);
+}
+
+.tiltcheck-alert.info {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.tiltcheck-alert-title {
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.tiltcheck-alert-message {
+  color: #b8b8b8;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* Action buttons */
+.tiltcheck-action-button {
+  width: 100%;
+  padding: 12px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+  box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
+}
+
+.tiltcheck-action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 0, 255, 0.4);
+}
+
+.tiltcheck-action-button.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: none;
+}
+
+.tiltcheck-action-button.secondary:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: #00ffff;
+}
+
+.tiltcheck-action-button.danger {
+  background: linear-gradient(45deg, #ff0066, #ff00ff);
+  box-shadow: 0 5px 15px rgba(255, 0, 102, 0.3);
+}
+
+.tiltcheck-action-button.danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 0, 102, 0.4);
+}
+
+/* Animations */
+@keyframes pulse-monitoring {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes pulse-warning {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+@keyframes pulse-danger {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.6; }
+}
+
+/* Scrollbar styling */
+.tiltcheck-overlay-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tiltcheck-overlay-content::-webkit-scrollbar-track {
+  background: rgba(26, 26, 46, 0.3);
+}
+
+.tiltcheck-overlay-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 0, 255, 0.3);
+  border-radius: 3px;
+}
+
+.tiltcheck-overlay-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 0, 255, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tiltcheck-overlay-container.expanded {
+    width: 100vw;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Hide on very small screens when minimized */
+@media (max-width: 480px) {
+  .tiltcheck-overlay-container:not(.expanded) {
+    width: 48px;
+  }
+  
+  
+.tiltcheck-overlay-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .tiltcheck-overlay-header {
+    padding: 12px 8px;
+    min-height: 48px;
+  }
+}
