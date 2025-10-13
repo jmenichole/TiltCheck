@@ -1,5 +1,5 @@
 services:
-  # TiltCheck Web Application  
+  # TiltCheck Web Application
   - type: web
     name: tiltcheck-web
     runtime: node
@@ -10,10 +10,10 @@ services:
       - key: NODE_ENV
         value: production
 
-  # TiltCheck Discord Bot with Non-Custodial Integration
-  - type: web
+  # TiltCheck Discord Bot (Background Worker - No Port Required)
+  - type: worker
     name: tiltcheck-discord-bot
-    runtime: node  
+    runtime: node
     plan: free
     buildCommand: npm install --only=production --legacy-peer-deps --no-optional
     startCommand: node bot.js --mode integrated
