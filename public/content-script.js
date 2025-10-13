@@ -311,4 +311,3 @@
 
     console.log('TiltCheck content script loaded with right-side overlay');
 })();
-})();
