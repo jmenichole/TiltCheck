@@ -488,7 +488,7 @@ class TiltCheckRightSideOverlay {
 
 // Safe initialization helper to avoid duplicate overlays
 function initTiltCheckOverlayOnce() {
-    if (window.tiltCheckOverlay and window.tiltCheckOverlay.overlayContainer) {
+    if (window.tiltCheckOverlay && window.tiltCheckOverlay.overlayContainer) {
         return window.tiltCheckOverlay;
     }
     window.tiltCheckOverlay = new TiltCheckRightSideOverlay();

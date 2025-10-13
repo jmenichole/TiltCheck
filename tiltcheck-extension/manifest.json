@@ -7,7 +7,9 @@
     "activeTab",
     "storage",
     "notifications",
-    "alarms"
+    "alarms",
+    "scripting",
+    "tabs"
   ],
   "host_permissions": [
     "https://stake.com/*",
@@ -41,7 +43,7 @@
       "css": [
         "content-styles.css"
       ],
-      "run_at": "document_start"
+      "run_at": "document_end"
     }
   ],
   "background": {
@@ -49,7 +51,13 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "TiltCheck - Monitor Your Gaming"
+    "default_title": "TiltCheck - Monitor Your Gaming",
+    "default_icon": {
+      "16": "icon-16.png",
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    }
   },
   "web_accessible_resources": [
     {
@@ -59,7 +67,12 @@
         "content-styles.css",
         "overlay.html",
         "overlay.js",
-        "overlay.css"
+        "overlay.css",
+        "icon-16.png",
+        "icon-32.png",
+        "icon-48.png",
+        "icon-128.png",
+        "tiltcheck-logo-original.png"
       ],
       "matches": [
         "<all_urls>"
@@ -79,5 +92,11 @@
       "https://tiltcheck.com/*",
       "https://support.tiltcheck.com/*"
     ]
+  },
+  "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
   }
 }

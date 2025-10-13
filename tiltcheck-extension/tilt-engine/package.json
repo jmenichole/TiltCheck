@@ -1,0 +1,48 @@
+{
+  "name": "tiltcheck-engine",
+  "version": "1.0.0",
+  "description": "Standalone tilt detection engine for responsible gambling monitoring",
+  "main": "./core/tiltEngine.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:integration": "jest --testPathPattern=integration",
+    "lint": "echo 'Linting skipped for demo'",
+    "validate": "npm test"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "collectCoverageFrom": [
+      "core/**/*.js",
+      "adapters/**/*.js",
+      "!**/*.test.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 75,
+        "functions": 75,
+        "lines": 75,
+        "statements": 75
+      }
+    },
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "16"
+          },
+          "modules": "auto"
+        }
+      ]
+    ]
+  }
+}
