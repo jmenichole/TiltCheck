@@ -2,7 +2,7 @@
  * Non-Custodial Tipping System using Solana Smart Contracts
  * Users control their own wallets and private keys
  */
-export class NonCustodialTippingSystem {
+class NonCustodialTippingSystem {
     constructor(config) {
         this.userWallets = new Map(); // Discord ID -> User's wallet pubkey
         this.config = config || {};
@@ -81,4 +81,4 @@ export class NonCustodialTippingSystem {
     }
 }
 
-export default NonCustodialTippingSystem;
+module.exports = { NonCustodialTippingSystem };
