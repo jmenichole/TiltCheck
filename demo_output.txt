@@ -1,0 +1,74 @@
+2025-10-30 17:20:57,146 - INFO - Successfully loaded 60 records from session_data_both_alerts.csv
+2025-10-30 17:20:57,147 - WARNING - Rapid spinning detected: 60 spins in 5 minutes
+2025-10-30 17:20:57,148 - WARNING - Significant balance drop detected: 59.0% in 10 minutes
+
+======================================================================
+ TiltCheck Agent - Responsible Gaming Tilt Detection 
+ Using Fetch.ai uAgents Framework 
+======================================================================
+
+======================================================================
+TiltCheck Agent - Tilt Detection Demo
+======================================================================
+Analyzing session data from: session_data_both_alerts.csv
+
+
+📊 Session Summary:
+  - Total spins: 60
+  - Time range: 2024-01-15 10:00:00 to 2024-01-15 10:04:55
+  - Session duration: 4.9 minutes
+  - Starting balance: $1000.00
+  - Ending balance: $410.00
+  - Total bet amount: $600.00
+  - Win rate: 0.0% (0 wins, 60 losses)
+
+🔍 Checking for Tilt Conditions...
+
+======================================================================
+🚨 TILT ALERT DETECTED 🚨
+======================================================================
+Message: ⚠️ Tilt Alert: You've been spinning too fast. Take a break.
+Risk Level: HIGH
+Timestamp: 2025-10-30T17:20:57.147844
+
+Details:
+  - Spin Count: 60
+  - Time Window Minutes: 5
+  - Threshold: 50
+  - Avg Spin Rate: 12.0 spins/min
+======================================================================
+
+======================================================================
+🚨 TILT ALERT DETECTED 🚨
+======================================================================
+Message: ⚠️ Tilt Alert: Your balance is dropping quickly. Vault some winnings.
+Risk Level: HIGH
+Timestamp: 2025-10-30T17:20:57.148415
+
+Details:
+  - Start Balance: 1000.0
+  - End Balance: 410.0
+  - Balance Lost: 590.0
+  - Drop Percentage: 59.0%
+  - Time Window Minutes: 10
+  - Threshold: 30.0%
+======================================================================
+
+
+======================================================================
+⚠️  2 TILT ALERT(S) DETECTED
+Recommendation: Take a break and review your gameplay
+======================================================================
+
+
+💡 About This Demo:
+   This demonstration shows the tilt detection algorithms in action.
+   The full agent.py includes:
+   - uAgents framework integration
+   - ASI Chat Protocol messaging
+   - Periodic monitoring (every 30 seconds)
+   - Agentverse discoverability
+
+   To run the full agent: python agent.py
+======================================================================
+
