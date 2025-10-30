@@ -33,12 +33,13 @@ python agent.py
 
 **Full Agent Documentation**: See [README_AGENT.md](README_AGENT.md) for complete setup, usage, and integration details.
 
-**ASI Alliance Hackathon Submission**: This project includes a complete hackathon submission. See [SUBMISSION.md](SUBMISSION.md) for:
-- ✅ Complete submission requirements checklist
-- 📊 Judging criteria responses
-- 🎬 Demo video guide
-- 🏆 Why TiltCheck Agent stands out
-- 📚 Comprehensive technical documentation
+**ASI Alliance Hackathon Submission**: This project includes a complete hackathon submission:
+- ⚡ **Quick Start for Judges**: [QUICKSTART_JUDGES.md](QUICKSTART_JUDGES.md) - 60-second demo
+- ✅ **Complete Submission**: [SUBMISSION.md](SUBMISSION.md) - All requirements and judging criteria
+- 📊 **Judging Criteria**: Detailed responses for all categories
+- 🎬 **Demo Video Guide**: [DEMO_VIDEO.md](DEMO_VIDEO.md) - Video creation instructions
+- 🏆 **Why TiltCheck Agent Stands Out**: Innovation, impact, and technical excellence
+- 📚 **Comprehensive Documentation**: [README_AGENT.md](README_AGENT.md) - Full agent docs
 
 ![TiltCheck Dashboard](https://via.placeholder.com/800x400/0f172a/60a5fa?text=TiltCheck+Dashboard)
 
