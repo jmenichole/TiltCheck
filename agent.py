@@ -3,6 +3,18 @@ TiltCheck Agent - Gambling Tilt Detection using Fetch.ai uAgents Framework
 
 This agent monitors gambling session data to detect tilt behavior and sends
 alerts using the ASI Chat Protocol when risk is detected.
+
+ASI Alliance Hackathon Submission - Innovation Lab Category
+
+Technologies Used:
+- Fetch.ai uAgents Framework (v0.12.0+)
+- ASI Chat Protocol for agent communication
+- Agentverse registration ready
+- Extensible for MeTTa Knowledge Graphs
+
+For complete documentation, see README_AGENT.md
+For submission details, see SUBMISSION.md
+Repository: https://github.com/jmenichole/TiltCheck
 """
 
 import logging

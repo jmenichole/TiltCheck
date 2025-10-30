@@ -3,6 +3,8 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
 [![React Version](https://img.shields.io/badge/react-%5E18.2.0-blue.svg)](https://reactjs.org/)
 [![Status](https://img.shields.io/badge/status-commercial-blue.svg)](https://tiltcheck.io)
+![tag:innovationlab](https://img.shields.io/badge/innovationlab-3D8BD3)
+![tag:hackathon](https://img.shields.io/badge/hackathon-5F43F1)
 
 **Professional Player Behavior Monitoring System for Responsible Gaming**
 
@@ -10,9 +12,44 @@ TiltCheck is a comprehensive real-time monitoring system designed to identify, t
 
 **Now available as a commercial service with enterprise-grade support and premium Discord bot integration.**
 
+## 🤖 ASI Alliance Agent Integration
+
+**NEW**: TiltCheck now includes an intelligent agent built with Fetch.ai's uAgents framework! 
+
+The **TiltCheck Agent** uses ASI Alliance technologies to provide autonomous tilt detection and intervention:
+- 🎯 **Fetch.ai uAgents Framework** - Autonomous agent for real-time monitoring
+- 💬 **ASI Chat Protocol** - Agent-to-agent communication for alerts
+- 🌐 **Agentverse Ready** - Discoverable on Agentverse and ASI:One
+- 🧠 **MeTTa-Ready** - Extensible for knowledge graph reasoning
+
+**Quick Start with Agent**:
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run the TiltCheck Agent
+python agent.py
+```
+
+**Full Agent Documentation**: See [README_AGENT.md](README_AGENT.md) for complete setup, usage, and integration details.
+
+**ASI Alliance Hackathon Submission**: This project includes a complete hackathon submission. See [SUBMISSION.md](SUBMISSION.md) for:
+- ✅ Complete submission requirements checklist
+- 📊 Judging criteria responses
+- 🎬 Demo video guide
+- 🏆 Why TiltCheck Agent stands out
+- 📚 Comprehensive technical documentation
+
 ![TiltCheck Dashboard](https://via.placeholder.com/800x400/0f172a/60a5fa?text=TiltCheck+Dashboard)
 
 ## 🚀 Features
+
+### 🤖 Intelligent Agent (NEW)
+- **Autonomous Monitoring** - Fetch.ai uAgents-powered tilt detection
+- **ASI Chat Protocol** - Agent-to-agent communication
+- **Agentverse Integration** - Discoverable on ASI:One
+- **Real-time Alerts** - Instant intervention messages
+- **MeTTa-Ready** - Extensible for advanced reasoning
 
 ### 🎯 Core Monitoring
 - **Real-time Tilt Detection** - Advanced algorithms monitor player behavior patterns
