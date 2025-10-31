@@ -32,15 +32,16 @@
     
     <style>
         body {
-            background: linear-gradient(135deg, var(--deep-night) 0%, var(--deep-night-light) 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
-            padding: 2rem 0;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+            padding: 1.5rem 0;
         }
         
         .container {
@@ -119,18 +120,18 @@
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 2rem;
-            border: 1px solid rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(0, 255, 0, 0.15);
             transition: all 0.3s ease;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary-blue);
-            box-shadow: 0 20px 40px rgba(96, 165, 250, 0.1);
+            border-color: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
         .feature-icon {
@@ -152,11 +153,11 @@
         }
         
         .platforms-section {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.3);
             padding: 4rem 0;
             margin: 4rem 0;
-            border-radius: 20px;
-            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 0, 0.1);
         }
         
         .platform-cards {
@@ -167,19 +168,20 @@
         }
         
         .platform-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 2.5rem;
-            border: 2px solid transparent;
+            border: 1px solid rgba(0, 255, 0, 0.15);
             transition: all 0.3s ease;
             text-decoration: none;
             display: block;
         }
         
         .platform-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
         
         .card-icon {
