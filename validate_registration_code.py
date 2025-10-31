@@ -14,7 +14,7 @@ def validate_python_syntax(filepath):
     """Validate Python syntax by parsing the file"""
     print(f"\nValidating Python syntax: {filepath}")
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             code = f.read()
         ast.parse(code)
         print(f"✅ Valid Python syntax")
@@ -31,7 +31,7 @@ def check_imports_in_file(filepath, required_imports):
     """Check that required imports are present in the file"""
     print(f"\nChecking imports in: {filepath}")
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             code = f.read()
         
         tree = ast.parse(code)
@@ -63,7 +63,7 @@ def check_function_definitions(filepath, required_functions):
     """Check that required functions are defined in the file"""
     print(f"\nChecking function definitions in: {filepath}")
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             code = f.read()
         
         tree = ast.parse(code)
@@ -91,7 +91,7 @@ def check_registration_call(filepath):
     """Check that register_chat_agent is called with correct parameters"""
     print(f"\nChecking register_chat_agent call in: {filepath}")
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             code = f.read()
         
         # Check for the expected call pattern
@@ -135,7 +135,7 @@ def check_env_example():
     """Check that .env.example has the required variables"""
     print(f"\nChecking .env.example file")
     try:
-        with open('.env.example', 'r') as f:
+        with open('.env.example', 'r', encoding='utf-8') as f:
             content = f.read()
         
         if 'AGENTVERSE_KEY' in content:
@@ -160,7 +160,7 @@ def check_requirements():
     """Check that requirements.txt has the required packages"""
     print(f"\nChecking requirements.txt")
     try:
-        with open('requirements.txt', 'r') as f:
+        with open('requirements.txt', 'r', encoding='utf-8') as f:
             content = f.read()
         
         if 'uagents_core' in content:

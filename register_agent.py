@@ -109,4 +109,5 @@ def main():
 
 
 if __name__ == "__main__":
-    exit(main())
+    import sys
+    sys.exit(main())
