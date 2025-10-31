@@ -3,12 +3,24 @@ TiltCheck Agent - Gambling Tilt Detection using Fetch.ai uAgents Framework
 
 This agent monitors gambling session data to detect tilt behavior and sends
 alerts using the ASI Chat Protocol when risk is detected.
+
+ASI Alliance Hackathon Submission - Innovation Lab Category
+
+Technologies Used:
+- Fetch.ai uAgents Framework (v0.12.0+)
+- ASI Chat Protocol for agent communication
+- Agentverse registration ready
+- Extensible for MeTTa Knowledge Graphs
+
+For complete documentation, see README_AGENT.md
+For submission details, see SUBMISSION.md
+Repository: https://github.com/jmenichole/TiltCheck
 """
 
 import logging
 import pandas as pd
 from datetime import datetime, timedelta
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 
@@ -33,7 +45,7 @@ class TiltAlert(Model):
     alert_message: str
     risk_level: str
     timestamp: str
-    details: Dict[str, any]
+    details: Dict[str, Any]
 
 
 # Initialize the TiltCheck Agent
@@ -45,7 +57,13 @@ tiltcheck_agent = Agent(
 )
 
 # Fund agent if needed (for testnet)
-fund_agent_if_low(tiltcheck_agent.wallet.address())
+# Note: This requires network connectivity to the Fetch.ai testnet
+# Comment out for local/offline testing
+try:
+    fund_agent_if_low(tiltcheck_agent.wallet.address())
+except Exception as e:
+    logger.warning(f"Could not fund agent from testnet: {e}")
+    logger.warning("Agent will run in demo mode without testnet connection")
 
 logger.info(f"TiltCheck Agent initialized with address: {tiltcheck_agent.address}")
 
