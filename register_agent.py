@@ -14,6 +14,7 @@ Set these in your environment or .env file before running this script.
 """
 
 import os
+import sys
 import logging
 from uagents_core.utils.registration import (
     register_chat_agent,
@@ -109,5 +110,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import sys
     sys.exit(main())

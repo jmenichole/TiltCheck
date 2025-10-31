@@ -47,7 +47,10 @@ def check_imports_in_file(filepath, required_imports):
         
         all_found = True
         for required in required_imports:
-            if required in found_imports or any(required in imp for imp in found_imports):
+            # Check for exact match or if it's a parent module of an import
+            found = (required in found_imports or 
+                    any(imp == required or imp.startswith(required + '.') for imp in found_imports))
+            if found:
                 print(f"  ✅ Found import: {required}")
             else:
                 print(f"  ❌ Missing import: {required}")
@@ -161,9 +164,21 @@ def check_requirements():
     print(f"\nChecking requirements.txt")
     try:
         with open('requirements.txt', 'r', encoding='utf-8') as f:
-            content = f.read()
+            lines = f.readlines()
         
-        if 'uagents_core' in content:
+        # Check if uagents_core appears as a package name (not just a substring)
+        found = False
+        for line in lines:
+            line = line.strip()
+            # Skip comments and empty lines
+            if line.startswith('#') or not line:
+                continue
+            # Check if line starts with uagents_core (as package name)
+            if line.startswith('uagents_core'):
+                found = True
+                break
+        
+        if found:
             print(f"  ✅ Found uagents_core in requirements.txt")
         else:
             print(f"  ❌ Missing uagents_core in requirements.txt")
