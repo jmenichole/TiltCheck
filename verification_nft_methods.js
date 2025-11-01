@@ -11,6 +11,22 @@
 
 // ========== VERIFICATION NFT SYSTEM ==========
 
+/**
+ * Mint a verification NFT for a Discord user
+ * 
+ * @async
+ * @param {string} discordUserId - Discord user ID
+ * @param {string} username - Discord username
+ * @param {string} [verificationLevel='basic'] - Verification level: 'basic', 'premium', or 'elite'
+ * @returns {Promise<Object>} Result object with success status and NFT details
+ * @throws {Error} If minting process fails
+ * 
+ * @example
+ * const result = await mintVerificationNFT('123456789', 'username', 'premium');
+ * if (result.success) {
+ *   console.log('NFT minted:', result.nft.mint);
+ * }
+ */
 async mintVerificationNFT(discordUserId, username, verificationLevel = 'basic') {
     try {
         let userAccount = this.userAccounts.get(discordUserId);
@@ -62,6 +78,21 @@ async mintVerificationNFT(discordUserId, username, verificationLevel = 'basic') 
     }
 }
 
+/**
+ * Check the verification status of a Discord user
+ * 
+ * @async
+ * @param {string} discordUserId - Discord user ID to check
+ * @returns {Promise<Object>} Verification status object
+ * @property {boolean} verified - Whether the user is verified
+ * @property {string} [reason] - Reason if not verified
+ * @property {Object} [nft] - NFT details if verified
+ * @property {string} [level] - Verification level
+ * 
+ * @example
+ * const status = await checkVerificationStatus('123456789');
+ * console.log('Verified:', status.verified);
+ */
 async checkVerificationStatus(discordUserId) {
     try {
         const userAccount = this.userAccounts.get(discordUserId);
