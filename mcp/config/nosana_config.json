@@ -1,0 +1,52 @@
+{
+  "_comment": "Copyright (c) 2024-2025 JME (jmenichole) - All Rights Reserved. PROPRIETARY AND CONFIDENTIAL. Unauthorized copying prohibited. See LICENSE file.",
+  "nosana": {
+    "network": "devnet",
+    "rpc_url": "https://api.devnet.solana.com",
+    "compute_nodes": {
+      "min_nodes": 3,
+      "preferred_region": "us-west",
+      "fallback_enabled": true
+    },
+    "ai_models": {
+      "tilt_detection": {
+        "model_id": "tiltcheck-v1",
+        "version": "1.0.0",
+        "accuracy_target": 0.89
+      }
+    }
+  },
+  "solana": {
+    "network": "devnet",
+    "commitment": "confirmed",
+    "transaction_timeout": 60000,
+    "max_retries": 3
+  },
+  "agent": {
+    "name": "TiltCheck",
+    "endpoint": "https://tiltcheck.it.com/agent",
+    "update_interval": 30,
+    "batch_size": 100
+  },
+  "analysis": {
+    "thresholds": {
+      "rapid_spinning": {
+        "window_minutes": 5,
+        "threshold_spins": 50
+      },
+      "balance_drop": {
+        "window_minutes": 10,
+        "drop_threshold": 0.30
+      },
+      "session_duration": {
+        "warning_minutes": 60,
+        "critical_minutes": 120
+      }
+    },
+    "risk_levels": {
+      "low": [0, 40],
+      "medium": [40, 70],
+      "high": [70, 100]
+    }
+  }
+}

@@ -276,15 +276,40 @@ class TiltAlert(Model):
 The agent is configured to be discoverable on Agentverse:
 
 - **Agent Name**: `tiltcheck_agent`
-- **Agent Seed**: `tiltcheck_secure_seed_phrase_2024` (configurable in agent.py)
-- **Endpoint**: `http://localhost:8001/submit`
+- **Agent Seed**: Configured via `AGENT_SEED_PHRASE` environment variable (defaults to `tiltcheck_secure_seed_phrase_2024`)
+- **Production Endpoint**: `https://tiltcheck.it.com/agent`
+- **Local Endpoint**: `http://localhost:8001/submit`
 - **Protocol**: ASI Chat Protocol
 - **Port**: 8001
 - **Agent Address**: Generated at runtime and logged at startup (format: `agent1qd2j9x...`)
 
-### Registering on Agentverse
+### Quick Registration (Automated)
 
-To make your agent discoverable on Agentverse and ASI:One:
+The easiest way to register your TiltCheck agent is using the automated registration script:
+
+1. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Set environment variables**:
+   ```bash
+   export AGENTVERSE_KEY="your_agentverse_api_key_here"
+   export AGENT_SEED_PHRASE="your_secure_seed_phrase_here"
+   ```
+
+3. **Run the registration script**:
+   ```bash
+   python register_agent.py
+   ```
+
+That's it! Your agent will be registered at `https://tiltcheck.it.com/agent` and discoverable on Agentverse.
+
+For detailed registration instructions, troubleshooting, and configuration options, see [AGENT_REGISTRATION_GUIDE.md](AGENT_REGISTRATION_GUIDE.md).
+
+### Manual Registration (Alternative)
+
+Alternatively, you can register manually on Agentverse:
 
 1. **Run the agent to get its address**:
    ```bash
@@ -297,7 +322,7 @@ To make your agent discoverable on Agentverse and ASI:One:
    - Create an account or login
    - Navigate to "My Agents" → "Register Agent"
    - Enter your agent's address
-   - Configure the endpoint URL (must be publicly accessible)
+   - Configure the endpoint URL: `https://tiltcheck.it.com/agent`
    - Enable Chat Protocol for ASI:One integration
 
 3. **Enable Chat Protocol**:
@@ -312,7 +337,7 @@ To make your agent discoverable on Agentverse and ASI:One:
    
    # Option 2: Deploy to cloud (recommended)
    # Update agent.py endpoint with your public URL
-   # Example: https://your-domain.com/submit
+   # Example: https://tiltcheck.it.com/agent
    ```
 
 To publish to Agentverse, ensure your agent is running and accessible at the configured endpoint. The agent's address will be logged at startup.

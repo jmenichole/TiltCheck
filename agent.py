@@ -17,6 +17,7 @@ For submission details, see SUBMISSION.md
 Repository: https://github.com/jmenichole/TiltCheck
 """
 
+import os
 import logging
 import pandas as pd
 from datetime import datetime, timedelta
@@ -49,9 +50,12 @@ class TiltAlert(Model):
 
 
 # Initialize the TiltCheck Agent
+# Note: Use the seed phrase from AGENT_SEED_PHRASE environment variable for production
+agent_seed = os.environ.get("AGENT_SEED_PHRASE", "tiltcheck_secure_seed_phrase_2024")
+
 tiltcheck_agent = Agent(
     name="tiltcheck_agent",
-    seed="tiltcheck_secure_seed_phrase_2024",
+    seed=agent_seed,
     port=8001,
     endpoint=["http://localhost:8001/submit"]
 )
