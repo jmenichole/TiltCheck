@@ -94,7 +94,7 @@ Welcome to the TiltCheck documentation! This index helps you find the right docu
 - **Live Site**: [https://tiltcheck.it.com](https://tiltcheck.it.com)
 - **GitHub Repository**: [https://github.com/jmenichole/TiltCheck](https://github.com/jmenichole/TiltCheck)
 - **Demo Page**: [https://tiltcheck.it.com/demo.html](https://tiltcheck.it.com/demo.html)
-- **Support Email**: support@tiltcheck.it.com
+- **Support Email**: jmenichole007@outlook.com
 
 ## 🆘 Need Help?
 
@@ -102,7 +102,7 @@ If you can't find what you're looking for:
 1. Check the [README.md](README.md) for overview
 2. See [QUICK_START.md](QUICK_START.md) for basic setup
 3. Visit [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md) for detailed instructions
-4. Contact support at support@tiltcheck.it.com
+4. Contact support at jmenichole007@outlook.com
 
 ## 📝 Contributing
 

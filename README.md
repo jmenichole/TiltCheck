@@ -423,7 +423,7 @@ The deployment workflow:
 ## 📞 Support & Contact
 
 ### Sales & Business Inquiries
-- **Sales & Demo Requests**: sales@tiltcheck.it.com
+- **Sales & Demo Requests**: jmenichole007@outlook.com
 - **Business Development**: j.chapman7@yahoo.com
 - **Phone**: +1 (555) TIL-TCHECK
 

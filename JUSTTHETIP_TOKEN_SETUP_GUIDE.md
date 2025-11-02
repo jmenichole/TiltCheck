@@ -167,7 +167,7 @@ If you're currently using Collab.Land SmartTag:
 
 - Discord: Join our support server
 - GitHub Issues: Report bugs or request features  
-- Email: support@tiltcheck.it.com
+- Email: jmenichole007@outlook.com
 - Community Forum: https://tiltcheck.it.com/community-forum.html
 
 ---
