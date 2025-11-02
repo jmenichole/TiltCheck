@@ -423,10 +423,9 @@ The deployment workflow:
 ## 📞 Support & Contact
 
 ### Sales & Business Inquiries
-- **Sales Email**: sales@tiltcheck.it.com
+- **Sales & Demo Requests**: sales@tiltcheck.it.com
 - **Business Development**: j.chapman7@yahoo.com
 - **Phone**: +1 (555) TIL-TCHECK
-- **Demo Requests**: Contact us at sales@tiltcheck.it.com
 
 ### Technical Support
 - **Starter Plan**: Email support (48-hour response)
