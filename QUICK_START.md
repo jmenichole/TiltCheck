@@ -1,19 +1,44 @@
-# Quick Start - Enable GitHub Pages
+# Quick Start - TiltCheck
 
-## 🚀 3 Steps to Deploy
+> 📚 **Looking for more documentation?** See the [Documentation Index](DOCUMENTATION_INDEX.md) for all guides.
 
-### Step 1: Enable GitHub Pages
-```
-Repository Settings → Pages → Source: "GitHub Actions"
+## 🚀 Quick Access
+
+- **Live Site**: [https://tiltcheck.it.com](https://tiltcheck.it.com)
+- **GitHub Repository**: [https://github.com/jmenichole/TiltCheck](https://github.com/jmenichole/TiltCheck)
+- **Full Documentation**: [README.md](README.md)
+
+## 🎯 For Developers
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 ```
 
-### Step 2: Merge This PR
-The deployment will start automatically when merged to main.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-### Step 3: Visit Your Site
+### 3. Configure Environment
+```bash
+cp .env.example .env
+# Edit .env with your configuration
 ```
-https://jmenichole.github.io/TiltCheck/
+
+### 4. Start Development
+```bash
+npm start
 ```
+
+## 🌐 Deployment
+
+The site is automatically deployed to GitHub Pages at [https://tiltcheck.it.com](https://tiltcheck.it.com) when changes are pushed to the main branch.
+
+For detailed deployment instructions, see:
+- [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)
+- [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 
 ## ✅ What's Included
 

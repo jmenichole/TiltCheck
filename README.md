@@ -12,6 +12,8 @@ TiltCheck is a comprehensive real-time monitoring system designed to identify, t
 
 **Now available as a commercial service with enterprise-grade support and premium Discord bot integration.**
 
+> 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.
+
 ## 🤖 ASI Alliance Agent Integration
 
 **NEW**: TiltCheck now includes an intelligent agent built with Fetch.ai's uAgents framework! 
