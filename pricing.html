@@ -1,0 +1,273 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - TiltCheck</title>
+    <link rel="stylesheet" href="./tiltcheck-brand.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            color: #60A5FA;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            color: #9CA3AF;
+            font-size: 1.2rem;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(96, 165, 250, 0.2);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 20px 40px rgba(96, 165, 250, 0.2);
+        }
+        .pricing-card.featured {
+            border-color: #4FD1C5;
+            background: linear-gradient(135deg, rgba(79, 209, 197, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+        }
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #E5E7EB;
+            margin-bottom: 0.5rem;
+        }
+        .plan-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(45deg, #4FD1C5, #10B981);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #60A5FA;
+            margin-bottom: 0.25rem;
+        }
+        .plan-price-unit {
+            color: #9CA3AF;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+            flex-grow: 1;
+        }
+        .plan-features li {
+            padding: 0.75rem 0;
+            color: #E5E7EB;
+            display: flex;
+            align-items: center;
+        }
+        .plan-features li::before {
+            content: "✓";
+            color: #10B981;
+            font-weight: bold;
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+        .plan-button {
+            display: block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #60A5FA, #8B5CF6);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+        .plan-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(96, 165, 250, 0.4);
+        }
+        .plan-button.secondary {
+            background: rgba(96, 165, 250, 0.1);
+            border: 2px solid #60A5FA;
+        }
+        .addon-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            margin-bottom: 2rem;
+        }
+        .addon-title {
+            color: #4FD1C5;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .addon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .addon-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        .addon-name {
+            font-weight: 600;
+            color: #E5E7EB;
+            margin-bottom: 0.5rem;
+        }
+        .addon-price {
+            color: #60A5FA;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .addon-description {
+            color: #9CA3AF;
+            font-size: 0.9rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid #60A5FA;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Choose Your Plan</h1>
+            <p class="subtitle">Professional player behavior monitoring and responsible gaming tools</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Starter Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">🆓 Starter</div>
+                <div class="plan-price">$299<span class="plan-price-unit">/month</span></div>
+                <ul class="plan-features">
+                    <li>Up to 1,000 monitored players</li>
+                    <li>10,000 alerts per month</li>
+                    <li>100,000 API calls per month</li>
+                    <li>Email support (48-hour response)</li>
+                    <li>Discord bot (basic commands)</li>
+                    <li>Real-time tilt detection</li>
+                    <li>Basic analytics dashboard</li>
+                </ul>
+                <a href="beta-signup.html" class="plan-button secondary">Get Started</a>
+            </div>
+
+            <!-- Professional Plan -->
+            <div class="pricing-card featured">
+                <div class="plan-badge">MOST POPULAR</div>
+                <div class="plan-name">🚀 Professional</div>
+                <div class="plan-price">$799<span class="plan-price-unit">/month</span></div>
+                <ul class="plan-features">
+                    <li>Up to 10,000 monitored players</li>
+                    <li>Unlimited alerts</li>
+                    <li>1,000,000 API calls per month</li>
+                    <li>Priority email + phone support (24-hour response)</li>
+                    <li>Discord bot (full feature set + custom commands)</li>
+                    <li>Advanced analytics & reporting</li>
+                    <li>Webhook notifications</li>
+                    <li>Custom alert thresholds</li>
+                    <li>Data export capabilities</li>
+                </ul>
+                <a href="beta-signup.html" class="plan-button">Get Started</a>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">🏢 Enterprise</div>
+                <div class="plan-price">Custom<span class="plan-price-unit"></span></div>
+                <ul class="plan-features">
+                    <li>Unlimited monitored players</li>
+                    <li>Unlimited alerts</li>
+                    <li>Unlimited API calls</li>
+                    <li>24/7 dedicated support team (4-hour response)</li>
+                    <li>White-label custom Discord bot</li>
+                    <li>Custom reporting & data export</li>
+                    <li>Full API access & custom integrations</li>
+                    <li>99.9% uptime SLA</li>
+                    <li>SOC 2 Type II compliance</li>
+                    <li>GDPR compliance</li>
+                    <li>Dedicated account manager</li>
+                </ul>
+                <a href="mailto:support@tiltcheck.it.com?subject=Enterprise%20Inquiry" class="plan-button">Contact Sales</a>
+            </div>
+        </div>
+
+        <div class="addon-section">
+            <div class="addon-title">🤖 Discord Bot Add-ons</div>
+            <div class="addon-grid">
+                <div class="addon-card">
+                    <div class="addon-name">Premium Bot</div>
+                    <div class="addon-price">$199/month</div>
+                    <div class="addon-description">Advanced commands, custom alerts, and enhanced features</div>
+                </div>
+                <div class="addon-card">
+                    <div class="addon-name">White-label Bot</div>
+                    <div class="addon-price">$499/month</div>
+                    <div class="addon-description">Fully customizable bot with your branding and colors</div>
+                </div>
+                <div class="addon-card">
+                    <div class="addon-name">Multi-server Support</div>
+                    <div class="addon-price">$99/month</div>
+                    <div class="addon-description">Additional $99/month per server for bot deployment</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <p style="color: #9CA3AF; margin-bottom: 1rem;">All plans include a 30-day money-back guarantee</p>
+            <p style="color: #9CA3AF;">Need help choosing? <a href="mailto:support@tiltcheck.it.com" style="color: #60A5FA;">Contact our sales team</a></p>
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
