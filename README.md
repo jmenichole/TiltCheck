@@ -2,7 +2,7 @@
 
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
 [![React Version](https://img.shields.io/badge/react-%5E18.2.0-blue.svg)](https://reactjs.org/)
-[![Status](https://img.shields.io/badge/status-commercial-blue.svg)](https://tiltcheck.io)
+[![Status](https://img.shields.io/badge/status-commercial-blue.svg)](https://tiltcheck.it.com)
 ![tag:innovationlab](https://img.shields.io/badge/innovationlab-3D8BD3)
 ![tag:hackathon](https://img.shields.io/badge/hackathon-5F43F1)
 
@@ -11,6 +11,8 @@
 TiltCheck is a comprehensive real-time monitoring system designed to identify, track, and mitigate player "tilt" behaviors in gaming environments. Our AI-powered solution promotes responsible gaming through intelligent pattern recognition, predictive alerts, and intervention recommendations.
 
 **Now available as a commercial service with enterprise-grade support and premium Discord bot integration.**
+
+> 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.
 
 ## 🤖 ASI Alliance Agent Integration
 
@@ -130,12 +132,12 @@ python agent.py
 ### Commercial Access
 
 1. **Subscribe to a plan**
-   - Visit [https://tiltcheck.io/pricing](https://tiltcheck.io/pricing)
+   - Visit [https://tiltcheck.it.com/pricing](https://tiltcheck.it.com/pricing)
    - Choose your plan (Starter, Professional, or Enterprise)
    - Complete payment and account setup
 
 2. **Get your API credentials**
-   - Access your dashboard at [https://dashboard.tiltcheck.io](https://dashboard.tiltcheck.io)
+   - Access your dashboard at [https://tiltcheck.it.com/dashboard](https://tiltcheck.it.com/dashboard)
    - Generate your API key and webhook endpoints
    - Download client libraries and documentation
 
@@ -250,7 +252,7 @@ await tiltChecker.updateConfiguration({
 });
 ```
 
-**Dashboard Configuration**: Access advanced settings at [https://dashboard.tiltcheck.io](https://dashboard.tiltcheck.io)
+**Dashboard Configuration**: Access advanced settings at [https://tiltcheck.it.com/dashboard](https://tiltcheck.it.com/dashboard)
 ```
 
 ## 🤖 Discord Bot Integration (Premium Service)
@@ -299,7 +301,7 @@ TiltCheck offers premium Discord bot services for community engagement and monit
 ## 📈 Demo & Examples
 
 ### Live Demo
-Visit our [live demo](https://tiltcheck.io/demo) to see TiltCheck in action.
+Visit our [live demo](https://tiltcheck.it.com/demo.html) to see TiltCheck in action.
 
 ### Example Implementations
 
@@ -383,7 +385,7 @@ npm run lint
 
 The project is automatically deployed to GitHub Pages when changes are pushed to the main branch.
 
-**Live Demo**: [https://jmenichole.github.io/TiltCheck/](https://jmenichole.github.io/TiltCheck/)
+**Live Demo**: [https://tiltcheck.it.com](https://tiltcheck.it.com)
 
 #### Manual Deployment
 
@@ -421,23 +423,22 @@ The deployment workflow:
 ## 📞 Support & Contact
 
 ### Sales & Business Inquiries
-- **Sales Email**: sales@tiltcheck.io
+- **Sales & Demo Requests**: jmenichole007@outlook.com
 - **Business Development**: j.chapman7@yahoo.com
 - **Phone**: +1 (555) TIL-TCHECK
-- **Demo Requests**: [Schedule a demo](https://calendly.com/tiltcheck/demo)
 
 ### Technical Support
 - **Starter Plan**: Email support (48-hour response)
 - **Professional Plan**: Priority email + phone support (24-hour response)
 - **Enterprise Plan**: 24/7 dedicated support team (4-hour response)
-- **Support Portal**: [https://support.tiltcheck.io](https://support.tiltcheck.io)
-- **Documentation**: [https://docs.tiltcheck.io](https://docs.tiltcheck.io)
+- **Support Portal**: [https://tiltcheck.it.com/support](https://tiltcheck.it.com/support)
+- **Documentation**: [https://tiltcheck.it.com/docs](https://tiltcheck.it.com/docs)
 
 ### Community & Resources
 - **Customer Discord**: [Private server for subscribers](https://discord.gg/tiltcheck-customers)
-- **Knowledge Base**: [https://kb.tiltcheck.io](https://kb.tiltcheck.io)
-- **API Status**: [https://status.tiltcheck.io](https://status.tiltcheck.io)
-- **Blog**: [https://blog.tiltcheck.io](https://blog.tiltcheck.io)
+- **Knowledge Base**: [https://tiltcheck.it.com/kb](https://tiltcheck.it.com/kb)
+- **API Status**: [https://tiltcheck.it.com/status](https://tiltcheck.it.com/status)
+- **GitHub**: [https://github.com/jmenichole/TiltCheck](https://github.com/jmenichole/TiltCheck)
 
 ## 🎯 Roadmap
 
@@ -484,9 +485,9 @@ This software is proprietary and commercial. Usage requires a valid subscription
 - **Enterprise**: Custom licensing agreements available
 
 ### Terms of Service
-- Full terms available at [https://tiltcheck.io/terms](https://tiltcheck.io/terms)
-- Privacy policy at [https://tiltcheck.io/privacy](https://tiltcheck.io/privacy)
-- SLA details at [https://tiltcheck.io/sla](https://tiltcheck.io/sla)
+- Full terms available at [https://tiltcheck.it.com/tos.html](https://tiltcheck.it.com/tos.html)
+- Privacy policy at [https://tiltcheck.it.com/privacy](https://tiltcheck.it.com/privacy)
+- SLA details at [https://tiltcheck.it.com/sla](https://tiltcheck.it.com/sla)
 
 ### Trial & Demo
 - Demo version available for evaluation purposes
