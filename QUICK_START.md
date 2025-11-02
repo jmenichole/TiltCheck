@@ -58,7 +58,7 @@ After merging:
 - [ ] Go to Settings → Pages
 - [ ] Set Source to "GitHub Actions"  
 - [ ] Wait 2-3 minutes for first deployment
-- [ ] Visit https://jmenichole.github.io/TiltCheck/
+- [ ] Visit https://tiltcheck.it.com
 
 ## 🆘 Need Help?
 
