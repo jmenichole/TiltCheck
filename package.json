@@ -22,7 +22,10 @@
     "dev": "nodemon bot.js",
     "dev:routing": "nodemon routing.js",
     "logs": "tail -f *.log",
-    "clean": "rm -rf node_modules package-lock.json && npm install"
+    "clean": "rm -rf node_modules package-lock.json && npm install",
+    "lint": "echo 'Linting skipped - no linter configured'",
+    "format:check": "echo 'Format check skipped - no formatter configured'",
+    "build": "echo 'Build skipped - no build process required for this project'"
   },
   "engines": {
     "node": ">=18.0.0",
