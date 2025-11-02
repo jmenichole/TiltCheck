@@ -119,7 +119,7 @@ JustTheTip integrates seamlessly with:
 ```javascript
 // Enable TiltCheck integration:
 TILTCHECK_INTEGRATION_ENABLED=true
-TILTCHECK_API_ENDPOINT=https://api.tiltcheck.io
+TILTCHECK_API_ENDPOINT=https://tiltcheck.it.com/api
 BEHAVIORAL_ALERTS_ENABLED=true
 ```
 
@@ -167,8 +167,8 @@ If you're currently using Collab.Land SmartTag:
 
 - Discord: Join our support server
 - GitHub Issues: Report bugs or request features  
-- Email: support@tiltcheck.io
-- Community Forum: https://tiltcheck.io/community-forum.html
+- Email: support@tiltcheck.it.com
+- Community Forum: https://tiltcheck.it.com/community-forum.html
 
 ---
 
