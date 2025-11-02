@@ -495,7 +495,7 @@
                 </div>
                 <div class="bet-control">
                     <div>Time Playing</div>
-                    <div class="bet-amount" id="timePlayng">00:00</div>
+                    <div class="bet-amount" id="timePlaying">00:00</div>
                 </div>
                 <div class="bet-control">
                     <div>Total Bets</div>
@@ -742,7 +742,7 @@
             document.getElementById('currentBet').textContent = `$${currentBet}`;
             const netPnL = balance - 1000;
             document.getElementById('sessionPnL').textContent = `$${netPnL > 0 ? '+' : ''}${netPnL}`;
-            document.getElementById('timePlayng').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timePlaying').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             document.getElementById('totalBets').textContent = wins + losses;
             
             // Get AI analysis
