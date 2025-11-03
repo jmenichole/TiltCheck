@@ -1,0 +1,558 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+  
+  PROPRIETARY AND CONFIDENTIAL
+  Unauthorized copying of this file, via any medium, is strictly prohibited.
+  
+  This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+  For licensing information, see LICENSE file in the root directory.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Mint Payment | TiltCheck</title>
+    <meta name="description" content="Pay for your TiltCheck verification NFT and build your trust score foundation.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #60A5FA;
+            --secondary-cyan: #4DD0E1;
+            --deep-purple: #8B5CF6;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --cloud-grey: #B7C3D3;
+            --dark-slate: #1E293B;
+            --darker-slate: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker-slate) 0%, var(--dark-slate) 50%, #334155 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: var(--cloud-grey);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .price-section {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(45deg, rgba(96, 165, 250, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .price-label {
+            color: var(--cloud-grey);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-note {
+            color: var(--cloud-grey);
+            font-size: 0.9rem;
+        }
+
+        .benefits-section {
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-content {
+            flex: 1;
+        }
+
+        .benefit-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .benefit-description {
+            color: var(--cloud-grey);
+            font-size: 0.9rem;
+        }
+
+        .wallet-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .wallet-label {
+            color: var(--cloud-grey);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-address {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: white;
+            word-break: break-all;
+            font-size: 0.95rem;
+        }
+
+        .payment-steps {
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 0.25rem;
+        }
+
+        .step-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-description {
+            color: var(--cloud-grey);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--deep-purple));
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(96, 165, 250, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--error-red);
+            color: #FCA5A5;
+        }
+
+        .alert-info {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .powered-by {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--cloud-grey);
+            font-size: 0.85rem;
+        }
+
+        .coinbase-logo {
+            display: inline-block;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin: 0 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .card {
+                padding: 2rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">🛡️</div>
+            <h1 class="header-title">Mint Your Verification NFT</h1>
+            <p class="header-subtitle">Build your trust score foundation</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <div class="card">
+            <div class="price-section">
+                <div class="price-label">One-time payment</div>
+                <div class="price-amount">$5.00</div>
+                <div class="price-note">Paid via Coinbase • Secure & Fast</div>
+            </div>
+
+            <div class="benefits-section">
+                <h2 class="section-title">✨ What You Get</h2>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Verified Member Status</div>
+                        <div class="benefit-description">Show the community you're a trusted, verified member</div>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🏆</div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Trust Score Foundation</div>
+                        <div class="benefit-description">Start building your DegenTrust score with verified credibility</div>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎁</div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Premium Features</div>
+                        <div class="benefit-description">Unlock exclusive community features and advanced tools</div>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚀</div>
+                    <div class="benefit-content">
+                        <div class="benefit-title">Early Adopter Badge</div>
+                        <div class="benefit-description">Forever marked as an early community supporter</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wallet-section" id="walletSection" style="display: none;">
+                <div class="wallet-label">Your Solana Wallet</div>
+                <div class="wallet-address" id="walletAddress"></div>
+            </div>
+
+            <div class="payment-steps">
+                <h2 class="section-title">💳 How It Works</h2>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Click "Pay with Coinbase"</div>
+                        <div class="step-description">You'll be redirected to Coinbase's secure payment page</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Complete $5 USD Payment</div>
+                        <div class="step-description">Pay with card, bank transfer, or existing crypto</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Receive SOL</div>
+                        <div class="step-description">SOL will be sent directly to your connected wallet</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">NFT Automatically Minted</div>
+                        <div class="step-description">Your verification NFT will be created and sent to your wallet</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="payBtn" onclick="initiatePayment()">
+                    <span>💳</span>
+                    Pay with Coinbase
+                </button>
+            </div>
+
+            <div class="button-group" style="margin-top: 1rem;">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    ← Back
+                </button>
+            </div>
+
+            <div class="powered-by">
+                Powered by <span class="coinbase-logo">Coinbase</span> • Secure Payment Processing
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const token = localStorage.getItem('tiltcheck_token');
+        let userData = {};
+        let paymentSession = null;
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/api/profile`, {
+                    headers: {
+                        'Authorization': `******
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    userData = data.data.profile;
+                    
+                    // Check if NFT already minted
+                    if (userData.nftMinted) {
+                        showAlert('You already have a verification NFT!', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/profile-setup?nft=minted';
+                        }, 2000);
+                        return;
+                    }
+                    
+                    // Check if wallet is connected
+                    if (!userData.connectedAccounts?.wallet) {
+                        showAlert('Please connect your Solana wallet first', 'error');
+                        document.getElementById('payBtn').disabled = true;
+                        return;
+                    }
+                    
+                    // Display wallet
+                    const walletSection = document.getElementById('walletSection');
+                    const walletAddress = document.getElementById('walletAddress');
+                    walletSection.style.display = 'block';
+                    walletAddress.textContent = userData.connectedAccounts.wallet.address;
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+                showAlert('Failed to load profile data', 'error');
+            }
+        }
+
+        async function initiatePayment() {
+            const payBtn = document.getElementById('payBtn');
+            payBtn.disabled = true;
+            payBtn.innerHTML = '<span>⏳</span> Creating payment session...';
+            
+            try {
+                if (!userData.connectedAccounts?.wallet) {
+                    showAlert('Please connect your wallet first', 'error');
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '<span>💳</span> Pay with Coinbase';
+                    return;
+                }
+                
+                const response = await fetch(`${API_BASE}/api/payment/create-onramp-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `******
+                    },
+                    body: JSON.stringify({
+                        walletAddress: userData.connectedAccounts.wallet.address
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    paymentSession = data.data;
+                    showAlert('Redirecting to Coinbase payment...', 'info');
+                    
+                    // Store session ID for return
+                    localStorage.setItem('payment_session', paymentSession.sessionId);
+                    localStorage.setItem('payment_return', window.location.href);
+                    
+                    // Redirect to Coinbase
+                    setTimeout(() => {
+                        window.location.href = paymentSession.paymentUrl;
+                    }, 1500);
+                } else {
+                    showAlert('Failed to create payment session: ' + data.error, 'error');
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '<span>💳</span> Pay with Coinbase';
+                }
+            } catch (error) {
+                console.error('Payment initiation error:', error);
+                showAlert('Failed to initiate payment. Please try again.', 'error');
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<span>💳</span> Pay with Coinbase';
+            }
+        }
+
+        function goBack() {
+            const returnUrl = new URLSearchParams(window.location.search).get('return');
+            window.location.href = returnUrl || '/profile-setup';
+        }
+
+        // Check if returning from payment
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('payment') === 'success') {
+            showAlert('Payment completed! Verifying and minting NFT...', 'success');
+            // Auto-verify would happen here in production
+        }
+
+        // Initialize
+        loadProfile();
+    </script>
+</body>
+</html>

@@ -27,6 +27,7 @@ require('dotenv').config();
 const { router: authRouter } = require('./api/auth');
 const profileRouter = require('./api/profile');
 const onboardingRouter = require('./api/onboarding');
+const paymentRouter = require('./api/payment');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,7 +64,8 @@ app.get('/health', (req, res) => {
             onboarding: true,
             discord: true,
             wallet: true,
-            nft: true
+            nft: true,
+            payment: true
         }
     });
 });
@@ -72,6 +74,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/onboarding', onboardingRouter);
+app.use('/api/payment', paymentRouter);
 
 // Serve main HTML files
 app.get('/', (req, res) => {
@@ -123,6 +126,13 @@ app.get('/api-docs', (req, res) => {
                 'GET /api/onboarding/steps': 'Get onboarding steps and progress',
                 'GET /api/onboarding/guidance': 'Get AI-powered guidance',
                 'POST /api/onboarding/skip-step': 'Skip optional step'
+            },
+            payment: {
+                'POST /api/payment/create-onramp-session': 'Create Coinbase payment session for NFT',
+                'GET /api/payment/session/:sessionId': 'Get payment session status',
+                'POST /api/payment/verify/:sessionId': 'Verify payment and mint NFT',
+                'GET /api/payment/history': 'Get user payment history',
+                'POST /api/payment/cancel/:sessionId': 'Cancel pending payment'
             }
         },
         authentication: 'Bearer token in Authorization header',
@@ -163,6 +173,7 @@ app.listen(PORT, () => {
     console.log('✅ Discord Integration: Ready');
     console.log('✅ Wallet Connection: Ready');
     console.log('✅ NFT Minting: Ready');
+    console.log('✅ Coinbase Payment: Ready');
     console.log('================================');
 });
 
