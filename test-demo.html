@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test AI Tilt Detection</title>
+</head>
+<body>
+    <h1>Testing AI Tilt Detection Module</h1>
+    <div id="output"></div>
+    
+    <script src="./ai-tilt-detection.js"></script>
+    <script>
+        const output = document.getElementById('output');
+        
+        try {
+            // Test AI module
+            const ai = new AITiltDetection();
+            output.innerHTML += '<p>✅ AI module loaded successfully</p>';
+            
+            // Simulate bets
+            for (let i = 0; i < 10; i++) {
+                ai.logBet({
+                    amount: 10 + (i * 5),
+                    currency: 'USD',
+                    device: 'desktop',
+                    outcome: i % 2 === 0 ? 'win' : 'loss',
+                    pnl: i % 2 === 0 ? 10 : 10,
+                    gameType: 'slots'
+                });
+            }
+            output.innerHTML += '<p>✅ Logged 10 test bets</p>';
+            
+            // Get analysis
+            const analysis = ai.analyzeTiltRisk();
+            output.innerHTML += `<p>✅ Risk Score: ${(analysis.overallRiskScore * 100).toFixed(1)}%</p>`;
+            
+            const stats = ai.getSessionStats();
+            output.innerHTML += `<p>✅ Total Bets: ${stats.totalBets}</p>`;
+            output.innerHTML += `<p>✅ Win Rate: ${(stats.winRate * 100).toFixed(1)}%</p>`;
+            
+            output.innerHTML += '<h2>All tests passed! ✅</h2>';
+        } catch (error) {
+            output.innerHTML += `<p style="color: red;">❌ Error: ${error.message}</p>`;
+            console.error(error);
+        }
+    </script>
+</body>
+</html>

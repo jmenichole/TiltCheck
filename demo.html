@@ -25,6 +25,9 @@
     <!-- Brand CSS -->
     <link rel="stylesheet" href="./tiltcheck-brand.css">
     
+    <!-- AI Tilt Detection Engine -->
+    <script src="./ai-tilt-detection.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -255,6 +258,188 @@
             font-size: 0.9rem;
             opacity: 0.8;
         }
+        
+        .ai-analytics {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .ai-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #4ade80;
+        }
+        
+        .ai-section h4 {
+            margin-bottom: 10px;
+            color: #4ade80;
+            font-size: 1.1rem;
+        }
+        
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .pattern-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .pattern-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .pattern-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .risk-meter {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+        
+        .risk-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #f59e0b, #ef4444);
+            transition: width 0.5s ease;
+            border-radius: 15px;
+        }
+        
+        .risk-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        
+        .recommendation-card {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid #ef4444;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .recommendation-card.medium {
+            background: rgba(245, 158, 11, 0.2);
+            border-color: #f59e0b;
+        }
+        
+        .recommendation-card.low {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: #4ade80;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .config-panel {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .config-row {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            align-items: center;
+        }
+        
+        .config-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            flex: 1;
+        }
+        
+        .config-select option {
+            background: #1E293B;
+            color: white;
+        }
+        
+        .pnl-chart {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .pnl-line {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        
+        .pnl-bar {
+            width: 8px;
+            background: linear-gradient(180deg, #4ade80, #22c55e);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .pnl-bar.negative {
+            background: linear-gradient(180deg, #ef4444, #dc2626);
+        }
+        
+        .toggle-section {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .toggle-section:hover {
+            opacity: 0.8;
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible-content.expanded {
+            max-height: 2000px;
+        }
     </style>
 </head>
 <body>
@@ -267,18 +452,54 @@
         <div class="casino-simulation" id="casinoSim">
             <h3>Simulated Gambling Interface</h3>
             
+            <!-- Configuration Panel -->
+            <div class="config-panel">
+                <h4 style="margin-bottom: 10px;">Session Configuration</h4>
+                <div class="config-row">
+                    <label style="min-width: 80px;">Currency:</label>
+                    <select id="currencySelect" class="config-select" onchange="updateCurrency()">
+                        <option value="USD">USD (Fiat)</option>
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="USDC">USDC (Stablecoin)</option>
+                    </select>
+                </div>
+                <div class="config-row">
+                    <label style="min-width: 80px;">Device:</label>
+                    <select id="deviceSelect" class="config-select" onchange="updateDevice()">
+                        <option value="desktop">Desktop</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="tablet">Tablet</option>
+                    </select>
+                </div>
+                <div class="config-row">
+                    <label style="min-width: 80px;">Game Type:</label>
+                    <select id="gameTypeSelect" class="config-select">
+                        <option value="slots">Slots</option>
+                        <option value="blackjack">Blackjack</option>
+                        <option value="roulette">Roulette</option>
+                        <option value="crash">Crash</option>
+                    </select>
+                </div>
+            </div>
+            
             <div class="betting-interface">
                 <div class="bet-control">
                     <div>Current Bet</div>
                     <div class="bet-amount" id="currentBet">$10</div>
                 </div>
                 <div class="bet-control">
-                    <div>Session Loss</div>
-                    <div class="bet-amount" id="sessionLoss">$0</div>
+                    <div>Net PnL</div>
+                    <div class="bet-amount" id="sessionPnL">$0</div>
                 </div>
                 <div class="bet-control">
                     <div>Time Playing</div>
-                    <div class="bet-amount" id="timePlayng">00:00</div>
+                    <div class="bet-amount" id="timePlaying">00:00</div>
+                </div>
+                <div class="bet-control">
+                    <div>Total Bets</div>
+                    <div class="bet-amount" id="totalBets">0</div>
                 </div>
             </div>
             
@@ -295,6 +516,15 @@
             
             <button class="bet-button" onclick="placeBet()">Place Bet</button>
             <button class="bet-button" onclick="increaseBet()">Double Bet</button>
+            
+            <!-- AI Risk Meter -->
+            <div style="margin: 20px 0;">
+                <h4 style="margin-bottom: 10px;">🤖 AI Risk Analysis</h4>
+                <div class="risk-meter">
+                    <div class="risk-fill" id="riskFill" style="width: 0%"></div>
+                    <div class="risk-label" id="riskLabel">Low Risk (0%)</div>
+                </div>
+            </div>
             
             <div class="intervention-overlay" id="interventionOverlay">
                 <div class="intervention-content">
@@ -325,6 +555,136 @@
                 <div class="stat-value" id="successRate">0%</div>
                 <div class="stat-label">Success Rate</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-value" id="winRate">0%</div>
+                <div class="stat-label">Win Rate</div>
+            </div>
+        </div>
+        
+        <!-- AI Analytics Dashboard -->
+        <div class="ai-analytics">
+            <h3 style="text-align: center; margin-bottom: 20px;">📊 AI Pattern Analysis</h3>
+            
+            <!-- Time of Day Analysis -->
+            <div class="ai-section">
+                <div class="toggle-section" onclick="toggleSection('timeSection')">
+                    <h4>🕐 Time of Day Patterns</h4>
+                    <span id="timeSectionToggle">▼</span>
+                </div>
+                <div id="timeSection" class="collapsible-content">
+                    <div class="pattern-grid" id="timePatterns">
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="currentTimeRisk">--</div>
+                            <div class="pattern-label">Current Time Risk</div>
+                        </div>
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="bestTimeToPlay">--</div>
+                            <div class="pattern-label">Best Time to Play</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Currency & Payment Analysis -->
+            <div class="ai-section">
+                <div class="toggle-section" onclick="toggleSection('currencySection')">
+                    <h4>💰 Currency & Payment Analysis</h4>
+                    <span id="currencySectionToggle">▼</span>
+                </div>
+                <div id="currencySection" class="collapsible-content">
+                    <div class="pattern-grid" id="currencyPatterns">
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="activeCurrency">USD</div>
+                            <div class="pattern-label">Active Currency</div>
+                        </div>
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="currencyRisk">--</div>
+                            <div class="pattern-label">Currency Risk Level</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Device Analysis -->
+            <div class="ai-section">
+                <div class="toggle-section" onclick="toggleSection('deviceSection')">
+                    <h4>📱 Device Behavior Analysis</h4>
+                    <span id="deviceSectionToggle">▼</span>
+                </div>
+                <div id="deviceSection" class="collapsible-content">
+                    <div class="pattern-grid" id="devicePatterns">
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="activeDevice">Desktop</div>
+                            <div class="pattern-label">Active Device</div>
+                        </div>
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="deviceRisk">--</div>
+                            <div class="pattern-label">Device Risk Level</div>
+                        </div>
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="betSpeed">0.0</div>
+                            <div class="pattern-label">Bets/Min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PnL Variation Analysis -->
+            <div class="ai-section">
+                <div class="toggle-section" onclick="toggleSection('pnlSection')">
+                    <h4>📈 PnL Variation & Trends</h4>
+                    <span id="pnlSectionToggle">▼</span>
+                </div>
+                <div id="pnlSection" class="collapsible-content">
+                    <div class="pnl-chart">
+                        <div class="pnl-line" id="pnlChart"></div>
+                    </div>
+                    <div class="pattern-grid" id="pnlPatterns">
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="pnlVariation">0%</div>
+                            <div class="pattern-label">PnL Variation</div>
+                        </div>
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="pnlTrend">Neutral</div>
+                            <div class="pattern-label">Trend</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Betting Modality Analysis -->
+            <div class="ai-section">
+                <div class="toggle-section" onclick="toggleSection('modalitySection')">
+                    <h4>🎯 Betting Behavior Modality</h4>
+                    <span id="modalitySectionToggle">▼</span>
+                </div>
+                <div id="modalitySection" class="collapsible-content">
+                    <div class="pattern-grid" id="modalityPatterns">
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="modalityType">--</div>
+                            <div class="pattern-label">Dominant Modality</div>
+                        </div>
+                        <div class="pattern-item">
+                            <div class="pattern-value" id="modalityRisk">--</div>
+                            <div class="pattern-label">Modality Risk</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
+                        <div><strong>Aggressive:</strong> <span id="aggressiveCount">0</span></div>
+                        <div><strong>Conservative:</strong> <span id="conservativeCount">0</span></div>
+                        <div><strong>Chasing:</strong> <span id="chasingCount">0</span></div>
+                        <div><strong>Strategic:</strong> <span id="strategicCount">0</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Recommendations -->
+            <div class="ai-section" style="border-left-color: #f59e0b;">
+                <h4>🎯 AI Recommendations</h4>
+                <div id="recommendations" style="margin-top: 10px;">
+                    <p style="opacity: 0.7;">Place some bets to receive personalized recommendations...</p>
+                </div>
+            </div>
         </div>
         
         <div class="demo-controls">
@@ -335,41 +695,76 @@
     </div>
     
     <script>
+        // Initialize AI Tilt Detection Engine
+        let aiEngine = new AITiltDetection();
+        
+        // Session state
         let currentBet = 10;
-        let sessionLoss = 0;
+        let balance = 1000;
         let startTime = Date.now();
         let interventions = 0;
         let totalSaved = 0;
+        let wins = 0;
+        let losses = 0;
+        
+        // Current settings
+        let currency = 'USD';
+        let device = 'desktop';
+        let gameType = 'slots';
+        
+        function updateCurrency() {
+            currency = document.getElementById('currencySelect').value;
+        }
+        
+        function updateDevice() {
+            device = document.getElementById('deviceSelect').value;
+        }
+        
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const toggle = document.getElementById(sectionId + 'Toggle');
+            
+            if (section.classList.contains('expanded')) {
+                section.classList.remove('expanded');
+                toggle.textContent = '▼';
+            } else {
+                section.classList.add('expanded');
+                toggle.textContent = '▲';
+            }
+        }
         
         function updateDisplay() {
-            document.getElementById('currentBet').textContent = `$${currentBet}`;
-            document.getElementById('sessionLoss').textContent = `$${sessionLoss}`;
-            
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
             const minutes = Math.floor(elapsed / 60);
             const seconds = elapsed % 60;
-            document.getElementById('timePlayng').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
-            // Calculate tilt level
+            // Update basic stats
+            document.getElementById('currentBet').textContent = `$${currentBet}`;
+            const netPnL = balance - 1000;
+            document.getElementById('sessionPnL').textContent = `$${netPnL > 0 ? '+' : ''}${netPnL}`;
+            document.getElementById('timePlaying').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('totalBets').textContent = wins + losses;
+            
+            // Get AI analysis
+            const analysis = aiEngine.analyzeTiltRisk();
+            const stats = aiEngine.getSessionStats();
+            
+            // Update tilt level based on AI analysis
+            const riskScore = analysis.overallRiskScore;
             let tiltLevel = 'LOW';
             let tiltClass = 'low';
-            let confidence = 85;
+            let confidence = Math.round(riskScore * 100);
             
-            if (sessionLoss > 100 || currentBet > 50) {
-                tiltLevel = 'MEDIUM';
-                tiltClass = 'medium';
-                confidence = 92;
-            }
-            if (sessionLoss > 300 || currentBet > 100) {
-                tiltLevel = 'HIGH';
-                tiltClass = 'high';
-                confidence = 96;
-            }
-            if (sessionLoss > 500 || currentBet > 200) {
+            if (riskScore > 0.8) {
                 tiltLevel = 'CRITICAL';
                 tiltClass = 'critical';
-                confidence = 99;
                 showIntervention();
+            } else if (riskScore > 0.6) {
+                tiltLevel = 'HIGH';
+                tiltClass = 'high';
+            } else if (riskScore > 0.4) {
+                tiltLevel = 'MEDIUM';
+                tiltClass = 'medium';
             }
             
             const tiltElement = document.getElementById('tiltLevel');
@@ -377,15 +772,166 @@
             tiltElement.className = `tilt-level ${tiltClass}`;
             document.getElementById('aiConfidence').textContent = `${confidence}%`;
             
+            // Update risk meter
+            document.getElementById('riskFill').style.width = `${riskScore * 100}%`;
+            document.getElementById('riskLabel').textContent = `${tiltLevel} (${confidence}%)`;
+            
+            // Update stats
             document.getElementById('interventions').textContent = interventions;
             document.getElementById('moneySaved').textContent = `$${totalSaved}`;
-            const successRate = interventions > 0 ? Math.round((totalSaved / (totalSaved + sessionLoss)) * 100) : 0;
+            const successRate = interventions > 0 ? Math.round((totalSaved / (totalSaved + Math.abs(balance - 1000))) * 100) : 0;
             document.getElementById('successRate').textContent = `${successRate}%`;
+            document.getElementById('winRate').textContent = `${Math.round(stats.winRate * 100)}%`;
+            
+            // Update AI analytics
+            updateAIAnalytics(analysis, stats);
+        }
+        
+        function updateAIAnalytics(analysis, stats) {
+            // Time of Day Analysis
+            const timePattern = analysis.patterns.timeOfDay;
+            document.getElementById('currentTimeRisk').textContent = timePattern.currentPeriod;
+            document.getElementById('currentTimeRisk').style.color = getRiskColor(timePattern.riskScore);
+            
+            // Find best time to play from historical data
+            let bestTime = 'N/A';
+            let bestWinRate = 0;
+            Object.entries(stats.timePatterns).forEach(([time, data]) => {
+                const winRate = data.wins / (data.totalBets || 1);
+                if (winRate > bestWinRate) {
+                    bestWinRate = winRate;
+                    bestTime = time;
+                }
+            });
+            document.getElementById('bestTimeToPlay').textContent = bestTime;
+            
+            // Currency Analysis
+            const currencyPattern = analysis.patterns.currency;
+            document.getElementById('activeCurrency').textContent = currency;
+            document.getElementById('currencyRisk').textContent = getRiskLevelText(currencyPattern.riskScore);
+            document.getElementById('currencyRisk').style.color = getRiskColor(currencyPattern.riskScore);
+            
+            // Device Analysis
+            const devicePattern = analysis.patterns.device;
+            document.getElementById('activeDevice').textContent = device.charAt(0).toUpperCase() + device.slice(1);
+            document.getElementById('deviceRisk').textContent = getRiskLevelText(devicePattern.riskScore);
+            document.getElementById('deviceRisk').style.color = getRiskColor(devicePattern.riskScore);
+            document.getElementById('betSpeed').textContent = stats.betsPerMinute.toFixed(1);
+            
+            // PnL Analysis
+            const pnlPattern = analysis.patterns.pnl;
+            document.getElementById('pnlVariation').textContent = `${Math.round(pnlPattern.variation)}%`;
+            document.getElementById('pnlVariation').style.color = getRiskColor(pnlPattern.riskScore);
+            document.getElementById('pnlTrend').textContent = pnlPattern.trend.charAt(0).toUpperCase() + pnlPattern.trend.slice(1);
+            document.getElementById('pnlTrend').style.color = pnlPattern.trend === 'positive' ? '#4ade80' : '#ef4444';
+            
+            // Update PnL Chart
+            updatePnLChart();
+            
+            // Modality Analysis
+            const modalityPattern = analysis.patterns.modality;
+            document.getElementById('modalityType').textContent = modalityPattern.dominantModality.charAt(0).toUpperCase() + modalityPattern.dominantModality.slice(1);
+            document.getElementById('modalityType').style.color = getRiskColor(modalityPattern.riskScore);
+            document.getElementById('modalityRisk').textContent = getRiskLevelText(modalityPattern.riskScore);
+            document.getElementById('modalityRisk').style.color = getRiskColor(modalityPattern.riskScore);
+            
+            // Update modality counts
+            document.getElementById('aggressiveCount').textContent = stats.bettingModality.aggressive;
+            document.getElementById('conservativeCount').textContent = stats.bettingModality.conservative;
+            document.getElementById('chasingCount').textContent = stats.bettingModality.chasing;
+            document.getElementById('strategicCount').textContent = stats.bettingModality.strategic;
+            
+            // Update recommendations
+            updateRecommendations(analysis.recommendations);
+        }
+        
+        function updatePnLChart() {
+            const pnlHistory = aiEngine.sessionData.pnlHistory;
+            const chartContainer = document.getElementById('pnlChart');
+            chartContainer.innerHTML = '';
+            
+            if (pnlHistory.length === 0) {
+                chartContainer.innerHTML = '<div style="text-align: center; opacity: 0.5;">No data yet</div>';
+                return;
+            }
+            
+            // Show last 20 points
+            const recentPnL = pnlHistory.slice(-20);
+            const maxPnL = Math.max(...recentPnL.map(p => Math.abs(p.cumulativePnL)));
+            
+            recentPnL.forEach(entry => {
+                const bar = document.createElement('div');
+                bar.className = 'pnl-bar' + (entry.cumulativePnL < 0 ? ' negative' : '');
+                const height = Math.abs(entry.cumulativePnL) / (maxPnL || 1) * 100;
+                bar.style.height = `${Math.max(height, 5)}%`;
+                bar.title = `$${entry.cumulativePnL.toFixed(2)}`;
+                chartContainer.appendChild(bar);
+            });
+        }
+        
+        function updateRecommendations(recommendations) {
+            const container = document.getElementById('recommendations');
+            
+            if (recommendations.length === 0) {
+                container.innerHTML = '<p style="opacity: 0.7;">No recommendations yet - continue playing...</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            recommendations.forEach(rec => {
+                const card = document.createElement('div');
+                const priorityClass = rec.priority === 'CRITICAL' ? '' : 
+                                     rec.priority === 'HIGH' ? '' :
+                                     rec.priority === 'MEDIUM' ? 'medium' : 'low';
+                card.className = `recommendation-card ${priorityClass}`;
+                card.innerHTML = `
+                    <div style="font-size: 1.5rem; margin-bottom: 5px;">${rec.icon}</div>
+                    <div style="font-weight: bold; margin-bottom: 5px;">${rec.priority}</div>
+                    <div>${rec.message}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function getRiskColor(riskScore) {
+            if (riskScore > 0.7) return '#ef4444';
+            if (riskScore > 0.4) return '#f59e0b';
+            return '#4ade80';
+        }
+        
+        function getRiskLevelText(riskScore) {
+            if (riskScore > 0.7) return 'High';
+            if (riskScore > 0.4) return 'Medium';
+            return 'Low';
         }
         
         function placeBet() {
-            // Simulate losing the bet
-            sessionLoss += currentBet;
+            // Simulate bet outcome (60% chance of loss for demonstration)
+            const isWin = Math.random() > 0.6;
+            const outcome = isWin ? 'win' : 'loss';
+            
+            // Calculate PnL
+            let pnl;
+            if (isWin) {
+                pnl = currentBet * 0.9; // 90% return on win
+                balance += pnl;
+                wins++;
+            } else {
+                pnl = currentBet;
+                balance -= pnl;
+                losses++;
+            }
+            
+            // Log bet to AI engine
+            aiEngine.logBet({
+                amount: currentBet,
+                currency: currency,
+                device: device,
+                outcome: outcome,
+                pnl: pnl,
+                gameType: gameType
+            });
+            
             updateDisplay();
         }
         
@@ -395,8 +941,11 @@
         }
         
         function showIntervention() {
-            document.getElementById('interventionOverlay').classList.add('active');
-            interventions++;
+            const overlay = document.getElementById('interventionOverlay');
+            if (!overlay.classList.contains('active')) {
+                overlay.classList.add('active');
+                interventions++;
+            }
         }
         
         function closeIntervention() {
@@ -408,19 +957,28 @@
         
         function redirectToEarning() {
             totalSaved += currentBet * 2; // Assume they would have bet more
-            window.open('http://localhost:3001/cpx-research', '_blank');
+            alert('Redirecting to earning opportunities! (Demo mode)');
             closeIntervention();
         }
         
         function resetDemo() {
+            aiEngine.reset();
             currentBet = 10;
-            sessionLoss = 0;
+            balance = 1000;
             startTime = Date.now();
             interventions = 0;
             totalSaved = 0;
+            wins = 0;
+            losses = 0;
             document.getElementById('interventionOverlay').classList.remove('active');
             updateDisplay();
         }
+        
+        // Initialize - expand first section
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleSection('timeSection');
+            toggleSection('pnlSection');
+        });
         
         // Update timer every second
         setInterval(updateDisplay, 1000);

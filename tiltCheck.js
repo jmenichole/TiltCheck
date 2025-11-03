@@ -47,17 +47,51 @@ if (typeof require !== 'undefined') {
   };
 }
 
+/**
+ * TiltCheck - Real-time Player Behavior Monitoring System
+ * Detects tilt patterns and provides intervention recommendations
+ * 
+ * @class
+ * @example
+ * const tiltChecker = new TiltCheck('your-api-key');
+ * const player = tiltChecker.trackPlayer('player-123', { initialStake: 1000 });
+ */
 class TiltCheck {
+  /**
+   * Creates a new TiltCheck instance
+   * @param {string} apiKey - API key for authentication
+   */
   constructor(apiKey) {
     this.apiKey = apiKey;
     this.activePlayers = new Map();
     this.config = config;
   }
 
+  /**
+   * Initialize a new TiltCheck instance
+   * @param {string} apiKey - API key for authentication
+   * @returns {TiltCheck} New TiltCheck instance
+   * @deprecated Use constructor directly
+   */
   initialize(apiKey) {
     return new TiltCheck(apiKey);
   }
 
+  /**
+   * Start tracking a player for tilt monitoring
+   * 
+   * @param {string} playerId - Unique player identifier
+   * @param {Object} options - Configuration options
+   * @param {number} [options.initialStake=0] - Player's starting balance
+   * @param {string} [options.riskProfile='medium'] - Risk profile: 'low', 'medium', or 'high'
+   * @returns {Object} Player tracking object
+   * 
+   * @example
+   * const player = tiltChecker.trackPlayer('player-123', {
+   *   initialStake: 1000,
+   *   riskProfile: 'medium'
+   * });
+   */
   trackPlayer(playerId, options = {}) {
     const player = {
       id: playerId,
@@ -79,6 +113,11 @@ class TiltCheck {
     return player;
   }
 
+  /**
+   * Start monitoring intervals for a player
+   * @private
+   * @param {string} playerId - Player identifier
+   */
   startMonitoring(playerId) {
     const player = this.activePlayers.get(playerId);
     if (!player) return;
@@ -94,6 +133,24 @@ class TiltCheck {
     }, 1000); // Update every second
   }
 
+  /**
+   * Update player activity with new bet/game data
+   * 
+   * @param {string} playerId - Player identifier
+   * @param {Object} activity - Activity data
+   * @param {string} activity.type - Activity type: 'bet', 'win', 'loss', 'gameSwitch'
+   * @param {number} [activity.amount] - Bet amount
+   * @param {string} [activity.gameType] - Game type: 'slots' or 'originals'
+   * @param {number} [activity.newStake] - Updated player stake
+   * 
+   * @example
+   * tiltChecker.updatePlayerActivity('player-123', {
+   *   type: 'bet',
+   *   amount: 50,
+   *   gameType: 'slots',
+   *   newStake: 950
+   * });
+   */
   updatePlayerActivity(playerId, activity) {
     const player = this.activePlayers.get(playerId);
     if (!player) return;
@@ -118,6 +175,12 @@ class TiltCheck {
     this.analyzePlayerBehavior(playerId);
   }
 
+  /**
+   * Record a betting action
+   * @private
+   * @param {Object} player - Player object
+   * @param {Object} activity - Activity data
+   */
   recordBet(player, activity) {
     const bet = {
       amount: activity.amount,
@@ -134,6 +197,12 @@ class TiltCheck {
     }
   }
 
+  /**
+   * Record a game type switch
+   * @private
+   * @param {Object} player - Player object
+   * @param {Object} activity - Activity data with fromGame and toGame
+   */
   recordGameSwitch(player, activity) {
     // Track time spent in different game types
     if (activity.fromGame === 'slots') {

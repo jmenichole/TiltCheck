@@ -1,0 +1,14 @@
+{
+  "2025-11-01": {
+    "totalEvents": 1,
+    "eventsByType": {
+      "session_start": 1
+    },
+    "uniqueUsers": [
+      "0eba0bdb1b89fd07"
+    ],
+    "sessions": [
+      "session_demo_001"
+    ]
+  }
+}
