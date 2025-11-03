@@ -1,21 +1,42 @@
 services:
-  # TiltCheck Web Application
+  # TiltCheck Web Application - Production API Server
   - type: web
     name: tiltcheck-web
     runtime: node
     plan: free
-    buildCommand: npm install --only=production --legacy-peer-deps --no-optional
-    startCommand: node server.js
+    buildCommand: npm install --legacy-peer-deps
+    startCommand: node api-server.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://tiltcheck-web.onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: COINBASE_APP_ID
+        value: ca8b3b06-99e0-4611-affd-b39c2e7ca273
+      - key: COINBASE_API_KEY
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_CLIENT_SECRET
+        sync: false
+      - key: SOLANA_RPC_URL
+        value: https://api.mainnet-beta.solana.com
+      - key: DISCORD_WEBHOOK_URL
+        sync: false
+    healthCheckPath: /health
 
-  # TiltCheck Discord Bot (Background Worker - No Port Required)
+  # TiltCheck Discord Bot (Background Worker)
   - type: worker
     name: tiltcheck-discord-bot
     runtime: node
     plan: free
-    buildCommand: npm install --only=production --legacy-peer-deps --no-optional
+    buildCommand: npm install --legacy-peer-deps
     startCommand: node bot.js --mode integrated
     envVars:
       - key: NODE_ENV
