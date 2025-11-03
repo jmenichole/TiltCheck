@@ -1,118 +1,176 @@
-# Production Deployment Guide
+# 🚀 TiltCheck Production Setup Guide
 
-## 1. Environment Variables for Production
+Complete guide for deploying TiltCheck to production with rate limiting, database migration, monitoring, and admin dashboard.
 
-Add these to your production environment:
+## 📋 Quick Start
+
+```bash
+# 1. Clone and install
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
+npm install
+
+# 2. Configure environment
+cp .env.example .env
+nano .env
+
+# 3. Generate JWT secret
+node -e "console.log(require('./config/jwt-secret').getJWTSecret())"
+
+# 4. Migrate to database (optional)
+MIGRATE_TO=postgresql node scripts/migrate-to-database.js
+
+# 5. Start server
+NODE_ENV=production node api-server.js
+```
+
+## 🗄️ Database Migration
+
+### PostgreSQL (Recommended)
+
+```bash
+# Install
+sudo apt-get install postgresql
+
+# Create database
+sudo -u postgres psql
+CREATE DATABASE tiltcheck;
+CREATE USER tiltcheck WITH PASSWORD 'secure_password';
+GRANT ALL PRIVILEGES ON DATABASE tiltcheck TO tiltcheck;
+
+# Update .env
+DB_TYPE=postgresql
+DB_HOST=localhost
+DB_NAME=tiltcheck
+DB_USER=tiltcheck
+DB_PASSWORD=secure_password
+
+# Migrate
+MIGRATE_TO=postgresql node scripts/migrate-to-database.js
+```
+
+## 🔐 Production JWT Secret
+
+**Auto-generate:**
+```bash
+node config/jwt-secret.js
+```
+
+**Manual:**
+```bash
+SECRET=$(node -e "console.log(require('crypto').randomBytes(64).toString('hex'))")
+echo "JWT_SECRET=$SECRET" >> .env
+```
+
+## 🛡️ Rate Limiting
+
+Enabled by default:
+- Auth: 5 attempts / 15 min
+- API: 100 requests / 15 min  
+- Payment: 10 attempts / hour
+- NFT Mint: 3 / day
+
+Configure in `config/rate-limit.js`
+
+## 🔗 JustTheTip Integration
 
 ```env
-# Production URLs
-BASE_URL=https://your-production-domain.com
-COLLECTCLOCK_REDIRECT_URI=https://your-production-domain.com/auth/collectclock/callback
-
-# Discord Developer Portal Settings
-COLLECTCLOCK_OAUTH_URL=https://discord.com/oauth2/authorize?client_id=1336968746450812928&scope=bot+identify&redirect_uri=https://your-production-domain.com/auth/collectclock/callback&response_type=code&permissions=8
+JUSTTHETIP_SECRETS_PATH=../justthetip/config/secrets.json
 ```
 
-## 2. Discord Developer Portal Configuration
+Automatically shares: Coinbase, Solana, TipCC secrets
 
-### OAuth2 Redirect URIs:
+## 🚢 CI/CD Pipeline
+
+Add to GitHub Secrets:
+- `RAILWAY_TOKEN`
+- `DOCKER_USERNAME` / `DOCKER_PASSWORD`
+- `DISCORD_WEBHOOK`
+- `VPS_HOST` / `VPS_SSH_KEY`
+
+Push to trigger deployment:
+```bash
+git push origin main
 ```
-https://your-production-domain.com/auth/collectclock/callback
-http://localhost:3002/auth/collectclock/callback (for testing)
+
+## 📊 Monitoring & Logging
+
+Logs saved to `logs/` directory:
+
+```bash
+# View logs
+tail -f logs/info-$(date +%Y-%m-%d).log | jq
+
+# Metrics
+curl http://localhost:3000/api/admin/metrics \
+  -H "Authorization: Bearer ADMIN_TOKEN"
 ```
 
-### Webhook URLs:
+Set alert webhook:
+```env
+DISCORD_ALERT_WEBHOOK=https://discord.com/api/webhooks/...
 ```
-https://your-production-domain.com/webhook/collectclock
-http://localhost:3002/webhook/collectclock (for testing)
-```
 
-## 3. GitHub Pages Integration
+## 🎛️ Admin Dashboard
 
-Your CollectClock app at `https://jmenichole.github.io/CollectClock/` should:
-
-### JavaScript for OAuth:
+1. Create admin user:
 ```javascript
-// On "Connect Discord" button click
-function connectDiscord() {
-    const oauthUrl = 'https://discord.com/oauth2/authorize?client_id=1336968746450812928&scope=bot+identify&redirect_uri=https://your-production-domain.com/auth/collectclock/callback&response_type=code&permissions=8';
-    window.location.href = oauthUrl;
-}
-
-// Handle OAuth success on auth.html page
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('success') === 'true') {
-    const username = urlParams.get('user');
-    const userId = urlParams.get('id');
-    
-    // Store user session
-    localStorage.setItem('discord_user', JSON.stringify({ username, userId }));
-    
-    // Redirect to main app
-    window.location.href = '/CollectClock/';
-}
+// Make first user admin
+const users = require('./data/users.json');
+users[0].role = 'admin';
+fs.writeFileSync('./data/users.json', JSON.stringify(users, null, 2));
 ```
 
-### Webhook Events:
-```javascript
-// Send clock-in event
-async function clockIn() {
-    const user = JSON.parse(localStorage.getItem('discord_user'));
-    
-    await fetch('https://your-production-domain.com/webhook/collectclock', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            event: 'clock_in',
-            data: {
-                userId: user.userId,
-                timestamp: new Date().toISOString()
-            }
-        })
-    });
-}
+2. Access: `http://localhost:3000/admin`
 
-// Send clock-out event
-async function clockOut() {
-    const user = JSON.parse(localStorage.getItem('discord_user'));
-    
-    await fetch('https://your-production-domain.com/webhook/collectclock', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            event: 'clock_out',
-            data: {
-                userId: user.userId,
-                timestamp: new Date().toISOString(),
-                duration: 8 * 60 * 60 * 1000, // 8 hours in milliseconds
-                hoursWorked: 8
-            }
-        })
-    });
-}
+Features:
+- Real-time metrics
+- User management
+- Payment tracking
+- System logs
+- API analytics
+
+## 🔒 Security Checklist
+
+- [ ] Strong JWT_SECRET (128+ chars)
+- [ ] NODE_ENV=production
+- [ ] CORS to specific domain
+- [ ] Database instead of JSON
+- [ ] HTTPS/SSL enabled
+- [ ] Rate limiting active
+- [ ] Monitoring configured
+- [ ] Admin access restricted
+- [ ] Secrets encrypted
+- [ ] Backups scheduled
+
+## 🚀 Deployment
+
+### Railway
+```bash
+railway login
+railway init
+railway up
 ```
 
-## 4. Testing Commands
+### Docker
+```bash
+docker build -t tiltcheck .
+docker run -d -p 3000:3000 --env-file .env tiltcheck
+```
 
-Test these in Discord:
-- `!help` - Main help menu
-- `!clockin` - Test time tracking
-- `!clockout` - Test work completion
-- `!timesheet` - View hours summary
-- `!productivity` - View detailed stats
-- `!goal 8` - Set 8-hour daily goal
+### PM2
+```bash
+pm2 start api-server.js --name tiltcheck
+pm2 save
+pm2 startup
+```
 
-## 5. System Health Checks
+## 📚 Documentation
 
-Monitor these endpoints:
-- `http://localhost:3002/webhook/health` - Webhook server health
-- `http://localhost:3002/` - Server status and endpoints
-- Discord bot online status in your server
+- [LOGIN_PROFILE_IMPLEMENTATION.md](./LOGIN_PROFILE_IMPLEMENTATION.md)
+- [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)
+- [README.md](./README.md)
 
-## 6. Respect System Integration
+---
 
-The CollectClock integration automatically awards:
-- **+5 respect** for clocking in
-- **+10 respect per hour** worked
-- **+25 respect bonus** for meeting daily goals
-- **Progressive bonuses** for daily streaks
+**All features implemented and production-ready!** 🎉

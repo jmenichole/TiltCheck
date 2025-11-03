@@ -30,9 +30,19 @@ const onboardingRouter = require('./api/onboarding');
 const paymentRouter = require('./api/payment');
 const justTheTipRouter = require('./api/justthetip');
 const secretsRouter = require('./api/secrets');
+const adminRouter = require('./api/admin');
+
+// Import configurations
+const { initializeDatabase, closeDatabase } = require('./config/database');
+const { initializeMonitoring, monitoringMiddleware } = require('./config/monitoring');
+const { apiLimiter, authLimiter, paymentLimiter, adminLimiter } = require('./config/rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize systems
+initializeDatabase().catch(console.error);
+initializeMonitoring().catch(console.error);
 
 // Middleware
 app.use(helmet({
@@ -46,6 +56,7 @@ app.use(cors({
 }));
 
 app.use(morgan('combined'));
+app.use(monitoringMiddleware); // Add monitoring
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -74,13 +85,14 @@ app.get('/health', (req, res) => {
     });
 });
 
-// API Routes
-app.use('/api/auth', authRouter);
-app.use('/api/profile', profileRouter);
-app.use('/api/onboarding', onboardingRouter);
-app.use('/api/payment', paymentRouter);
-app.use('/api/justthetip', justTheTipRouter);
-app.use('/api/secrets', secretsRouter);
+// API Routes with rate limiting
+app.use('/api/auth', authLimiter, authRouter);
+app.use('/api/profile', apiLimiter, profileRouter);
+app.use('/api/onboarding', apiLimiter, onboardingRouter);
+app.use('/api/payment', paymentLimiter, paymentRouter);
+app.use('/api/justthetip', apiLimiter, justTheTipRouter);
+app.use('/api/secrets', adminLimiter, secretsRouter);
+app.use('/api/admin', adminLimiter, adminRouter);
 
 // Serve main HTML files
 app.get('/', (req, res) => {
@@ -109,6 +121,10 @@ app.get('/justthetip', (req, res) => {
 
 app.get('/nft-payment', (req, res) => {
     res.sendFile(path.join(__dirname, 'nft-mint-payment.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
 });
 
 // API documentation
@@ -191,12 +207,13 @@ app.use((error, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log('🚀 TiltCheck API Server Started');
     console.log('================================');
     console.log(`📍 Server: http://localhost:${PORT}`);
     console.log(`🏥 Health: http://localhost:${PORT}/health`);
     console.log(`📚 API Docs: http://localhost:${PORT}/api-docs`);
+    console.log(`🎛️  Admin: http://localhost:${PORT}/admin`);
     console.log('================================');
     console.log('✅ Authentication API: Enabled');
     console.log('✅ Profile Management: Enabled');
@@ -207,7 +224,29 @@ app.listen(PORT, () => {
     console.log('✅ Coinbase Payment: Ready');
     console.log('✅ JustTheTip Integration: Ready');
     console.log('✅ Unified Secrets Manager: Ready');
+    console.log('✅ Rate Limiting: Enabled');
+    console.log('✅ Monitoring & Logging: Enabled');
+    console.log('✅ Admin Dashboard: Enabled');
     console.log('================================');
+});
+
+// Graceful shutdown handler
+process.on('SIGTERM', async () => {
+    console.log('SIGTERM received, shutting down gracefully...');
+    server.close(async () => {
+        console.log('HTTP server closed');
+        await closeDatabase();
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', async () => {
+    console.log('SIGINT received, shutting down gracefully...');
+    server.close(async () => {
+        console.log('HTTP server closed');
+        await closeDatabase();
+        process.exit(0);
+    });
 });
 
 module.exports = app;
