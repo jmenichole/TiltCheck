@@ -1,0 +1,483 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+  
+  PROPRIETARY AND CONFIDENTIAL
+  Unauthorized copying of this file, via any medium, is strictly prohibited.
+  
+  This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+  For licensing information, see LICENSE file in the root directory.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Setup | TiltCheck</title>
+    <meta name="description" content="Complete your TiltCheck profile with wallet linking, Discord connection, and NFT verification.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #60A5FA;
+            --secondary-cyan: #4DD0E1;
+            --deep-purple: #8B5CF6;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --cloud-grey: #B7C3D3;
+            --dark-slate: #1E293B;
+            --darker-slate: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker-slate) 0%, var(--dark-slate) 50%, #334155 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: var(--cloud-grey);
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .connections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .connection-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .connection-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+        }
+
+        .connection-card.connected {
+            border-color: var(--success-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .connection-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .connection-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .connection-status {
+            color: var(--cloud-grey);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .connection-status.connected {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .connection-address {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--cloud-grey);
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--deep-purple));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(96, 165, 250, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .btn-discord {
+            background: #5865F2;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: var(--cloud-grey);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #EF4444;
+            color: #FCA5A5;
+        }
+
+        .alert-info {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        @media (max-width: 768px) {
+            .connections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="header-title">🎯 Complete Your Profile</h1>
+            <p class="header-subtitle">Connect your accounts and unlock all features</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <div class="profile-card">
+            <h2 class="section-title">
+                <span>🔗</span>
+                Connected Accounts
+            </h2>
+
+            <div class="connections-grid">
+                <!-- Discord Connection -->
+                <div class="connection-card" id="discordCard">
+                    <div class="connection-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="color: #5865F2;">
+                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                        </svg>
+                    </div>
+                    <h3 class="connection-title">Discord</h3>
+                    <p class="connection-status" id="discordStatus">Not Connected</p>
+                    <div id="discordInfo" style="display: none;">
+                        <div class="connection-address" id="discordUsername"></div>
+                    </div>
+                    <button class="btn btn-discord" id="discordBtn" onclick="connectDiscord()">
+                        Connect Discord
+                    </button>
+                </div>
+
+                <!-- Wallet Connection -->
+                <div class="connection-card" id="walletCard">
+                    <div class="connection-icon">👛</div>
+                    <h3 class="connection-title">Solana Wallet</h3>
+                    <p class="connection-status" id="walletStatus">Not Connected</p>
+                    <div id="walletInfo" style="display: none;">
+                        <div class="connection-address" id="walletAddress"></div>
+                    </div>
+                    <button class="btn btn-primary" id="walletBtn" onclick="connectWallet()">
+                        Connect Phantom Wallet
+                    </button>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 3rem;">
+                <span>🛡️</span>
+                NFT Verification
+            </h2>
+
+            <div class="connection-card" id="nftCard">
+                <div class="connection-icon">🎨</div>
+                <h3 class="connection-title">DegenTrust Verification Badge</h3>
+                <p class="connection-status" id="nftStatus">Not Minted</p>
+                
+                <ul class="feature-list" id="nftFeatures">
+                    <li>Verified community member status</li>
+                    <li>Premium feature access</li>
+                    <li>Exclusive community perks</li>
+                    <li>Enhanced trust score</li>
+                </ul>
+
+                <div id="nftInfo" style="display: none; margin: 1rem 0;">
+                    <div class="connection-address" id="nftAddress"></div>
+                </div>
+
+                <button class="btn btn-success" id="nftBtn" onclick="mintNFT()">
+                    Mint Verification NFT
+                </button>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="btn btn-secondary" onclick="skipToMain()" style="padding: 1rem 3rem;">
+                Skip for Now
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const token = localStorage.getItem('tiltcheck_token');
+        let userData = {};
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/api/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    userData = data.data.profile;
+                    updateUI();
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+                showAlert('Failed to load profile data', 'error');
+            }
+        }
+
+        function updateUI() {
+            // Update Discord status
+            if (userData.connectedAccounts?.discord) {
+                document.getElementById('discordCard').classList.add('connected');
+                document.getElementById('discordStatus').textContent = '✓ Connected';
+                document.getElementById('discordStatus').classList.add('connected');
+                document.getElementById('discordInfo').style.display = 'block';
+                document.getElementById('discordUsername').textContent = userData.connectedAccounts.discord.username;
+                document.getElementById('discordBtn').textContent = 'Reconnect Discord';
+            }
+
+            // Update Wallet status
+            if (userData.connectedAccounts?.wallet) {
+                document.getElementById('walletCard').classList.add('connected');
+                document.getElementById('walletStatus').textContent = '✓ Connected';
+                document.getElementById('walletStatus').classList.add('connected');
+                document.getElementById('walletInfo').style.display = 'block';
+                const addr = userData.connectedAccounts.wallet.address;
+                document.getElementById('walletAddress').textContent = 
+                    `${addr.substring(0, 8)}...${addr.substring(addr.length - 8)}`;
+                document.getElementById('walletBtn').textContent = 'Change Wallet';
+            }
+
+            // Update NFT status
+            if (userData.nftMinted) {
+                document.getElementById('nftCard').classList.add('connected');
+                document.getElementById('nftStatus').textContent = '✓ NFT Minted';
+                document.getElementById('nftStatus').classList.add('connected');
+                document.getElementById('nftFeatures').style.display = 'none';
+                document.getElementById('nftBtn').style.display = 'none';
+                
+                if (userData.nftData) {
+                    document.getElementById('nftInfo').style.display = 'block';
+                    document.getElementById('nftAddress').textContent = userData.nftData.address;
+                }
+            }
+        }
+
+        async function connectDiscord() {
+            localStorage.setItem('oauth_return', window.location.href);
+            window.location.href = `${API_BASE}/auth/discord`;
+        }
+
+        async function connectWallet() {
+            if (typeof window.solana === 'undefined') {
+                showAlert('Phantom wallet not detected. Redirecting to download page...', 'info');
+                setTimeout(() => {
+                    window.open('https://phantom.app/', '_blank');
+                }, 2000);
+                return;
+            }
+
+            try {
+                showAlert('Connecting to Phantom wallet...', 'info');
+                
+                const resp = await window.solana.connect();
+                const walletAddress = resp.publicKey.toString();
+
+                const response = await fetch(`${API_BASE}/api/profile/connect/wallet`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        walletAddress,
+                        walletType: 'phantom'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('Wallet connected successfully!', 'success');
+                    await loadProfile();
+                } else {
+                    showAlert('Failed to connect wallet: ' + data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                if (error.code === 4001) {
+                    showAlert('Wallet connection cancelled', 'info');
+                } else {
+                    showAlert('Failed to connect wallet. Please try again.', 'error');
+                }
+            }
+        }
+
+        function mintNFT() {
+            if (!userData.connectedAccounts?.wallet) {
+                showAlert('Please connect your wallet first!', 'error');
+                return;
+            }
+
+            localStorage.setItem('nft_return', window.location.href);
+            window.location.href = '/degentrust-score.html?source=profile_setup';
+        }
+
+        function skipToMain() {
+            window.location.href = '/';
+        }
+
+        // Check for OAuth return
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('discord') === 'connected') {
+            showAlert('Discord connected successfully!', 'success');
+        }
+        if (urlParams.get('nft') === 'minted') {
+            showAlert('NFT minted successfully!', 'success');
+        }
+
+        // Initialize
+        loadProfile();
+    </script>
+</body>
+</html>
