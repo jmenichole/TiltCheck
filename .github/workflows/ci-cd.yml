@@ -79,7 +79,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-  # Deploy to production (Railway)
+  # Deploy to production (Railway) - ONE-CLICK DEPLOYMENT
   deploy-railway:
     name: Deploy to Railway
     runs-on: ubuntu-latest
@@ -96,7 +96,35 @@ jobs:
     - name: Deploy to Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: railway up --service tiltcheck
+      run: |
+        railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+        railway up --detach
+        
+    - name: Set Railway environment variables
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        railway variables set NODE_ENV=production
+        railway variables set PORT=3000
+        railway variables set JWT_SECRET="${{ secrets.JWT_SECRET }}"
+        railway variables set COINBASE_APP_ID="${{ secrets.COINBASE_APP_ID }}"
+        railway variables set COINBASE_API_KEY="${{ secrets.COINBASE_API_KEY }}"
+        railway variables set COINBASE_API_SECRET="${{ secrets.COINBASE_API_SECRET }}"
+        railway variables set DISCORD_CLIENT_ID="${{ secrets.DISCORD_CLIENT_ID }}"
+        railway variables set DISCORD_CLIENT_SECRET="${{ secrets.DISCORD_CLIENT_SECRET }}"
+        railway variables set DISCORD_ALERT_WEBHOOK="${{ secrets.DISCORD_ALERT_WEBHOOK }}"
+        railway variables set CORS_ORIGIN="${{ secrets.CORS_ORIGIN }}"
+        railway variables set DB_TYPE="${{ secrets.DB_TYPE }}"
+        railway variables set RATE_LIMIT_ENABLED=true
+        railway variables set SSL_ENABLED=true
+        
+    - name: Wait for deployment
+      run: sleep 30
+      
+    - name: Health check
+      run: |
+        RAILWAY_URL=$(railway status --json | jq -r '.deployments[0].url')
+        curl -f https://${RAILWAY_URL}/health || exit 1
 
   # Deploy to VPS (alternative)
   deploy-vps:

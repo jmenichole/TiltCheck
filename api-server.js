@@ -44,15 +44,66 @@ const PORT = process.env.PORT || 3000;
 initializeDatabase().catch(console.error);
 initializeMonitoring().catch(console.error);
 
-// Middleware
+// ============================================
+// CORS Configuration - Production Ready
+// ============================================
+const getCorsOrigin = () => {
+    const corsOrigin = process.env.CORS_ORIGIN;
+    
+    if (!corsOrigin || corsOrigin === '*') {
+        // Development: Allow all origins
+        return '*';
+    }
+    
+    // Production: Parse comma-separated domains
+    const allowedOrigins = corsOrigin.split(',').map(origin => origin.trim());
+    
+    return (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or Postman)
+        if (!origin) return callback(null, true);
+        
+        // Check if origin is in allowed list
+        if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+        }
+    };
+};
+
+// ============================================
+// Security Middleware - Helmet Configuration
+// ============================================
 app.use(helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false
+    contentSecurityPolicy: process.env.NODE_ENV === 'production' ? {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https:"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+            connectSrc: ["'self'", "https://api.coinbase.com", "https://pay.coinbase.com"],
+            frameSrc: ["'self'", "https://pay.coinbase.com"]
+        }
+    } : false,
+    crossOriginEmbedderPolicy: false,
+    hsts: process.env.SSL_ENABLED === 'true' ? {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+    } : false
 }));
 
+// ============================================
+// CORS Middleware - Domain Whitelisting
+// ============================================
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || '*',
-    credentials: true
+    origin: getCorsOrigin(),
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+    maxAge: 86400 // 24 hours
 }));
 
 app.use(morgan('combined'));
@@ -206,29 +257,96 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Start server
-const server = app.listen(PORT, () => {
-    console.log('🚀 TiltCheck API Server Started');
-    console.log('================================');
-    console.log(`📍 Server: http://localhost:${PORT}`);
-    console.log(`🏥 Health: http://localhost:${PORT}/health`);
-    console.log(`📚 API Docs: http://localhost:${PORT}/api-docs`);
-    console.log(`🎛️  Admin: http://localhost:${PORT}/admin`);
-    console.log('================================');
-    console.log('✅ Authentication API: Enabled');
-    console.log('✅ Profile Management: Enabled');
-    console.log('✅ AI Onboarding: Enabled');
-    console.log('✅ Discord Integration: Ready');
-    console.log('✅ Wallet Connection: Ready');
-    console.log('✅ NFT Minting: Ready');
-    console.log('✅ Coinbase Payment: Ready');
-    console.log('✅ JustTheTip Integration: Ready');
-    console.log('✅ Unified Secrets Manager: Ready');
-    console.log('✅ Rate Limiting: Enabled');
-    console.log('✅ Monitoring & Logging: Enabled');
-    console.log('✅ Admin Dashboard: Enabled');
-    console.log('================================');
-});
+// ============================================
+// SSL/HTTPS Support
+// ============================================
+let server;
+
+if (process.env.SSL_ENABLED === 'true' && process.env.SSL_CERT_PATH && process.env.SSL_KEY_PATH) {
+    const https = require('https');
+    const fs = require('fs');
+    
+    try {
+        const sslOptions = {
+            key: fs.readFileSync(process.env.SSL_KEY_PATH),
+            cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+        };
+        
+        // Start HTTPS server
+        server = https.createServer(sslOptions, app);
+        server.listen(PORT, () => {
+            console.log('🚀 TiltCheck API Server Started (HTTPS)');
+            console.log('================================');
+            console.log(`🔒 HTTPS Server: https://localhost:${PORT}`);
+            console.log(`🏥 Health: https://localhost:${PORT}/health`);
+            console.log(`📚 API Docs: https://localhost:${PORT}/api-docs`);
+            console.log(`🎛️  Admin: https://localhost:${PORT}/admin`);
+            console.log('================================');
+            console.log('🔐 SSL/TLS: ENABLED');
+            console.log(`📋 CORS Origins: ${process.env.CORS_ORIGIN || '*'}`);
+            console.log('✅ Authentication API: Enabled');
+            console.log('✅ Profile Management: Enabled');
+            console.log('✅ AI Onboarding: Enabled');
+            console.log('✅ Discord Integration: Ready');
+            console.log('✅ Wallet Connection: Ready');
+            console.log('✅ NFT Minting: Ready');
+            console.log('✅ Coinbase Payment: Ready');
+            console.log('✅ JustTheTip Integration: Ready');
+            console.log('✅ Unified Secrets Manager: Ready');
+            console.log('✅ Rate Limiting: Enabled');
+            console.log('✅ Monitoring & Logging: Enabled');
+            console.log('✅ Admin Dashboard: Enabled');
+            console.log('================================');
+        });
+        
+        // Also start HTTP server for redirect
+        const http = require('http');
+        const httpApp = express();
+        httpApp.use((req, res) => {
+            res.redirect(301, `https://${req.headers.host}${req.url}`);
+        });
+        http.createServer(httpApp).listen(80, () => {
+            console.log('🔀 HTTP → HTTPS redirect enabled on port 80');
+        });
+        
+    } catch (error) {
+        console.error('❌ SSL certificates not found or invalid, falling back to HTTP');
+        console.error(error.message);
+        startHttpServer();
+    }
+} else {
+    // Start HTTP server
+    startHttpServer();
+}
+
+function startHttpServer() {
+    server = app.listen(PORT, () => {
+        console.log('🚀 TiltCheck API Server Started (HTTP)');
+        console.log('================================');
+        console.log(`📍 HTTP Server: http://localhost:${PORT}`);
+        console.log(`🏥 Health: http://localhost:${PORT}/health`);
+        console.log(`📚 API Docs: http://localhost:${PORT}/api-docs`);
+        console.log(`🎛️  Admin: http://localhost:${PORT}/admin`);
+        console.log('================================');
+        if (process.env.NODE_ENV === 'production') {
+            console.log('⚠️  SSL/TLS: DISABLED (not recommended for production)');
+        }
+        console.log(`📋 CORS Origins: ${process.env.CORS_ORIGIN || '*'}`);
+        console.log('✅ Authentication API: Enabled');
+        console.log('✅ Profile Management: Enabled');
+        console.log('✅ AI Onboarding: Enabled');
+        console.log('✅ Discord Integration: Ready');
+        console.log('✅ Wallet Connection: Ready');
+        console.log('✅ NFT Minting: Ready');
+        console.log('✅ Coinbase Payment: Ready');
+        console.log('✅ JustTheTip Integration: Ready');
+        console.log('✅ Unified Secrets Manager: Ready');
+        console.log('✅ Rate Limiting: Enabled');
+        console.log('✅ Monitoring & Logging: Enabled');
+        console.log('✅ Admin Dashboard: Enabled');
+        console.log('================================');
+    });
+}
 
 // Graceful shutdown handler
 process.on('SIGTERM', async () => {

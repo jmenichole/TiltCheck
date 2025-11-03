@@ -1,42 +1,65 @@
-# TrapHouse Discord Bot Dockerfile
-FROM node:18-alpine
+# TiltCheck API Server Dockerfile - Production Ready
+FROM node:20-alpine AS base
 
-# Set locale and unicode support
-ENV LANG=C.UTF-8
-ENV LC_ALL=C.UTF-8
-ENV NODE_OPTIONS="--no-warnings"
-
-# Install unicode and font support
+# Install system dependencies
 RUN apk add --no-cache \
     fontconfig \
     ttf-dejavu \
+    curl \
     && fc-cache -f
 
 # Set working directory
 WORKDIR /app
 
+# ===== Dependencies stage =====
+FROM base AS dependencies
+
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install production dependencies
+RUN npm ci --only=production --ignore-scripts
 
-# Copy application code
+# ===== Build stage =====
+FROM base AS build
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies
+RUN npm ci --ignore-scripts
+
+# Copy source code
 COPY . .
 
-# Create data directory for JSON files
-RUN mkdir -p data logs
+# ===== Production stage =====
+FROM base AS production
 
-# Set permissions
-RUN chown -R node:node /app
+# Set environment
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+# Copy dependencies from dependencies stage
+COPY --from=dependencies /app/node_modules ./node_modules
+
+# Copy application code
+COPY --from=build /app .
+
+# Create necessary directories
+RUN mkdir -p data logs config \
+    && chown -R node:node /app
+
+# Switch to non-root user
 USER node
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "console.log('Bot health check')" || exit 1
+# Expose port
+EXPOSE 3000
 
-# Expose port for health checks
-EXPOSE 3001
+# Health check - check if server is responding
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
 
-# Start the bot
-CMD ["node", "main.js"]
+# Start the server
+CMD ["node", "api-server.js"]
