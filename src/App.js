@@ -26,6 +26,7 @@ import {
   FaDesktop,
   FaEye,
   FaRocket,
+  FaGamepad,
   FaUser
 } from 'react-icons/fa';
 
@@ -39,6 +40,7 @@ import FundingDemo from './components/FundingDemo';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import UserProfile from './components/UserProfile';
+import GameDemoHub from './components/GameDemoHub';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -98,6 +100,12 @@ const App = () => {
     localStorage.setItem('tiltcheck_user', JSON.stringify(updatedUser));
   };
 
+  const openGameDemo = () => {
+    setShowLandingPage(false);
+    setActiveTab('games');
+    setSidebarOpen(false);
+  };
+
   // If not authenticated and not on landing page, show login/signup
   if (!isAuthenticated && !showLandingPage) {
     if (authView === 'login') {
@@ -111,7 +119,7 @@ const App = () => {
   if (showLandingPage) {
     return (
       <div>
-        <LandingPage />
+        <LandingPage onStartDemo={openGameDemo} />
         {/* Demo buttons */}
         <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
           <button
@@ -122,11 +130,11 @@ const App = () => {
             Investor Presentation
           </button>
           <button
-            onClick={() => setShowLandingPage(false)}
+            onClick={openGameDemo}
             className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2"
           >
             <FaDesktop />
-            Dashboard Demo
+            Try Tilt Demo
           </button>
         </div>
         
@@ -144,6 +152,7 @@ const App = () => {
     { id: 'alerts', name: 'Real-Time Alerts', icon: FaBell, badge: alertCount },
     { id: 'configuration', name: 'Configuration', icon: FaCog },
     { id: 'fairness', name: 'Fairness Verifier', icon: FaCheckCircle },
+    { id: 'games', name: 'Game Demos', icon: FaGamepad },
     { id: 'profile', name: 'User Profile', icon: FaUser }
   ];
 
@@ -157,6 +166,8 @@ const App = () => {
         return <ConfigurationPanel />;
       case 'fairness':
         return <FairnessVerifier />;
+      case 'games':
+        return <GameDemoHub />;
       case 'profile':
         return <UserProfile user={user} onUpdateProfile={handleUpdateProfile} onLogout={handleLogout} />;
       default:

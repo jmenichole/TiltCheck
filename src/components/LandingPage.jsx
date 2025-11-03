@@ -21,7 +21,7 @@ import {
   FaDollarSign
 } from 'react-icons/fa';
 
-const LandingPage = () => {
+const LandingPage = ({ onStartDemo = () => {} }) => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -146,6 +146,21 @@ const LandingPage = () => {
             >
               <FaRocket />
               <span>Coming Soon - Early 2025</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+              className="flex justify-center"
+            >
+              <button
+                onClick={onStartDemo}
+                className="group flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 shadow-xl"
+              >
+                <FaDesktop className="text-lg" />
+                <span>Launch Interactive Demo</span>
+                <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
             </motion.div>
           </motion.div>
         </div>
