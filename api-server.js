@@ -28,6 +28,7 @@ const { router: authRouter } = require('./api/auth');
 const profileRouter = require('./api/profile');
 const onboardingRouter = require('./api/onboarding');
 const paymentRouter = require('./api/payment');
+const justTheTipRouter = require('./api/justthetip');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -65,7 +66,8 @@ app.get('/health', (req, res) => {
             discord: true,
             wallet: true,
             nft: true,
-            payment: true
+            payment: true,
+            justTheTip: true
         }
     });
 });
@@ -75,6 +77,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/onboarding', onboardingRouter);
 app.use('/api/payment', paymentRouter);
+app.use('/api/justthetip', justTheTipRouter);
 
 // Serve main HTML files
 app.get('/', (req, res) => {
@@ -95,6 +98,14 @@ app.get('/profile-setup', (req, res) => {
 
 app.get('/onboarding', (req, res) => {
     res.sendFile(path.join(__dirname, 'onboarding.html'));
+});
+
+app.get('/justthetip', (req, res) => {
+    res.sendFile(path.join(__dirname, 'justthetip-dashboard.html'));
+});
+
+app.get('/nft-payment', (req, res) => {
+    res.sendFile(path.join(__dirname, 'nft-mint-payment.html'));
 });
 
 // API documentation
@@ -133,6 +144,16 @@ app.get('/api-docs', (req, res) => {
                 'POST /api/payment/verify/:sessionId': 'Verify payment and mint NFT',
                 'GET /api/payment/history': 'Get user payment history',
                 'POST /api/payment/cancel/:sessionId': 'Cancel pending payment'
+            },
+            justTheTip: {
+                'GET /api/justthetip/metrics': 'Get degen metrics and personality',
+                'POST /api/justthetip/tip': 'Send tip with behavioral analysis',
+                'GET /api/justthetip/tips': 'Get tip history',
+                'POST /api/justthetip/vault': 'Create smart vault',
+                'GET /api/justthetip/vaults': 'Get user vaults',
+                'POST /api/justthetip/buddy/pair': 'Pair with accountability buddy',
+                'GET /api/justthetip/buddy': 'Get buddy info',
+                'GET /api/justthetip/dashboard': 'Get complete dashboard'
             }
         },
         authentication: 'Bearer token in Authorization header',
@@ -174,6 +195,7 @@ app.listen(PORT, () => {
     console.log('✅ Wallet Connection: Ready');
     console.log('✅ NFT Minting: Ready');
     console.log('✅ Coinbase Payment: Ready');
+    console.log('✅ JustTheTip Integration: Ready');
     console.log('================================');
 });
 
