@@ -24,11 +24,13 @@ const crypto = require('crypto');
 const fs = require('fs-extra');
 const path = require('path');
 const { requireAuth } = require('./auth');
+const secretsManager = require('../config/secrets-manager');
 
 const router = express.Router();
 
 // Configuration
-const COINBASE_APP_ID = process.env.COINBASE_APP_ID || 'ca8b3b06-99e0-4611-affd-b39c2e7ca273';
+const coinbaseConfig = secretsManager.getCoinbaseConfig();
+const COINBASE_APP_ID = coinbaseConfig.appId;
 const NFT_MINT_PRICE_USD = 5.00;
 const DATA_DIR = path.join(__dirname, '../data');
 const PAYMENTS_FILE = path.join(DATA_DIR, 'payments.json');

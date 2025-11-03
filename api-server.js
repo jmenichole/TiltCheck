@@ -29,6 +29,7 @@ const profileRouter = require('./api/profile');
 const onboardingRouter = require('./api/onboarding');
 const paymentRouter = require('./api/payment');
 const justTheTipRouter = require('./api/justthetip');
+const secretsRouter = require('./api/secrets');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -67,7 +68,8 @@ app.get('/health', (req, res) => {
             wallet: true,
             nft: true,
             payment: true,
-            justTheTip: true
+            justTheTip: true,
+            secretsManager: true
         }
     });
 });
@@ -78,6 +80,7 @@ app.use('/api/profile', profileRouter);
 app.use('/api/onboarding', onboardingRouter);
 app.use('/api/payment', paymentRouter);
 app.use('/api/justthetip', justTheTipRouter);
+app.use('/api/secrets', secretsRouter);
 
 // Serve main HTML files
 app.get('/', (req, res) => {
@@ -154,6 +157,13 @@ app.get('/api-docs', (req, res) => {
                 'POST /api/justthetip/buddy/pair': 'Pair with accountability buddy',
                 'GET /api/justthetip/buddy': 'Get buddy info',
                 'GET /api/justthetip/dashboard': 'Get complete dashboard'
+            },
+            secrets: {
+                'GET /api/secrets/summary': 'Get secrets summary (admin)',
+                'GET /api/secrets/config/:service': 'Get service config (admin)',
+                'POST /api/secrets/validate': 'Validate required secrets (admin)',
+                'GET /api/secrets/health': 'Check secrets health',
+                'POST /api/secrets/sync': 'Sync from JustTheTip (admin)'
             }
         },
         authentication: 'Bearer token in Authorization header',
@@ -196,6 +206,7 @@ app.listen(PORT, () => {
     console.log('✅ NFT Minting: Ready');
     console.log('✅ Coinbase Payment: Ready');
     console.log('✅ JustTheTip Integration: Ready');
+    console.log('✅ Unified Secrets Manager: Ready');
     console.log('================================');
 });
 
