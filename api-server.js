@@ -1,0 +1,370 @@
+/**
+ * Copyright (c) 2024-2025 JME (jmenichole)
+ * All Rights Reserved
+ * 
+ * PROPRIETARY AND CONFIDENTIAL
+ * Unauthorized copying of this file, via any medium, is strictly prohibited.
+ * 
+ * This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+ * For licensing information, see LICENSE file in the root directory.
+ */
+
+/**
+ * 🚀 TiltCheck API Server
+ * 
+ * Main server with comprehensive authentication, profile management,
+ * and onboarding APIs
+ */
+
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const path = require('path');
+require('dotenv').config();
+
+// Import API routers
+const { router: authRouter } = require('./api/auth');
+const profileRouter = require('./api/profile');
+const onboardingRouter = require('./api/onboarding');
+const paymentRouter = require('./api/payment');
+const justTheTipRouter = require('./api/justthetip');
+const secretsRouter = require('./api/secrets');
+const adminRouter = require('./api/admin');
+
+// Import configurations
+const { initializeDatabase, closeDatabase } = require('./config/database');
+const { initializeMonitoring, monitoringMiddleware } = require('./config/monitoring');
+const { apiLimiter, authLimiter, paymentLimiter, adminLimiter } = require('./config/rate-limit');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Initialize systems
+initializeDatabase().catch(console.error);
+initializeMonitoring().catch(console.error);
+
+// ============================================
+// CORS Configuration - Production Ready
+// ============================================
+const getCorsOrigin = () => {
+    const corsOrigin = process.env.CORS_ORIGIN;
+    
+    if (!corsOrigin || corsOrigin === '*') {
+        // Development: Allow all origins
+        return '*';
+    }
+    
+    // Production: Parse comma-separated domains
+    const allowedOrigins = corsOrigin.split(',').map(origin => origin.trim());
+    
+    return (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or Postman)
+        if (!origin) return callback(null, true);
+        
+        // Check if origin is in allowed list
+        if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+        }
+    };
+};
+
+// ============================================
+// Security Middleware - Helmet Configuration
+// ============================================
+app.use(helmet({
+    contentSecurityPolicy: process.env.NODE_ENV === 'production' ? {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https:"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+            connectSrc: ["'self'", "https://api.coinbase.com", "https://pay.coinbase.com"],
+            frameSrc: ["'self'", "https://pay.coinbase.com"]
+        }
+    } : false,
+    crossOriginEmbedderPolicy: false,
+    hsts: process.env.SSL_ENABLED === 'true' ? {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+    } : false
+}));
+
+// ============================================
+// CORS Middleware - Domain Whitelisting
+// ============================================
+app.use(cors({
+    origin: getCorsOrigin(),
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+    maxAge: 86400 // 24 hours
+}));
+
+app.use(morgan('combined'));
+app.use(monitoringMiddleware); // Add monitoring
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        version: '2.0.0',
+        features: {
+            authentication: true,
+            profile: true,
+            onboarding: true,
+            discord: true,
+            wallet: true,
+            nft: true,
+            payment: true,
+            justTheTip: true,
+            secretsManager: true
+        }
+    });
+});
+
+// API Routes with rate limiting
+app.use('/api/auth', authLimiter, authRouter);
+app.use('/api/profile', apiLimiter, profileRouter);
+app.use('/api/onboarding', apiLimiter, onboardingRouter);
+app.use('/api/payment', paymentLimiter, paymentRouter);
+app.use('/api/justthetip', apiLimiter, justTheTipRouter);
+app.use('/api/secrets', adminLimiter, secretsRouter);
+app.use('/api/admin', adminLimiter, adminRouter);
+
+// Serve main HTML files
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'register.html'));
+});
+
+app.get('/profile-setup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'profile-setup.html'));
+});
+
+app.get('/onboarding', (req, res) => {
+    res.sendFile(path.join(__dirname, 'onboarding.html'));
+});
+
+app.get('/justthetip', (req, res) => {
+    res.sendFile(path.join(__dirname, 'justthetip-dashboard.html'));
+});
+
+app.get('/nft-payment', (req, res) => {
+    res.sendFile(path.join(__dirname, 'nft-mint-payment.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
+});
+
+// API documentation
+app.get('/api-docs', (req, res) => {
+    res.json({
+        info: {
+            title: 'TiltCheck API',
+            version: '2.0.0',
+            description: 'Complete authentication, profile, and onboarding API'
+        },
+        endpoints: {
+            authentication: {
+                'POST /api/auth/register': 'Register new user',
+                'POST /api/auth/login': 'Login user',
+                'GET /api/auth/me': 'Get current user',
+                'POST /api/auth/refresh': 'Refresh JWT token',
+                'POST /api/auth/logout': 'Logout user'
+            },
+            profile: {
+                'GET /api/profile': 'Get user profile',
+                'PUT /api/profile': 'Update user profile',
+                'POST /api/profile/permissions': 'Update permissions',
+                'POST /api/profile/connect/discord': 'Connect Discord',
+                'POST /api/profile/connect/wallet': 'Connect wallet',
+                'POST /api/profile/onboarding/complete': 'Complete onboarding',
+                'POST /api/profile/nft/mint': 'Record NFT minting'
+            },
+            onboarding: {
+                'GET /api/onboarding/steps': 'Get onboarding steps and progress',
+                'GET /api/onboarding/guidance': 'Get AI-powered guidance',
+                'POST /api/onboarding/skip-step': 'Skip optional step'
+            },
+            payment: {
+                'POST /api/payment/create-onramp-session': 'Create Coinbase payment session for NFT',
+                'GET /api/payment/session/:sessionId': 'Get payment session status',
+                'POST /api/payment/verify/:sessionId': 'Verify payment and mint NFT',
+                'GET /api/payment/history': 'Get user payment history',
+                'POST /api/payment/cancel/:sessionId': 'Cancel pending payment'
+            },
+            justTheTip: {
+                'GET /api/justthetip/metrics': 'Get degen metrics and personality',
+                'POST /api/justthetip/tip': 'Send tip with behavioral analysis',
+                'GET /api/justthetip/tips': 'Get tip history',
+                'POST /api/justthetip/vault': 'Create smart vault',
+                'GET /api/justthetip/vaults': 'Get user vaults',
+                'POST /api/justthetip/buddy/pair': 'Pair with accountability buddy',
+                'GET /api/justthetip/buddy': 'Get buddy info',
+                'GET /api/justthetip/dashboard': 'Get complete dashboard'
+            },
+            secrets: {
+                'GET /api/secrets/summary': 'Get secrets summary (admin)',
+                'GET /api/secrets/config/:service': 'Get service config (admin)',
+                'POST /api/secrets/validate': 'Validate required secrets (admin)',
+                'GET /api/secrets/health': 'Check secrets health',
+                'POST /api/secrets/sync': 'Sync from JustTheTip (admin)'
+            }
+        },
+        authentication: 'Bearer token in Authorization header',
+        note: 'All authenticated endpoints require: Authorization: Bearer <token>'
+    });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+    res.status(404).json({
+        success: false,
+        error: 'Endpoint not found',
+        path: req.originalUrl
+    });
+});
+
+// Error handler
+app.use((error, req, res, next) => {
+    console.error('Server error:', error);
+    
+    res.status(error.status || 500).json({
+        success: false,
+        error: error.message || 'Internal server error'
+    });
+});
+
+// ============================================
+// SSL/HTTPS Support
+// ============================================
+let server;
+
+if (process.env.SSL_ENABLED === 'true' && process.env.SSL_CERT_PATH && process.env.SSL_KEY_PATH) {
+    const https = require('https');
+    const fs = require('fs');
+    
+    try {
+        const sslOptions = {
+            key: fs.readFileSync(process.env.SSL_KEY_PATH),
+            cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+        };
+        
+        // Start HTTPS server
+        server = https.createServer(sslOptions, app);
+        server.listen(PORT, () => {
+            console.log('🚀 TiltCheck API Server Started (HTTPS)');
+            console.log('================================');
+            console.log(`🔒 HTTPS Server: https://localhost:${PORT}`);
+            console.log(`🏥 Health: https://localhost:${PORT}/health`);
+            console.log(`📚 API Docs: https://localhost:${PORT}/api-docs`);
+            console.log(`🎛️  Admin: https://localhost:${PORT}/admin`);
+            console.log('================================');
+            console.log('🔐 SSL/TLS: ENABLED');
+            console.log(`📋 CORS Origins: ${process.env.CORS_ORIGIN || '*'}`);
+            console.log('✅ Authentication API: Enabled');
+            console.log('✅ Profile Management: Enabled');
+            console.log('✅ AI Onboarding: Enabled');
+            console.log('✅ Discord Integration: Ready');
+            console.log('✅ Wallet Connection: Ready');
+            console.log('✅ NFT Minting: Ready');
+            console.log('✅ Coinbase Payment: Ready');
+            console.log('✅ JustTheTip Integration: Ready');
+            console.log('✅ Unified Secrets Manager: Ready');
+            console.log('✅ Rate Limiting: Enabled');
+            console.log('✅ Monitoring & Logging: Enabled');
+            console.log('✅ Admin Dashboard: Enabled');
+            console.log('================================');
+        });
+        
+        // Also start HTTP server for redirect
+        const http = require('http');
+        const httpApp = express();
+        httpApp.use((req, res) => {
+            res.redirect(301, `https://${req.headers.host}${req.url}`);
+        });
+        http.createServer(httpApp).listen(80, () => {
+            console.log('🔀 HTTP → HTTPS redirect enabled on port 80');
+        });
+        
+    } catch (error) {
+        console.error('❌ SSL certificates not found or invalid, falling back to HTTP');
+        console.error(error.message);
+        startHttpServer();
+    }
+} else {
+    // Start HTTP server
+    startHttpServer();
+}
+
+function startHttpServer() {
+    server = app.listen(PORT, () => {
+        console.log('🚀 TiltCheck API Server Started (HTTP)');
+        console.log('================================');
+        console.log(`📍 HTTP Server: http://localhost:${PORT}`);
+        console.log(`🏥 Health: http://localhost:${PORT}/health`);
+        console.log(`📚 API Docs: http://localhost:${PORT}/api-docs`);
+        console.log(`🎛️  Admin: http://localhost:${PORT}/admin`);
+        console.log('================================');
+        if (process.env.NODE_ENV === 'production') {
+            console.log('⚠️  SSL/TLS: DISABLED (not recommended for production)');
+        }
+        console.log(`📋 CORS Origins: ${process.env.CORS_ORIGIN || '*'}`);
+        console.log('✅ Authentication API: Enabled');
+        console.log('✅ Profile Management: Enabled');
+        console.log('✅ AI Onboarding: Enabled');
+        console.log('✅ Discord Integration: Ready');
+        console.log('✅ Wallet Connection: Ready');
+        console.log('✅ NFT Minting: Ready');
+        console.log('✅ Coinbase Payment: Ready');
+        console.log('✅ JustTheTip Integration: Ready');
+        console.log('✅ Unified Secrets Manager: Ready');
+        console.log('✅ Rate Limiting: Enabled');
+        console.log('✅ Monitoring & Logging: Enabled');
+        console.log('✅ Admin Dashboard: Enabled');
+        console.log('================================');
+    });
+}
+
+// Graceful shutdown handler
+process.on('SIGTERM', async () => {
+    console.log('SIGTERM received, shutting down gracefully...');
+    server.close(async () => {
+        console.log('HTTP server closed');
+        await closeDatabase();
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', async () => {
+    console.log('SIGINT received, shutting down gracefully...');
+    server.close(async () => {
+        console.log('HTTP server closed');
+        await closeDatabase();
+        process.exit(0);
+    });
+});
+
+module.exports = app;

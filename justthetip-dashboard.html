@@ -1,0 +1,530 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+  
+  PROPRIETARY AND CONFIDENTIAL
+  Unauthorized copying of this file, via any medium, is strictly prohibited.
+  
+  This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+  For licensing information, see LICENSE file in the root directory.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustTheTip Dashboard | TiltCheck</title>
+    <meta name="description" content="Smart crypto tipping with behavioral analysis and vault recommendations.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #60A5FA;
+            --secondary-cyan: #4DD0E1;
+            --deep-purple: #8B5CF6;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --cloud-grey: #B7C3D3;
+            --dark-slate: #1E293B;
+            --darker-slate: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker-slate) 0%, var(--dark-slate) 50%, #334155 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: var(--cloud-grey);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .degen-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .degen-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-green), var(--warning-orange), var(--error-red));
+            transition: width 0.5s ease;
+        }
+
+        .personality-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(45deg, rgba(96, 165, 250, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(96, 165, 250, 0.4);
+            border-radius: 25px;
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .stat-label {
+            color: var(--cloud-grey);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .vault-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vault-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .vault-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .vault-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .vault-status.locked {
+            background: rgba(239, 68, 68, 0.2);
+            color: #FCA5A5;
+        }
+
+        .vault-status.unlocked {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-green);
+        }
+
+        .vault-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .vault-unlocks {
+            color: var(--cloud-grey);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-blue), var(--deep-purple));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(96, 165, 250, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--cloud-grey);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tip-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tip-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--success-green);
+        }
+
+        .tip-date {
+            color: var(--cloud-grey);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">💸</div>
+            <h1 class="header-title">JustTheTip Dashboard</h1>
+            <p class="header-subtitle">Smart crypto tipping with behavioral analysis</p>
+        </div>
+
+        <!-- Degen Metrics Card -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <span>🧠</span>
+                    Your Degen Metrics
+                </h2>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div class="personality-badge" id="personalityBadge">
+                    <span id="personalityEmoji">🎮</span>
+                    <span id="personalityType">Loading...</span>
+                </div>
+            </div>
+
+            <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: var(--cloud-grey);">Degen Level</span>
+                    <span style="color: white; font-weight: 700;" id="degenLevel">0</span>
+                </div>
+                <div class="degen-meter">
+                    <div class="degen-fill" id="degenFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-label">Impulse Transactions</div>
+                    <div class="stat-value" id="impulseCount">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Late Night Activity</div>
+                    <div class="stat-value" id="lateNightCount">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Grass Touching Score</div>
+                    <div class="stat-value" id="grassScore">100</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Total Tips</div>
+                    <div class="stat-value" id="totalTips">0</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(96, 165, 250, 0.1); border-radius: 10px; color: var(--primary-blue);" id="adviceBox">
+                <strong>💡 Advice:</strong> <span id="advice">Loading...</span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Vaults Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span>🏦</span>
+                        Your Vaults
+                    </h2>
+                    <button class="btn btn-success" onclick="openCreateVault()">+ New Vault</button>
+                </div>
+
+                <div id="vaultsList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏦</div>
+                        <p>No vaults yet. Create one to lock funds safely!</p>
+                    </div>
+                </div>
+
+                <div id="suggestedVault" style="margin-top: 1rem; display: none;">
+                    <div style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-green); border-radius: 10px;">
+                        <div style="color: white; font-weight: 600; margin-bottom: 0.5rem;">
+                            <span id="suggestedVaultEmoji">🏦</span>
+                            <span id="suggestedVaultName">Suggested Vault</span>
+                        </div>
+                        <div style="color: var(--cloud-grey); font-size: 0.9rem;" id="suggestedVaultDesc"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Tips Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span>💰</span>
+                        Recent Tips
+                    </h2>
+                    <button class="btn btn-primary" onclick="openSendTip()">Send Tip</button>
+                </div>
+
+                <div id="tipsList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">💸</div>
+                        <p>No tips yet. Send your first tip!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accountability Buddy Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <span>🤝</span>
+                    Accountability Buddy
+                </h2>
+            </div>
+
+            <div id="buddyInfo">
+                <div class="empty-state">
+                    <div class="empty-state-icon">👥</div>
+                    <p>No accountability buddy paired yet</p>
+                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="openPairBuddy()">
+                        Find Buddy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const token = localStorage.getItem('tiltcheck_token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_BASE}/api/justthetip/dashboard`, {
+                    headers: {
+                        'Authorization': `******
+                    }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    updateMetrics(data.data.metrics);
+                    updateStats(data.data.stats);
+                    updateSuggestions(data.data.suggestions);
+                    updateRecentActivity(data.data.recentActivity);
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+            }
+        }
+
+        function updateMetrics(metrics) {
+            document.getElementById('degenLevel').textContent = metrics.degenLevel;
+            document.getElementById('degenFill').style.width = `${metrics.degenLevel}%`;
+            document.getElementById('personalityEmoji').textContent = metrics.personality.emoji;
+            document.getElementById('personalityType').textContent = metrics.personality.type;
+            document.getElementById('impulseCount').textContent = metrics.impulseTransactions;
+            document.getElementById('lateNightCount').textContent = metrics.lateNightActivity;
+            document.getElementById('grassScore').textContent = metrics.grassTouchingScore;
+            document.getElementById('totalTips').textContent = metrics.totalTips;
+        }
+
+        function updateStats(stats) {
+            // Stats are already updated in metrics
+        }
+
+        function updateSuggestions(suggestions) {
+            document.getElementById('advice').textContent = suggestions.advice;
+            
+            if (suggestions.vault) {
+                const suggestedVault = document.getElementById('suggestedVault');
+                suggestedVault.style.display = 'block';
+                document.getElementById('suggestedVaultEmoji').textContent = suggestions.vault.emoji;
+                document.getElementById('suggestedVaultName').textContent = suggestions.vault.name;
+                document.getElementById('suggestedVaultDesc').textContent = suggestions.vault.humor;
+            }
+        }
+
+        function updateRecentActivity(activity) {
+            if (activity.tips && activity.tips.length > 0) {
+                const tipsList = document.getElementById('tipsList');
+                tipsList.innerHTML = activity.tips.map(tip => `
+                    <div class="tip-item">
+                        <div>
+                            <div class="tip-amount">${tip.amount} ${tip.currency}</div>
+                            <div class="tip-date">${new Date(tip.timestamp).toLocaleDateString()}</div>
+                        </div>
+                        <div style="color: var(--cloud-grey);">
+                            ${tip.tiltDetected ? '⚠️ Tilt Detected' : '✓'}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (activity.vaults && activity.vaults.length > 0) {
+                const vaultsList = document.getElementById('vaultsList');
+                vaultsList.innerHTML = activity.vaults.map(vault => `
+                    <div class="vault-card">
+                        <div class="vault-header">
+                            <div class="vault-type">
+                                <span>${vault.emoji || '🏦'}</span>
+                                <span>${vault.type}</span>
+                            </div>
+                            <div class="vault-status ${vault.status}">
+                                ${vault.status}
+                            </div>
+                        </div>
+                        <div class="vault-amount">${vault.amount} SOL</div>
+                        <div class="vault-unlocks">Unlocks: ${new Date(vault.unlocksAt).toLocaleDateString()}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openSendTip() {
+            alert('Tip modal would open here. Integration with wallet for actual sending.');
+        }
+
+        function openCreateVault() {
+            alert('Vault creation modal would open here. Integration with smart contract.');
+        }
+
+        function openPairBuddy() {
+            alert('Buddy pairing modal would open here. Select from connected Discord users.');
+        }
+
+        // Initialize
+        loadDashboard();
+    </script>
+</body>
+</html>
