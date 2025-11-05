@@ -31,7 +31,9 @@ const {
     ASSOCIATED_TOKEN_PROGRAM_ID
 } = require('@solana/spl-token');
 
-const bs58 = require('bs58').default;
+const bs58 = require('bs58');
+const { loadOrGenerateWallet, loadKeypairFromPrivateKey } = require('./utils/solanaWalletUtils');
+const { logError } = require('./utils/errorHandlingUtils');
 
 class RealBlockchainManager {
     constructor() {
@@ -80,7 +82,7 @@ class RealBlockchainManager {
             return true;
             
         } catch (error) {
-            console.error('❌ Blockchain initialization failed:', error);
+            logError('Blockchain initialization', error);
             return false;
         }
     }
@@ -89,24 +91,8 @@ class RealBlockchainManager {
      * Initialize hot wallet for transactions
      */
     async initializeHotWallet() {
-        // For testing, generate a new keypair
-        // In production, load from secure environment variable
-        if (process.env.SOLANA_PRIVATE_KEY && process.env.SOLANA_PRIVATE_KEY.trim() !== '') {
-            try {
-                const privateKeyBytes = bs58.decode(process.env.SOLANA_PRIVATE_KEY);
-                this.hotWallet = Keypair.fromSecretKey(privateKeyBytes);
-                console.log('🔑 Loaded wallet from environment:', this.hotWallet.publicKey.toString());
-            } catch (error) {
-                console.warn('⚠️  Invalid SOLANA_PRIVATE_KEY, generating new wallet');
-                this.hotWallet = Keypair.generate();
-            }
-        } else {
-            // Generate new wallet for testing
-            this.hotWallet = Keypair.generate();
-            console.log('🔑 Generated test wallet:', this.hotWallet.publicKey.toString());
-            console.log('🔑 Private key (base58):', bs58.encode(this.hotWallet.secretKey));
-            console.log('⚠️  Save this private key for production use!');
-        }
+        const wallet = loadOrGenerateWallet('SOLANA_PRIVATE_KEY');
+        this.hotWallet = wallet.keypair;
     }
 
     /**
@@ -142,7 +128,7 @@ class RealBlockchainManager {
             const balance = await this.activeConnection.getBalance(publicKey);
             return balance / LAMPORTS_PER_SOL;
         } catch (error) {
-            console.error('Error getting SOL balance:', error);
+            logError('Get SOL balance', error, { walletAddress });
             return 0;
         }
     }
@@ -163,7 +149,7 @@ class RealBlockchainManager {
             return parseFloat(balance.value.amount) / Math.pow(10, balance.value.decimals);
             
         } catch (error) {
-            console.error('Error getting USDC balance:', error);
+            logError('Get USDC balance', error, { walletAddress });
             return 0;
         }
     }
@@ -203,7 +189,7 @@ class RealBlockchainManager {
             console.log(`💸 Sending ${amount} USDC to ${toAddress}...`);
             
             // Create keypair from private key
-            const fromKeypair = Keypair.fromSecretKey(bs58.decode(fromPrivateKey));
+            const fromKeypair = loadKeypairFromPrivateKey(fromPrivateKey);
             const toPublicKey = new PublicKey(toAddress);
             const usdcMint = this.getCurrentUSDCMint();
             
@@ -251,7 +237,7 @@ class RealBlockchainManager {
             };
             
         } catch (error) {
-            console.error('❌ USDC transaction failed:', error);
+            logError('USDC transaction', error, { toAddress, amount });
             return {
                 success: false,
                 error: error.message,
@@ -273,7 +259,7 @@ class RealBlockchainManager {
 
             console.log(`💸 Sending ${amount} SOL to ${toAddress}...`);
             
-            const fromKeypair = Keypair.fromSecretKey(bs58.decode(fromPrivateKey));
+            const fromKeypair = loadKeypairFromPrivateKey(fromPrivateKey);
             const toPublicKey = new PublicKey(toAddress);
             
             // Create transaction
@@ -304,7 +290,7 @@ class RealBlockchainManager {
             };
             
         } catch (error) {
-            console.error('❌ SOL transaction failed:', error);
+            logError('SOL transaction', error, { toAddress, amount });
             return {
                 success: false,
                 error: error.message,
@@ -323,7 +309,7 @@ class RealBlockchainManager {
             const transaction = await this.activeConnection.getParsedTransaction(signature);
             return transaction;
         } catch (error) {
-            console.error('Error getting transaction:', error);
+            logError('Get transaction', error, { signature });
             return null;
         }
     }
@@ -348,7 +334,7 @@ class RealBlockchainManager {
             
             return signature;
         } catch (error) {
-            console.error('❌ Airdrop failed:', error);
+            logError('Airdrop', error, { walletAddress, amount });
             throw error;
         }
     }

@@ -5,6 +5,8 @@ node_modules/
 
 # Testing
 /coverage
+test_refactored_utils.js
+test_error_utils.js
 
 # Production
 /build

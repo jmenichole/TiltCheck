@@ -9,22 +9,15 @@
  * For licensing information, see LICENSE file in the root directory.
  */
 
-const express = require('express');
+const { createExpressApp, addNgrokBypass } = require('./utils/expressServerUtils');
 const GitHubIntegration = require('./github-integration');
 
 // Initialize Express app for GitHub webhooks
-const app = express();
+const app = createExpressApp();
 let port = process.env.PORT || 3001;
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Add ngrok-skip-browser-warning header for all responses
-app.use((req, res, next) => {
-    res.setHeader('ngrok-skip-browser-warning', 'true');
-    next();
-});
+// Add ngrok bypass for development
+addNgrokBypass(app);
 
 // Initialize GitHub integration (you'll need to pass the Discord client)
 let githubIntegration;
