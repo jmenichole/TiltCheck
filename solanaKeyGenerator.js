@@ -68,20 +68,20 @@ class SolanaKeyGenerator {
      */
     static async generateSolanaKeypairSolanaJS() {
         try {
-            const { Keypair } = require('@solana/web3.js');
-            
-            const keypair = Keypair.generate();
+            const { generateSolanaWallet } = require('./utils/solanaWalletUtils');
+            const wallet = generateSolanaWallet();
             
             return {
-                publicKey: keypair.publicKey.toBase58(),
-                privateKey: bs58.encode(keypair.secretKey),
-                publicKeyBytes: keypair.publicKey.toBytes(),
-                privateKeyBytes: keypair.secretKey.slice(0, 32),
-                secretKey: keypair.secretKey // Full 64-byte secret key
+                publicKey: wallet.publicKey,
+                privateKey: wallet.privateKey,
+                publicKeyBytes: wallet.keypair.publicKey.toBytes(),
+                privateKeyBytes: wallet.secretKey.slice(0, 32),
+                secretKey: wallet.secretKey // Full 64-byte secret key
             };
 
         } catch (error) {
-            console.error('Error generating Solana keypair with Solana JS:', error);
+            const { logError } = require('./utils/errorHandlingUtils');
+            logError('Generate Solana keypair with Solana JS', error);
             throw error;
         }
     }

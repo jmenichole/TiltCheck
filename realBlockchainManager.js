@@ -31,7 +31,7 @@ const {
     ASSOCIATED_TOKEN_PROGRAM_ID
 } = require('@solana/spl-token');
 
-const bs58 = require('bs58').default;
+const bs58 = require('bs58');
 const { loadOrGenerateWallet, loadKeypairFromPrivateKey } = require('./utils/solanaWalletUtils');
 const { logError } = require('./utils/errorHandlingUtils');
 

@@ -15,7 +15,7 @@
  */
 
 const { Keypair } = require('@solana/web3.js');
-const bs58 = require('bs58').default;
+const bs58 = require('bs58');
 
 /**
  * Generate a new Solana keypair

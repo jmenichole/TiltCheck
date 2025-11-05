@@ -191,12 +191,12 @@ class SecureCryptoPaymentWallets {
         
         if (chainKey === 'SOLANA') {
             // Solana wallet generation
-            const { Keypair } = require('@solana/web3.js');
-            const keypair = Keypair.generate();
+            const { generateSolanaWallet } = require('./utils/solanaWalletUtils');
+            const solanaWallet = generateSolanaWallet();
             
             wallet = {
-                address: keypair.publicKey.toString(),
-                privateKey: Buffer.from(keypair.secretKey).toString('hex'),
+                address: solanaWallet.publicKey,
+                privateKey: solanaWallet.privateKey,
                 chainKey,
                 walletType,
                 created: new Date(),

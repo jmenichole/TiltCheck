@@ -12,6 +12,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const { logError } = require('./utils/errorHandlingUtils');
 require('dotenv').config();
 
 class CollectClockOAuthHandler {
@@ -23,7 +24,7 @@ class CollectClockOAuthHandler {
 
     setupMiddleware() {
         // Enable CORS for GitHub Pages
-        this.app.use(cors({
+        const corsOptions = {
             origin: [
                 'https://jmenichole.github.io',
                 'http://localhost:3000',
@@ -31,7 +32,8 @@ class CollectClockOAuthHandler {
                 'http://localhost:3002'
             ],
             credentials: true
-        }));
+        };
+        this.app.use(cors(corsOptions));
 
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
@@ -72,7 +74,7 @@ class CollectClockOAuthHandler {
                 res.redirect(redirectUrl);
 
             } catch (error) {
-                console.error('CollectClock OAuth callback error:', error);
+                logError('CollectClock OAuth callback', error, { code: req.query.code, state: req.query.state });
                 res.redirect(`https://jmenichole.github.io/CollectClock/?error=oauth_failed&message=${encodeURIComponent(error.message)}`);
             }
         });
@@ -105,7 +107,7 @@ class CollectClockOAuthHandler {
                 res.status(200).json({ status: 'success', event, processed: true });
 
             } catch (error) {
-                console.error('CollectClock webhook error:', error);
+                logError('CollectClock webhook', error, { event_type: req.body?.event_type });
                 res.status(500).json({ error: 'Webhook processing failed' });
             }
         });
@@ -139,7 +141,7 @@ class CollectClockOAuthHandler {
 
             return response.data;
         } catch (error) {
-            console.error('Token exchange error:', error.response?.data || error.message);
+            logError('Token exchange', error, { errorData: error.response?.data });
             throw new Error('Failed to exchange authorization code for token');
         }
     }

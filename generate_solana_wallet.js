@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Copyright (c) 2024-2025 JME (jmenichole)
  * All Rights Reserved
@@ -9,26 +11,24 @@
  * For licensing information, see LICENSE file in the root directory.
  */
 
-#!/usr/bin/env node
-
 /**
  * Simple Solana Keypair Generator
  * Uses @solana/web3.js for reliable keypair generation
  */
 
-const { Keypair } = require('@solana/web3.js');
+const { generateSolanaWallet } = require('./utils/solanaWalletUtils');
 
 async function generateSolanaKeypair() {
     console.log('🔑 Generating Solana Keypair\n');
 
     try {
-        // Generate a new keypair
-        const keypair = Keypair.generate();
+        // Generate a new keypair using shared utility
+        const wallet = generateSolanaWallet();
         
         // Get the addresses
-        const publicKey = keypair.publicKey.toBase58();
-        const privateKey = Buffer.from(keypair.secretKey).toString('base64');
-        const secretKeyArray = Array.from(keypair.secretKey);
+        const publicKey = wallet.publicKey;
+        const privateKey = Buffer.from(wallet.secretKey).toString('base64');
+        const secretKeyArray = Array.from(wallet.secretKey);
         
         console.log('✅ Keypair Generated Successfully!');
         console.log('================================');
@@ -40,7 +40,7 @@ async function generateSolanaKeypair() {
         // Validation
         console.log('📋 Validation:');
         console.log(`• Address Length: ${publicKey.length} characters`);
-        console.log(`• Secret Key Length: ${keypair.secretKey.length} bytes`);
+        console.log(`• Secret Key Length: ${wallet.secretKey.length} bytes`);
         console.log(`• Valid Solana Address: ${publicKey.length >= 32 && publicKey.length <= 44 ? '✅' : '❌'}`);
         console.log('');
         
@@ -70,11 +70,12 @@ async function generateSolanaKeypair() {
         return {
             publicKey,
             privateKey,
-            secretKey: keypair.secretKey
+            secretKey: wallet.secretKey
         };
         
     } catch (error) {
-        console.error('❌ Error generating keypair:', error);
+        const { logError } = require('./utils/errorHandlingUtils');
+        logError('Generate keypair', error);
         throw error;
     }
 }
