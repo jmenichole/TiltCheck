@@ -14,7 +14,7 @@
  * Eliminates duplicated wallet generation and management code
  */
 
-const { Keypair } = require('@solana/web3.js');
+const { Keypair, PublicKey } = require('@solana/web3.js');
 const bs58 = require('bs58');
 
 /**
@@ -92,7 +92,6 @@ function loadOrGenerateWallet(envVarName = 'SOLANA_PRIVATE_KEY') {
  */
 function isValidPublicKey(publicKeyString) {
     try {
-        const { PublicKey } = require('@solana/web3.js');
         new PublicKey(publicKeyString);
         return true;
     } catch {
