@@ -9,17 +9,13 @@
  * For licensing information, see LICENSE file in the root directory.
  */
 
-const express = require('express');
-const cors = require('cors');
+const { createExpressApp, addHealthCheckEndpoint, startServer } = require('./utils/expressServerUtils');
+const { errorMiddleware } = require('./utils/errorHandlingUtils');
 const crypto = require('crypto');
 const { ethers } = require('ethers');
 
-const app = express();
+const app = createExpressApp();
 const PORT = process.env.PORT || 3001;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
 
 // In-memory storage (replace with proper database in production)
 let trustDatabase = {
@@ -492,25 +488,17 @@ app.get('/api/stats', (req, res) => {
 });
 
 // Health Check
-app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'healthy', 
-        timestamp: new Date().toISOString(),
-        version: '1.0.0'
-    });
+addHealthCheckEndpoint(app, { 
+    version: '1.0.0',
+    service: 'DegenTrust API'
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
-});
+app.use(errorMiddleware);
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`🛡️ DegenTrust API server running on port ${PORT}`);
+startServer(app, PORT, '🛡️ DegenTrust API server').then(() => {
     console.log(`📊 Stats available at: http://localhost:${PORT}/api/stats`);
-    console.log(`💚 Health check at: http://localhost:${PORT}/health`);
-});
+}).catch(console.error);
 
 module.exports = app;
