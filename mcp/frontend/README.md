@@ -9,15 +9,15 @@ This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
 For licensing information, see LICENSE file in the root directory.
 -->
 
-# TiltCheck Nosana Frontend
+# TiltCheck Trustless Solana Frontend
 
-Next.js frontend for TiltCheck Nosana AI Agent integration.
+Next.js frontend for TiltCheck trustless Solana AI Agent integration.
 
 ## Features
 
 - Real-time tilt analysis interface
 - Solana wallet integration
-- Nosana AI agent interaction
+- Trustless Solana AI agent interaction
 - Decentralized result verification
 - Professional degen aesthetic
 
@@ -55,10 +55,10 @@ npm start
 
 ## Architecture
 
-The frontend communicates with the Nosana AI agent to process behavioral data:
+The frontend communicates with the trustless Solana AI agent to process behavioral data:
 
 1. User inputs session data
-2. Data sent to Nosana compute network
+2. Data sent directly to Solana network
 3. AI models analyze for tilt patterns
 4. Results returned and displayed
 5. Transactions recorded on Solana
@@ -77,5 +77,4 @@ Edit `app/page.tsx` to modify the UI or `app/globals.css` for styling changes.
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Nosana Documentation](https://docs.nosana.io/)
 - [Solana Web3.js](https://solana-labs.github.io/solana-web3.js/)

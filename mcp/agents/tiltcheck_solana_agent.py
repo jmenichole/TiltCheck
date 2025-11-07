@@ -11,10 +11,10 @@ For licensing information, see LICENSE file in the root directory.
 
 ---
 
-TiltCheck Nosana AI Agent
+TiltCheck Trustless Solana AI Agent
 
-Integrates TiltCheck tilt detection with Nosana's decentralized compute network
-and Solana blockchain for transparent, verifiable behavioral analysis.
+Integrates TiltCheck tilt detection with trustless Solana blockchain
+for transparent, verifiable behavioral analysis.
 """
 
 import os
@@ -33,9 +33,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class TiltCheckNosanaAgent:
+class TiltCheckSolanaAgent:
     """
-    TiltCheck agent running on Nosana compute network with Solana integration.
+    TiltCheck agent running on trustless Solana with direct blockchain integration.
     
     This agent processes behavioral data through decentralized AI models,
     stores results on Solana, and provides verifiable tilt detection.
@@ -43,7 +43,7 @@ class TiltCheckNosanaAgent:
     
     def __init__(self, solana_rpc_url: Optional[str] = None):
         """
-        Initialize the Nosana agent.
+        Initialize the trustless Solana agent.
         
         Args:
             solana_rpc_url: Solana RPC endpoint (defaults to devnet)
@@ -55,7 +55,7 @@ class TiltCheckNosanaAgent:
         wallet_path = os.environ.get("SOLANA_WALLET_PATH", "~/.config/solana/id.json")
         self.keypair = self._load_keypair(wallet_path)
         
-        logger.info(f"TiltCheck Nosana Agent initialized")
+        logger.info(f"TiltCheck Trustless Solana Agent initialized")
         logger.info(f"Solana RPC: {self.solana_rpc_url}")
         logger.info(f"Public Key: {self.keypair.public_key if self.keypair else 'None'}")
     
@@ -79,7 +79,7 @@ class TiltCheckNosanaAgent:
         Analyze behavioral data for tilt detection.
         
         This method processes gambling session data through AI models
-        running on Nosana compute nodes.
+        running on trustless Solana infrastructure.
         
         Args:
             session_data: Dict containing session information
@@ -96,7 +96,7 @@ class TiltCheckNosanaAgent:
         loss_streak = session_data.get('loss_streak', 0)
         
         # Calculate tilt score (0-100)
-        # This is a simplified version - production would use Nosana AI models
+        # This is a simplified version - production would use on-chain AI models
         tilt_score = self._calculate_tilt_score(
             bet_frequency, balance_volatility, session_duration, loss_streak
         )
@@ -218,11 +218,11 @@ class TiltCheckNosanaAgent:
 
 
 def main():
-    """Run the Nosana agent."""
-    logger.info("Starting TiltCheck Nosana AI Agent...")
+    """Run the trustless Solana agent."""
+    logger.info("Starting TiltCheck Trustless Solana AI Agent...")
     
     # Initialize agent
-    agent = TiltCheckNosanaAgent()
+    agent = TiltCheckSolanaAgent()
     
     # Example session data
     example_session = {
@@ -238,7 +238,7 @@ def main():
     
     # Display results
     print("\n" + "="*60)
-    print("TiltCheck Nosana AI Agent - Analysis Result")
+    print("TiltCheck Trustless Solana AI Agent - Analysis Result")
     print("="*60)
     print(f"Session ID: {result['session_id']}")
     print(f"Tilt Score: {result['tilt_score']}/100")

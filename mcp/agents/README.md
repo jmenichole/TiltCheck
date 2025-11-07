@@ -9,31 +9,31 @@ This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
 For licensing information, see LICENSE file in the root directory.
 -->
 
-# TiltCheck Nosana Agents
+# TiltCheck Trustless Solana Agents
 
-AI agents for decentralized tilt detection on Nosana compute network.
+AI agents for decentralized tilt detection on trustless Solana infrastructure.
 
 ## Agents
 
-### tiltcheck_nosana_agent.py
+### tiltcheck_solana_agent.py
 
-Main agent that processes behavioral data through Nosana's decentralized AI infrastructure.
+Main agent that processes behavioral data through trustless Solana blockchain infrastructure.
 
 **Features:**
 - Real-time behavioral analysis
-- Solana blockchain integration
+- Trustless Solana blockchain integration
 - Cryptographic result verification
-- Decentralized compute execution
+- Decentralized execution without intermediaries
 
 **Usage:**
 
 ```bash
 # Run the agent
-python tiltcheck_nosana_agent.py
+python tiltcheck_solana_agent.py
 
 # With custom Solana RPC
 export SOLANA_RPC_URL="https://api.mainnet-beta.solana.com"
-python tiltcheck_nosana_agent.py
+python tiltcheck_solana_agent.py
 ```
 
 ## Architecture
@@ -43,7 +43,7 @@ User Session Data
        ↓
 TiltCheck Agent
        ↓
-Nosana Compute Network
+Trustless Solana Network
        ↓
 AI Model Execution
        ↓
@@ -54,10 +54,10 @@ Solana Blockchain
 
 ## Configuration
 
-Edit `../config/nosana_config.json` to customize:
+Edit `../config/solana_config.json` to customize:
 - Network settings (devnet/mainnet)
 - Analysis thresholds
-- Compute node preferences
+- RPC endpoint preferences
 - Risk level definitions
 
 ## Development
@@ -69,19 +69,19 @@ pip install -r ../resources/requirements.txt
 # Run tests
 python -m pytest tests/
 
-# Deploy to Nosana
+# Deploy to Solana
 npm run deploy
 ```
 
 ## Integration with Agentverse
 
-The Nosana agent integrates with the existing TiltCheck Agentverse registration:
+The trustless Solana agent integrates with the existing TiltCheck Agentverse registration:
 
 ```python
-from mcp.agents.tiltcheck_nosana_agent import TiltCheckNosanaAgent
+from mcp.agents.tiltcheck_solana_agent import TiltCheckSolanaAgent
 
 # Initialize
-agent = TiltCheckNosanaAgent()
+agent = TiltCheckSolanaAgent()
 
 # Analyze session
 result = agent.analyze_behavioral_data(session_data)
@@ -89,6 +89,5 @@ result = agent.analyze_behavioral_data(session_data)
 
 ## Learn More
 
-- [Nosana Documentation](https://docs.nosana.io/)
 - [Solana Documentation](https://docs.solana.com/)
 - [TiltCheck Agent Guide](../../AGENT_REGISTRATION_GUIDE.md)

@@ -1,4 +1,4 @@
-# TiltCheck Nosana Agent Requirements
+# TiltCheck Trustless Solana Agent Requirements
 
 # Solana Integration
 solana>=0.30.0
