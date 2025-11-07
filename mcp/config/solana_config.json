@@ -1,13 +1,11 @@
 {
   "_comment": "Copyright (c) 2024-2025 JME (jmenichole) - All Rights Reserved. PROPRIETARY AND CONFIDENTIAL. Unauthorized copying prohibited. See LICENSE file.",
-  "nosana": {
+  "solana": {
     "network": "devnet",
     "rpc_url": "https://api.devnet.solana.com",
-    "compute_nodes": {
-      "min_nodes": 3,
-      "preferred_region": "us-west",
-      "fallback_enabled": true
-    },
+    "commitment": "confirmed",
+    "transaction_timeout": 60000,
+    "max_retries": 3,
     "ai_models": {
       "tilt_detection": {
         "model_id": "tiltcheck-v1",
@@ -15,12 +13,6 @@
         "accuracy_target": 0.89
       }
     }
-  },
-  "solana": {
-    "network": "devnet",
-    "commitment": "confirmed",
-    "transaction_timeout": 60000,
-    "max_retries": 3
   },
   "agent": {
     "name": "TiltCheck",

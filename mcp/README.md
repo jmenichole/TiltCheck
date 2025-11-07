@@ -9,30 +9,30 @@ This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
 For licensing information, see LICENSE file in the root directory.
 -->
 
-# TiltCheck Nosana AI Agent
+# TiltCheck Trustless Solana AI Agent
 
-TiltCheck integrated with Nosana AI agents for Solana-powered behavioral data analysis.
+TiltCheck integrated with trustless Solana for decentralized behavioral data analysis.
 
 ## Overview
 
-This directory contains the Nosana AI agent integration for TiltCheck, combining Solana blockchain capabilities with behavioral tilt detection for decentralized AI-powered gambling analytics.
+This directory contains the trustless Solana AI agent integration for TiltCheck, combining Solana blockchain capabilities with behavioral tilt detection for decentralized AI-powered gambling analytics.
 
 ## Structure
 
-- `agents/` - Nosana AI agent implementations
+- `agents/` - Trustless Solana AI agent implementations
 - `resources/` - Agent resources (models, data, configs)
-- `config/` - Configuration files for Nosana integration
+- `config/` - Configuration files for Solana integration
 - `frontend/` - Next.js frontend for agent interface
 
-## Nosana Integration
+## Trustless Solana Integration
 
-TiltCheck uses Nosana's decentralized compute network to run AI models for tilt detection. The behavioral data is processed on Solana, ensuring transparency and verifiability.
+TiltCheck uses trustless Solana integration to run AI models for tilt detection. The behavioral data is processed directly on Solana, ensuring transparency and verifiability without relying on centralized compute networks.
 
 ### Key Features
 
-- **Decentralized Tilt Detection**: AI models run on Nosana compute nodes
+- **Decentralized Tilt Detection**: AI models run on trustless Solana infrastructure
 - **Solana Data Pipeline**: Behavioral data stored and analyzed on-chain
-- **Real-time Processing**: Low-latency tilt alerts via Nosana network
+- **Real-time Processing**: Low-latency tilt alerts via direct Solana integration
 - **Verifiable Results**: All AI predictions are cryptographically signed
 
 ## Setup
@@ -45,7 +45,7 @@ See individual component READMEs for setup instructions:
 ## Architecture
 
 ```
-TiltCheck User → Frontend → Nosana AI Agent → Solana Blockchain
+TiltCheck User → Frontend → Trustless Solana AI Agent → Solana Blockchain
                                 ↓
                         Behavioral Analysis
                                 ↓
@@ -63,12 +63,11 @@ npm install
 # Run agent locally
 npm run agent:dev
 
-# Deploy to Nosana
+# Deploy to Solana
 npm run agent:deploy
 ```
 
 ## Learn More
 
-- [Nosana Documentation](https://docs.nosana.io/)
 - [Solana Documentation](https://docs.solana.com/)
 - [TiltCheck Agent Docs](../README_AGENT.md)
