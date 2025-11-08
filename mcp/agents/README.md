@@ -9,31 +9,31 @@ This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
 For licensing information, see LICENSE file in the root directory.
 -->
 
-# TiltCheck Trustless Solana Agents
+# TiltCheck AI Agents
 
-AI agents for decentralized tilt detection on trustless Solana infrastructure.
+AI agents for behavioral tilt detection.
 
 ## Agents
 
-### tiltcheck_solana_agent.py
+### tiltcheck_agent.py
 
-Main agent that processes behavioral data through trustless Solana blockchain infrastructure.
+Main agent that processes behavioral data for tilt detection analysis.
 
 **Features:**
 - Real-time behavioral analysis
-- Trustless Solana blockchain integration
-- Cryptographic result verification
-- Decentralized execution without intermediaries
+- Pattern recognition
+- Predictive analytics
+- Alert generation
 
 **Usage:**
 
 ```bash
 # Run the agent
-python tiltcheck_solana_agent.py
+python tiltcheck_agent.py
 
-# With custom Solana RPC
-export SOLANA_RPC_URL="https://api.mainnet-beta.solana.com"
-python tiltcheck_solana_agent.py
+# With custom configuration
+export TILTCHECK_CONFIG="config/custom_config.json"
+python tiltcheck_agent.py
 ```
 
 ## Architecture
@@ -43,22 +43,20 @@ User Session Data
        ↓
 TiltCheck Agent
        ↓
-Trustless Solana Network
-       ↓
 AI Model Execution
        ↓
-Results + Signature
+Analysis Results
        ↓
-Solana Blockchain
+Alerts & Recommendations
 ```
 
 ## Configuration
 
-Edit `../config/solana_config.json` to customize:
-- Network settings (devnet/mainnet)
+Edit `../config/agent_config.json` to customize:
 - Analysis thresholds
-- RPC endpoint preferences
 - Risk level definitions
+- Alert preferences
+- Model parameters
 
 ## Development
 
@@ -69,19 +67,19 @@ pip install -r ../resources/requirements.txt
 # Run tests
 python -m pytest tests/
 
-# Deploy to Solana
+# Deploy agent
 npm run deploy
 ```
 
 ## Integration with Agentverse
 
-The trustless Solana agent integrates with the existing TiltCheck Agentverse registration:
+The TiltCheck agent integrates with the existing TiltCheck Agentverse registration:
 
 ```python
-from mcp.agents.tiltcheck_solana_agent import TiltCheckSolanaAgent
+from mcp.agents.tiltcheck_agent import TiltCheckAgent
 
 # Initialize
-agent = TiltCheckSolanaAgent()
+agent = TiltCheckAgent()
 
 # Analyze session
 result = agent.analyze_behavioral_data(session_data)
@@ -89,5 +87,4 @@ result = agent.analyze_behavioral_data(session_data)
 
 ## Learn More
 
-- [Solana Documentation](https://docs.solana.com/)
 - [TiltCheck Agent Guide](../../AGENT_REGISTRATION_GUIDE.md)

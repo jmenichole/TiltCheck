@@ -9,31 +9,31 @@ This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
 For licensing information, see LICENSE file in the root directory.
 -->
 
-# TiltCheck Trustless Solana AI Agent
+# TiltCheck AI Agent Integration
 
-TiltCheck integrated with trustless Solana for decentralized behavioral data analysis.
+TiltCheck integrated with AI capabilities for behavioral data analysis.
 
 ## Overview
 
-This directory contains the trustless Solana AI agent integration for TiltCheck, combining Solana blockchain capabilities with behavioral tilt detection for decentralized AI-powered gambling analytics.
+This directory contains AI agent integration for TiltCheck, combining machine learning capabilities with behavioral tilt detection for AI-powered gambling analytics.
 
 ## Structure
 
-- `agents/` - Trustless Solana AI agent implementations
+- `agents/` - AI agent implementations
 - `resources/` - Agent resources (models, data, configs)
-- `config/` - Configuration files for Solana integration
+- `config/` - Configuration files
 - `frontend/` - Next.js frontend for agent interface
 
-## Trustless Solana Integration
+## AI Integration
 
-TiltCheck uses trustless Solana integration to run AI models for tilt detection. The behavioral data is processed directly on Solana, ensuring transparency and verifiability without relying on centralized compute networks.
+TiltCheck uses AI models to enhance tilt detection. The behavioral data is processed to provide insights and early warning signs of tilt behavior.
 
 ### Key Features
 
-- **Decentralized Tilt Detection**: AI models run on trustless Solana infrastructure
-- **Solana Data Pipeline**: Behavioral data stored and analyzed on-chain
-- **Real-time Processing**: Low-latency tilt alerts via direct Solana integration
-- **Verifiable Results**: All AI predictions are cryptographically signed
+- **AI-Powered Tilt Detection**: Machine learning models for pattern recognition
+- **Behavioral Data Pipeline**: Data collection and analysis
+- **Real-time Processing**: Low-latency tilt alerts
+- **Actionable Insights**: Analysis results with recommendations
 
 ## Setup
 
@@ -45,9 +45,7 @@ See individual component READMEs for setup instructions:
 ## Architecture
 
 ```
-TiltCheck User → Frontend → Trustless Solana AI Agent → Solana Blockchain
-                                ↓
-                        Behavioral Analysis
+TiltCheck User → Frontend → AI Agent → Behavioral Analysis
                                 ↓
                         Tilt Detection Models
                                 ↓
@@ -63,11 +61,10 @@ npm install
 # Run agent locally
 npm run agent:dev
 
-# Deploy to Solana
+# Deploy agent
 npm run agent:deploy
 ```
 
 ## Learn More
 
-- [Solana Documentation](https://docs.solana.com/)
 - [TiltCheck Agent Docs](../README_AGENT.md)
