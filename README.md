@@ -14,35 +14,6 @@ TiltCheck is a comprehensive accountability platform designed to help players ma
 
 > 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.
 
-## 🤖 ASI Alliance Agent Integration
-
-**NEW**: TiltCheck now includes an intelligent agent built with Fetch.ai's uAgents framework! 
-
-The **TiltCheck Agent** uses ASI Alliance technologies to provide autonomous tilt detection and intervention:
-- 🎯 **Fetch.ai uAgents Framework** - Autonomous agent for real-time monitoring
-- 💬 **ASI Chat Protocol** - Agent-to-agent communication for alerts
-- 🌐 **Agentverse Ready** - Discoverable on Agentverse and ASI:One
-- 🧠 **MeTTa-Ready** - Extensible for knowledge graph reasoning
-
-**Quick Start with Agent**:
-```bash
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Run the TiltCheck Agent
-python agent.py
-```
-
-**Full Agent Documentation**: See [README_AGENT.md](README_AGENT.md) for complete setup, usage, and integration details.
-
-**ASI Alliance Hackathon Submission**: This project includes a complete hackathon submission:
-- ⚡ **Quick Start for Judges**: [QUICKSTART_JUDGES.md](QUICKSTART_JUDGES.md) - 60-second demo
-- ✅ **Complete Submission**: [SUBMISSION.md](SUBMISSION.md) - All requirements and judging criteria
-- 📊 **Judging Criteria**: Detailed responses for all categories
-- 🎬 **Demo Video Guide**: [DEMO_VIDEO.md](DEMO_VIDEO.md) - Video creation instructions
-- 🏆 **Why TiltCheck Agent Stands Out**: Innovation, impact, and technical excellence
-- 📚 **Comprehensive Documentation**: [README_AGENT.md](README_AGENT.md) - Full agent docs
-
 ![TiltCheck Dashboard](https://via.placeholder.com/800x400/0f172a/60a5fa?text=TiltCheck+Dashboard)
 
 ## 🚀 Features
@@ -365,10 +336,37 @@ The deployment workflow:
 - [ ] **Cool-down Timers** - Mandatory wait periods after wins
 - [ ] **Vault Lock Timers** - Time-locked savings with withdrawal delays
 - [ ] **AccountabiliBuddy Tools** - Peer accountability features
-- [ ] **AI-Enhanced Detection** - Advanced behavioral pattern recognition
 - [ ] **Mobile App** - Companion mobile application
 - [ ] **Multi-language Support** - International accessibility
 - [ ] **Enhanced Discord Integration** - Expanded bot features
+
+### Future Integrations
+- [ ] **JustTheTip Integration** - Trustless Solana agent tip bot (separate repo)
+  - Auto-vault features based on tilt detection
+  - NFT mint verification through trust score system
+  - Discord bot integration for community tipping
+  - Repository: Coming soon
+- [ ] **QualifyFirst Platform** - Alternative earning opportunities during tilt cooldowns
+- [ ] **AI-Enhanced Detection** - Optional advanced behavioral pattern recognition
+
+## 🔬 Advanced Features (Optional)
+
+### ASI Alliance Agent Integration
+
+For advanced users and hackathon judges, TiltCheck includes an experimental autonomous agent built with Fetch.ai's uAgents framework.
+
+**Features:**
+- Autonomous tilt detection using Fetch.ai uAgents
+- ASI Chat Protocol for agent-to-agent communication
+- Agentverse integration for discoverability
+- MeTTa-ready for knowledge graph reasoning
+
+**Documentation:**
+- [README_AGENT.md](README_AGENT.md) - Complete agent setup and usage
+- [SUBMISSION.md](SUBMISSION.md) - ASI Alliance Hackathon submission details
+- [QUICKSTART_JUDGES.md](QUICKSTART_JUDGES.md) - Quick demo for judges
+
+**Note:** This is an experimental feature for hackathon/grant purposes and is not required for core TiltCheck functionality.
 
 ## 📄 License & Copyright
 
@@ -379,12 +377,15 @@ This software and associated documentation files (the "Software") are proprietar
 
 ### Software Components
 This repository includes:
-- **TiltCheck**: Player behavior monitoring system
-- **TrapHouse Discord Bot**: Discord bot ecosystem  
-- **JustTheTip Bot**: Cryptocurrency accountability bot
+- **TiltCheck**: Player behavior monitoring and accountability system
+- **TrapHouse Discord Bot**: Discord bot ecosystem integration
 - **CollectClock**: Timer and notification system
-- **Casino Trust Scoring**: Casino compliance analysis
-- **NFT Trust System**: Blockchain-based verification
+- **Casino Trust Scoring**: Casino compliance analysis (in development)
+- **NFT Trust System**: Blockchain-based verification (in development)
+
+**Planned External Integrations:**
+- **JustTheTip Bot**: Trustless Solana tip bot (separate repository, future integration)
+- **QualifyFirst**: Alternative earning platform (future integration)
 
 ### Commercial License
 This software is proprietary. Usage terms are being finalized during beta development.
