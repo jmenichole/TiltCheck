@@ -2,15 +2,15 @@
 
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
 [![React Version](https://img.shields.io/badge/react-%5E18.2.0-blue.svg)](https://reactjs.org/)
-[![Status](https://img.shields.io/badge/status-commercial-blue.svg)](https://tiltcheck.it.com)
+[![Status](https://img.shields.io/badge/status-beta-orange.svg)](https://tiltcheck.it.com)
 ![tag:innovationlab](https://img.shields.io/badge/innovationlab-3D8BD3)
 ![tag:hackathon](https://img.shields.io/badge/hackathon-5F43F1)
 
-**Professional Player Behavior Monitoring System for Responsible Gaming**
+**Responsible Gaming Accountability & Monitoring System**
 
-TiltCheck is a comprehensive real-time monitoring system designed to identify, track, and mitigate player "tilt" behaviors in gaming environments. Our AI-powered solution promotes responsible gaming through intelligent pattern recognition, predictive alerts, and intervention recommendations.
+TiltCheck is a comprehensive accountability platform designed to help players maintain healthy gaming habits. Combining behavioral monitoring, accountability tools, and AI-enhanced detection, TiltCheck provides multiple layers of protection including double wallet verification, cool-down timers, vault locks, and peer accountability features.
 
-**Now available as a commercial service with enterprise-grade support and premium Discord bot integration.**
+**Currently in beta development with active testing and feature refinement.**
 
 > 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.
 
@@ -47,79 +47,51 @@ python agent.py
 
 ## 🚀 Features
 
-### 🤖 Intelligent Agent (NEW)
-- **Autonomous Monitoring** - Fetch.ai uAgents-powered tilt detection
+### 🔐 AccountabiliBuddy Tools (Core Features)
+- **Double Wallet Verification** - Two-person approval system for withdrawals (planned)
+- **Cool-down Timers** - Mandatory wait periods after wins to prevent impulsive betting (planned)
+- **Vault Lock Timers** - Time-locked savings with customizable withdrawal delays (planned)
+- **Peer Accountability** - Connect with trusted friends for withdrawal approvals
+- **Session Limits** - Configurable maximum session durations
+
+### 🎯 Behavioral Monitoring
+- **Pattern Recognition** - Track betting patterns and session duration
+- **Real-time Alerts** - Instant notifications for concerning behaviors
+- **Session Analytics** - Detailed tracking and analysis
+- **Historical Data** - Long-term pattern analysis and insights
+
+### 🤖 AI-Enhanced Detection (Optional)
+- **Intelligent Agent** - Fetch.ai uAgents-powered monitoring
 - **ASI Chat Protocol** - Agent-to-agent communication
-- **Agentverse Integration** - Discoverable on ASI:One
-- **Real-time Alerts** - Instant intervention messages
+- **Predictive Alerts** - Early warning system using behavioral analysis
 - **MeTTa-Ready** - Extensible for advanced reasoning
 
-### 🎯 Core Monitoring
-- **Real-time Tilt Detection** - Advanced algorithms monitor player behavior patterns
-- **Behavioral Analysis** - Track betting patterns, session duration, and emotional indicators
-- **Predictive Alerts** - Early warning system for problematic gaming behaviors
+### 📊 Dashboard & Insights
+- **Player Dashboard** - Comprehensive view of statistics and trends
+- **Risk Assessment** - Dynamic profiling based on gaming patterns
+- **Customizable Alerts** - Visual, audio, and messaging notifications
 - **Multi-game Support** - Works with slots, table games, and originals
 
-### 📊 Analytics & Insights
-- **Player Dashboard** - Comprehensive view of player statistics and trends
-- **Risk Assessment** - Dynamic risk profiling based on gaming patterns
-- **Session Analytics** - Detailed session tracking and analysis
-- **Historical Data** - Long-term pattern recognition and reporting
-
-### 🔔 Alert System
-- **Real-time Notifications** - Instant alerts for concerning behaviors
-- **Multiple Alert Types** - Visual, audio, and messaging notifications
-- **Customizable Thresholds** - Configurable sensitivity levels
-- **AOL-style Messenger** - Friendly intervention messaging system
-
-### 🛡️ Responsible Gaming Tools
-- **Intervention Recommendations** - Actionable advice for healthy gaming
-- **Break Suggestions** - Automated recommendations for gaming breaks
-- **Vault Reminders** - Prompts to secure winnings
-- **Session Time Limits** - Configurable maximum session durations
-
 ### 🔧 Integration & API
-- **RESTful API** - Easy integration with existing casino systems
+- **RESTful API** - Easy integration with existing systems
 - **Webhook Support** - Real-time event notifications
-- **Custom Configuration** - Flexible threshold and rule customization
 - **Discord Integration** - Community monitoring and alerts
+- **Custom Configuration** - Flexible threshold and rule customization
 
-## 💰 Pricing & Plans
+## 🚀 Current Status: Beta Development
 
-### 🆓 Starter Plan
-- **Price**: $299/month
-- **Players**: Up to 1,000 monitored players
-- **Alerts**: 10,000 alerts per month
-- **API Calls**: 100,000 per month
-- **Support**: Email support
-- **Discord Bot**: Basic commands
+TiltCheck is currently in **active beta development**. The platform is functional and being tested with early users to refine features and validate performance metrics.
 
-### 🚀 Professional Plan
-- **Price**: $799/month
-- **Players**: Up to 10,000 monitored players
-- **Alerts**: Unlimited alerts
-- **API Calls**: 1,000,000 per month
-- **Support**: Priority email + phone support
-- **Discord Bot**: Full feature set with custom commands
-- **Analytics**: Advanced reporting dashboard
-- **Integrations**: Webhook notifications
+### Beta Access
+- ✅ Core tilt detection working
+- ✅ Real-time alerts functional  
+- ✅ Discord integration active
+- 🚧 Performance metrics being validated
+- 🚧 Feature set being refined based on feedback
 
-### 🏢 Enterprise Plan
-- **Price**: Custom pricing
-- **Players**: Unlimited monitored players
-- **Alerts**: Unlimited alerts
-- **API Calls**: Unlimited
-- **Support**: 24/7 dedicated support team
-- **Discord Bot**: White-label custom bot with premium features
-- **Analytics**: Custom reporting and data export
-- **Integrations**: Full API access and custom integrations
-- **SLA**: 99.9% uptime guarantee
-- **Compliance**: SOC 2 Type II, GDPR compliance
+**Join the beta waitlist:** Visit [tiltcheck.it.com/beta-signup.html](https://tiltcheck.it.com/beta-signup.html)
 
-### 🤖 Discord Bot Add-on
-- **Premium Bot**: $199/month (includes advanced commands and custom alerts)
-- **White-label Bot**: $499/month (fully customizable with your branding)
-- **Multi-server Support**: Additional $99/month per server
+**Note:** Pricing and monetization plans have not been finalized. Beta access is currently free for testers.
 
 ## 📦 Getting Started
 
@@ -127,32 +99,10 @@ python agent.py
 - Node.js 14.0.0 or higher
 - npm or yarn package manager
 - Modern web browser (Chrome, Firefox, Safari, Edge)
-- **Valid TiltCheck API Key** (obtained after subscription)
 
-### Commercial Access
+### Installation
 
-1. **Subscribe to a plan**
-   - Visit [https://tiltcheck.it.com/pricing](https://tiltcheck.it.com/pricing)
-   - Choose your plan (Starter, Professional, or Enterprise)
-   - Complete payment and account setup
-
-2. **Get your API credentials**
-   - Access your dashboard at [https://tiltcheck.it.com/dashboard](https://tiltcheck.it.com/dashboard)
-   - Generate your API key and webhook endpoints
-   - Download client libraries and documentation
-
-3. **Install client libraries**
-   ```bash
-   npm install @tiltcheck/client-js
-   # or
-   yarn add @tiltcheck/client-js
-   ```
-
-### Demo Installation (Limited Features)
-
-For evaluation purposes, you can run the demo version:
-
-1. **Clone the demo repository**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/jmenichole/TiltCheck.git
    cd TiltCheck
@@ -171,24 +121,20 @@ For evaluation purposes, you can run the demo version:
 4. **Open your browser**
    Navigate to `http://localhost:3000` to view the demo application
 
-⚠️ **Note**: Demo version has limited functionality. Full features require a paid subscription.
-
 ## 🎮 Usage
 
-### Commercial API Integration
+### Basic Integration
 
 ```javascript
-// Import the commercial TiltCheck client
-import TiltCheck from '@tiltcheck/client-js';
+// Import the TiltCheck library
+import TiltCheck from './tiltCheck.js';
 
-// Initialize with your subscription API key
+// Initialize TiltCheck
 const tiltChecker = new TiltCheck({
-  apiKey: 'tc_live_your_api_key_here',
-  plan: 'professional', // starter, professional, enterprise
-  environment: 'production' // or 'sandbox' for testing
+  environment: 'development' // or 'production' for testing
 });
 
-// Track a player (requires active subscription)
+// Track a player
 const player = await tiltChecker.trackPlayer('player-123', {
   initialStake: 1000,
   riskProfile: 'medium',
@@ -204,11 +150,11 @@ await tiltChecker.updatePlayerActivity('player-123', {
   timestamp: Date.now()
 });
 
-// Get comprehensive player statistics (Professional+ plans)
+// Get player statistics
 const stats = await tiltChecker.getPlayerStats('player-123');
 const recommendations = await tiltChecker.getRecommendations('player-123');
 
-// Configure Discord webhook (if bot subscription active)
+// Configure Discord webhook
 await tiltChecker.configureDiscordWebhook({
   webhookUrl: 'your_discord_webhook_url',
   channelId: 'your_channel_id',
@@ -218,10 +164,8 @@ await tiltChecker.configureDiscordWebhook({
 
 ### Configuration
 
-Subscription-based configuration through dashboard or API:
-
 ```javascript
-// Configure via API (Professional+ plans)
+// Configure alert thresholds
 await tiltChecker.updateConfiguration({
   alertThresholds: {
     stakeIncrease: 200,
@@ -239,30 +183,18 @@ await tiltChecker.updateConfiguration({
     email: { 
       enabled: true, 
       recipients: ["admin@yourdomain.com"] 
-    },
-    sms: { 
-      enabled: false // Enterprise plan only
     }
   },
   discordBot: {
     enabled: true,
-    customCommands: true, // Premium bot subscription
-    whiteLabel: false     // White-label bot subscription
+    customCommands: true
   }
 });
 ```
 
-**Dashboard Configuration**: Access advanced settings at [https://tiltcheck.it.com/dashboard](https://tiltcheck.it.com/dashboard)
-```
+## 🤖 Discord Bot Integration
 
-## 🤖 Discord Bot Integration (Premium Service)
-
-TiltCheck offers premium Discord bot services for community engagement and monitoring alerts.
-
-### Bot Subscription Plans
-- **Basic Bot**: Included with Professional plan and higher
-- **Premium Bot**: Advanced features with custom commands ($199/month)
-- **White-label Bot**: Fully customizable with your branding ($499/month)
+TiltCheck includes Discord bot integration for community engagement and monitoring alerts.
 
 ### Bot Features
 - Real-time tilt monitoring alerts
@@ -270,33 +202,26 @@ TiltCheck offers premium Discord bot services for community engagement and monit
 - Responsible gaming tips
 - Community moderation tools
 - Custom alert thresholds
-- Multi-server support (Enterprise only)
 
-### Setup Premium Discord Bot
+### Setup Discord Bot
 
-1. **Subscribe to Bot Service**
-   - Add Discord Bot to your TiltCheck subscription
-   - Receive bot invitation link and configuration token
-
-2. **Configure bot**
-   - Invite bot to your Discord server using provided link
-   - Configure permissions and channels through dashboard
+1. **Configure bot**
+   - Invite bot to your Discord server
+   - Configure permissions and channels
    - Set up webhook endpoints for alerts
 
-3. **Activate monitoring**
-   - Bot automatically connects to your TiltCheck monitoring system
+2. **Activate monitoring**
+   - Bot connects to your TiltCheck monitoring system
    - Configure alert channels and notification preferences
    - Test alerts and commands
 
-### Premium Discord Commands
+### Discord Commands
 
-- `!tilt-status` - View current monitoring status (All plans)
-- `!player-stats <playerId>` - Get player statistics (Professional+)
-- `!set-alert <threshold>` - Configure alert thresholds (Professional+)
-- `!gaming-tip` - Get responsible gaming advice (All plans)
-- `!vault-reminder` - Send vault reminder to players (Professional+)
-- `!custom-alert <message>` - Send custom alerts (Premium Bot only)
-- `!white-label <command>` - Custom branded commands (White-label only)
+- `!tilt-status` - View current monitoring status
+- `!player-stats <playerId>` - Get player statistics
+- `!set-alert <threshold>` - Configure alert thresholds
+- `!gaming-tip` - Get responsible gaming advice
+- `!vault-reminder` - Send vault reminder to players
 
 ## 📈 Demo & Examples
 
@@ -406,12 +331,14 @@ The deployment workflow:
 
 **Note**: Make sure GitHub Pages is configured in repository settings to use GitHub Actions as the source.
 
-## 📊 Performance
+## 📊 Performance Targets
 
-- **Response Time**: <500ms average
-- **Accuracy Rate**: 99.7% tilt detection
-- **Uptime**: 99.9% availability
-- **Scalability**: Handles 10,000+ concurrent players
+**Note:** These are development targets being validated during beta testing:
+
+- **Response Time**: <500ms average (target)
+- **Tilt Detection**: AI-based behavioral analysis (in validation)
+- **Uptime**: 99%+ availability (goal)
+- **Scalability**: Designed to handle 10,000+ concurrent players
 
 ## 🔐 Privacy & Security
 
@@ -422,43 +349,26 @@ The deployment workflow:
 
 ## 📞 Support & Contact
 
-### Sales & Business Inquiries
-- **Sales & Demo Requests**: jmenichole007@outlook.com
+### Contact
+- **General Inquiries**: jmenichole007@outlook.com
 - **Business Development**: j.chapman7@yahoo.com
-- **Phone**: +1 (555) TIL-TCHECK
 
-### Technical Support
-- **Starter Plan**: Email support (48-hour response)
-- **Professional Plan**: Priority email + phone support (24-hour response)
-- **Enterprise Plan**: 24/7 dedicated support team (4-hour response)
-- **Support Portal**: [https://tiltcheck.it.com/support](https://tiltcheck.it.com/support)
-- **Documentation**: [https://tiltcheck.it.com/docs](https://tiltcheck.it.com/docs)
-
-### Community & Resources
-- **Customer Discord**: [Private server for subscribers](https://discord.gg/tiltcheck-customers)
-- **Knowledge Base**: [https://tiltcheck.it.com/kb](https://tiltcheck.it.com/kb)
-- **API Status**: [https://tiltcheck.it.com/status](https://tiltcheck.it.com/status)
+### Resources
 - **GitHub**: [https://github.com/jmenichole/TiltCheck](https://github.com/jmenichole/TiltCheck)
+- **Documentation**: Check the docs folder for guides
+- **Beta Signup**: [https://tiltcheck.it.com/beta-signup.html](https://tiltcheck.it.com/beta-signup.html)
 
 ## 🎯 Roadmap
 
-### Q1 2025
-- [ ] Advanced AI model integration
-- [ ] Mobile app companion
-- [ ] Multi-language support
-- [ ] Enhanced Discord bot features
-
-### Q2 2025
-- [ ] Machine learning pattern recognition
-- [ ] Operator dashboard improvements
-- [ ] API v2.0 release
-- [ ] Third-party integrations
-
-### Q3 2025
-- [ ] Predictive analytics
-- [ ] Customizable intervention flows
-- [ ] Advanced reporting suite
-- [ ] Regulatory compliance tools
+### Planned Features
+- [ ] **Double Wallet Verification** - Two-person approval system for withdrawals
+- [ ] **Cool-down Timers** - Mandatory wait periods after wins
+- [ ] **Vault Lock Timers** - Time-locked savings with withdrawal delays
+- [ ] **AccountabiliBuddy Tools** - Peer accountability features
+- [ ] **AI-Enhanced Detection** - Advanced behavioral pattern recognition
+- [ ] **Mobile App** - Companion mobile application
+- [ ] **Multi-language Support** - International accessibility
+- [ ] **Enhanced Discord Integration** - Expanded bot features
 
 ## 📄 License & Copyright
 
@@ -477,22 +387,18 @@ This repository includes:
 - **NFT Trust System**: Blockchain-based verification
 
 ### Commercial License
-This software is proprietary and commercial. Usage requires a valid subscription to TiltCheck services.
+This software is proprietary. Usage terms are being finalized during beta development.
 
-- **Software**: Licensed per subscription plan
-- **API Access**: Governed by Terms of Service
-- **Discord Bot**: Additional licensing required for premium features
-- **Enterprise**: Custom licensing agreements available
+- **Current Status**: Open for beta testing
+- **Future Licensing**: To be determined
 
 ### Terms of Service
 - Full terms available at [https://tiltcheck.it.com/tos.html](https://tiltcheck.it.com/tos.html)
 - Privacy policy at [https://tiltcheck.it.com/privacy](https://tiltcheck.it.com/privacy)
-- SLA details at [https://tiltcheck.it.com/sla](https://tiltcheck.it.com/sla)
 
-### Trial & Demo
-- Demo version available for evaluation purposes
-- 30-day free trial available for Professional plan
-- No credit card required for demo access
+### Beta Access
+- Beta version available for testing and feedback
+- No commercial license required during beta phase
 
 ### Licensing Inquiries
 For licensing, partnerships, or commercial use inquiries:
@@ -510,8 +416,8 @@ For licensing, partnerships, or commercial use inquiries:
 
 ---
 
-**Professional Responsible Gaming Monitoring**
+**Responsible Gaming Accountability Tools**
 
-*TiltCheck - Enterprise-grade player behavior monitoring and Discord community management*
+*TiltCheck - Behavioral monitoring and accountability features for responsible gaming*
 
-© 2024 TiltCheck LLC. All rights reserved.
+© 2024-2025 JME (jmenichole). All rights reserved.
