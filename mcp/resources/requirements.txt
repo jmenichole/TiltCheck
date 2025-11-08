@@ -1,8 +1,4 @@
-# TiltCheck Trustless Solana Agent Requirements
-
-# Solana Integration
-solana>=0.30.0
-solders>=0.18.0
+# TiltCheck AI Agent Requirements
 
 # Data Processing
 pandas>=2.0.0
