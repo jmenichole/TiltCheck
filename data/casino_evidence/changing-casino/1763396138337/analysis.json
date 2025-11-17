@@ -1,0 +1,16 @@
+{
+  "casinoId": "changing-casino",
+  "casinoName": "Changing Casino",
+  "baseUrl": "https://changingcasino.com",
+  "analyzedAt": 1763396138319,
+  "rtpClaims": [],
+  "houseEdgeClaims": [],
+  "provablyFairInfo": null,
+  "gameClaims": {},
+  "sourcesChecked": [],
+  "evidenceUrls": [],
+  "screenshots": [],
+  "aiSummary": "No clear RTP claims found in public documentation",
+  "confidence": 0.3,
+  "status": "analyzing"
+}

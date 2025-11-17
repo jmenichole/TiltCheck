@@ -1,0 +1,54 @@
+{
+  "claims": [
+    {
+      "casinoId": "stake",
+      "casinoName": "Stake",
+      "baseUrl": "https://stake.com",
+      "analyzedAt": 1763396138206,
+      "rtpClaims": [],
+      "houseEdgeClaims": [],
+      "provablyFairInfo": null,
+      "gameClaims": {},
+      "sourcesChecked": [],
+      "evidenceUrls": [],
+      "screenshots": [],
+      "aiSummary": "No clear RTP claims found in public documentation",
+      "confidence": 0.3,
+      "status": "complete"
+    },
+    {
+      "casinoId": "test-casino",
+      "casinoName": "Test Casino",
+      "baseUrl": "https://testcasino.com",
+      "analyzedAt": 1763396138277,
+      "rtpClaims": [],
+      "houseEdgeClaims": [],
+      "provablyFairInfo": null,
+      "gameClaims": {},
+      "sourcesChecked": [],
+      "evidenceUrls": [],
+      "screenshots": [],
+      "aiSummary": "No clear RTP claims found in public documentation",
+      "confidence": 0.3,
+      "status": "complete"
+    },
+    {
+      "casinoId": "changing-casino",
+      "casinoName": "Changing Casino",
+      "baseUrl": "https://changingcasino.com",
+      "analyzedAt": 1763396138319,
+      "rtpClaims": [],
+      "houseEdgeClaims": [],
+      "provablyFairInfo": null,
+      "gameClaims": {},
+      "sourcesChecked": [],
+      "evidenceUrls": [],
+      "screenshots": [],
+      "aiSummary": "No clear RTP claims found in public documentation",
+      "confidence": 0.3,
+      "status": "complete"
+    }
+  ],
+  "history": [],
+  "lastUpdated": 1763396138338
+}
