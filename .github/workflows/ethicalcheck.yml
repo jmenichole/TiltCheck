@@ -35,7 +35,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "copilot/**" ]
   schedule:
     - cron: '29 19 * * 6'
 
