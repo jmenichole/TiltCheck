@@ -71,6 +71,29 @@ class CasinoClaimsAnalyzer {
     }
 
     /**
+     * Sanitize casino ID to prevent path traversal attacks
+     * @param {string} casinoId - Casino identifier to sanitize
+     * @returns {string} Sanitized casino ID
+     * @private
+     */
+    _sanitizeCasinoId(casinoId) {
+        if (!casinoId || typeof casinoId !== 'string') {
+            throw new Error('Invalid casino ID');
+        }
+        
+        // Remove any path traversal attempts and dangerous characters
+        // Only allow alphanumeric, hyphens, and underscores
+        const sanitized = casinoId.replace(/[^a-zA-Z0-9\-_]/g, '_');
+        
+        // Prevent empty strings and ensure it doesn't start with dots
+        if (!sanitized || sanitized.startsWith('.')) {
+            throw new Error('Invalid casino ID after sanitization');
+        }
+        
+        return sanitized;
+    }
+
+    /**
      * Analyze casino's public claims about RTP, house edge, and fairness
      * @param {Object} casinoInfo - Casino information
      * @param {string} casinoInfo.casinoId - Casino identifier
@@ -349,8 +372,9 @@ If information is not found, return null for that field.
         ];
         
         for (const pattern of rtpPatterns) {
-            let match;
-            while ((match = pattern.exec(text)) !== null) {
+            // Use matchAll to avoid ReDoS vulnerability with exec() in loops
+            const matches = text.matchAll(pattern);
+            for (const match of matches) {
                 const value = parseFloat(match[1]) / 100;
                 if (value > 0.5 && value < 1.0) { // Sanity check
                     analysis.rtpClaims.push({
@@ -369,8 +393,9 @@ If information is not found, return null for that field.
         ];
         
         for (const pattern of houseEdgePatterns) {
-            let match;
-            while ((match = pattern.exec(text)) !== null) {
+            // Use matchAll to avoid ReDoS vulnerability with exec() in loops
+            const matches = text.matchAll(pattern);
+            for (const match of matches) {
                 const value = parseFloat(match[1]) / 100;
                 if (value >= 0 && value < 0.2) { // Sanity check
                     analysis.houseEdgeClaims.push({
@@ -414,12 +439,15 @@ If information is not found, return null for that field.
      */
     async _captureEvidence(casinoId, pages, analysis) {
         try {
-            const evidenceDir = path.join(this.evidencePath, casinoId, Date.now().toString());
+            // SECURITY: Sanitize casinoId to prevent path traversal attacks
+            const safeCasinoId = this._sanitizeCasinoId(casinoId);
+            const evidenceDir = path.join(this.evidencePath, safeCasinoId, Date.now().toString());
             await fs.mkdir(evidenceDir, { recursive: true });
             
             // Save page HTML
             for (const page of pages) {
-                const filename = page.pattern.replace(/\//g, '_') + '.html';
+                // SECURITY: Sanitize filename to prevent path traversal
+                const filename = page.pattern.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.html';
                 const filepath = path.join(evidenceDir, filename);
                 await fs.writeFile(filepath, page.html, 'utf8');
                 analysis.evidenceUrls.push(filepath);

@@ -46,7 +46,15 @@ try {
 
 class TiltCheckOAuthFlow {
     constructor(options = {}) {
-        this.jwtSecret = options.jwtSecret || process.env.TILTCHECK_JWT_SECRET || crypto.randomBytes(32).toString('hex');
+        // SECURITY: JWT secret must be explicitly provided or set in environment
+        // Never use random bytes as fallback for production secrets
+        if (!options.jwtSecret && !process.env.TILTCHECK_JWT_SECRET) {
+            console.warn('WARNING: No JWT secret provided. Using temporary random secret. Set TILTCHECK_JWT_SECRET environment variable for production.');
+            this.jwtSecret = crypto.randomBytes(32).toString('hex');
+        } else {
+            this.jwtSecret = options.jwtSecret || process.env.TILTCHECK_JWT_SECRET;
+        }
+        
         this.oauthSessions = new Map(); // sessionId -> session data
         this.userCasinoSessions = new Map(); // userId -> active casino sessions
         this.mobileAppCallbacks = new Map(); // sessionId -> callback URL

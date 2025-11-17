@@ -47,7 +47,15 @@ class MagicCollectClockAuth {
         // this.magic = new Magic(this.magicSecretKey);
         
         // Session configuration
-        this.sessionSecret = options.sessionSecret || process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+        // SECURITY: Session secret must be explicitly provided or set in environment
+        // Never use random bytes as fallback for production secrets
+        if (!options.sessionSecret && !process.env.SESSION_SECRET) {
+            console.warn('WARNING: No session secret provided. Using temporary random secret. Set SESSION_SECRET environment variable for production.');
+            this.sessionSecret = crypto.randomBytes(32).toString('hex');
+        } else {
+            this.sessionSecret = options.sessionSecret || process.env.SESSION_SECRET;
+        }
+        
         this.sessionDuration = options.sessionDuration || 2592000000; // 30 days default
         
         // User sessions (in production, use Redis or database)
