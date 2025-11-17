@@ -29,17 +29,25 @@ run_test() {
     fi
 }
 
-# Run tests
+# Run tests that don't require dependencies
 run_test "test_rtp_verification.js" "RTP Verification"
-run_test "test_casino_claims_analyzer.js" "Casino Claims Analyzer"
 
-# Note: Mobile integration test requires jsonwebtoken to be installed
-if command -v npm &> /dev/null && [ -d "node_modules/jsonwebtoken" ]; then
-    run_test "test_mobile_integration.js" "Mobile Integration"
-    run_test "test_compliance_monitoring.js" "Compliance Monitoring"
+# Check if dependencies are installed
+if [ -d "node_modules" ] && [ -f "node_modules/axios/package.json" ]; then
+    echo ""
+    echo "📦 Dependencies detected - running full test suite"
+    run_test "test_casino_claims_analyzer.js" "Casino Claims Analyzer"
+    
+    if [ -f "node_modules/jsonwebtoken/package.json" ]; then
+        run_test "test_mobile_integration.js" "Mobile Integration"
+        run_test "test_compliance_monitoring.js" "Compliance Monitoring"
+    fi
 else
     echo ""
-    echo "⚠️  Skipping mobile integration tests (requires: npm install)"
+    echo "⚠️  Skipping tests requiring dependencies (run 'npm install' for full suite)"
+    echo "   - Casino Claims Analyzer (needs axios)"
+    echo "   - Mobile Integration (needs jsonwebtoken, axios)"
+    echo "   - Compliance Monitoring (needs jsonwebtoken)"
 fi
 
 # Summary
