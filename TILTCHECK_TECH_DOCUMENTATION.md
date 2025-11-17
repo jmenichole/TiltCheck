@@ -3,7 +3,7 @@
 **Version**: 2.0.0  
 **Last Updated**: August 1, 2025  
 **Maintainer**: jmenichole  
-**Repository**: [trap-house-discord-bot](https://github.com/jmenichole/trap-house-discord-bot)
+**Repository**: [TiltCheck](https://github.com/jmenichole/TiltCheck)
 
 ---
 
@@ -309,7 +309,7 @@ TIPCC_API_KEY=your_tipcc_key
 ## 📁 Project Structure
 
 ```
-trap-house-discord-bot/
+TiltCheck/
 ├── 📁 commands/                 → Discord command handlers
 ├── 📁 dashboard/                → Dashboard application
 │   └── ecosystemDashboard.js    → Main dashboard server
@@ -410,7 +410,7 @@ trap-house-discord-bot/
 ### **Development Setup**
 ```bash
 # Clone repository
-git clone https://github.com/jmenichole/trap-house-discord-bot.git
+git clone https://github.com/jmenichole/TiltCheck.git
 
 # Install dependencies
 npm install
@@ -536,7 +536,7 @@ npm run test:support       # Test support page
 - **Discord Support**: https://discord.gg/K3Md6aZx
 - **Main Website**: https://tiltcheck.it.com (SSL Secured)
 - **Ecosystem Hub**: https://tiltcheckecosystem.created.app
-- **GitHub Repository**: https://github.com/jmenichole/trap-house-discord-bot
+- **GitHub Repository**: https://github.com/jmenichole/TiltCheck
 - **SSL Configuration**: See SSL_CERTIFICATE_SETUP.md
 
 ### **Documentation**

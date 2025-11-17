@@ -13,8 +13,8 @@
 
 ```bash
 # Clone and setup
-git clone https://github.com/jmenichole/trap-house-discord-bot.git
-cd trap-house-discord-bot
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 
 # Configure environment
 cp .env.server .env

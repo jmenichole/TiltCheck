@@ -48,7 +48,7 @@ https://your-traphouse-bot.herokuapp.com/github/webhook
 #### Railway Setup:
 1. Go to [railway.app](https://railway.app)
 2. Connect your GitHub account
-3. Select your `trap-house-discord-bot` repository
+3. Select your `TiltCheck` repository
 4. Add environment variables in dashboard
 5. Deploy automatically
 
@@ -189,8 +189,8 @@ Add in Vercel dashboard under Settings → Environment Variables
 
 ### Option 1: Deploy to Heroku Now
 ```bash
-git clone https://github.com/jmenichole/trap-house-discord-bot.git
-cd trap-house-discord-bot
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 heroku create your-traphouse-bot
 heroku config:set DISCORD_TOKEN=your_token
 git push heroku main

@@ -301,7 +301,7 @@ You'll know everything is working when you see:
 
 ## 📞 **Support & Resources**
 
-- **GitHub Repository**: https://github.com/jmenichole/trap-house-discord-bot
+- **GitHub Repository**: https://github.com/jmenichole/TiltCheck
 - **Discord Developer Portal**: https://discord.com/developers/applications
 - **CollectClock Integration**: https://jmenichole.github.io/CollectClock/
 - **Documentation**: Check `/docs` folder for detailed guides

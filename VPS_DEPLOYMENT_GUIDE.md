@@ -72,7 +72,7 @@ ssh ubuntu@YOUR_VPS_IP
 ### Make Script Executable:
 ```bash
 # Download the deployment script
-wget https://raw.githubusercontent.com/jmenichole/trap-house-discord-bot/main/vps-deploy.sh
+wget https://raw.githubusercontent.com/jmenichole/TiltCheck/main/vps-deploy.sh
 
 # Make it executable
 chmod +x vps-deploy.sh

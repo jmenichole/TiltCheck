@@ -8,7 +8,7 @@ Since the CLI is having authentication issues, let's use the web interface which
 1. **Go to**: [railway.app](https://railway.app)
 2. **Click**: "Login with GitHub"
 3. **Click**: "Deploy from GitHub repo" 
-4. **Select**: `jmenichole/trap-house-discord-bot` repository
+4. **Select**: `jmenichole/TiltCheck` repository
 5. **Click**: "Deploy Now"
 
 ### 🔑 Step 2: Set Environment Variables
@@ -47,8 +47,8 @@ For each bot application, you need to get the token:
 
 ### 🌐 Step 4: Your Bot URLs
 After deployment, Railway will give you URLs like:
-- **Main Bot**: `https://trap-house-discord-bot-production.up.railway.app`
-- **GitHub Webhook**: `https://trap-house-discord-bot-production.up.railway.app/github/webhook`
+- **Main Bot**: `https://TiltCheck-production.up.railway.app`
+- **GitHub Webhook**: `https://TiltCheck-production.up.railway.app/github/webhook`
 
 ### ✅ Step 5: Test Your Ecosystem
 In Discord, try these commands:
