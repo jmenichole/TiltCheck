@@ -374,7 +374,15 @@ npm run demo:vercel-ai
 - [Quick Start Guide](VERCEL_AI_GATEWAY_README.md) - Get started in 5 minutes
 - [Integration Guide](VERCEL_AI_GATEWAY_GUIDE.md) - Complete implementation details
 - [Use Cases & ROI](VERCEL_AI_GATEWAY_USECASES.md) - 12 detailed scenarios
+- **[Adoption Plan](VERCEL_AI_GATEWAY_ADOPTION_PLAN.md)** - **NEW! Phased 8-week rollout plan**
 - [Configuration](vercel-ai-config.example.js) - Example config template
+
+**Phased Rollout (8 weeks to production):**
+- **Week 1**: Preparation & setup
+- **Weeks 2-3**: Shadow mode testing (parallel validation)
+- **Weeks 4-5**: Limited rollout (5% → 25% users)
+- **Weeks 6-7**: Advanced features (multi-model, streaming)
+- **Week 8**: Full production (100% rollout)
 
 **Projected Impact (10,000 users):**
 - Annual cost savings: $91,440

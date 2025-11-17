@@ -17,6 +17,7 @@ npm install @ai-sdk/ai-gateway @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/google
 | [VERCEL_AI_GATEWAY_README.md](VERCEL_AI_GATEWAY_README.md) | Quick start guide |
 | [VERCEL_AI_GATEWAY_GUIDE.md](VERCEL_AI_GATEWAY_GUIDE.md) | Complete integration |
 | [VERCEL_AI_GATEWAY_USECASES.md](VERCEL_AI_GATEWAY_USECASES.md) | 12 use cases + ROI |
+| **[VERCEL_AI_GATEWAY_ADOPTION_PLAN.md](VERCEL_AI_GATEWAY_ADOPTION_PLAN.md)** | **Phased rollout plan** |
 | [vercel-ai-config.example.js](vercel-ai-config.example.js) | Config template |
 
 ## 💡 Basic Usage
