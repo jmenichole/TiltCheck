@@ -1,0 +1,52 @@
+[
+  {
+    "timestamp": 1763395724127,
+    "type": "mismatch_recorded",
+    "userId": "user-001",
+    "casinoId": "sketchy-casino",
+    "deviation": "14.00%",
+    "severity": "major",
+    "trustScore": 70,
+    "escalated": false
+  },
+  {
+    "timestamp": 1763395760228,
+    "type": "mismatch_recorded",
+    "userId": "user-001",
+    "casinoId": "sketchy-casino",
+    "deviation": "14.00%",
+    "severity": "major",
+    "trustScore": 70,
+    "escalated": false
+  },
+  {
+    "timestamp": 1763395760241,
+    "type": "mismatch_recorded",
+    "userId": "user-001",
+    "casinoId": "bad-casino",
+    "deviation": "37.68%",
+    "severity": "critical",
+    "trustScore": 45,
+    "escalated": true
+  },
+  {
+    "timestamp": 1763395760246,
+    "type": "mismatch_recorded",
+    "userId": "user-002",
+    "casinoId": "bad-casino",
+    "deviation": "3.66%",
+    "severity": "acceptable",
+    "trustScore": 45,
+    "escalated": true
+  },
+  {
+    "timestamp": 1763395760252,
+    "type": "mismatch_recorded",
+    "userId": "user-003",
+    "casinoId": "bad-casino",
+    "deviation": "3.63%",
+    "severity": "acceptable",
+    "trustScore": 50,
+    "escalated": true
+  }
+]
