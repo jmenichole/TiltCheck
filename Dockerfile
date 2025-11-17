@@ -38,5 +38,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Expose port for health checks
 EXPOSE 3001
 
-# Start the bot
-CMD ["node", "main.js"]
+# Start the health server (for deployment)
+# For full bot functionality, use: CMD ["node", "main.js"]
+CMD ["node", "health-server.js"]

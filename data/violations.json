@@ -1,0 +1,1159 @@
+[
+  {
+    "caseId": "51f8383e4c8b4db8",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "critical_deviation",
+    "openedAt": 1763395760238,
+    "status": "open",
+    "severity": "HIGH",
+    "evidence": {
+      "totalViolations": 1,
+      "affectedUsers": [
+        "user-001"
+      ],
+      "averageDeviation": "37.68%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "1 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 1
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 37.7% deviation from claimed RTP\n• Affected Users: 1 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  },
+  {
+    "caseId": "ff4d1f49d3fe829b",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "low_trust_score",
+    "openedAt": 1763395760240,
+    "status": "open",
+    "severity": "HIGH",
+    "evidence": {
+      "totalViolations": 1,
+      "affectedUsers": [
+        "user-001"
+      ],
+      "averageDeviation": "37.68%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "1 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 1
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 37.7% deviation from claimed RTP\n• Affected Users: 1 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  },
+  {
+    "caseId": "ec1d7162f111fea2",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "low_trust_score",
+    "openedAt": 1763395760244,
+    "status": "open",
+    "severity": "LOW",
+    "evidence": {
+      "totalViolations": 2,
+      "affectedUsers": [
+        "user-001",
+        "user-002"
+      ],
+      "averageDeviation": "20.67%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-002",
+          "timestamp": 1763395760244,
+          "deviation": 0.03660000000000052,
+          "severity": "acceptable",
+          "observedRTP": 0.9233999999999994,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "2 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 2
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 20.7% deviation from claimed RTP\n• Affected Users: 2 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  },
+  {
+    "caseId": "26c972361e7bdaec",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "low_trust_score",
+    "openedAt": 1763395760249,
+    "status": "open",
+    "severity": "LOW",
+    "evidence": {
+      "totalViolations": 3,
+      "affectedUsers": [
+        "user-001",
+        "user-002",
+        "user-003"
+      ],
+      "averageDeviation": "14.99%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-002",
+          "timestamp": 1763395760244,
+          "deviation": 0.03660000000000052,
+          "severity": "acceptable",
+          "observedRTP": 0.9233999999999994,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-003",
+          "timestamp": 1763395760249,
+          "deviation": 0.03629999999999933,
+          "severity": "acceptable",
+          "observedRTP": 0.9962999999999993,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "3 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 3
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 15.0% deviation from claimed RTP\n• Affected Users: 3 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  },
+  {
+    "caseId": "f8fee4fa5745fd89",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "multiple_complaints",
+    "openedAt": 1763395760250,
+    "status": "open",
+    "severity": "LOW",
+    "evidence": {
+      "totalViolations": 3,
+      "affectedUsers": [
+        "user-001",
+        "user-002",
+        "user-003"
+      ],
+      "averageDeviation": "14.99%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-002",
+          "timestamp": 1763395760244,
+          "deviation": 0.03660000000000052,
+          "severity": "acceptable",
+          "observedRTP": 0.9233999999999994,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-003",
+          "timestamp": 1763395760249,
+          "deviation": 0.03629999999999933,
+          "severity": "acceptable",
+          "observedRTP": 0.9962999999999993,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "3 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 3
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 15.0% deviation from claimed RTP\n• Affected Users: 3 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  },
+  {
+    "caseId": "a41ce90121628a41",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "critical_deviation",
+    "openedAt": 1763395760255,
+    "status": "open",
+    "severity": "HIGH",
+    "evidence": {
+      "totalViolations": 4,
+      "affectedUsers": [
+        "user-001",
+        "user-002",
+        "user-003",
+        "user-004"
+      ],
+      "averageDeviation": "15.80%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-002",
+          "timestamp": 1763395760244,
+          "deviation": 0.03660000000000052,
+          "severity": "acceptable",
+          "observedRTP": 0.9233999999999994,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-003",
+          "timestamp": 1763395760249,
+          "deviation": 0.03629999999999933,
+          "severity": "acceptable",
+          "observedRTP": 0.9962999999999993,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-004",
+          "timestamp": 1763395760255,
+          "deviation": 0.18240000000000023,
+          "severity": "critical",
+          "observedRTP": 0.7775999999999997,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "4 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 4
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 15.8% deviation from claimed RTP\n• Affected Users: 4 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  },
+  {
+    "caseId": "ecf3c6ec07ed2720",
+    "casinoId": "bad-casino",
+    "casinoName": "Bad Casino",
+    "violationType": "low_trust_score",
+    "openedAt": 1763395760256,
+    "status": "open",
+    "severity": "HIGH",
+    "evidence": {
+      "totalViolations": 4,
+      "affectedUsers": [
+        "user-001",
+        "user-002",
+        "user-003",
+        "user-004"
+      ],
+      "averageDeviation": "15.80%",
+      "maxDeviation": "37.68%",
+      "violations": [
+        {
+          "userId": "user-001",
+          "timestamp": 1763395760238,
+          "deviation": 0.3767999999999999,
+          "severity": "critical",
+          "observedRTP": 0.5832,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-002",
+          "timestamp": 1763395760244,
+          "deviation": 0.03660000000000052,
+          "severity": "acceptable",
+          "observedRTP": 0.9233999999999994,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-003",
+          "timestamp": 1763395760249,
+          "deviation": 0.03629999999999933,
+          "severity": "acceptable",
+          "observedRTP": 0.9962999999999993,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        },
+        {
+          "userId": "user-004",
+          "timestamp": 1763395760255,
+          "deviation": 0.18240000000000023,
+          "severity": "critical",
+          "observedRTP": 0.7775999999999997,
+          "claimedRTP": 0.96,
+          "sampleSize": 100,
+          "gameType": "slots"
+        }
+      ]
+    },
+    "legalSteps": {
+      "immediate": [
+        {
+          "step": 1,
+          "action": "Cease directing users to this casino",
+          "urgency": "IMMEDIATE",
+          "description": "Remove affiliate links and disable casino in app"
+        },
+        {
+          "step": 2,
+          "action": "Notify all affected users",
+          "urgency": "IMMEDIATE",
+          "description": "Send automated notice to all users who played at this casino",
+          "template": "user_notice"
+        },
+        {
+          "step": 3,
+          "action": "Preserve evidence",
+          "urgency": "IMMEDIATE",
+          "description": "Export all relevant data, logs, and screenshots",
+          "files": [
+            "audit_log",
+            "violation_records",
+            "user_sessions"
+          ]
+        }
+      ],
+      "shortTerm": [
+        {
+          "step": 4,
+          "action": "Contact casino licensing authority",
+          "timeframe": "3 days",
+          "description": "File formal complaint with regulatory body",
+          "contacts": {
+            "authority": "Unknown - Check casino website",
+            "action": "Look for licensing seal in casino footer"
+          }
+        },
+        {
+          "step": 5,
+          "action": "Demand casino response",
+          "timeframe": "5 days",
+          "description": "Send formal notice to casino demanding explanation",
+          "template": "casino_demand_letter"
+        },
+        {
+          "step": 6,
+          "action": "Consult with attorney",
+          "timeframe": "7 days",
+          "description": "Seek legal counsel specializing in online gambling regulation",
+          "recommended": "Gaming law attorney in jurisdiction"
+        }
+      ],
+      "longTerm": [
+        {
+          "step": 7,
+          "action": "Public disclosure",
+          "timeframe": "14 days",
+          "description": "Publish detailed report of findings if casino non-responsive",
+          "platforms": [
+            "GitHub",
+            "Blog",
+            "Reddit r/gambling"
+          ]
+        },
+        {
+          "step": 8,
+          "action": "Class action consideration",
+          "timeframe": "30 days",
+          "description": "If multiple users affected, consider class action lawsuit",
+          "requirements": "4 users affected"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "Statistical Analysis",
+          "description": "RTP deviation calculations with confidence intervals",
+          "file": "evidence_bad-casino_statistics.json"
+        },
+        {
+          "type": "User Testimonials",
+          "description": "Statements from affected users",
+          "count": 4
+        },
+        {
+          "type": "Session Logs",
+          "description": "Complete bet/outcome logs for all sessions",
+          "file": "evidence_bad-casino_sessions.json"
+        },
+        {
+          "type": "Casino Claims",
+          "description": "Screenshots of casino's advertised RTP",
+          "action": "Archive casino website with advertised rates"
+        },
+        {
+          "type": "Regulatory Information",
+          "description": "Casino license information and regulatory contacts",
+          "file": "evidence_bad-casino_regulatory.json"
+        }
+      ]
+    },
+    "userNotice": {
+      "subject": "Important Notice: Bad Casino Fairness Concerns",
+      "severity": "HIGH",
+      "body": "🚨 IMPORTANT NOTICE - CASINO FAIRNESS ALERT 🚨\n\nDear TiltCheck User,\n\nWe have detected significant irregularities in your recent gameplay at Bad Casino that require your immediate attention.\n\nWHAT WE FOUND:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• Casino: Bad Casino\n• Issue: Actual Return to Player (RTP) significantly lower than advertised\n• Your Experience: Average 15.8% deviation from claimed RTP\n• Affected Users: 4 TiltCheck users have reported similar issues\n• Statistical Significance: YES - This is unlikely to be normal variance\n\nWHAT THIS MEANS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThe casino may not be operating fairly according to their advertised rates. This could constitute:\n- Breach of their Terms of Service\n- Violation of gambling regulations\n- Potential fraud\n\nYOUR RIGHTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nYou may be entitled to:\n1. Refund of losses attributable to unfair gameplay\n2. Compensation for breach of contract\n3. Participation in potential class action lawsuit\n\nIMMEDIATE ACTIONS TO TAKE:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ STOP playing at Bad Casino immediately\n✅ DOCUMENT your sessions (TiltCheck has already saved your data)\n✅ CONTACT the casino's customer support to file a complaint\n✅ CONTACT the licensing authority (details below)\n✅ REQUEST a refund citing unfair RTP\n\nREGULATORY CONTACTS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAuthority: Unknown - Check casino website\n\n\nYOUR DATA:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTiltCheck has preserved evidence of your gameplay including:\n- Complete bet and outcome logs\n- Statistical analysis showing deviation\n- Timestamps and session information\n\nThis data is available to you upon request and may be used in any legal proceedings.\n\nHOW WE'RE HELPING:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n✅ We have ceased directing users to Bad Casino\n✅ We are filing a complaint with the licensing authority\n✅ We are consulting with legal counsel\n✅ We will keep you informed of any developments\n\nNEXT STEPS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. Reply to this message if you want to participate in collective action\n2. Forward your own records to us at jmenichole007@outlook.com\n3. Do NOT delete any communication from the casino\n4. Keep records of all deposits and withdrawals\n\nWe take casino fairness seriously. This notification is based on statistical analysis and represents a potential violation of gambling regulations.\n\nQuestions? Contact us:\nEmail: jmenichole007@outlook.com\nDiscord: jmenichole\n\nCase ID: [Will be provided]\nDate: 2025-11-17\n\n═══════════════════════════════════════════\n\nThis notice is provided for informational purposes and does not constitute legal advice. \nConsult with an attorney regarding your specific situation.\n\nTiltCheck - Casino Fairness Verification\n© 2024-2025 JME (jmenichole). All Rights Reserved.",
+      "actions": [
+        "Stop playing immediately",
+        "File complaint with licensing authority",
+        "Contact TiltCheck for evidence",
+        "Consider legal action"
+      ],
+      "resources": [
+        "Casino complaint form",
+        "Regulatory contact information",
+        "Your gameplay evidence",
+        "Legal consultation referrals"
+      ]
+    },
+    "developmentAlerted": false
+  }
+]
