@@ -4,7 +4,8 @@
   "description": "TrapHouse Discord Bot with TiltCheck Integration",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js",
+    "start": "node health-server.js",
+    "start:bot": "node bot.js",
     "start:all": "./start_bot.sh",
     "start:routing": "node routing.js",
     "start:tiltcheck": "./start_tiltcheck_main.sh",
