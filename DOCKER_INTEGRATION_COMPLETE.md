@@ -92,8 +92,8 @@ traphouse_discordbot/
 ### **Quick Development Start**
 ```bash
 # Clone and start developing immediately
-git clone https://github.com/jmenichole/trap-house-discord-bot.git
-cd trap-house-discord-bot
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 docker compose up -d
 
 # Your bots are now running with hot reload!

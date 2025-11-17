@@ -12,8 +12,8 @@ A complete Discord bot ecosystem featuring:
 
 ```bash
 # Clone the repository
-git clone https://github.com/jmenichole/trap-house-discord-bot.git
-cd trap-house-discord-bot
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 
 # Install dependencies
 npm install
@@ -76,9 +76,9 @@ Tracks daily bonuses for:
 
 ## 📚 Documentation
 
-- [Complete Setup Guide](https://github.com/jmenichole/trap-house-discord-bot/blob/main/README.md)
-- [GitHub OAuth Setup](https://github.com/jmenichole/trap-house-discord-bot/blob/main/GITHUB_OAUTH_SETUP.md)
-- [Ecosystem Integration](https://github.com/jmenichole/trap-house-discord-bot/blob/main/ECOSYSTEM_COMPLETE.md)
+- [Complete Setup Guide](https://github.com/jmenichole/TiltCheck/blob/main/README.md)
+- [GitHub OAuth Setup](https://github.com/jmenichole/TiltCheck/blob/main/GITHUB_OAUTH_SETUP.md)
+- [Ecosystem Integration](https://github.com/jmenichole/TiltCheck/blob/main/ECOSYSTEM_COMPLETE.md)
 
 ## 🎯 Features
 

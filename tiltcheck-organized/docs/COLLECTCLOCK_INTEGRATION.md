@@ -113,7 +113,7 @@ Good morning, degen! Time to collect your daily bags!
 
 ### TrapHouse Ecosystem
 - [**TrapHouse Bot Site**](https://traphousediscordbot.created.app)
-- [**GitHub Repository**](https://github.com/jmenichole/trap-house-discord-bot)
+- [**GitHub Repository**](https://github.com/jmenichole/TiltCheck)
 - **Discord Integration**: Seamless cross-platform experience
 
 ## 🛠️ Technical Implementation

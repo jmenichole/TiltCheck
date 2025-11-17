@@ -1,7 +1,7 @@
 # JustTheTip Bot - GitHub Integration
 
 ## 🔗 GitHub Repository
-**Main Repository:** https://github.com/jmenichole/trap-house-discord-bot
+**Main Repository:** https://github.com/jmenichole/TiltCheck
 
 ## 🌐 Service URLs
 

@@ -18,8 +18,8 @@ usermod -aG sudo traphouse
 su - traphouse
 
 # Clone the project
-git clone https://github.com/jmenichole/trap-house-discord-bot.git
-cd trap-house-discord-bot
+git clone https://github.com/jmenichole/TiltCheck.git
+cd TiltCheck
 
 # Run VPS setup script
 ./scripts/vps-setup.sh yourdomain.com your@email.com
@@ -49,7 +49,7 @@ exit
 ssh traphouse@your-server-ip
 
 # Navigate to project and deploy
-cd trap-house-discord-bot
+cd TiltCheck
 ./scripts/vps-deploy.sh yourdomain.com your@email.com
 ```
 
@@ -164,7 +164,7 @@ sudo systemctl enable traphouse
 sudo apt update && sudo apt upgrade -y
 
 # Update application
-cd trap-house-discord-bot
+cd TiltCheck
 git pull
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
@@ -184,7 +184,7 @@ docker-compose -f docker-compose.prod.yml up -d --build
 1. Check logs: `./scripts/vps-monitor.sh`
 2. Run dashboard: `./scripts/vps-dashboard.sh`
 3. Create backup: `./scripts/vps-backup.sh`
-4. GitHub Issues: https://github.com/jmenichole/trap-house-discord-bot/issues
+4. GitHub Issues: https://github.com/jmenichole/TiltCheck/issues
 
 ### **Emergency Recovery:**
 ```bash
