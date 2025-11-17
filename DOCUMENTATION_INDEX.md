@@ -15,6 +15,10 @@ Welcome to the TiltCheck documentation! This index helps you find the right docu
 - [QUICKSTART_JUDGES.md](QUICKSTART_JUDGES.md) - Quick demo for judges (ASI Alliance Hackathon)
 - [SUBMISSION.md](SUBMISSION.md) - Complete hackathon submission
 - [AGENT_REGISTRATION_GUIDE.md](AGENT_REGISTRATION_GUIDE.md) - Agent registration process
+- **[VERCEL_AI_GATEWAY_README.md](VERCEL_AI_GATEWAY_README.md)** - **NEW! Vercel AI Gateway quick start**
+- [VERCEL_AI_GATEWAY_GUIDE.md](VERCEL_AI_GATEWAY_GUIDE.md) - Complete integration guide
+- [VERCEL_AI_GATEWAY_USECASES.md](VERCEL_AI_GATEWAY_USECASES.md) - 12 detailed use cases & ROI
+- [AI_TILT_DETECTION_README.md](AI_TILT_DETECTION_README.md) - AI tilt detection algorithm
 
 ### 🎯 Core Features
 - [README_JUSTTHETIP.md](README_JUSTTHETIP.md) - JustTheTip cryptocurrency accountability bot
