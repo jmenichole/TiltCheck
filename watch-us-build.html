@@ -1,0 +1,763 @@
+<!--
+  Copyright (c) 2024-2025 JME (jmenichole)
+  All Rights Reserved
+  
+  PROPRIETARY AND CONFIDENTIAL
+  Unauthorized copying of this file, via any medium, is strictly prohibited.
+  
+  This file is part of TiltCheck/TrapHouse Discord Bot ecosystem.
+  For licensing information, see LICENSE file in the root directory.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Us Build - TiltCheck Development Journey</title>
+    <meta name="description" content="Follow TiltCheck's development journey from conception to production. See what we've built and what's coming next in our responsible gaming platform.">
+    
+    <!-- Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Brand CSS -->
+    <link rel="stylesheet" href="./tiltcheck-brand.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #00ff00;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #00ff00;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ff00, #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+        
+        .phase-section {
+            margin: 3rem 0;
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 255, 0, 0.3);
+        }
+        
+        .phase-icon {
+            font-size: 2.5rem;
+        }
+        
+        .phase-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .phase-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
+        .status-complete {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        
+        .status-progress {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+        }
+        
+        .status-planned {
+            background: rgba(0, 150, 255, 0.2);
+            color: #0096ff;
+            border: 1px solid #0096ff;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s;
+        }
+        
+        .feature-card.complete {
+            border-left-color: #00ff00;
+        }
+        
+        .feature-card.progress {
+            border-left-color: #ffa500;
+        }
+        
+        .feature-card.planned {
+            border-left-color: #0096ff;
+        }
+        
+        .feature-card:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+        
+        .checkmark {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #00ff00, #0096ff);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .stat-card {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00ff00;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: rgba(0, 255, 0, 0.05);
+            border-radius: 20px;
+            margin: 4rem 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            background: linear-gradient(45deg, #00ff00, #00ccff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">🎯 TiltCheck</div>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/beta">Beta</a></li>
+                    <li><a href="https://github.com/jmenichole/TiltCheck">GitHub</a></li>
+                    <li><a href="/landing-pages/developer-portfolio.html">Developer</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Watch Us Build</h1>
+            <p>Follow our journey building a responsible gaming platform for the degen community</p>
+            <p style="font-style: italic; color: rgba(255, 255, 255, 0.6);">Made for degens by degens with a heart ❤️</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- Development Stats -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Core Systems</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">36+</div>
+                <div class="stat-label">Features Built</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Platforms</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Beta</div>
+                <div class="stat-label">Current Status</div>
+            </div>
+        </section>
+
+        <!-- Phase 1: Foundation (COMPLETE) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">🏗️</span>
+                <h2 class="phase-title">Phase 1: Foundation</h2>
+                <span class="phase-status status-complete">✅ COMPLETE</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Real-Time Tilt Detection
+                    </div>
+                    <div class="feature-description">
+                        AI-powered behavioral analysis tracking stake escalation, loss sequences, betting velocity, and balance depletion patterns.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Discord Bot Integration
+                    </div>
+                    <div class="feature-description">
+                        Full Discord bot ecosystem with slash commands, webhook alerts, and community monitoring features.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Session Analytics
+                    </div>
+                    <div class="feature-description">
+                        Comprehensive tracking and analysis of gambling sessions with detailed metrics and insights.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Repository Architecture
+                    </div>
+                    <div class="feature-description">
+                        Clean codebase structure, documentation, security fixes, and professional development environment.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: JustTheTip Crypto Integration (COMPLETE) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">💰</span>
+                <h2 class="phase-title">Phase 2: JustTheTip Crypto Integration</h2>
+                <span class="phase-status status-complete">✅ COMPLETE</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Multi-Chain Support
+                    </div>
+                    <div class="feature-description">
+                        7 blockchain integrations: Polygon, Arbitrum, BSC, Ethereum, Avalanche, Solana, and Tron.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Crypto Tipping System
+                    </div>
+                    <div class="feature-description">
+                        Complete tipping infrastructure with wallet management and Discord integration.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Blockchain Verification
+                    </div>
+                    <div class="feature-description">
+                        Provably fair gaming verification using cryptographic proofs and immutable blockchain records.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Non-Custodial Wallet
+                    </div>
+                    <div class="feature-description">
+                        User-controlled wallets with personal wallet linking and TipCC integration.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: Casino Trust System (COMPLETE) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">🎰</span>
+                <h2 class="phase-title">Phase 3: Casino Trust & Fairness Verification</h2>
+                <span class="phase-status status-complete">✅ COMPLETE</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        RTP Verification
+                    </div>
+                    <div class="feature-description">
+                        Real-time RTP and house edge verification using statistical analysis and Law of Large Numbers.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Trust Score System
+                    </div>
+                    <div class="feature-description">
+                        Dynamic trust scoring for Stake, Roobet, BC.Game, Shuffle, Rollbit, and DuelBits with compliance monitoring.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Legal Compliance
+                    </div>
+                    <div class="feature-description">
+                        Automatic mismatch logging, legal case generation, and regulatory contact system.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        AI Claims Analysis
+                    </div>
+                    <div class="feature-description">
+                        Automated analysis of casino claims vs actual performance using AI/LLM technology.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 4: Mobile & Cross-Platform (COMPLETE) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">📱</span>
+                <h2 class="phase-title">Phase 4: Mobile & Cross-Platform Integration</h2>
+                <span class="phase-status status-complete">✅ COMPLETE</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Mobile Gameplay Analysis
+                    </div>
+                    <div class="feature-description">
+                        iOS ReplayKit and Android MediaProjection integration with OCR for bet/win extraction.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        OAuth Flow
+                    </div>
+                    <div class="feature-description">
+                        Discord-style OAuth popup with Magic.link authentication and persistent sessions.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        CollectClock Integration
+                    </div>
+                    <div class="feature-description">
+                        Cross-repository session management with secure token handling and multi-device support.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Screen Capture API
+                    </div>
+                    <div class="feature-description">
+                        Web Screen Capture API implementation for browser-based gameplay monitoring.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 5: Enhanced Features (IN PROGRESS) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">🚀</span>
+                <h2 class="phase-title">Phase 5: Enhanced Features & Gamification</h2>
+                <span class="phase-status status-progress">🔄 IN PROGRESS</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        AIM-Style Dashboard Overlay
+                    </div>
+                    <div class="feature-description">
+                        Retro AIM messenger-style overlay with 6 widgets, card battles, and real-time monitoring.
+                    </div>
+                </div>
+                <div class="feature-card complete">
+                    <div class="feature-title">
+                        <span class="checkmark">✓</span>
+                        Degeneracy vs Decency Card Game
+                    </div>
+                    <div class="feature-description">
+                        Interactive card battle system triggered on tilt detection with full UI and game mechanics.
+                    </div>
+                </div>
+                <div class="feature-card progress">
+                    <div class="feature-title">
+                        <span style="color: #ffa500;">●</span>
+                        Respect Points Economy
+                    </div>
+                    <div class="feature-description">
+                        Earn/spend system for responsible gambling behavior with rewards and incentives.
+                    </div>
+                </div>
+                <div class="feature-card progress">
+                    <div class="feature-title">
+                        <span style="color: #ffa500;">●</span>
+                        Revenue Empire System
+                    </div>
+                    <div class="feature-description">
+                        Auto-funding loan system based on wallet balances and respect point thresholds.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 6: QualifyFirst Platform (PLANNED) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">💼</span>
+                <h2 class="phase-title">Phase 6: QualifyFirst Earning Platform</h2>
+                <span class="phase-status status-planned">📋 PLANNED</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Smart Redirection
+                    </div>
+                    <div class="feature-description">
+                        AI-powered redirection from gambling to productive earning opportunities during tilt episodes.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Survey & Task Platform
+                    </div>
+                    <div class="feature-description">
+                        Paid surveys, micro-tasks, and skill-based challenges for legitimate income generation.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Skills Training
+                    </div>
+                    <div class="feature-description">
+                        Certified online courses and skill development with completion rewards.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Achievement System
+                    </div>
+                    <div class="feature-description">
+                        Gamified achievements with verified credentials and progress tracking.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 7: AccountabiliBuddy Tools (PLANNED) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">🔐</span>
+                <h2 class="phase-title">Phase 7: AccountabiliBuddy Tools</h2>
+                <span class="phase-status status-planned">📋 PLANNED</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Double Wallet Verification
+                    </div>
+                    <div class="feature-description">
+                        Two-person approval system for withdrawals with trusted buddy network.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Cool-down Timers
+                    </div>
+                    <div class="feature-description">
+                        Mandatory wait periods after wins to prevent impulsive re-betting.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Vault Lock System
+                    </div>
+                    <div class="feature-description">
+                        Time-locked savings with customizable withdrawal delays and accountability partner approval.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Peer Accountability Network
+                    </div>
+                    <div class="feature-description">
+                        Connect with trusted friends for mutual support and withdrawal approval processes.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 8: Enterprise & Scale (FUTURE) -->
+        <section class="phase-section">
+            <div class="phase-header">
+                <span class="phase-icon">🏢</span>
+                <h2 class="phase-title">Phase 8: Enterprise & Scaling</h2>
+                <span class="phase-status status-planned">📋 FUTURE</span>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Casino API Partnerships
+                    </div>
+                    <div class="feature-description">
+                        Direct integration with major gambling platforms for enhanced monitoring.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Regulatory Compliance Suite
+                    </div>
+                    <div class="feature-description">
+                        Full compliance tools for operators including audit trails and reporting.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        White-label Solutions
+                    </div>
+                    <div class="feature-description">
+                        Customizable TiltCheck instances for casinos and gambling platforms.
+                    </div>
+                </div>
+                <div class="feature-card planned">
+                    <div class="feature-title">
+                        <span style="color: #0096ff;">○</span>
+                        Mental Health Integration
+                    </div>
+                    <div class="feature-description">
+                        Partnerships with counseling services and addiction support organizations.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">Join Us on This Journey</h2>
+            <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.2rem; margin-bottom: 2rem;">
+                Be part of building the future of responsible gaming
+            </p>
+            <a href="/beta-signup.html" class="cta-button">Join Beta Testing</a>
+            <a href="https://github.com/jmenichole/TiltCheck" class="cta-button">View on GitHub</a>
+            <a href="/" class="cta-button">Explore TiltCheck</a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <!-- Social & Developer Links -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="https://linkedin.com/in/jmenichole0" 
+                   target="_blank" 
+                   style="display: flex; align-items: center; gap: 0.5rem; color: #0077B5; text-decoration: none; font-weight: 500;">
+                    💼 LinkedIn
+                </a>
+                <a href="https://github.com/sponsors/jmenichole" 
+                   target="_blank" 
+                   style="display: flex; align-items: center; gap: 0.5rem; color: #EA4AAA; text-decoration: none; font-weight: 500;">
+                    💖 Sponsor
+                </a>
+                <a href="https://github.com/jmenichole" 
+                   target="_blank" 
+                   style="display: flex; align-items: center; gap: 0.5rem; color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500;">
+                    💻 GitHub
+                </a>
+                <a href="https://ko-fi.com/jmenichole" 
+                   target="_blank" 
+                   style="display: flex; align-items: center; gap: 0.5rem; color: #FF5E5B; text-decoration: none; font-weight: 500;">
+                    ☕ Ko-fi
+                </a>
+            </div>
+            
+            <p style="color: rgba(255, 255, 255, 0.8);">&copy; 2025 TiltCheck Development Journey | Part of TiltCheck Ecosystem</p>
+            <p style="margin-top: 1rem; color: rgba(255, 255, 255, 0.6);">🎯 Responsible Gaming | 🤖 AI-Powered | 💚 Community-Driven</p>
+            
+            <!-- Developer Attribution -->
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 0, 0.1);">
+                <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); font-style: italic;">
+                    <span style="background: linear-gradient(45deg, #00ff00, #00ccff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">
+                        Made for degens by degens with a heart ❤️
+                    </span>
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
