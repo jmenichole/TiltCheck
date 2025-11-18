@@ -10,11 +10,23 @@
 
 *Made for degens by degens* 🎮
 
+---
+
+## 🌐 Degen Ecosystem Links
+
+[![DegensAgainstDecency](https://img.shields.io/badge/🎮-DegensAgainstDecency-9F7AEA?style=for-the-badge)](https://github.com/jmenichole/DegensAgainstDecency)
+[![JustTheTip](https://img.shields.io/badge/💸-JustTheTip-8E24AA?style=for-the-badge)](https://github.com/jmenichole/JustTheTip)
+[![CollectClock](https://img.shields.io/badge/⏱️-CollectClock-F59E0B?style=for-the-badge)](https://github.com/jmenichole/CollectClock)
+[![QualifyFirst](https://img.shields.io/badge/📊-QualifyFirst-10B981?style=for-the-badge)](https://github.com/jmenichole/QualifyFirst)
+[![SusLink](https://img.shields.io/badge/🛡️-SusLink-3B82F6?style=for-the-badge)](https://github.com/jmenichole/SusLink)
+
+**→ [View Full Ecosystem Hub](ecosystem.html) | [Flywheel Diagram](DEGEN_FLYWHEEL.md) | [Quick Navigation](ECOSYSTEM_NAVIGATION.md)**
+
+---
+
 TiltCheck detects tilt in real time, calls you out respectfully, and helps you play smarter — not just longer. Because gambling sites either ignore tilt (bad for players) or nag you like a rehab pamphlet (bad for vibes). You need support, not shame. And math is math — provable fairness and legal compliance can be verified using real-time on-screen gameplay data.
 
 **Currently in beta development with active testing and feature refinement.**
-
-> 🌐 **Part of the Degen Ecosystem**: TiltCheck works alongside [JustTheTip](https://github.com/jmenichole/JustTheTip), [DegensAgainstDecency](https://github.com/jmenichole/DegensAgainstDecency), [CollectClock](https://github.com/jmenichole/CollectClock), [QualifyFirst](https://github.com/jmenichole/QualifyFirst), and [SusLink](https://github.com/jmenichole/SusLink). See [ECOSYSTEM_POSITIONING.md](ECOSYSTEM_POSITIONING.md) for the full flywheel.
 
 > 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.  
 > 🎮 **Explore the Ecosystem**: See how all six tools work together in [ECOSYSTEM_POSITIONING.md](ECOSYSTEM_POSITIONING.md)
