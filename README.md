@@ -6,17 +6,28 @@
 ![tag:innovationlab](https://img.shields.io/badge/innovationlab-3D8BD3)
 ![tag:hackathon](https://img.shields.io/badge/hackathon-5F43F1)
 
-**Responsible Gaming Accountability & Monitoring System**
+**The responsible-gaming engine that actually understands degeneracy.**
 
-TiltCheck is a comprehensive accountability platform designed to help players maintain healthy gaming habits. Combining behavioral monitoring, accountability tools, and AI-enhanced detection, TiltCheck provides multiple layers of protection including double wallet verification, cool-down timers, vault locks, and peer accountability features.
+*Made for degens by degens* 🎮
+
+TiltCheck detects tilt in real time, calls you out respectfully, and helps you play smarter — not just longer. Because gambling sites either ignore tilt (bad for players) or nag you like a rehab pamphlet (bad for vibes). You need support, not shame. And math is math — provable fairness and legal compliance can be verified using real-time on-screen gameplay data.
 
 **Currently in beta development with active testing and feature refinement.**
 
-> 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.
+> 🌐 **Part of the Degen Ecosystem**: TiltCheck works alongside [JustTheTip](https://github.com/jmenichole/JustTheTip), [DegensAgainstDecency](https://github.com/jmenichole/DegensAgainstDecency), [CollectClock](https://github.com/jmenichole/CollectClock), [QualifyFirst](https://github.com/jmenichole/QualifyFirst), and [SusLink](https://github.com/jmenichole/SusLink). See [ECOSYSTEM_POSITIONING.md](ECOSYSTEM_POSITIONING.md) for the full flywheel.
+
+> 📚 **New to TiltCheck?** Check out our [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all documentation.  
+> 🎮 **Explore the Ecosystem**: See how all six tools work together in [ECOSYSTEM_POSITIONING.md](ECOSYSTEM_POSITIONING.md)
 
 ![TiltCheck Dashboard](https://via.placeholder.com/800x400/0f172a/60a5fa?text=TiltCheck+Dashboard)
 
 ## 🚀 Features
+
+### 🧠 Key Differentiators
+- **AI-based behavioral pattern detection** - Real-time analysis that actually works
+- **Session analytics & risk scoring** - Know exactly where you stand
+- **Works inside games or standalone** - Flexible integration
+- **Turns tilt data into community insights** - "Tilt Spike of the Week" and more
 
 ### 🔐 AccountabiliBuddy Tools (Core Features)
 - **Double Wallet Verification** - Two-person approval system for withdrawals (planned)
@@ -331,6 +342,37 @@ The deployment workflow:
 
 ## 🎯 Roadmap
 
+### 🌐 Ecosystem Integration (Active)
+TiltCheck is part of the **"Made for degens by degens"** ecosystem:
+
+- [x] **JustTheTip Integration** - [Non-custodial Solana tipping bot](https://github.com/jmenichole/JustTheTip)
+  - Auto-vault features based on tilt detection
+  - NFT mint verification through trust score system
+  - Discord bot integration for community tipping
+  - Natural-language tipping without crypto complexity
+
+- [x] **DegensAgainstDecency** - [Party-game arena with AI chaos](https://github.com/jmenichole/DegensAgainstDecency)
+  - Real-time multiplayer games
+  - Tilt monitoring during gameplay
+  - Integrated tipping for game winners
+
+- [x] **CollectClock Integration** - [Bonus-drop predictor](https://github.com/jmenichole/CollectClock)
+  - Daily bonus tracking across 15+ platforms
+  - Casino trust scoring using TiltCheck RTP verification
+  - Historical prediction models
+
+- [x] **QualifyFirst Platform** - [AI-powered survey matcher](https://github.com/jmenichole/QualifyFirst)
+  - Alternative earning during tilt cooldowns
+  - Instant SOL payouts via JustTheTip
+  - Behavioral matching without screen-outs
+
+- [x] **SusLink Protection** - [Discord link guardian](https://github.com/jmenichole/SusLink)
+  - Real-time link scanning
+  - Protects ecosystem transactions
+  - Keeps the community safe
+
+**See [ECOSYSTEM_POSITIONING.md](ECOSYSTEM_POSITIONING.md) for the complete flywheel diagram.**
+
 ### Planned Features
 - [ ] **Double Wallet Verification** - Two-person approval system for withdrawals
 - [ ] **Cool-down Timers** - Mandatory wait periods after wins
@@ -339,14 +381,6 @@ The deployment workflow:
 - [ ] **Mobile App** - Companion mobile application
 - [ ] **Multi-language Support** - International accessibility
 - [ ] **Enhanced Discord Integration** - Expanded bot features
-
-### Future Integrations
-- [ ] **JustTheTip Integration** - Trustless Solana agent tip bot (separate repo)
-  - Auto-vault features based on tilt detection
-  - NFT mint verification through trust score system
-  - Discord bot integration for community tipping
-  - Repository: Coming soon
-- [ ] **QualifyFirst Platform** - Alternative earning opportunities during tilt cooldowns
 - [x] **Vercel AI Gateway** - Multi-model AI integration for enhanced detection
   - Multi-model consensus for 95% accuracy
   - Automatic failover for 99.9% uptime
