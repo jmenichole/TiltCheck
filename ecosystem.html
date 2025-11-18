@@ -329,6 +329,48 @@
             color: var(--text-secondary);
         }
 
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-live {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-beta {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .status-dev {
+            background: rgba(249, 115, 22, 0.1);
+            color: #f97316;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .status-planned {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
         .tool-actions {
             display: flex;
             gap: 1rem;
@@ -521,6 +563,10 @@
                 <div class="tools-grid">
                     <!-- DegensAgainstDecency -->
                     <div class="tool-card">
+                        <div class="status-badge status-planned">
+                            <span class="status-dot"></span>
+                            Coming Q2 2025
+                        </div>
                         <div class="tool-header">
                             <div class="tool-icon">🎮</div>
                             <h3>DegensAgainstDecency</h3>
@@ -547,6 +593,10 @@
 
                     <!-- JustTheTip -->
                     <div class="tool-card">
+                        <div class="status-badge status-dev">
+                            <span class="status-dot"></span>
+                            In Development
+                        </div>
                         <div class="tool-header">
                             <div class="tool-icon">💎</div>
                             <h3>JustTheTip</h3>
@@ -573,6 +623,10 @@
 
                     <!-- TiltCheck -->
                     <div class="tool-card">
+                        <div class="status-badge status-beta">
+                            <span class="status-dot"></span>
+                            Beta Testing
+                        </div>
                         <div class="tool-header">
                             <div class="tool-icon">🧠</div>
                             <h3>TiltCheck</h3>
@@ -599,6 +653,10 @@
 
                     <!-- CollectClock -->
                     <div class="tool-card">
+                        <div class="status-badge status-dev">
+                            <span class="status-dot"></span>
+                            In Development
+                        </div>
                         <div class="tool-header">
                             <div class="tool-icon">⏱️</div>
                             <h3>CollectClock</h3>
@@ -625,6 +683,10 @@
 
                     <!-- QualifyFirst -->
                     <div class="tool-card">
+                        <div class="status-badge status-planned">
+                            <span class="status-dot"></span>
+                            Coming Q2 2025
+                        </div>
                         <div class="tool-header">
                             <div class="tool-icon">📊</div>
                             <h3>QualifyFirst</h3>
@@ -651,6 +713,10 @@
 
                     <!-- SusLink -->
                     <div class="tool-card">
+                        <div class="status-badge status-planned">
+                            <span class="status-dot"></span>
+                            Coming Q1 2025
+                        </div>
                         <div class="tool-header">
                             <div class="tool-icon">🛡️</div>
                             <h3>SusLink</h3>
