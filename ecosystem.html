@@ -11,8 +11,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Degen Ecosystem - Made for degens by degens</title>
-    <meta name="description" content="A connected network of degen-friendly tools: tipping, gaming, predictions, surveys, and safety — all powered by AI.">
+    <title>Degen Ecosystem - Smart Tools for Better Gaming</title>
+    <meta name="description" content="An integrated suite of tools designed to enhance your gaming experience with AI-powered insights, seamless transactions, and community protection.">
     
     <!-- Brand Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +20,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-purple: #8b5cf6;
+            --accent-teal: #06b6d4;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: rgba(59, 130, 246, 0.2);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -28,24 +39,56 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            background: var(--dark-bg);
+            color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
         /* Header */
         header {
-            padding: 2rem 0;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            padding: 1.5rem 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
@@ -58,8 +101,9 @@
 
         .logo {
             font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -67,269 +111,381 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
-            color: #60a5fa;
+            color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #93c5fd;
+            color: var(--primary-blue);
         }
 
         /* Hero Section */
         .hero {
-            padding: 4rem 0;
+            padding: 6rem 0 4rem;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 900;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa, #ec4899);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple), var(--accent-teal));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            line-height: 1.2;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
         }
 
-        .hero .tagline {
+        .hero .subtitle {
             font-size: 1.5rem;
-            color: #93c5fd;
+            color: var(--text-secondary);
             margin-bottom: 1rem;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .hero .description {
-            font-size: 1.1rem;
-            color: #cbd5e1;
+            font-size: 1.125rem;
+            color: var(--text-secondary);
             max-width: 800px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
         }
 
-        /* Tools Grid */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .cta-secondary {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Tools Section */
         .tools-section {
-            padding: 4rem 0;
+            padding: 6rem 0;
         }
 
-        .tools-section h2 {
+        .section-header {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #60a5fa;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin-bottom: 4rem;
         }
 
         .tool-card {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(96, 165, 250, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(30, 41, 59, 0.4));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .tool-card:hover::before {
+            transform: scaleX(1);
         }
 
         .tool-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(96, 165, 250, 0.6);
-            box-shadow: 0 10px 40px rgba(96, 165, 250, 0.2);
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.6));
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .tool-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .tool-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #60a5fa;
-        }
-
-        .tool-card .tagline {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-
-        .tool-card p {
-            color: #cbd5e1;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .tool-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .tool-links a {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .btn-repo {
-            background: rgba(96, 165, 250, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(96, 165, 250, 0.4);
-        }
-
-        .btn-repo:hover {
-            background: rgba(96, 165, 250, 0.3);
-        }
-
-        .btn-demo {
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            color: #ffffff;
-            border: none;
-        }
-
-        .btn-demo:hover {
-            opacity: 0.9;
-        }
-
-        /* Flywheel Section */
-        .flywheel-section {
-            padding: 4rem 0;
-            background: rgba(30, 41, 59, 0.3);
-            margin: 4rem 0;
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
-        }
-
-        .flywheel-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #a78bfa;
-        }
-
-        .flywheel {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            border: 2px solid rgba(167, 139, 250, 0.3);
-        }
-
-        .flywheel-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .flywheel-step .number {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-
-        .flywheel-arrow {
-            text-align: center;
             font-size: 2rem;
-            color: #a78bfa;
-            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
-        .flywheel-return {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            color: #ec4899;
-            font-weight: bold;
+        .tool-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
         }
 
-        .flywheel-description {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            color: #cbd5e1;
-        }
-
-        .flywheel-description p {
+        .tool-tagline {
+            font-size: 1rem;
+            color: var(--primary-blue);
+            font-weight: 600;
             margin-bottom: 1rem;
         }
 
-        .flywheel-description strong {
-            color: #60a5fa;
+        .tool-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .tool-features {
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-features h4 {
+            font-size: 0.875rem;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .feature-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .tool-button {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-blue);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(30, 41, 59, 0.2));
+            margin: 4rem 0;
+            border-radius: 24px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .benefit-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .benefit-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
 
         /* Footer */
         footer {
-            padding: 3rem 0;
-            text-align: center;
-            border-top: 1px solid rgba(96, 165, 250, 0.2);
-            margin-top: 4rem;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 6rem;
         }
 
-        footer p {
-            color: #94a3b8;
-            margin-bottom: 0.5rem;
-        }
-
-        footer .links {
+        .footer-content {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 2rem;
-            justify-content: center;
-            margin-top: 1rem;
+            margin-bottom: 2rem;
         }
 
-        footer .links a {
-            color: #60a5fa;
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
             text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
 
-        footer .links a:hover {
-            color: #93c5fd;
+        .footer-links a:hover {
+            color: var(--primary-blue);
         }
 
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
 
+            .hero .subtitle {
+                font-size: 1.25rem;
+            }
+
             .tools-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation"></div>
+
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">🎮 Degen Ecosystem</div>
+                <div class="logo">Degen Ecosystem</div>
                 <nav class="nav-links">
+                    <a href="#tools">Products</a>
+                    <a href="#benefits">Benefits</a>
+                    <a href="flywheel.html">For Partners</a>
                     <a href="https://github.com/jmenichole">GitHub</a>
-                    <a href="#tools">Tools</a>
-                    <a href="#flywheel">Flywheel</a>
-                    <a href="index.html">TiltCheck</a>
                 </nav>
             </div>
         </div>
@@ -338,196 +494,236 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h1>Made for degens by degens</h1>
-                <p class="tagline">Six tools. One ecosystem. Zero BS.</p>
+                <h1>Smart Tools for Smarter Gaming</h1>
+                <p class="subtitle">Six integrated products. One powerful ecosystem.</p>
                 <p class="description">
-                    A connected network of degen-friendly tools built to make tipping easier, 
-                    playing funnier, predictions smarter, surveys fairer, and communities safer 
-                    — all powered by AI and cooked up by people who know the pain firsthand.
+                    Experience gaming the way it should be—with AI-powered insights, 
+                    seamless transactions, community protection, and tools designed 
+                    to help you play better and stay informed.
                 </p>
+                <div class="cta-buttons">
+                    <a href="#tools" class="cta-button cta-primary">Explore Tools</a>
+                    <a href="https://github.com/jmenichole" class="cta-button cta-secondary">View on GitHub</a>
+                </div>
             </div>
         </section>
 
         <section class="tools-section" id="tools">
             <div class="container">
-                <h2>🧩 The Six Tools</h2>
+                <div class="section-header">
+                    <h2 class="section-title">Our Product Suite</h2>
+                    <p class="section-description">
+                        Each tool is designed to work independently or together, 
+                        giving you the flexibility to use what you need.
+                    </p>
+                </div>
+
                 <div class="tools-grid">
                     <!-- DegensAgainstDecency -->
                     <div class="tool-card">
-                        <div class="tool-icon">🎮</div>
-                        <h3>DegensAgainstDecency</h3>
-                        <p class="tagline">"Where degeneracy meets AI chaos"</p>
-                        <p>
-                            The party-game arena with real-time multiplayer, uncensored prompts, 
-                            and community-driven hilarity. Play with friends, roast your enemies, 
-                            and let the algorithms judge your sins.
+                        <div class="tool-header">
+                            <div class="tool-icon">🎮</div>
+                            <h3>DegensAgainstDecency</h3>
+                        </div>
+                        <p class="tool-tagline">Real-Time Multiplayer Party Games</p>
+                        <p class="tool-description">
+                            Engage with friends in fast-paced, AI-enhanced party games. 
+                            Real-time multiplayer action with community-driven content 
+                            and instant feedback.
                         </p>
-                        <p><strong>Key Features:</strong> AI-generated cards, Discord integration, real-time WebSockets</p>
-                        <div class="tool-links">
-                            <a href="https://github.com/jmenichole/DegensAgainstDecency" class="btn-repo">Repository</a>
-                            <a href="https://jmenichole.github.io/DegensAgainstDecency" class="btn-demo">Live Demo</a>
+                        <div class="tool-features">
+                            <h4>Key Features</h4>
+                            <div class="features-list">
+                                <span class="feature-tag">AI-Generated Content</span>
+                                <span class="feature-tag">Real-Time Multiplayer</span>
+                                <span class="feature-tag">Discord Integration</span>
+                            </div>
+                        </div>
+                        <div class="tool-actions">
+                            <a href="https://jmenichole.github.io/DegensAgainstDecency" class="tool-button btn-primary">Try Demo</a>
+                            <a href="https://github.com/jmenichole/DegensAgainstDecency" class="tool-button btn-secondary">Learn More</a>
                         </div>
                     </div>
 
                     <!-- JustTheTip -->
                     <div class="tool-card">
-                        <div class="tool-icon">💸</div>
-                        <h3>JustTheTip</h3>
-                        <p class="tagline">"Crypto tipping without feeling stupid"</p>
-                        <p>
-                            Non-custodial Solana tipping bot. Tip your friends, reward winners, 
-                            spray airdrops, and flex on-chain — all without touching a seed phrase.
+                        <div class="tool-header">
+                            <div class="tool-icon">💎</div>
+                            <h3>JustTheTip</h3>
+                        </div>
+                        <p class="tool-tagline">Simplified Crypto Transactions</p>
+                        <p class="tool-description">
+                            Send and receive tips without the complexity. Non-custodial 
+                            Solana wallet with automatic setup and natural language commands 
+                            for hassle-free transactions.
                         </p>
-                        <p><strong>Key Features:</strong> Auto wallet creation, natural-language tipping, frictionless onboarding</p>
-                        <div class="tool-links">
-                            <a href="https://github.com/jmenichole/JustTheTip" class="btn-repo">Repository</a>
-                            <a href="https://jmenichole.github.io/JustTheTip" class="btn-demo">Live Demo</a>
+                        <div class="tool-features">
+                            <h4>Key Features</h4>
+                            <div class="features-list">
+                                <span class="feature-tag">Auto Wallet Setup</span>
+                                <span class="feature-tag">Natural Commands</span>
+                                <span class="feature-tag">Zero Complexity</span>
+                            </div>
+                        </div>
+                        <div class="tool-actions">
+                            <a href="https://jmenichole.github.io/JustTheTip" class="tool-button btn-primary">Get Started</a>
+                            <a href="https://github.com/jmenichole/JustTheTip" class="tool-button btn-secondary">Documentation</a>
                         </div>
                     </div>
 
                     <!-- TiltCheck -->
                     <div class="tool-card">
-                        <div class="tool-icon">🧠</div>
-                        <h3>TiltCheck</h3>
-                        <p class="tagline">"Support, not shame"</p>
-                        <p>
-                            The responsible-gaming engine that detects tilt in real time, 
-                            calls you out respectfully, and helps you play smarter — not just longer.
+                        <div class="tool-header">
+                            <div class="tool-icon">🧠</div>
+                            <h3>TiltCheck</h3>
+                        </div>
+                        <p class="tool-tagline">AI-Powered Gaming Insights</p>
+                        <p class="tool-description">
+                            Make better decisions with real-time behavioral analysis. 
+                            Our AI monitors your gaming patterns and provides respectful 
+                            feedback to help you play smarter.
                         </p>
-                        <p><strong>Key Features:</strong> AI pattern detection, session analytics, community insights</p>
-                        <div class="tool-links">
-                            <a href="https://github.com/jmenichole/TiltCheck" class="btn-repo">Repository</a>
-                            <a href="index.html" class="btn-demo">Live Demo</a>
+                        <div class="tool-features">
+                            <h4>Key Features</h4>
+                            <div class="features-list">
+                                <span class="feature-tag">Behavioral Analysis</span>
+                                <span class="feature-tag">Session Tracking</span>
+                                <span class="feature-tag">Smart Alerts</span>
+                            </div>
+                        </div>
+                        <div class="tool-actions">
+                            <a href="index.html" class="tool-button btn-primary">Learn More</a>
+                            <a href="https://github.com/jmenichole/TiltCheck" class="tool-button btn-secondary">View Code</a>
                         </div>
                     </div>
 
                     <!-- CollectClock -->
                     <div class="tool-card">
-                        <div class="tool-icon">⏱️</div>
-                        <h3>CollectClock</h3>
-                        <p class="tagline">"Never miss the drop"</p>
-                        <p>
-                            Bonus-drop predictor built for degens tired of guessing. Historical patterns, 
-                            AI models, and accuracy tracking so you always know when the next drop hits.
+                        <div class="tool-header">
+                            <div class="tool-icon">⏱️</div>
+                            <h3>CollectClock</h3>
+                        </div>
+                        <p class="tool-tagline">Smart Bonus Predictions</p>
+                        <p class="tool-description">
+                            Never miss a bonus drop again. Historical data and AI models 
+                            predict when bonuses are likely to appear, with accuracy 
+                            tracking and trust scoring.
                         </p>
-                        <p><strong>Key Features:</strong> Prediction models, accuracy tracking, casino trust scoring</p>
-                        <div class="tool-links">
-                            <a href="https://github.com/jmenichole/CollectClock" class="btn-repo">Repository</a>
-                            <a href="https://jmenichole.github.io/CollectClock" class="btn-demo">Live Demo</a>
+                        <div class="tool-features">
+                            <h4>Key Features</h4>
+                            <div class="features-list">
+                                <span class="feature-tag">Predictive Models</span>
+                                <span class="feature-tag">Accuracy Tracking</span>
+                                <span class="feature-tag">Trust Scoring</span>
+                            </div>
+                        </div>
+                        <div class="tool-actions">
+                            <a href="https://jmenichole.github.io/CollectClock" class="tool-button btn-primary">Try Now</a>
+                            <a href="https://github.com/jmenichole/CollectClock" class="tool-button btn-secondary">Details</a>
                         </div>
                     </div>
 
                     <!-- QualifyFirst -->
                     <div class="tool-card">
-                        <div class="tool-icon">📊</div>
-                        <h3>QualifyFirst</h3>
-                        <p class="tagline">"No garbage screen-outs"</p>
-                        <p>
-                            AI-powered survey matcher. Complete surveys that fit your profile 
-                            and get paid instantly in SOL. No bullshit.
+                        <div class="tool-header">
+                            <div class="tool-icon">📊</div>
+                            <h3>QualifyFirst</h3>
+                        </div>
+                        <p class="tool-tagline">Smart Survey Matching</p>
+                        <p class="tool-description">
+                            Get matched with surveys that actually fit your profile. 
+                            AI-powered matching eliminates screen-outs, and you get 
+                            paid instantly in SOL.
                         </p>
-                        <p><strong>Key Features:</strong> AI matching, instant SOL payouts, affiliate bonuses</p>
-                        <div class="tool-links">
-                            <a href="https://github.com/jmenichole/QualifyFirst" class="btn-repo">Repository</a>
-                            <a href="https://jmenichole.github.io/QualifyFirst" class="btn-demo">Live Demo</a>
+                        <div class="tool-features">
+                            <h4>Key Features</h4>
+                            <div class="features-list">
+                                <span class="feature-tag">AI Matching</span>
+                                <span class="feature-tag">Instant Payouts</span>
+                                <span class="feature-tag">Zero Screen-Outs</span>
+                            </div>
+                        </div>
+                        <div class="tool-actions">
+                            <a href="https://jmenichole.github.io/QualifyFirst" class="tool-button btn-primary">Start Earning</a>
+                            <a href="https://github.com/jmenichole/QualifyFirst" class="tool-button btn-secondary">How It Works</a>
                         </div>
                     </div>
 
                     <!-- SusLink -->
                     <div class="tool-card">
-                        <div class="tool-icon">🛡️</div>
-                        <h3>SusLink</h3>
-                        <p class="tagline">"Don't click stupid sht"</p>
-                        <p>
-                            Discord link guardian that scans links, flags scams, and keeps degenerates 
-                            safe without killing the vibe.
+                        <div class="tool-header">
+                            <div class="tool-icon">🛡️</div>
+                            <h3>SusLink</h3>
+                        </div>
+                        <p class="tool-tagline">Community Protection</p>
+                        <p class="tool-description">
+                            Keep your community safe with real-time link scanning. 
+                            Automatically flags suspicious links and protects against 
+                            scams without disrupting conversations.
                         </p>
-                        <p><strong>Key Features:</strong> Real-time scanning, safe/block lists, ecosystem protection</p>
-                        <div class="tool-links">
-                            <a href="https://github.com/jmenichole/SusLink" class="btn-repo">Repository</a>
-                            <a href="https://jmenichole.github.io/SusLink" class="btn-demo">Live Demo</a>
+                        <div class="tool-features">
+                            <h4>Key Features</h4>
+                            <div class="features-list">
+                                <span class="feature-tag">Real-Time Scanning</span>
+                                <span class="feature-tag">Auto-Detection</span>
+                                <span class="feature-tag">Safe Lists</span>
+                            </div>
+                        </div>
+                        <div class="tool-actions">
+                            <a href="https://jmenichole.github.io/SusLink" class="tool-button btn-primary">Add to Server</a>
+                            <a href="https://github.com/jmenichole/SusLink" class="tool-button btn-secondary">Features</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="flywheel-section" id="flywheel">
+        <section class="benefits-section" id="benefits">
             <div class="container">
-                <h2>🔥 The Degen Flywheel</h2>
-                <p style="text-align: center; color: #cbd5e1; margin-bottom: 2rem;">
-                    How everything feeds everything — circular retention instead of linear churn
-                </p>
-                
-                <div class="flywheel">
-                    <div class="flywheel-step">
-                        <span class="number">1</span>
-                        <span>Play Games (DegensAgainstDecency)</span>
-                    </div>
-                    <div class="flywheel-arrow">↓</div>
-                    
-                    <div class="flywheel-step">
-                        <span class="number">2</span>
-                        <span>Send Tips (JustTheTip)</span>
-                    </div>
-                    <div class="flywheel-arrow">↓</div>
-                    
-                    <div class="flywheel-step">
-                        <span class="number">3</span>
-                        <span>Trigger Tilt Data (TiltCheck)</span>
-                    </div>
-                    <div class="flywheel-arrow">↓</div>
-                    
-                    <div class="flywheel-step">
-                        <span class="number">4</span>
-                        <span>Check Predictions (CollectClock)</span>
-                    </div>
-                    <div class="flywheel-arrow">↓</div>
-                    
-                    <div class="flywheel-step">
-                        <span class="number">5</span>
-                        <span>Complete Surveys (QualifyFirst)</span>
-                    </div>
-                    <div class="flywheel-arrow">↓</div>
-                    
-                    <div class="flywheel-step">
-                        <span class="number">6</span>
-                        <span>Stay Safe (SusLink)</span>
-                    </div>
-                    <div class="flywheel-arrow">↓</div>
-                    
-                    <div class="flywheel-return">Back to Games →→→</div>
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose Our Ecosystem</h2>
+                    <p class="section-description">
+                        All tools work seamlessly together or independently, 
+                        giving you complete flexibility.
+                    </p>
                 </div>
 
-                <div class="flywheel-description">
-                    <p>
-                        <strong>Games drive engagement</strong> → Players join, laugh, compete → 
-                        they want to tip winners, return tomorrow, stay in the Discord.
-                    </p>
-                    <p>
-                        <strong>Tipping adds financial energy</strong> → More SOL flying around → 
-                        more reason to stay, more fun → more sessions.
-                    </p>
-                    <p>
-                        <strong>TiltCheck monitors patterns</strong> → Detects streaks, behaviors, 
-                        stress moments → insights for content, predictions, surveys, safety.
-                    </p>
-                    <p>
-                        <strong>CollectClock predictions boost daily re-entry</strong> → Users check 
-                        if today's bonus matches → return even on non-game days.
-                    </p>
-                    <p>
-                        <strong>QualifyFirst monetizes attention</strong> → Surveys → rewards → 
-                        more tipping → more gameplay → more sessions.
-                    </p>
-                    <p>
-                        <strong>SusLink keeps it clean</strong> → No scam links → higher trust → 
-                        better retention → stronger loop.
-                    </p>
-                    <p>
-                        <strong>All paths lead back to games</strong> → Tips → tilt → predictions → 
-                        surveys → safety → and back again. This is circular retention instead of linear churn.
-                    </p>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🔗</div>
+                        <h3 class="benefit-title">Seamless Integration</h3>
+                        <p class="benefit-description">
+                            All products share data intelligently, creating a unified 
+                            experience without compromising privacy.
+                        </p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🤖</div>
+                        <h3 class="benefit-title">AI-Powered</h3>
+                        <p class="benefit-description">
+                            Advanced machine learning provides insights and predictions 
+                            that help you make better decisions.
+                        </p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">⚡</div>
+                        <h3 class="benefit-title">Real-Time Updates</h3>
+                        <p class="benefit-description">
+                            Get instant notifications and updates across all tools 
+                            so you never miss important moments.
+                        </p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🔒</div>
+                        <h3 class="benefit-title">Privacy First</h3>
+                        <p class="benefit-description">
+                            Non-custodial wallets, encrypted data, and transparent 
+                            operations keep your information secure.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -535,12 +731,17 @@
 
     <footer>
         <div class="container">
-            <p><strong>© 2024-2025 JME (jmenichole)</strong></p>
-            <p>Made for degens by degens 🎮</p>
-            <div class="links">
-                <a href="https://github.com/jmenichole">GitHub Profile</a>
-                <a href="ECOSYSTEM_POSITIONING.md">Full Documentation</a>
-                <a href="index.html">TiltCheck Home</a>
+            <div class="footer-content">
+                <div class="logo">Degen Ecosystem</div>
+                <div class="footer-links">
+                    <a href="https://github.com/jmenichole">GitHub</a>
+                    <a href="flywheel.html">For Partners</a>
+                    <a href="ECOSYSTEM_POSITIONING.md">Documentation</a>
+                    <a href="index.html">TiltCheck</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024-2025 JME (jmenichole). All rights reserved.</p>
             </div>
         </div>
     </footer>
