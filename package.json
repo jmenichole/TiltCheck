@@ -1,7 +1,7 @@
 {
   "name": "traphouse-discord-bot",
   "version": "2.0.0",
-  "description": "TrapHouse Discord Bot with TiltCheck Integration",
+  "description": "TiltCheck - The responsible-gaming engine that understands degeneracy. Made for degens by degens.",
   "main": "bot.js",
   "scripts": {
     "start": "node health-server.js",
@@ -87,15 +87,19 @@
     "nodemon": "^3.0.2"
   },
   "keywords": [
+    "tiltcheck",
+    "responsible-gaming",
+    "degen-ecosystem",
+    "ai-detection",
+    "behavioral-analysis",
+    "justthetip",
+    "degensagainstdecency",
+    "collectclock",
+    "qualifyfirst",
+    "suslink",
     "discord",
     "bot",
-    "tiltcheck",
     "traphouse",
-    "degen",
-    "mindful",
-    "gambling",
-    "collectclock",
-    "justthetip",
     "railway"
   ],
   "author": {
